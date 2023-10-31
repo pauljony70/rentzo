@@ -4,6 +4,9 @@
 <head>
 	<?php $title = "Home";
 	include("include/headTag.php") ?>
+	<!-- Plugin css -->
+	<link rel="stylesheet" href="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.css') ?>" />
+
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/index.css') ?>">
 </head>
 
@@ -12,14 +15,71 @@
 	<?php include("include/topbar.php") ?>
 	<?php include("include/navbar.php") ?>
 
-	<main>
+	<main class="index-page">
 		<input type="hidden" id="user_id" value="<?php echo $this->session->userdata('user_id'); ?>">
 		<input type="hidden" id="qoute_id" value="<?php echo $this->session->userdata('qoute_id'); ?>">
 		<input type="hidden" name="whatsapp_number" value="<?php echo whatsapp_number; ?>" id="whatsapp_number">
 
-		// Desktop category section
-		<section class="desktop-category-section">
-
+		<!-- Desktop category section -->
+		<section class="desktop-category-section mb-5">
+			<div class="container">
+				<div class="d-flex align-items-center justify-content-between mb-5">
+					<div class="desktop-category-section-heading pb-3">
+						<span style="color: #666666;">Shop From </span>
+						<span style="color: #008ECC;"> Categories</span>
+					</div>
+					<div class="d-flex align-items-center">
+						<span class="view-all">View All</span>
+						<i class="fa-solid fa-chevron-right ms-2"></i>
+					</div>
+				</div>
+				<div class="swiper section-5-category-div" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
+					<div class="swiper-wrapper">
+						<?php foreach ($home_section5 as $home_category) : ?>
+							<div class="swiper-slide">
+								<a href="<?= $home_category->link ?>" class="d-flex aligm-items-center flex-column justify-content-center">
+									<div class="d-flex justify-content-center">
+										<img src="<?= base_url('media/' . json_decode($home_category->image)->{'470-720'}) ?>" alt="<?= $home_category->cat_name ?>">
+									</div>
+									<div class="text-center my-3">
+										<?= $home_category->cat_name ?>
+									</div>
+								</a>
+							</div>
+						<?php endforeach; ?>
+					</div>
+				</div>
+		</section>
+		<?php foreach ($header_banner as $section1) { ?>
+			<?php // echo $section1->link; 
+			?>
+			<?php //echo $section1->image; 
+			?>
+		<?php } ?>
+		<section id="heroHomeSlider" class="mt-2 mt-md-0">
+			<div class="container">
+				<div class="swiper top-slider" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
+					<div class="swiper-wrapper">
+						<a href="#" class="swiper-slide">
+							<img src="<?= base_url('assets_web/images/banner.svg') ?>" class=" w-100" alt="" srcset="">
+						</a>
+						<a href="#" class="swiper-slide">
+							<img src="<?= base_url('assets_web/images/banner.svg') ?>" class=" w-100" alt="" srcset="">
+						</a>
+						<a href="#" class="swiper-slide">
+							<img src="<?= base_url('assets_web/images/banner.svg') ?>" class=" w-100" alt="" srcset="">
+						</a>
+						<a href="#" class="swiper-slide">
+							<img src="<?= base_url('assets_web/images/banner.svg') ?>" class=" w-100" alt="" srcset="">
+						</a>
+						<a href="#" class="swiper-slide">
+							<img src="<?= base_url('assets_web/images/banner.svg') ?>" class=" w-100" alt="" srcset="">
+						</a>
+					</div>
+					<div class="swiper-button-next"></div>
+					<div class="swiper-button-prev"></div>
+				</div>
+			</div>
 		</section>
 
 		<section id="homeTopCategoryMobile" class="d-md-none mt-2">
@@ -341,14 +401,13 @@
 
 
 	</main>
-	<?php
-	include("include/footer.php")
-	?>
+	<?php include("include/footer.php") ?>
+	<?php include("include/script.php") ?>
 
-	<?php
-	include("include/script.php")
-	?>
-	<script src="<?php echo base_url(); ?>assets_web/js/index.js"></script>
+	<!-- Plugin JS -->
+	<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
+
+	<script src="<?php echo base_url(); ?>assets_web/js/app/index.js"></script>
 
 	<script>
 		var swiper = new Swiper('.mySwiper', {

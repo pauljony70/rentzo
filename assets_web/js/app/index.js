@@ -67,7 +67,7 @@ function get_home_products(type) {
 						`<div class="swiper-slide product-card-swiper px-2 py-1">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
 								${this.mrp === this.price ? '' :
-								`<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
+							`<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
 									<span class="discount text-uppercase">
 										<div>${this.offpercent}</div>
 									</span>
@@ -186,32 +186,44 @@ function get_home_small_banner(type, size) {
 	});
 }
 
-var swiper = new Swiper(".top-categories", {
-	slidesPerView: 3,
+var categorySwiper = new Swiper(".section-5-category-div", {
+	slidesPerView: 3.5,
 	spaceBetween: 30,
 	freeMode: true,
-	scrollbar: {
-		el: ".swiper-scrollbar",
-		draggable: true,
-		dragSize: '15px'
+	grabCursor: true,
+	mousewheel: {
+		forceToAxis: true,
+	},
+	forceToAxis: false,
+	breakpoints: {
+		640: {
+			slidesPerView: 2.5,
+			spaceBetween: 20,
+		},
+		768: {
+			slidesPerView: 6.5,
+			spaceBetween: 40,
+		},
+		1024: {
+			slidesPerView: 8.5,
+			spaceBetween: 50,
+		},
+	},
+});
+
+var topSliderSwiper = new Swiper(".top-slider", {
+	slidesPerView: 1,
+	spaceBetween: 30,
+	centeredSlides: true,
+	grabCursor: true,
+	loop: true,
+	autoplay: {
+		delay: 2500,
+		disableOnInteraction: true,
 	},
 	navigation: {
 		nextEl: ".swiper-button-next",
 		prevEl: ".swiper-button-prev",
-	},
-	breakpoints: {
-		640: {
-			slidesPerView: 2,
-			spaceBetween: 20,
-		},
-		768: {
-			slidesPerView: 6,
-			spaceBetween: 40,
-		},
-		1024: {
-			slidesPerView: 8,
-			spaceBetween: 50,
-		},
 	},
 });
 

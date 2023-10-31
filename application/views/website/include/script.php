@@ -4,7 +4,6 @@
 <script src="<?php echo base_url(); ?>assets_web/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/libs/dropify/dist/js/dropify.min.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/js/native-toast.js"></script>
-<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
 <script src="<?php echo base_url; ?>assets_web/js/nouislider.min.js"></script>
 <script src="<?= base_url('assets_web/libs/select2/js/select2.min.js') ?>"></script>
 <script src="<?php echo base_url; ?>assets_web/js/slick.min.js"></script>
@@ -12,21 +11,6 @@
 <script src="<?php echo base_url(); ?>assets_web/js/custom.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/js/topbar.js"></script>
 
-<!-- noUiSlider Script -->
-<?php
-if ($this->session->userdata('default_language') == 1) { ?>
-  <script>
-    document.body.setAttribute('dir', 'rtl');
-    document.documentElement.setAttribute("lang", 'ar');
-    //$("html").children().css("lang","ar");
-  </script>
-<?php } else { ?>
-  <script>
-    document.body.setAttribute('dir', 'ltr');
-    document.documentElement.setAttribute("lang", 'en');
-    //$("html").children().css("lang","en");
-  </script>
-<?php } ?>
 
 
 <script>
