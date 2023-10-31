@@ -8,24 +8,20 @@
 </head>
 
 <body>
-	<?php
-	include("include/loader.php")
-	?>
-
-	<?php
-	include("include/topbar.php")
-	?>
-	<?php
-	include("include/navbar.php")
-	?>
-	<?php
-	include("include/navForMobile.php")
-	?>
+	<?php include("include/loader.php") ?>
+	<?php include("include/topbar.php") ?>
+	<?php include("include/navbar.php") ?>
 
 	<main>
 		<input type="hidden" id="user_id" value="<?php echo $this->session->userdata('user_id'); ?>">
 		<input type="hidden" id="qoute_id" value="<?php echo $this->session->userdata('qoute_id'); ?>">
 		<input type="hidden" name="whatsapp_number" value="<?php echo whatsapp_number; ?>" id="whatsapp_number">
+
+		// Desktop category section
+		<section class="desktop-category-section">
+
+		</section>
+
 		<section id="homeTopCategoryMobile" class="d-md-none mt-2">
 			<div class="container-fluid homeTopCategoryMobileContainer">
 				<?php
