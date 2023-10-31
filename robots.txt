@@ -1,0 +1,18 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /vendor/
+Disallow: /application/
+Disallow: /system/
+Disallow: /assets/
+Disallow: /uploads/
+Disallow: /media/
+Disallow: /personal_info/
+Disallow: /notification/
+Disallow: /cart/
+Disallow: /wishlist/
+Disallow: /order/
+Disallow: /checkout/
+
+
+
+Sitemap: https://www.rentzo.co.in/sitemap.xml

@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Limelight&family=Montserrat:wght@400;500;600;700&display=swap");
+
+$variable-prefix: mr- !default;
+
+$primary: #f42525 !default;
+$secondary: #333333 !default;
+
+$secondary-light: #d9d9d9 !default;
+$hr-border-color: #b0b0b0 !default;
+
+$success: #2fab73 !default;
+$info: #22d3ee !default;
+$warning: #fea250 !default;
+$danger: #f25042 !default;
+
+$light: #fff !default;
+$light-dark: #efefef !default;
+$dark: $secondary !default;
+$paragraph: $secondary !default;
+
+// Font weight
+$font-weight-normal: 400 !default;
+$font-weight-semibold: 500 !default;
+$font-weight-bold: 700 !default;
+
+// Font family
+$font-family-sans-serif: "Montserrat", sans-serif !default;
+$font-family-cursive: "Limelight", cursive !default;
+
+// negative margin
+$enable-negative-margins: true;
+
+// Container max-size
+// $container-max-widths: (
+//   sm: 570px,
+//   md: 760px,
+//   lg: 990px,
+//   xl: 1200px,
+//   xxl: 1400px,
+// );
+
+// Body
+$body-bg: #fff !default;
+$body-color: $paragraph !default;
+
+// font size
+$font-size-base: 0.875rem !default;
+
+$h1-font-size: $font-size-base * 3 !default;
+$h2-font-size: $font-size-base * 2.5 !default;
+$h3-font-size: $font-size-base * 2 !default;
+$h4-font-size: $font-size-base * 1.5 !default;
+$h5-font-size: $font-size-base * 1.15 !default;
+$h6-font-size: $font-size-base !default;
+
+$font-size-xl: $font-size-base * 1.5 !default;
+$font-size-xxl: $font-size-base * 2 !default;
+
+// Headings
+$headings-color: $dark !default;
+
+// Navbar
+$navbar-light-toggler-border-color: transparent !default;
+$navbar-toggler-focus-width: 0px !default;
+// $navbar-light-toggler-icon-bg: url(../../images/icons/menu.svg);
+$navbar-light-color: rgba($dark, 1);
+$navbar-light-hover-color: rgba($primary, 1);
+$navbar-light-active-color: rgba($primary, 1);
+
+// Input group
+// $input-focus-bg: $input-bg;
+$input-focus-border-color: transparent !default;
+$input-focus-color: $dark !default;
+$input-focus-width: 0px !default;
+$input-focus-box-shadow: none !default;
+
+// Button border
+// $btn-border-width: 2px;
+// $btn-link-hover-color: $light;
+// $btn-font-weight: 500;
+
+// Card
+$card-border-width: 0px;
+$card-border-color: transparent;
+
+// Dropdown
+$dropdown-divider-bg: $hr-border-color !default;
+$dropdown-border-color: transparent !default;
+
+// Close button
+$btn-close-opacity: 0.8 !default;
+$btn-close-hover-opacity: 1 !default;
+
+// Accordion
+$accordion-bg: $light !default;
+$accordion-button-bg: #fff !default;
+$accordion-button-active-bg: #fff !default;
+$accordion-button-active-color: $dark;
+$accordion-border-width: 0px !default;
+$accordion-button-focus-border-color: transparent;
+$accordion-button-focus-box-shadow: transparent;

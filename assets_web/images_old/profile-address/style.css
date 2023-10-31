@@ -1,0 +1,199 @@
+.profile-right {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.user {
+  left: 75px;
+  top: 115px;
+  background: #ffffff;
+  box-shadow: 4px 4px 20px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.icon-user {
+  font-size: 50px;
+  color: #000;
+}
+.heading-span1 {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: #424242;
+}
+.heading-span2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #424242;
+}
+.wallet-icon {
+  font-size: 20px;
+}
+.my {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+}
+.fa-sharp {
+  margin-left: 100px;
+}
+.my-order .wallet-icon {
+  font-size: 25px;
+}
+.my-order .greater-icon {
+  font-size: 25px;
+}
+.order {
+  background: #ffffff;
+  box-shadow: 4px 4px 20px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.account .account-icon {
+  font-size: 25px;
+}
+.my-stuff .account-icon {
+  font-size: 25px;
+}
+.manage1 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #424242;
+}
+.manage {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  /* identical to box height */
+  color: #606060;
+}
+.my-stuff1 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #424242;
+}
+.my-stuff2,
+.my-stuff3 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: #606060;
+}
+.logout {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  color: #424242;
+  padding-bottom: 10px;
+}
+.visited {
+  background: #ffffff;
+  box-shadow: 4px 4px 20px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+}
+.heading-visit {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 29px;
+  color: #424242;
+}
+.heading-visit2 {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  color: #606060;
+}
+.heading-address {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+.title,
+.name,
+.email,
+.phone,
+.city,
+.state,
+.pincode,
+.street {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  color: rgba(0, 0, 0, 0.6);
+}
+.email input {
+  width: 440px;
+}
+.phone input {
+  width: 440px;
+}
+.city input {
+  width: 440px;
+}
+.state input {
+  width: 440px;
+}
+.pincode input {
+  width: 440px;
+}
+.street input {
+  width: 440px;
+}
+
+.input {
+  border-radius: 3px;
+  width: 100%;
+  height: 40px;
+}
+.third {
+  width: 100%;
+}
+.input2 {
+  border-radius: 3px;
+  width: 100%;
+  height: 40px;
+}
+.address {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  /* color: #000000; */
+  color: #606060;
+}
+.submit {
+  text-align: center;
+}
+.btn {
+  background: #FF6600;
+  border-radius: 3px;
+  padding: 5px 80px;
+  margin: 15px;
+}

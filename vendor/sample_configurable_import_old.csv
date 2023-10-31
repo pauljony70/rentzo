@@ -1,0 +1,5 @@
+name,sku,url_key,attribute_set,product_type,categories,short_description,description,mrp,price,tax_class,qty,stock_status,visibility,country_of_manufacture,hsn_code,product_purchase_limit,brand,return_policy,configurable_variations,remarks,youtube_video_link,related_skus,upsell_skus
+T-Shirt - Black,t-shirt-black,t-shirt-black,Default,simple,"cat1,cat2,cat3",asfasf,qwrqwrqrqwrqwrqrwq,10,5,ve2,5,In Stock,Not Visible Individually,india,31313,2,All Out,Samsung,,mowe w,,"Jeans,Kamal2121",
+T-Shirt - Red,t-shirt-red,t-shirt-red,Default,simple,cat2,fsaf,wqwgewgew,20,5,tax class 18%,5,Out of Stock,Not Visible Individually,usa,3123,,All Out,hvuuuu,,,,,"Jeans,Kamal2121"
+T-Shirt,t-shirt,t-shirt,Default,configurable,cat3,fsf,ggwegwegw,30,5,tax class 18%,2,In Stock,"Catalog, Search",uk,312,,ve,,"sku=shirt-black-xl,color=Black.size=xl",,,,
+T-Shirt,t-shirt,t-shirt,Default,configurable,cat3,gsdg,gwegwegweg,40,5,tax class 18%,2,In Stock,"Catalog, Search",uk,312,,ve,,"sku=shirt-red-xl,color=Red,size=xl",,,,

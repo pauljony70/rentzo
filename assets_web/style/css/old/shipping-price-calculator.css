@@ -1,0 +1,16 @@
+.form-label {
+    font-weight: 500;
+}
+
+#course-pills-tab-1 {
+    padding: 1.13rem !important;
+}
+
+.calculator-card{
+    padding-bottom: 3.79em !important;
+}
+
+.box-dimension .form-control {
+    padding-left: 0;
+    padding-right: 0;
+}

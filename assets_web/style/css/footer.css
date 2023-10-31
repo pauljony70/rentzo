@@ -1,0 +1,98 @@
+.desktop-footer {
+    background-color: #f3f9fb;
+    height: 592px;
+}
+
+.top-right-circle-border-outside {
+    position: absolute;
+    height: 534.49px;
+    width: 528.27px;
+    top: 0;
+    right: 0;
+    background: var(--bs-warning);
+    clip-path: ellipse(35% 28% at 96% 10%);
+}
+
+.top-right-circle-border-inside {
+    position: absolute;
+    height: 524.49px;
+    width: 518.27px;
+    top: 0;
+    right: 0;
+    background: #ffffff;
+    clip-path: ellipse(35% 28% at 96% 10%);
+}
+
+.top-right-circle {
+    position: absolute;
+    top: 0;
+    left: 30px;
+    right: 0;
+    bottom: 30px;
+    background: var(--bs-primary);
+    clip-path: ellipse(35% 28% at 96% 10%);
+}
+
+.bottom-left-circle-border-outside {
+    position: absolute;
+    height: 534.49px;
+    width: 528.27px;
+    bottom: 0;
+    left: 0;
+    background: var(--bs-primary);
+    clip-path: ellipse(35% 28% at 4% 90%);
+}
+
+.bottom-left-circle-border-inside {
+    position: absolute;
+    height: 524.49px;
+    width: 518.27px;
+    bottom: 0;
+    left: 0;
+    background: #ffffff;
+    clip-path: ellipse(35% 28% at 4% 90%);
+}
+
+.bottom-left-circle {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 30px;
+    bottom: 0;
+    background: var(--bs-warning);
+    clip-path: ellipse(35% 28% at 4% 90%);
+}
+
+.social-media-links {
+    height: 48px;
+    width: 48px;
+    background-color: rgba(252, 178, 67, 0.1);
+    text-decoration: none;
+    color: #123D50;
+    font-size: 14px;
+}
+
+.desktop-footer .col-heading {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0px;
+}
+
+.desktop-footer .container {
+    position: relative;
+    z-index: 10;
+}
+
+.footer-links a {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #000000;
+    text-decoration: none;
+}
+
+.download-app-div {
+    border-bottom: 1px solid var(--bs-primary);
+}

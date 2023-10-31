@@ -1,0 +1,108 @@
+/* Navbar notification */
+#notificationContainer,
+#notificationContainer1 {
+    overflow: visible;
+    width: 400px;
+    z-index: 99;
+    display: none;
+    /* Enable this after jquery implementation  */
+}
+
+/* #notificationContainer:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    color: transparent;
+    border: 10px solid black;
+    border-color: transparent transparent white;
+    margin-top: -20px;
+    margin-left: 188px;
+} */
+
+#notificationTitle {
+    font-weight: bold;
+    padding: 8px;
+    font-size: 13px;
+    background-color: #ffffff;
+    z-index: 1000;
+    width: 384px;
+    border-bottom: 1px solid #dddddd;
+}
+
+#notificationsBody {
+    padding: 15px 0px 0px 0px !important;
+    height: 300px;
+    overflow: auto;
+}
+
+#notificationFooter {
+    background-color: #e9eaed;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px;
+    font-size: 12px;
+    border-top: 1px solid #dddddd;
+}
+
+@media (max-width: 576px) {
+
+    #notificationContainer,
+    #notificationContainer1 {
+        width: auto;
+    }
+
+    #notificationTitle {
+        width: auto;
+    }
+}
+
+/* Tree select */
+
+#treeSelect {
+    height: 200px;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: .2rem;
+    overflow: auto;
+}
+
+/* Pagination */
+
+.pagination li a,
+.pagination li span {
+    padding: 7px 15px;
+}
+
+.pagination li {
+    padding: 5px 0px;
+    border: 1px solid #ced4da;
+    border-radius: .2rem;
+    cursor: pointer;
+}
+
+.pagination li a {
+    color: #6c757d;
+}
+
+.pagination li.active,
+.pagination li:not(.disabled):hover {
+    color: #fff !important;
+    background-color: #1d2128;
+    border-color: #171b21;
+}
+
+.pagination li:hover a {
+    color: #fff !important;
+}
+
+.pagination li:has(.disabled) {
+    cursor: not-allowed;
+}
+
+.pagination li:has(.disabled):hover {
+    color: #6c757d !important;
+    background-color: #fff;
+    border-color: #ced4da;
+}

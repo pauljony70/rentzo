@@ -1,0 +1,148 @@
+:root {
+    --black: #011733;
+    --orange: #ff5400;
+    --red: #ff1616;
+    --lightGrey: #ebebeb;
+    --slightLGrey: #c0c0c0;
+    --textGray: #787878;
+    --gradientW: linear-gradient(180.06deg, #ffffff -1.91%, #e8e8e8 215.84%);
+    --lightBlue: #e5f1ff;
+    --blue: #4254b7;
+    --yellow: #ffab2c;
+    --gradientBlue: linear-gradient(110.07deg, #475abd 14.97%, #1e2a8d 97.38%);
+    --grdBlue: linear-gradient(180deg, #31aade 0%, #2825ad 100%);
+    --cartPrimary: #e1e1e1;
+    --cartSecondary: #282828;
+    --Manrope: "Manrope", sans-serif;
+    --pDisplay: "Playfair Display", serif;
+}
+
+.btn.btn-primary {
+    background-color: var(--orange);
+    border: 2px solid var(--orange);
+    transition: all .2s ease-in;
+}
+
+.btn.btn-primary:hover,
+.btn.btn-primary:focus,
+.btn.btn-primary:active {
+    background-color: transparent;
+    border: 2px solid var(--orange);
+    color: var(--orange);
+}
+
+.card .card-body .btn-primary {
+    color: #fff !important;
+    background-color: var(--orange) !important;
+    border-color: var(--orange) !important;
+}
+
+.card .card-body .btn-light {
+    color: var(--black) !important;
+    background-color: var(--lightGrey) !important;
+    border-color: var(--lightGrey) !important;
+}
+
+.card.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%) !important;
+}
+
+.card-body.py-3 {
+    padding: 1.5rem 0 !important;
+}
+
+#stepwizard-card-body input.form-control,
+#stepwizard-card-body select.form-control,
+#stepwizard-card-body textarea.form-control {
+    background-color: var(--lightGrey) !important;
+    padding-top: .7rem !important;
+    padding-bottom: .7rem !important;
+    line-height: 2 !important;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px var(--lightGrey) inset !important;
+    box-shadow: 0 0 0px 1000px var(--lightGrey) inset !important;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px var(--lightGrey) inset !important;
+    box-shadow: 0 0 0px 1000px var(--lightGrey) inset !important;
+}
+
+
+/*Form Wizard Two Start*/
+.stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.stepwizard .stepwizard-row {
+    display: table-row;
+}
+
+.stepwizard .stepwizard-row:before {
+    top: 16px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #e6edef;
+}
+
+.stepwizard .stepwizard-row .stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+
+.stepwizard .stepwizard-row .stepwizard-step p {
+    margin-top: 10px;
+}
+
+.stepwizard .stepwizard-row .stepwizard-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important;
+}
+
+.stepwizard .stepwizard-row .stepwizard-step .btn {
+    font-weight: 600;
+}
+
+@media screen and (max-width: 991px) {
+    .stepwizard {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .stepwizard .stepwizard-row:before {
+        top: 17px;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    .stepwizard {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .stepwizard .stepwizard-row:before {
+        top: 17px;
+    }
+
+    .stepwizard .stepwizard-row .stepwizard-step .btn {
+        padding: 6px 22px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .stepwizard .stepwizard-row .stepwizard-step .btn {
+        padding: 6px 20px;
+    }
+}
