@@ -83,14 +83,27 @@
 .desktop-category-section {
     background-color: #F3F9FB;
     padding-top: 33px;
+    padding-bottom: 55px;
 }
 
-.desktop-category-section-heading {
+.section-heading {
     font-size: 24px;
     font-weight: 700;
     line-height: 30px;
     word-wrap: break-word;
-    border-bottom: 3px solid var(--bs-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.section-heading::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--bs-primary);
+    border-radius: 1.5px;
 }
 
 .index-page .view-all {
@@ -121,4 +134,254 @@
     font-style: normal;
     font-weight: 500;
     line-height: 20px;
+}
+
+.top-slider {
+    --swiper-navigation-color: transparent;
+    --swiper-pagination-color: #fff;
+    --swiper-pagination-bullet-inactive-color: #fff;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-navigation-size: 64px;
+    --swiper-scrollbar-sides-offset: 50%;
+    --swiper-pagination-bottom: 39px;
+    --swiper-pagination-bullet-horizontal-gap: 4px;
+}
+
+.top-slider img {
+    width: 95%;
+    border-radius: 16px;
+}
+
+.top-slider .swiper-button-prev {
+    background: #F3F9FB;
+    border-radius: 50%;
+    background-image: url("../../images/icons/arrow-left.svg") !important;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    background-position: center center;
+    width: 64px !important;
+    border: 6px solid #ffffff;
+    left: var(--swiper-navigation-sides-offset, 4px) !important;
+    right: auto;
+}
+
+.top-slider .swiper-button-next {
+    background: #F3F9FB;
+    border-radius: 50%;
+    background-image: url("../../images/icons/arrow-right.svg") !important;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    background-position: center center;
+    width: 64px !important;
+    border: 6px solid #ffffff;
+    left: auto;
+    right: var(--swiper-navigation-sides-offset, 4px) !important;
+}
+
+.top-slider .swiper-pagination-bullet-active {
+    width: 24px;
+    border-radius: 7px;
+}
+
+.top-slider .swiper-pagination {
+    left: 90px !important;
+}
+
+.best-deal-section .swiper-slide:nth-child(odd) .product-card {
+    border: 1px solid var(--bs-warning);
+}
+
+.best-deal-section .swiper-slide:nth-child(even) .product-card {
+    border: 1px solid var(--bs-primary);
+}
+
+.best-deal-section .swiper-slide:nth-child(even) .product-card .card-text {
+    border-bottom: 1px solid var(--bs-primary);
+}
+
+.event-section {
+    background-color: #FFECDF;
+}
+
+.event-section-heading {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 52px;
+    letter-spacing: 0em;
+    color: #23262F;
+    margin-bottom: 22px;
+}
+
+.event-section-des {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    color: #23262F;
+}
+
+.event-section .event-card {
+    border: none;
+    background: transparent;
+}
+
+.event-section .event-card-img {
+    height: 317px;
+    width: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.event-section .event-title {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 45px;
+    letter-spacing: 0.01em;
+}
+
+.top-brand-section .brand-img {
+    height: 207px;
+    width: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+}
+
+.testimonial-section-container {
+    background-color: #FFECDF;
+}
+
+.testimonial-section .section-heading {
+    color: #23262F;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+}
+
+.testimonial-section .section-heading::after {
+    display: none;
+}
+
+.testimonial-swiper {
+    --swiper-navigation-color: var(--bs-primary);
+    --swiper-pagination-color: var(--bs-primary);
+    --swiper-navigation-size: 18px;
+    --swiper-scrollbar-sides-offset: 50%;
+}
+
+.testimonial-section .swiper-navigation {
+    gap: 20px;
+}
+
+.testimonial-section .swiper-navigation .swiper-btn-prev,
+.testimonial-section .swiper-navigation .swiper-btn-next {
+    width: 36px;
+    height: 36px;
+    transform-origin: 0 0;
+    box-shadow: 0px 4px 10px rgba(15.09, 27.30, 51, 0.05);
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testimonial-section .swiper-navigation .swiper-btn-prev {
+    background: #ffffff;
+}
+
+.testimonial-section .swiper-navigation .swiper-btn-next {
+    background: #286F6C;
+}
+
+.testimonial-section .swiper-navigation .swiper-btn-prev.swiper-button-disabled,
+.testimonial-section .swiper-navigation .swiper-btn-next.swiper-button-disabled {
+    opacity: 0.5;
+    cursor: auto;
+}
+
+.testimonial-section .card {
+    background: transparent;
+    border: none;
+}
+
+.testimonial-section .customer-img {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    object-fit: cover;
+}
+
+.testimonial-section .customer-name {
+    color: #23262F;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 14px;
+    word-wrap: break-word;
+}
+
+.testimonial-section .customer-des {
+    opacity: 0.50;
+    color: #23262F;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 10px;
+    word-wrap: break-word;
+}
+
+.testimonial-section .customer-profile .d-flex {
+    gap: 10px;
+}
+
+.testimonial-section .review {
+    color: #23262F;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 23.80px;
+    word-wrap: break-word;
+}
+
+.testimonial-section .review-img img {
+    height: 189px;
+    object-fit: contain;
+    border-radius: 6px;
+}
+
+.multibanner-section img {
+    object-fit: cover;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+}
+
+/* .multibanner-section .banner1 {
+    height: auto;
+}
+
+.multibanner-section .banner2 {
+    height: auto;
+}
+
+.multibanner-section .banner3,
+.multibanner-section .banner4 {
+    height: auto;
+} */
+
+@media(max-width: 767px) {
+    .event-section .event-card-img {
+        height: 193px;
+    }
+
+    .event-section .event-title {
+        font-size: 14px;
+        line-height: 30px;
+    }
+}
+
+@media(max-width: 576px) {
+    .section-heading {
+        font-size: 16px;
+        line-height: 30px;
+    }
 }

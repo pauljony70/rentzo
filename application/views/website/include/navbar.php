@@ -160,13 +160,13 @@
             <a class="navbar-brand" href="#">
                 <img src="<?= base_url('assets_web/images/logo.svg') ?>" alt="<?= get_settings('system_name'); ?>" srcset="">
             </a>
-            <div class="w-100 d-none d-lg-block mx-5">
+            <div class="w-100 d-none d-lg-block mx-xl-5 mx-4">
                 <ul class="navbar-nav justify-content-evenly mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ichapur</a>
+                        <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-disabled="true">About</a>
@@ -307,45 +307,6 @@
             </div>
         </div>
     </nav>
-
-
-    <!-- User Transaction Page Search Bar -->
-    <!-- Open only on page with route user transaction -->
-    <?php if (strpos($_SERVER['REQUEST_URI'], 'user-wallet-transactions') !== false) { ?>
-        <div class="mt-1">
-            <div class="col-sm-12 col-md-12 date_search_trans">
-                <div class="row">
-                    <div class="col-md-3 col-6 px-1 mb-2">
-                        <input type="text" class="form-control" id="transaction_id" placeholder="<?= $this->lang->line('wallet-search-trans-id'); ?>">
-                    </div>
-                    <div class="col-md-3 col-6 px-1 mb-2">
-                        <select name="trans_type" id="payment_type" class="form-select" aria-placeholder="--select transaction type--">
-                            <option selected disabled>-- <?= $this->lang->line('wallet-select-trans-type'); ?> --</option>
-                            <option value="0"><?= $this->lang->line('wallet-affiliate-comm'); ?></option>
-                            <option value="1"><?= $this->lang->line('wallet-add-money'); ?></option>
-                        </select>
-                    </div>
-                    <div class="col-md-4 col-8 px-1">
-                        <div class="flex-sm-row flex-column d-flex">
-                            <div class="row w-100 mx-0">
-                                <div class="col-sm-12 px-0">
-                                    <div class="input-group input-daterange">
-                                        <input type="text" class="form-control" id="start_date" placeholder="<?= $this->lang->line('wallet-start-date'); ?>" readonly>
-                                        <input type="text" class="form-control" id="end_date" placeholder="<?= $this->lang->line('wallet-end-date'); ?>" readonly>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-4 px-1">
-                        <button class="btn btn-primary w-100 transaction_search_btn" id="name" name="submit" style="font-size: 1.0939rem;"><?= $this->lang->line('search-text'); ?></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php } ?>
-
 
 </header>
 
@@ -531,6 +492,26 @@
                         </ul>
                     <?php } ?>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+    --------------------------------------------------- 
+    Pincode modal 
+    ---------------------------------------------------
+-->
+<div class="modal fade" id="pincodeModal" tabindex="-1" aria-labelledby="pincodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="modal-heading mb-4">Please enter your pincode</div>
+                <div class="d-flex justify-content-center">
+                    <input type="text" class="form-control text-center pincode-input mb-2" maxlength="6" onkeypress="return AllowOnlyNumbers(event);">
+                </div>
+                <div class="description mb-4">Please enter your current Pincode to better serve you<br> with our services</div>
+                <button type="submit" class="btn">Continue</button>
             </div>
         </div>
     </div>

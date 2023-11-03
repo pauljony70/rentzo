@@ -1,6 +1,12 @@
 .desktop-footer {
     background-color: #f3f9fb;
-    height: 592px;
+    height: 100%;
+}
+
+@media (min-width: 768px) {
+    .desktop-footer {
+        height: 592px;
+    }
 }
 
 .top-right-circle-border-outside {
@@ -41,6 +47,7 @@
     left: 0;
     background: var(--bs-primary);
     clip-path: ellipse(35% 28% at 4% 90%);
+    z-index: 11;
 }
 
 .bottom-left-circle-border-inside {
@@ -95,4 +102,72 @@
 
 .download-app-div {
     border-bottom: 1px solid var(--bs-primary);
+}
+
+@media(max-width: 767px) {
+    .top-right-circle-border-outside {
+        position: absolute;
+        height: 121.14px;
+        width: 133.76px;
+        top: 0;
+        right: 0;
+        background: var(--bs-warning);
+        clip-path: ellipse(35% 28% at 96% 10%);
+    }
+
+    .top-right-circle-border-inside {
+        position: absolute;
+        height: 111.14px;
+        width: 123.76px;
+        top: 0;
+        right: 0;
+        background: #ffffff;
+        clip-path: ellipse(35% 28% at 96% 10%);
+    }
+
+    .top-right-circle {
+        position: absolute;
+        top: 0;
+        left: 10px;
+        right: 0;
+        bottom: 10px;
+        background: var(--bs-primary);
+        clip-path: ellipse(35% 28% at 96% 10%);
+    }
+
+    .bottom-left-circle-border-outside {
+        position: absolute;
+        height: 121.14px;
+        width: 133.76px;
+        bottom: 0;
+        left: 0;
+        background: var(--bs-primary);
+        clip-path: ellipse(35% 28% at 4% 90%);
+    }
+
+    .bottom-left-circle-border-inside {
+        position: absolute;
+        height: 111.14px;
+        width: 123.76px;
+        bottom: 0;
+        left: 0;
+        background: #ffffff;
+        clip-path: ellipse(35% 28% at 4% 90%);
+    }
+
+    .bottom-left-circle {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 10px;
+        bottom: 0;
+        background: var(--bs-warning);
+        clip-path: ellipse(35% 28% at 4% 90%);
+    }
+}
+
+@media(max-width: 767px) {
+    .download-app-div img {
+        width: 136px;
+    }
 }

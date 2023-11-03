@@ -52,9 +52,9 @@ if (!function_exists('price_format')) {
 		$currency = get_settings('system_currency_symbol');
 		if ($price > 0) {
 			if (strpos($price, '.') !== false) {
-				$new_price = number_format($price, 2) . ' ' . $currency;
+				$new_price = $currency . ' ' . number_format($price, 2);
 			} else {
-				$new_price = number_format($price, 2) . ' ' . $currency;
+				$new_price = $currency . ' ' . number_format($price, 2);
 			}
 		}
 		return $new_price;
@@ -342,12 +342,13 @@ function generateUniqueWalletID()
 	return $wallet_id;
 }
 
-function generateTransactionID($prefix = 'TX') {
-    $timestamp = time();
-    $randomNumber = mt_rand(1000, 9999); // You can adjust the range as needed
+function generateTransactionID($prefix = 'TX')
+{
+	$timestamp = time();
+	$randomNumber = mt_rand(1000, 9999); // You can adjust the range as needed
 
-    $transactionID = $prefix . $timestamp . $randomNumber;
-    return $transactionID;
+	$transactionID = $prefix . $timestamp . $randomNumber;
+	return $transactionID;
 }
 
 function add_query_params($url, $params)

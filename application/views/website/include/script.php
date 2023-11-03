@@ -29,6 +29,25 @@
     location.href = link;
   }
 
+  // JavaScript code to handle the dropdown
+  document.getElementById("searchButton").addEventListener("click", function(event) {
+    // Handle search button click logic here
+
+    // Prevent the click event from propagating up to the parent elements
+    event.stopPropagation();
+  });
+
+  // Handle other click events inside the navbar
+  // For example, if you have other elements with click handlers inside the navbar
+  document.querySelectorAll("body").forEach(function(item) {
+    item.addEventListener("click", function(event) {
+      // Handle click logic for nav items here
+
+      // Prevent the click event from propagating up to the parent elements
+      event.stopPropagation();
+    });
+  });
+
   $(document).on('input', '#search', function() {
     var search = $(this).val();
     $("#searchResults").html('');

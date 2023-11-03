@@ -1,0 +1,63 @@
+.product-card {
+    border: 1px solid var(--bs-warning);
+}
+
+.product-card-img {
+    height: 206px;
+    object-fit: contain;
+}
+
+.product-card-body {
+    padding: 4px 8px;
+    height: 100px;
+}
+
+.product-card .product-title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    color: #222222;
+}
+
+.product-card .card-text {
+    border-bottom: 1px solid var(--bs-warning);
+}
+
+.product-card .rent-heading {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #808080;
+}
+
+.product-card .rent-price {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #222222;
+}
+
+.product-card-footer {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+}
+
+@media (max-width: 767px) {
+    .product-card .product-title,
+    .product-card .rent-heading,
+    .product-card .rent-price {
+        font-size: 8px;
+        line-height: 10px;        
+    }
+
+    .product-card-footer {
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 10px;
+    }
+}
