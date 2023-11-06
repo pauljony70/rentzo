@@ -115,8 +115,8 @@
     <nav class="navbar menu-navbar d-flex d-lg-none bg-white">
         <div class="container mobile-nav">
             <div class="mobile-nav-flex d-flex align-items-center justify-content-between w-100">
-                <button type="button" class="hamberger-icon btn px-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
-                    <i class="fa-solid fa-bars"></i>
+                <button type="button" class="hamburger-icon btn px-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                    <img src="<?= base_url('assets_web/images/icons/hamburger.svg') ?>" alt="">
                 </button>
                 <form action="<?= base_url('search/s') ?>" class="d-flex" role="search">
                     <div class="position-relative">
@@ -258,7 +258,7 @@
     <div class="offcanvas-header align-items-center">
         <div class="user-location">
             <div class="container d-flex align-items-center">
-                <img src="<?= base_url('assets_web/images/location-pin.svg') ?>" alt="Location">
+                <img src="<?= base_url('assets_web/images/icons/location-pin.svg') ?>" alt="Location">
                 <div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</div>
             </div>
         </div>

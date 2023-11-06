@@ -139,11 +139,8 @@ if (!isset($_SESSION['admin'])) {
                       <tr>
                         <th>Sno</th>
                         <th>Image</th>
-                        <th>Brand Name (ENG)</th>
-                        <th>Brand Name (Arabic)</th>
-                        <th>Brand Website Link</th>
+                        <th>Brand Name</th>
                         <th>Status</th>
-                        <th>Popularity Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -194,10 +191,10 @@ if (!isset($_SESSION['admin'])) {
         <form class="form" id="add_brand_form" enctype="multipart/form-data">
 
           <div class="form-group">
-            <label for="name">Brand Name (ENG)</label>
+            <label for="name">Brand Name</label>
             <input type="text" class="form-control" id="name" placeholder="Brand Name">
           </div>
-          <div class="form-group">
+          <!--<div class="form-group">
             <label for="name">Brand Name (Arabic)</label>
             <input type="text" class="form-control" id="name_ar" placeholder="Brand Name">
           </div>
@@ -221,7 +218,7 @@ if (!isset($_SESSION['admin'])) {
               <input type="checkbox" class="custom-control-input" id="popular_brand">
               <label class="custom-control-label" for="popular_brand">This is a popular brand</label>
             </div>
-          </div>
+          </div>-->
           <div class="form-group">
             <label for="image">Image</label>
             <input type="file" name="brand_image" id="brand_image" class="form-control-file" onchange="uploadFile1('brand_image')" required accept="image/png, image/jpeg,image/jpg,image/gif">
@@ -247,10 +244,10 @@ if (!isset($_SESSION['admin'])) {
         <form class="form" id="update_brand_form" enctype="multipart/form-data">
 
           <div class="form-group">
-            <label for="name">Brand Name (ENG)</label>
+            <label for="name">Brand Name</label>
             <input type="text" class="form-control" id="update_name" placeholder="Brand Name">
           </div>
-          <div class="form-group">
+          <!--<div class="form-group">
             <label for="name">Brand Name (Arabic)</label>
             <input type="text" class="form-control" id="update_name_ar" placeholder="Brand Name">
           </div>
@@ -268,7 +265,7 @@ if (!isset($_SESSION['admin'])) {
               </a>
             </label>
             <input type="text" class="form-control" id="update_brand_site_url" placeholder="Website Link">
-          </div>
+          </div>-->
           <div class="form-group">
             <label for="name">Status</label>
             <select class="form-control" id="statuss" name="status">
@@ -278,12 +275,12 @@ if (!isset($_SESSION['admin'])) {
               <option value="3">Deactive</option>
             </select>
           </div>
-          <div class="form-group">
+         <!-- <div class="form-group">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" id="update_popular_brand">
               <label class="custom-control-label" for="update_popular_brand">This is a popular brand</label>
             </div>
-          </div>
+          </div>-->
           <div class="form-group">
             <label for="image">Image</label>
             <input type="file" name="update_brand_image" class="form-control-file" id="update_brand_image" onchange="uploadFile1('update_brand_image')" accept="image/png, image/jpeg,image/jpg,image/gif">

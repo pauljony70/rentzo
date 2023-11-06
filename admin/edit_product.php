@@ -21,7 +21,8 @@ $prod_unique_id = trim($_GET['id']);
 
 $stmt15 = $conn->prepare("SELECT status, prod_name,prod_desc,prod_fulldetail,prod_img_url,featured_img, attr_set_id,brand_id,web_url,
    		product_sku,product_visibility,product_manuf_country,product_hsn_code,product_video_url,return_policy_id ,meta_title,meta_key,meta_value,is_heavy ,
-		prod_name_ar,prod_desc_ar,prod_fulldetail_ar,shipping,prod_weight,pm.prod_meta_ar,pm.prod_keyword_ar,pm.prod_meta_desc_ar
+		prod_name_ar,prod_desc_ar,prod_fulldetail_ar,shipping,prod_weight,pm.prod_meta_ar,pm.prod_keyword_ar,pm.prod_meta_desc_ar,
+		usage_info,type,day1_price,day3_price,day5_price,day7_price,city
    		FROM product_details pd LEFT JOIN product_meta pm ON pd.product_unique_id = pm.prod_id WHERE pd.product_unique_id='" . $prod_unique_id . "'	");
 
 $stmt15->execute();
@@ -49,7 +50,8 @@ $data = $stmt15->bind_result(
    $prod_desc_ar,
    $prod_fulldetail_ar,
    $shipping,
-   $prod_weight,$prod_meta_ar,$prod_keyword_ar,$prod_meta_desc_ar
+   $prod_weight,$prod_meta_ar,$prod_keyword_ar,$prod_meta_desc_ar,
+   $usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city
 );
 
 while ($stmt15->fetch()) {
@@ -341,12 +343,12 @@ include("header.php");
                                     <input type="text" class="form-control" id="prod_name" name="prod_name" value="<?php echo $prod_name; ?>" placeholder="Name" required>
                                  </div>
                               </div>
-                              <div class="form-group row align-items-center">
+                            <!--  <div class="form-group row align-items-center">
                                  <label for="focusedinput" class="col-sm-2 control-label m-0">Product Arabic Name <span class="text-danger">&#42;&#42;</span></label>
                                  <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" value="<?php echo $prod_name_ar; ?>" placeholder="Name" required>
+                                    <input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" value="<?php // echo $prod_name_ar; ?>" placeholder="Name" required>
                                  </div>
-                              </div>
+                              </div>-->
                               <div class="form-group row align-items-center">
                                  <label for="focusedinput" class="col-sm-2 control-label m-0">SKU</label>
                                  <div class="col-sm-8">
@@ -360,29 +362,74 @@ include("header.php");
                                  </div>
                               </div>
                               <div class="form-group row align-items-center">
-                                 <label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (ENG) <span class="text-danger ml-2">&#42;&#42;</span></label>
+                                 <label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details <span class="text-danger ml-2">&#42;&#42;</span></label>
                                  <div class="col-sm-8">
                                     <textarea rows="6" cols="65" id="prod_short" name="prod_short" placeholder="Short description 300 letter" required maxlength="50"><?php echo $prod_desc; ?></textarea>
                                  </div>
                               </div>
                               <div class="form-group row align-items-center">
-                                 <label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (ENG) <span class="text-danger ml-2">&#42;&#42;</span></label>
+                                 <label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details <span class="text-danger ml-2">&#42;&#42;</span></label>
                                  <div class="col-sm-8">
                                     <textarea rows="6" cols="65" id="editor" name="prod_details" required placeholder="Miximum 1000 letters"><?php echo $prod_fulldetail; ?></textarea>
                                  </div>
                               </div>
-                              <div class="form-group row align-items-center">
+							  
+							  <div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+								<div class="col-sm-8">
+									<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" required placeholder="Miximum 1000 letters"><?php echo $usage_info; ?></textarea>
+								</div>
+							</div>
+							
+							  
+                              <!--<div class="form-group row align-items-center">
                                  <label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (Arabic) <span class="text-danger ml-2">&#42;&#42;</span></label>
                                  <div class="col-sm-8">
-                                    <textarea rows="6" cols="65" id="prod_short_ar" name="prod_short_ar" placeholder="Short description 300 letter" required maxlength="50"><?php echo $prod_desc_ar; ?></textarea>
+                                    <textarea rows="6" cols="65" id="prod_short_ar" name="prod_short_ar" placeholder="Short description 300 letter" required maxlength="50"><?php // echo $prod_desc_ar; ?></textarea>
                                  </div>
                               </div>
                               <div class="form-group row align-items-center">
                                  <label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (Arabic) <span class="text-danger ml-2">&#42;&#42;</span></label>
                                  <div class="col-sm-8">
-                                    <textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" required placeholder="Miximum 1000 letters"><?php echo $prod_fulldetail_ar; ?></textarea>
+                                    <textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" required placeholder="Miximum 1000 letters"><?php // echo $prod_fulldetail_ar; ?></textarea>
                                  </div>
-                              </div>
+                              </div>-->
+							  
+							  <div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
+								<div class="col-sm-8">
+									<select class="form-control" id="type" name="type">
+										<option>Select Type</option>
+										<option <?php if($type == 1) { echo 'selected'; } ?> value="1">Sell</option>
+										<option <?php if($type == 2) { echo 'selected'; } ?> value="2">Rent</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day1_price" name="day1_price" maxlength="7" value="<?php echo $day1_price; ?>" placeholder="1/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">3/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day3_price" name="day3_price" maxlength="7" value="<?php echo $day3_price; ?>" placeholder="3/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">5/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day5_price" name="day5_price" maxlength="7" value="<?php echo $day5_price; ?>" placeholder="5/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" value="<?php echo $day7_price; ?>" placeholder="7/Day Price ex. 214">
+								</div>
+							</div>
+							  
                               <div id="product_info"></div>
                               <div class="form-group row align-items-center">
                                  <label class="col-sm-2 control-label m-0">HSN Code</label>
@@ -616,7 +663,7 @@ include("header.php");
                                     <textarea class="form-control" rows="7" id="prod_meta_desc" name="prod_meta_desc" placeholder="150 letters"><?php echo $meta_value; ?></textarea>
                                  </div>
                               </div>
-							  <div class="form-group row align-items-center">
+							 <!-- <div class="form-group row align-items-center">
 								 <label for="focusedinput" class="col-sm-2 control-label">Arabic Meta Title</label>
 								 <div class="col-sm-8">
 									<input type="text" class="form-control" id="prod_meta_ar" name="prod_meta_ar" value="<?php echo $prod_meta_ar; ?>"  placeholder="60 Letters">
@@ -633,7 +680,7 @@ include("header.php");
 								 <div class="col-sm-8">
 									<textarea  class="form-control" rows="7" id="prod_meta_desc_ar" name="prod_meta_desc_ar" placeholder="150 letters"><?php echo $prod_meta_desc_ar; ?></textarea>
 								 </div>
-							  </div>
+							  </div>-->
                               </br></br>
                               <div class="col-sm-offset-2">
                                  <button type="submit" class="btn btn-dark waves-effect waves-light" href="javascript:void(0)" id="editProduct_btn">Update</button>

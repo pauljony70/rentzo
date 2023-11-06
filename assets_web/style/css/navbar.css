@@ -96,7 +96,7 @@
     gap: 10px;
 }
 
-.hamberger-icon.btn:active {
+.hamburger-icon.btn:active {
     border-color: transparent !important;
 }
 
@@ -327,15 +327,6 @@
     font-weight: 500;
 }
 
-.total-review-count {
-    color: #333;
-    -webkit-font-smoothing: antialiased;
-}
-
-.rating-details {
-    font-size: 12px;
-}
-
 .fa-solid.fa-star,
 .fa-regular.fa-star,
 .fa-solid.fa-star-half-stroke {
@@ -480,7 +471,7 @@
     width: 50%;
 }
 
-@media(min-width:325px) and (max-width: 992px) {
+@media(min-width:380px) and (max-width: 992px) {
     .search-input-group {
         width: 264px;
     }
@@ -513,7 +504,7 @@
     }
 }
 
-@media(max-width:325px) {
+@media(max-width:380px) {
     .search-input-group {
         width: 100%;
     }

@@ -73,22 +73,18 @@ $(function () {
 /* Initialize Swiper */
 var swiper = new Swiper(".product-details-swiper-sm", {
 	spaceBetween: 10,
-	slidesPerView: 5,
+	slidesPerView: 4,
 	freeMode: true,
 	watchSlidesProgress: true,
 });
 
 var swiper2 = new Swiper(".product-details-swiper", {
-	loop: true,
 	spaceBetween: 10,
-	navigation: {
-		nextEl: ".swiper-button-next",
-		prevEl: ".swiper-button-prev",
-	},
 	pagination: {
 		el: ".swiper-pagination",
 		clickable: true,
 	},
+	loop: true,
 	autoplay: {
 		delay: 2500,
 		disableOnInteraction: true,
@@ -98,7 +94,7 @@ var swiper2 = new Swiper(".product-details-swiper", {
 	},
 	breakpoints: {
 		768: {
-			autoplay: false,
+			// autoplay: false,
 		},
 	},
 });

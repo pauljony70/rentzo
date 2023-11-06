@@ -22,7 +22,7 @@ if (!isset($_SESSION['admin'])) {
 } else {
 	if ($code == $_SESSION['_token']) {
 		$enableproduct = trim(strip_tags($_POST['enableproduct']));
-		$affiliate_commission = trim(strip_tags($_POST['affiliate_commission'])) === '' ? 0 : trim(strip_tags($_POST['affiliate_commission']));
+		$affiliate_commission = 0.00;
 		$selectattrset = trim(strip_tags($_POST['selectattrset']));
 		$category = $_POST['category'];
 		$prod_name = trim(strip_tags($_POST['prod_name']));
@@ -30,6 +30,13 @@ if (!isset($_SESSION['admin'])) {
 		$prod_url = trim(strip_tags($_POST['prod_url']));
 		$prod_short = trim(strip_tags($_POST['prod_short']));
 		$prod_details = trim($_POST['prod_details']);
+		
+		$usage_info = trim($_POST['usage_info']);
+		$type = trim($_POST['type']);
+		$day1_price = trim($_POST['day1_price']);
+		$day3_price = trim($_POST['day3_price']);
+		$day5_price = trim($_POST['day5_price']);
+		$day7_price = trim($_POST['day7_price']);
 
 		$is_usd_price = isset($_POST['is_usd_price']) ? 1 : 0;
 		$wholesale_product = isset($_POST['wholesale_product']) ? 1 : 0;
@@ -60,6 +67,8 @@ if (!isset($_SESSION['admin'])) {
 		$prod_name_ar = trim(strip_tags($_POST['prod_name_ar']));
 		$prod_short_ar = trim(strip_tags($_POST['prod_short_ar']));
 		$prod_details_ar = trim(strip_tags($_POST['prod_details_ar']));
+		
+	
 
 		$product_info_set_id_arr = [];
 		$product_info_set_val_id_arr = [];
@@ -88,6 +97,10 @@ if (!isset($_SESSION['admin'])) {
 		if (array_key_exists('selectupsell', $_POST)) {
 			$selectupsell = implode(',', $_POST['selectupsell']);
 		}
+		$selectcity = '';
+		if (array_key_exists('selectcity', $_POST)) {
+			$selectcity = implode(',', $_POST['selectcity']);
+		}
 		$is_heavy = 0;
 
 
@@ -99,8 +112,8 @@ if (!isset($_SESSION['admin'])) {
 		$prod_url			=   addslashes($prod_url);
 		$prod_short			=   addslashes($prod_short);
 		$prod_details		=   addslashes($prod_details);
-		$is_usd_price		=   addslashes($is_usd_price);
-		$wholesale_product	=   addslashes($wholesale_product);
+		$is_usd_price		=   0;
+		$wholesale_product	=   0;
 		$prod_mrp			=   addslashes($prod_mrp);
 		$prod_price			=   addslashes($prod_price);
 		$seller_price		=   addslashes($seller_price);
@@ -124,12 +137,20 @@ if (!isset($_SESSION['admin'])) {
 		$prod_meta			=   addslashes($prod_meta);
 		$prod_keyword		=   addslashes($prod_keyword);
 		$prod_meta_desc		=   addslashes($prod_meta_desc);
-		$prod_meta_ar		=   addslashes($prod_meta_ar);
-		$prod_keyword_ar		=   addslashes($prod_keyword_ar);
-		$prod_meta_desc_ar		=   addslashes($prod_meta_desc_ar);
-		$prod_name_ar		=   addslashes($prod_name_ar);
-		$prod_short_ar		=   addslashes($prod_short_ar);
-		$prod_details_ar	=   addslashes($prod_details_ar);
+		$prod_meta_ar		=  '';
+		$prod_keyword_ar		=   '';
+		$prod_meta_desc_ar		=   '';
+		$prod_name_ar		=   '';
+		$prod_short_ar		=   '';
+		$prod_details_ar	=   '';
+		
+		
+		$usage_info	=   addslashes($usage_info);
+		$type	=   addslashes($type);
+		$day1_price	=   addslashes($day1_price);
+		$day3_price	=   addslashes($day3_price);
+		$day5_price	=   addslashes($day5_price);
+		$day7_price	=   addslashes($day7_price);
 
 		$price_type = '';
 
@@ -144,6 +165,7 @@ if (!isset($_SESSION['admin'])) {
 		$product_unique_code = $name_text . $random_string;
 
 		if (isset($prod_name)  && isset($category)) {
+			
 
 			// code for check product exist - START
 			$stmt_check = $conn->prepare("SELECT web_url,product_sku FROM product_details WHERE (LOWER(web_url) ='" . strtolower($prod_url) . "' OR LOWER(product_sku) ='" . strtolower($prod_sku) . "'  )
@@ -205,14 +227,15 @@ if (!isset($_SESSION['admin'])) {
 						$prod_type = '2';
 					}
 				}
+				
 
 				$stmt11 = $conn->prepare("INSERT INTO `product_details`(`status`, `prod_name`, `prod_desc`, `prod_fulldetail`,
 							`prod_img_url`, `attr_set_id`, `brand_id`, `prod_type`, `price_type`, `web_url`, `product_sku`, `product_visibility`, `product_manuf_country`, `product_hsn_code`, `product_video_url`, `return_policy_id`,`product_unique_id`,`featured_img`,created_at,created_by,is_heavy,
-							prod_name_ar,prod_desc_ar,prod_fulldetail_ar,shipping,prod_weight,product_unique_code) 
-							VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							prod_name_ar,prod_desc_ar,prod_fulldetail_ar,shipping,prod_weight,product_unique_code,usage_info,type,day1_price,day3_price,day5_price,day7_price,city) 
+							VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				$stmt11->bind_param(
-					"issssiiiisssississssissssss",
+					"issssiiiisssississssisssssssssssss",
 					$enableproduct,
 					$prod_name,
 					$prod_short,
@@ -239,15 +262,25 @@ if (!isset($_SESSION['admin'])) {
 					$prod_details_ar,
 					$shipping,
 					$prod_weight,
-					$product_unique_code
+					$product_unique_code,
+					$usage_info,
+					$type,
+					$day1_price,
+					$day3_price,
+					$day5_price,
+					$day7_price,
+					$selectcity
 				);
 
 				$stmt11->execute();
 
 				$stmt11->store_result();
-
+				
+				
 				$rows = $stmt11->affected_rows;
-				// code for add product main - START
+				
+				//print_r($this->db->last_query());
+			
 
 				if ($rows > 0) {
 					$prod_id = $product_unique_id;
@@ -281,7 +314,7 @@ if (!isset($_SESSION['admin'])) {
 					$vendor_prod_sql = $conn->prepare("INSERT INTO `vendor_product`( `product_id`, `vendor_id`, `is_usd_price`, `wholesale_product`, `affiliate_commission`, `product_mrp`, `product_sale_price`, `product_tax_class`, `product_stock`, `stock_status`, `product_purchase_limit`, `product_remark`, `product_related_prod`, `product_upsell_prod`,`enable_status`,`created_at`,`seller_price`) VALUES ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 					$vendor_prod_sql->bind_param(
-						"ssiidsssisissssss",
+						"sssssssssssssssss",
 						$prod_id,
 						$selectseller,
 						$is_usd_price,
@@ -304,7 +337,7 @@ if (!isset($_SESSION['admin'])) {
 					$vendor_prod_sql->execute();
 					$vendor_prod_sql->store_result();
 
-					$vendor_prod_row = $vendor_prod_sql->affected_rows;
+					echo $vendor_prod_row = $vendor_prod_sql->affected_rows;
 					$vendor_prod_id = $vendor_prod_sql->insert_id;
 					// code for add product for VENDOR - END
 

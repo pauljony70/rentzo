@@ -64,7 +64,53 @@ $(document).ready(function () {
 
     });
 
-    $('#selectrelatedprod').multiselect({
+    $('#selectcity').multiselect({
+        columns: 3,
+        search: true,
+        selectAll: false,
+        texts: {
+            placeholder: 'Select city (Max 10)',
+            search: 'Search city'
+        },
+        onOptionClick: function (element, option) {
+            var maxSelect = 10;
+            if ($(element).val()) {
+                // too many selected, deselect this option
+                if ($(element).val().length > maxSelect) {
+                    if ($(option).is(':checked')) {
+                        var thisVals = $(element).val();
+
+                        thisVals.splice(
+                            thisVals.indexOf($(option).val()), 1
+                        );
+
+                        $(element).val(thisVals);
+
+                        $(option).prop('checked', false).closest('li')
+                            .toggleClass('selected');
+                    }
+                }
+                // max select reached, disable non-checked checkboxes
+                else if ($(element).val().length == maxSelect) {
+                    $(element).next('.ms-options-wrap')
+                        .find('li:not(.selected)').addClass('disabled')
+                        .find('input[type="checkbox"]')
+                        .attr('disabled', 'disabled');
+                }
+                // max select not reached, make sure any disabled
+                // checkboxes are available
+                else {
+                    $(element).next('.ms-options-wrap')
+                        .find('li.disabled').removeClass('disabled')
+                        .find('input[type="checkbox"]')
+                        .removeAttr('disabled');
+                }
+            }
+        }
+
+    });
+	
+$('#selectrelatedprod').multiselect({
         columns: 3,
         search: true,
         selectAll: false,
@@ -517,6 +563,36 @@ function get_seller_related_product() {
     var selectseller = $("#selectseller").val();
     getralatedprod(selectseller);
     getupsellprod(selectseller);
+    getallcity();
+} 
+
+function getallcity() {
+    $.ajax({
+        method: 'POST',
+        url: 'get_all_city.php',
+        data: {
+            code: code_ajax
+        },
+        success: function (response) {
+            var data = $.parseJSON(response);
+            $('#selectcity').empty();
+            if (data["status"] == "1") {
+
+                $(data["data"]).each(function () {
+                    //	successmsg(this.name);
+                    var o = new Option(this.name, this.id);
+                    $("#selectcity").append(o);
+                });
+
+                $("#selectcity").multiselect('reload');
+                // $("#selectrelatedprod").multiselect('rebuild');
+
+            } else {
+                //successmsg(data["msg"]);
+            }
+        }
+    });
+
 }
 
 function getralatedprod(selectseller) {
@@ -950,10 +1026,6 @@ $(document).ready(function () {
             successmsg("Please enter Product Name.");
             prod_namevalue.focus();
             valid = 0;
-        } else if (!prod_name_ar) {
-            successmsg("Please enter Product Arabic Name.");
-            prod_name_ar.focus();
-            valid = 0;
         } else if (!prod_shortvalue.getContent()) {
             successmsg("Please enter Product Short details (ENG).");
             prod_shortvalue.focus();
@@ -961,14 +1033,6 @@ $(document).ready(function () {
         } else if (!prod_detailsvalue.getContent()) {
             successmsg("Please enter Product Full Details (ENG).");
             prod_detailsvalue.focus();
-            valid = 0;
-        } else if (!prod_short_ar.getContent()) {
-            successmsg("Please enter Product Short details (Arabic).");
-            prod_short_ar.focus();
-            valid = 0;
-        } else if (!editor_ar.getContent()) {
-            successmsg("Please enter Product Full Details (Arabic).");
-            editor_ar.focus();
             valid = 0;
         } else if (!prod_mrpvalue.val()) {
             successmsg("Please enter MRP");
@@ -986,18 +1050,6 @@ $(document).ready(function () {
             successmsg("Please select brand");
             prod_brand.focus();
             valid = 0;
-        } else if ($('#is_affiliate_product').is(':checked') && !$('#affiliate_commission').val()) {
-            successmsg("Please enter affiliate commission (%)");
-            valid = 0;
-            $('#affiliate_commission').focus();
-        } else if (prod_seller.val() == "") {
-            successmsg("Please Select Seller");
-            prod_seller.focus();
-            valid = 0;
-        } else if (finals == 1) {
-            successmsg("Please enter Attribute Sale Price");
-            valid = 0;
-
         } else if (featured_img.val() == "") {
             successmsg("Please Select Featured Image");
             featured_img.focus();

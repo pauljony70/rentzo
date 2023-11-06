@@ -100,7 +100,7 @@ function getCategory(parentvalue) {
 						var img3 = '<img src="' + this.app_banner + '" style="height: 72px;">';
 					} else { var img3 = '-'; }
 
-					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + this.cat_name_ar + '</td><td> ' + btnactive + '</td>';
+					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + btnactive + '</td>';
 					html += '<td> <div class="dropdown"> <button class="btn btn-dark waves-effect waves-light dropdown-toggle w-100" type="button" data-toggle="dropdown">Select<span class="caret"></span></button> <div class="dropdown-menu dropdown-menu-right">';
 					if (this.parent_count > 0) {
 						html += '<a id="sub_cat_btn" class="dropdown-item" href="javascript: void(0);" onclick="getCategoryclick(' + this.id + ');"><i class="fa fa-eye"></i> View sub category</a>';
@@ -169,7 +169,7 @@ function getCategoryclick(parentvalue) {
 						var img3 = '<img src="' + this.app_banner + '" style="height: 72px;">';
 					} else { var img3 = '-'; }
 
-					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + this.cat_name_ar + '</td><td> ' + btnactive + '</td>';
+					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + btnactive + '</td>';
 					html += '<td> <div class="dropdown"> <button class="btn btn-dark waves-effect waves-light dropdown-toggle w-100" type="button" data-toggle="dropdown">Select<span class="caret"></span></button> <div class="dropdown-menu dropdown-menu-right">';
 
 					if (this.parent_count > 0) {
@@ -243,7 +243,7 @@ function getCategory_bradcumb(parentvalue) {
 						var img3 = '<img src="' + this.app_banner + '" style="height: 72px;">';
 					} else { var img3 = '-'; }
 
-					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + this.cat_name_ar + '</td><td> ' + btnactive + '</td>';
+					var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td>' + this.orderno + '</td><td>' + img1 + '</td><td>' + img2 + '</td><td>' + img3 + '</td><td> ' + this.name + '</td><td> ' + btnactive + '</td>';
 					html += '<td> <div class="dropdown"> <button class="btn btn-dark waves-effect waves-light dropdown-toggle w-100" type="button" data-toggle="dropdown">Select<span class="caret"></span></button> <div class="dropdown-menu dropdown-menu-right">';
 
 					if (this.parent_count > 0) {
@@ -277,9 +277,9 @@ $(document).ready(function () {
 
 		var parent_cat = $(".check_category_limit:radio:checked").val();
 		var namevalue = $('#name').val();
-		var name_ar = $('#name_ar').val();
+		var name_ar = '';
 		var sub_title = $('#sub_title').val();
-		var sub_title_ar = $('#sub_title_ar').val();
+		var sub_title_ar = '';
 		var cat_image = $('#cat_image').val();
 		//var commission_fees = $('#commission_fees').val();
 		//var web_banner = $('#web_banner').val();
@@ -303,13 +303,9 @@ $(document).ready(function () {
 
 		} else if (!namevalue) {
 			successmsg("Please enter Category Name (ENG)");
-		} else if (!name_ar) {
-			successmsg("Please enter Category Name (Arabic)");
 		} else if (!sub_title) {
 			successmsg("Please enter Sub Title (ENG)");
-		} else if (!sub_title_ar) {
-			successmsg("Please enter Sub Title (Arabic)");
-		}
+		} 
 		/*else if(!commission_fees){
 				successmsg("Please enter Commission fees");
 			}else if(isNaN(commission_fees)){
@@ -366,9 +362,9 @@ $(document).ready(function () {
 
 		var cat_order = $("#cat_order").val();
 		var namevalue = $('#update_name').val();
-		var update_name_ar = $('#update_name_ar').val();
+		var update_name_ar = '';
 		var update_sub_title = $('#update_sub_title').val();
-		var update_sub_title_ar = $('#update_sub_title_ar').val();
+		var update_sub_title_ar = '';
 		var cat_image = $('#cat_image_update').val();
 		var statuss = $('#statuss').val();
 		//var update_commission_fees = $('#update_commission_fees').val();

@@ -26,13 +26,13 @@ if (!isset($_SESSION['admin'])) {
 		$selectattrset = trim(strip_tags($_POST['selectattrset']));
 		$category = $_POST['category'];
 		$prod_name = trim(strip_tags($_POST['prod_name']));
-		$prod_name_ar = trim(strip_tags($_POST['prod_name_ar']));
+		$prod_name_ar = '';
 		$prod_sku = trim(strip_tags($_POST['prod_sku']));
 		$prod_url = trim(strip_tags($_POST['prod_url']));
 		$prod_short = trim(strip_tags($_POST['prod_short']));
-		$prod_short_ar = trim(strip_tags($_POST['prod_short_ar']));
+		$prod_short_ar = '';
 		$prod_details = trim($_POST['prod_details']);
-		$prod_details_ar = trim($_POST['prod_details_ar']);
+		$prod_details_ar = '';
 		$selectvisibility = trim(strip_tags($_POST['selectvisibility']));
 		$selectcountry = trim(strip_tags($_POST['selectcountry']));
 		$prod_hsn = trim(strip_tags($_POST['prod_hsn']));
@@ -43,6 +43,21 @@ if (!isset($_SESSION['admin'])) {
 		$prod_meta = trim(strip_tags($_POST['prod_meta']));
 		$prod_keyword = trim(strip_tags($_POST['prod_keyword']));
 		$prod_meta_desc = trim(strip_tags($_POST['prod_meta_desc']));
+
+
+		$usage_info = trim($_POST['usage_info']);
+		$type = trim($_POST['type']);
+		$day1_price = trim($_POST['day1_price']);
+		$day3_price = trim($_POST['day3_price']);
+		$day5_price = trim($_POST['day5_price']);
+		$day7_price = trim($_POST['day7_price']);
+		
+		$usage_info	=   addslashes($usage_info);
+		$type	=   addslashes($type);
+		$day1_price	=   addslashes($day1_price);
+		$day3_price	=   addslashes($day3_price);
+		$day5_price	=   addslashes($day5_price);
+		$day7_price	=   addslashes($day7_price);
 
 
 
@@ -136,11 +151,11 @@ if (!isset($_SESSION['admin'])) {
 				}
 				$prod_id = $product_id;
 
-				$stmt11 = $conn->prepare("UPDATE `product_details` SET `prod_name`= ?, `prod_desc` =?, `prod_fulldetail` = ?, `prod_name_ar`= ?, `prod_desc_ar` =?, `prod_fulldetail_ar` = ?, `attr_set_id` =?, `brand_id` =?, `web_url` =?,  `product_sku` =?, `product_visibility` =?, `product_manuf_country` =?, `product_hsn_code` =?, `product_video_url` =?, `return_policy_id` =? 
+				$stmt11 = $conn->prepare("UPDATE `product_details` SET `prod_name`= ?, `prod_desc` =?, `prod_fulldetail` = ?, `prod_name_ar`= ?, `prod_desc_ar` =?, `prod_fulldetail_ar` = ?, `attr_set_id` =?, `brand_id` =?, `web_url` =?,  `product_sku` =?, `product_visibility` =?, `product_manuf_country` =?, `product_hsn_code` =?, `product_video_url` =?, `return_policy_id` =? ,`usage_info` = ?,`type` = ?,`day1_price`=?,`day3_price`=?,`day5_price`=?,`day7_price`=?
 							 WHERE product_unique_id ='" . $prod_id . "'");
 
 				$stmt11->bind_param(
-					"ssssssiisssissi",
+					"ssssssiisssississssss",
 					$prod_name,
 					$prod_short,
 					$prod_details,
@@ -155,7 +170,13 @@ if (!isset($_SESSION['admin'])) {
 					$selectcountry,
 					$prod_hsn,
 					$prod_youtubeid,
-					$return_policy
+					$return_policy,
+					$usage_info,
+					$type,
+					$day1_price,
+					$day3_price,
+					$day5_price,
+					$day7_price
 				);
 
 				$stmt11->execute();

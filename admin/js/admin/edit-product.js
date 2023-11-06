@@ -98,9 +98,7 @@ $(document).ready(function () {
 		var featured_img = $('#featured_img').val();
 		var selectattrset = $('#selectattrset').val();
 		var prod_name_ar = $('#prod_name_ar').val();
-		var prod_short_ar = tinyMCE.get('prod_short_ar').getContent();
-		var editor_ar = tinyMCE.get('editor_ar').getContent();
-
+		
 		var valid = 1;
 
 		if (!selectattrset) {
@@ -112,22 +110,12 @@ $(document).ready(function () {
 		} else if (!prod_namevalue) {
 			successmsg("Please enter Product Name.");
 			valid = 0;
-		} else if (!prod_name_ar) {
-			successmsg("Please enter Product Arabic Name.");
-			valid = 0;
 		} else if (!prod_shortvalue) {
 			successmsg("Please enter Product Short details (ENG).");
-			valid = 0;
-		} else if (!prod_short_ar) {
-			successmsg("Please enter Product Short details (Arabic).");
 			valid = 0;
 		} else if (!prod_detailsvalue) {
 			successmsg("Please enter Product Full Details (ENG).");
 			valid = 0;
-		} else if (!editor_ar) {
-			successmsg("Please enter Product Full Details (Arabic).");
-			valid = 0;
-
 		} else if (prod_brand == "") {
 			successmsg("Please Select Brand");
 			valid = 0;

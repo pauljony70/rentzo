@@ -401,12 +401,12 @@ if (!isset($_SESSION['admin'])) {
 												<input type="text" class="form-control" id="prod_name" name="prod_name" placeholder="Name" required>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Arabic Name <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" placeholder="Name" required>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">SKU</label>
 											<div class="col-sm-8">
@@ -420,18 +420,25 @@ if (!isset($_SESSION['admin'])) {
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea class="form-control" rows="6" cols="65" id="prod_short" name="prod_short" placeholder="Short description 300 letter" required maxlength="50"></textarea>
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea class="form-control" rows="6" cols="65" id="editor" name="prod_details" required placeholder="Miximum 1000 letters"></textarea>
 											</div>
 										</div>
+										
 										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+											<div class="col-sm-8">
+												<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" required placeholder="Miximum 1000 letters"></textarea>
+											</div>
+										</div>
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (Arabic) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea rows="6" cols="65" id="prod_short_ar" name="prod_short_ar" placeholder="Short description 300 letter" required maxlength="50"></textarea>
@@ -442,7 +449,7 @@ if (!isset($_SESSION['admin'])) {
 											<div class="col-sm-8">
 												<textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" required placeholder="Miximum 1000 letters"></textarea>
 											</div>
-										</div>
+										</div>-->
 										<div id="product_info"></div>
 										<div class="form-group row align-items-center">
 											<label class="col-sm-2 control-label m-0">TAX Class </label>
@@ -452,7 +459,7 @@ if (!isset($_SESSION['admin'])) {
 												</select>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 											<div class="col-sm-8">
 												<div class="form-check">
@@ -472,6 +479,40 @@ if (!isset($_SESSION['admin'])) {
 														The price of this product will be shown in USD
 													</label>
 												</div>
+											</div>
+										</div>-->
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
+											<div class="col-sm-8">
+												<select class="form-control" id="type" name="type">
+													<option>Select Type</option>
+													<option value="1">Sell</option>
+													<option value="2">Rent</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" id="day1_price" name="day1_price" maxlength="7" placeholder="1/Day Price ex. 214">
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">3/Day Price (<?= $currency ?>)</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" id="day3_price" name="day3_price" maxlength="7" placeholder="3/Day Price ex. 214">
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">5/Day Price (<?= $currency ?>)</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" id="day5_price" name="day5_price" maxlength="7" placeholder="5/Day Price ex. 214">
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" placeholder="7/Day Price ex. 214">
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
@@ -610,7 +651,7 @@ if (!isset($_SESSION['admin'])) {
 												</div>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 											<div class="col-sm-8">
 												<div class="form-check">
@@ -620,7 +661,7 @@ if (!isset($_SESSION['admin'])) {
 													</label>
 												</div>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group row align-items-center d-none">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Affiliate Commission (%) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
@@ -779,6 +820,14 @@ if (!isset($_SESSION['admin'])) {
 										</div>
 
 										<div class="form-group row align-items-center">
+											<label class="col-sm-2 control-label m-0">City</label>
+											<div id="example2" class="col-sm-8">
+												<select class="form-control related_prod" id="selectcity" name="selectcity[]" multiple>
+												</select>
+											</div>
+										</div>
+										
+										<div class="form-group row align-items-center">
 											<label class="col-sm-2 control-label m-0">Related Product multi select</label>
 											<div id="example2" class="col-sm-8">
 												<select class="form-control related_prod" id="selectrelatedprod" name="selectrelatedprod[]" multiple>
@@ -816,7 +865,7 @@ if (!isset($_SESSION['admin'])) {
 												<textarea class="form-control" rows="7" id="prod_meta_desc" name="prod_meta_desc" placeholder="150 letters"></textarea>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
         									<label for="focusedinput" class="col-sm-2 control-label m-0">Arabic Meta Title</label>
         									<div class="col-sm-8">
         										<input type="text" class="form-control" id="prod_meta_ar" name="prod_meta_ar" placeholder="60 Letters">
@@ -833,7 +882,7 @@ if (!isset($_SESSION['admin'])) {
         									<div class="col-sm-8">
         										<textarea  class="form-control" rows="7" id="prod_meta_desc_ar" name="prod_meta_desc_ar"  placeholder="150 letters"></textarea>
         									</div>
-        								</div>
+        								</div>-->
 										</br></br>
 										<div class="col-sm-offset-2">
 											<button type="submit" class="btn btn-dark waves-effect waves-light" href="javascript:void(0)" id="addProduct_btn">Save</button>
@@ -923,10 +972,7 @@ if (!isset($_SESSION['admin'])) {
 	var tds = document.getElementById('tds');
 	var totalBankSettlement = document.getElementById('total-bank-settlement');
 	var selecttaxclass = document.getElementById('selecttaxclass');
-	var is_usd_price = document.getElementById('is_usd_price');
-	var is_affiliate_product = document.getElementById('is_affiliate_product');
-	var affiliate_commission = document.getElementById('affiliate_commission');
-
+	
 	const toggleBtn = document.querySelector('.toggle-btn');
 	// const toggleTableBtn = document.getElementById('toggle-table');
 	const priceBreakdowns = document.querySelectorAll('.price-table-breakdown');
@@ -934,43 +980,10 @@ if (!isset($_SESSION['admin'])) {
 
 	const infoBtns = document.querySelectorAll('.info-btn');
 
-	const convertPriceOMRToUSD = async (omr_price) => {
-		// let res = await fetch('https://openexchangerates.org/api/latest.json?app_id=1ef2531492d0493cba70ddbed0b3b0a0&base=USD')
-		// 	.catch(error => {
-		// 		console.log('Error fetching conversion rate:', error);
-		// 	});
-		// let json_res = await res.json();
-		// const conversionRate = 1 / json_res.rates.OMR; // USD conversion rate against OMR
-		const conversionRate = <?= $Common_Function->get_system_settings($conn, 'coversion_rate') ?>;
-		return (conversionRate * omr_price).toFixed(2);
-	}
-
-	is_affiliate_product.addEventListener('change', () => {
-		if (is_affiliate_product.checked) {
-			affiliate_commission.parentElement.parentElement.classList.remove('d-none');
-		} else {
-			affiliate_commission.parentElement.parentElement.classList.add('d-none');
-		}
-	})
-
-	is_usd_price.addEventListener('change', () => {
-		if (is_usd_price.checked) {
-			prod_mrp_usd.parentElement.parentElement.classList.remove('d-none');
-			seller_price_usd.parentElement.parentElement.classList.remove('d-none');
-			prod_price_usd.parentElement.parentElement.classList.remove('d-none');
-		} else {
-			prod_mrp_usd.parentElement.parentElement.classList.add('d-none');
-			seller_price_usd.parentElement.parentElement.classList.add('d-none');
-			prod_price_usd.parentElement.parentElement.classList.add('d-none');
-		}
-	})
-
-	prod_mrp.addEventListener('input', async () => {
-		prod_mrp_usd.value = await convertPriceOMRToUSD(prod_mrp.value);
-	});
-
+	
+	
 	seller_price.addEventListener('input', async () => {
-		seller_price_usd.value = await convertPriceOMRToUSD(seller_price.value);
+		seller_price_usd.value = prod_mrp.value;
 		calculatePrice();
 	});
 
@@ -990,8 +1003,8 @@ if (!isset($_SESSION['admin'])) {
 					seller_price: seller_price.value
 				},
 			}).done(async function(response) {
-				$('#prod_price').val(response);
-				prod_price_usd.value = await convertPriceOMRToUSD(response);
+				$('#prod_price').val(parseFloat(response.replace(/,/g, '')));
+				prod_price_usd.value = response;
 				var taxValue = document.getElementById('selecttaxclass').options[document.getElementById('selecttaxclass').selectedIndex].text.match(/\d+/)[0];
 
 				if (seller_price.value === '') {
@@ -999,7 +1012,7 @@ if (!isset($_SESSION['admin'])) {
 					commision_fee.innerText = "";
 				} else {
 					marurang_price.innerText = String(seller_price.value) + " <?= $currency ?>";
-					var commision_fee_value = parseFloat(response) - parseFloat(seller_price.value);
+					var commision_fee_value = parseFloat(response.replace(/,/g, '')) - parseFloat(seller_price.value);
 					var taxableValue = 0;
 					var gstValue = commision_fee_value * 0.5;
 					var tcsAndTcsVal = parseFloat(taxableValue) * 0.01;

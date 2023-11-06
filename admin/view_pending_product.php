@@ -21,7 +21,7 @@ $prod_unique_id = trim($_GET['id']);
 
 $stmt15 = $conn->prepare("SELECT status, prod_name,prod_type,prod_desc,prod_fulldetail,prod_img_url,featured_img, attr_set_id,brand_id,web_url,
    		product_sku,product_visibility,product_manuf_country,product_hsn_code,product_video_url,return_policy_id ,meta_title,meta_key,meta_value ,is_heavy,
-		prod_name_ar,prod_desc_ar ,prod_fulldetail_ar 
+		prod_name_ar,prod_desc_ar ,prod_fulldetail_ar,usage_info,type,day1_price,day3_price,day5_price,day7_price,city
    		FROM product_details pd LEFT JOIN product_meta pm ON pd.product_unique_id = pm.prod_id WHERE pd.product_unique_id='" . $prod_unique_id . "'	");
 
 $stmt15->execute();
@@ -48,7 +48,8 @@ $data = $stmt15->bind_result(
 	$is_heavy,
 	$prod_name_ar,
 	$prod_desc_ar,
-	$prod_fulldetail_ar
+	$prod_fulldetail_ar,
+	$usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city
 );
 
 while ($stmt15->fetch()) {
@@ -223,17 +224,17 @@ include("header.php");
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Name (ENG) <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Name <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<input type="text" class="form-control" id="prod_name" name="prod_name" value="<?php echo $prod_name; ?>" placeholder="Name" required>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Name (Arabic) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
-												<input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" value="<?php echo $prod_name_ar; ?>" placeholder="Name" required>
+												<input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" value="<?php // echo $prod_name_ar; ?>" placeholder="Name" required>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Type</label>
 											<div class="col-sm-8">
@@ -257,19 +258,28 @@ include("header.php");
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea rows="6" cols="65" id="prod_short" name="prod_short" placeholder="Short description 300 letter" required maxlength="50"><?php echo $prod_desc; ?></textarea>
 
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea rows="6" cols="65" id="editor" name="prod_details" required placeholder="Miximum 1000 letters"><?php echo $prod_fulldetail; ?></textarea>
 											</div>
 										</div>
+										
 										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+											<div class="col-sm-8">
+												<textarea rows="6" cols="65" id="editor" name="usage_info" required placeholder="Miximum 1000 letters"><?php echo $usage_info; ?></textarea>
+											</div>
+										</div>
+										
+										
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (Arabic) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
 												<textarea rows="6" cols="65" id="prod_short_ar" name="prod_short_ar" placeholder="Short description 300 letter" required maxlength="50"><?= $prod_desc_ar; ?></textarea>
@@ -278,15 +288,15 @@ include("header.php");
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (Arabic) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
-												<textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" required placeholder="Miximum 1000 letters"><?= $prod_fulldetail_ar; ?></textarea>
+												<textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" required placeholder="Miximum 1000 letters"><?=  $prod_fulldetail_ar; ?></textarea>
 											</div>
-										</div>
+										</div>-->
 										<div id="product_info"></div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 											<div class="col-sm-8">
 												<div class="form-check">
-													<input class="form-check-input" type="checkbox" value="" name="wholesale_product" id="wholesale_product" onclick="return false" <?= $wholesale_product  === 1 ? 'checked' : '' ?>>
+													<input class="form-check-input" type="checkbox" value="" name="wholesale_product" id="wholesale_product" onclick="return false" <?=  $wholesale_product  === 1 ? 'checked' : '' ?>>
 													<label class="form-check-label" for="wholesale_product">
 														This product will be available for wholesale
 													</label>
@@ -297,13 +307,49 @@ include("header.php");
 											<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 											<div class="col-sm-8">
 												<div class="form-check">
-													<input class="form-check-input" type="checkbox" value="" name="is_usd_price" id="is_usd_price" onclick="return false" <?= $is_usd_price === 1 ? 'checked' : '' ?>>
+													<input class="form-check-input" type="checkbox" value="" name="is_usd_price" id="is_usd_price" onclick="return false" <?=  $is_usd_price === 1 ? 'checked' : '' ?>>
 													<label class="form-check-label" for="is_usd_price">
 														The price of this product will be shown in USD
 													</label>
 												</div>
 											</div>
-										</div>
+										</div>-->
+										
+										 <div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
+								<div class="col-sm-8">
+									<select class="form-control" id="type" name="type">
+										<option>Select Type</option>
+										<option <?php if($type == 1) { echo 'selected'; } ?> value="1">Sell</option>
+										<option <?php if($type == 2) { echo 'selected'; } ?> value="2">Rent</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day1_price" name="day1_price" maxlength="7" value="<?php echo $day1_price; ?>" placeholder="1/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">3/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day3_price" name="day3_price" maxlength="7" value="<?php echo $day3_price; ?>" placeholder="3/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">5/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day5_price" name="day5_price" maxlength="7" value="<?php echo $day5_price; ?>" placeholder="5/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" value="<?php echo $day7_price; ?>" placeholder="7/Day Price ex. 214">
+								</div>
+							</div>
+										
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">MRP <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
@@ -336,12 +382,12 @@ include("header.php");
 												</select>
 											</div>
 										</div>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Affiliate Commission (%) <span class="text-danger">&#42;&#42;</span></label>
 											<div class="col-sm-8">
-												<input type="text" class="form-control" id="affiliate_commission" name="affiliate_commission" placeholder="Affiliate Commission" value="<?= $affiliate_commission ?>" disabled>
+												<input type="text" class="form-control" id="affiliate_commission" name="affiliate_commission" placeholder="Affiliate Commission" value="<?=  $affiliate_commission ?>" disabled>
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Quantity</label>
 											<div class="col-sm-8">
@@ -516,14 +562,14 @@ include("header.php");
 												</div>
 											</div>
 										<?php } ?>
-										<div class="form-group row align-items-center">
+										<!--<div class="form-group row align-items-center">
 											<label class="col-sm-2 control-label m-0">Heavy Product</label>
 											<div class="col-sm-8">
-												<input type="checkbox" id="is_heavy" value='1' <?php if ($is_heavy == 1) {
+												<input type="checkbox" id="is_heavy" value='1' <?php  if ($is_heavy == 1) {
 																									echo "checked";
 																								} ?> name="is_heavy">
 											</div>
-										</div>
+										</div>-->
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Remarks</label>
 											<div class="col-sm-8">

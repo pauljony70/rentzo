@@ -28,7 +28,7 @@ if (!isset($_SESSION['admin'])) {
 	header("Location: index.php");
 	// echo " dashboard redirect to index";
 } else
-if ($code == $_SESSION['_token'] && isset($name)   && !empty($update_name_ar) && !empty($brand_id)) {
+if ($code == $_SESSION['_token'] && isset($name)  && !empty($brand_id)) {
 	//code for Check Brand Exist - START
 	$stmt12 = $conn->prepare("SELECT count(brand_id) FROM brand where brand_name ='" . $name . "' AND brand_id !='" . $brand_id . "' ");
 

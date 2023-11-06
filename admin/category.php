@@ -66,8 +66,7 @@ if (!isset($_SESSION['admin'])) {
 											<th>Image</th>
 											<th>Web banner</th>
 											<th>App banner</th>
-											<th>Category(ENG)</th>
-											<th>Category(Arabic)</th>
+											<th>Category</th>
 											<th>Status</th>
 											<th>Action</th>
 										</tr>
@@ -107,19 +106,19 @@ if (!isset($_SESSION['admin'])) {
 					<label for="name">Name (ENG)</label>
 					<input type="text" class="form-control" id="name" placeholder="Category Name" required> </input>
 				</div>
-				<div class="form-group">
+				<!--<div class="form-group">
 					<label for="name">Name (Arabic)</label>
 					<input type="text" class="form-control" id="name_ar" placeholder="Category Name" required> </input>
-				</div>
+				</div>-->
 
 				<div class="form-group">
-					<label for="name">Sub Title (ENG)</label>
+					<label for="name">Sub Title</label>
 					<input type="text" class="form-control" id="sub_title" placeholder="Sub Title" required> </input>
 				</div>
-				<div class="form-group">
+				<!--<div class="form-group">
 					<label for="name">Sub Title (Arabic)</label>
 					<input type="text" class="form-control" id="sub_title_ar" placeholder="Sub Title" required> </input>
-				</div>
+				</div>-->
 
 				<div class="form-group">
 					<label for="image">Image</label>
@@ -159,22 +158,22 @@ if (!isset($_SESSION['admin'])) {
 						<input type="hidden" id="cat_id_update">
 					</div>
 					<div class="form-group">
-						<label for="name">Name (ENG)</label>
+						<label for="name">Name</label>
 						<input type="text" class="form-control" id="update_name" placeholder="Category Name" required> </input>
 					</div>
-					<div class="form-group">
+					<!--<div class="form-group">
 						<label for="name">Name (Arabic)</label>
 						<input type="text" class="form-control" id="update_name_ar" placeholder="Category Name" required> </input>
-					</div>
+					</div>-->
 
 					<div class="form-group">
 						<label for="name">Sub Title (ENG)</label>
 						<input type="text" class="form-control" id="update_sub_title" placeholder="Sub Title" required> </input>
 					</div>
-					<div class="form-group">
+					<!--<div class="form-group">
 						<label for="name">Sub Title (Arabic)</label>
 						<input type="text" class="form-control" id="update_sub_title_ar" placeholder="Sub Title" required> </input>
-					</div>
+					</div>-->
 					<div class="form-group">
 						<label for="name">Status</label>
 						<select class="form-control" id="statuss" name="status">

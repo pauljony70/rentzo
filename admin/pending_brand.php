@@ -151,7 +151,6 @@ if(!isset($_SESSION['admin'])){
                      <th>Sno</th>                                    
                      <th>Image</th>    
                      <th>Brand</th>
-					  <th>Arabic Name</th>
                      <th>Status</th>
                      <th>Action</th>
                   </tr>
@@ -167,7 +166,6 @@ if(!isset($_SESSION['admin'])){
 					<td><?php echo $i; ?> </td>
 					<td><img src="<?php echo $row['img']; ?>" style="width: 72px; height: 72px;"> </td>
 					<td><?php echo $row['name']; ?></td>
-					<td><?php echo $row['name_ar']; ?></td>
 					<td>Pending</td>
 					<td>
 						<?php echo $Common_Function->select_reject_reason($conn,$row['id']); ?>

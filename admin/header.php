@@ -247,7 +247,7 @@
                                     <div class="logo-box">
                                         <a href="" class="logo logo-light text-center">
                                             <span class="logo-large">
-                                                <img src="<?php echo MEDIAURL .json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="40">
+                                                <img src="<?php echo MEDIAURL .json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="25">
                                             </span>
                                         </a>
                                     </div>
@@ -306,7 +306,7 @@
                             </a>
                         </li>
 
-                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'category.php') !== false || strpos($_SERVER['PHP_SELF'], 'brand.php') !== false || strpos($_SERVER['PHP_SELF'], 'pages.php') !== false || strpos($_SERVER['PHP_SELF'], 'meta.php') !== false || strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false || strpos($_SERVER['PHP_SELF'], 'coupancode.php') !== false || strpos($_SERVER['PHP_SELF'], 'notification.php') !== false ? "menuitem-active" : ''; ?>">
+                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'category.php') !== false || strpos($_SERVER['PHP_SELF'], 'brand.php') !== false || strpos($_SERVER['PHP_SELF'], 'pages.php') !== false || strpos($_SERVER['PHP_SELF'], 'meta.php') !== false || strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false || strpos($_SERVER['PHP_SELF'], 'coupancode.php') !== false || strpos($_SERVER['PHP_SELF'], 'days_price.php') !== false || strpos($_SERVER['PHP_SELF'], 'notification.php') !== false ? "menuitem-active" : ''; ?>">
                             <a href="#basic" data-toggle="collapse">
                                 <i class="fa fa-gear"></i>
                                 <span> Basic </span>
@@ -327,6 +327,12 @@
                                     <?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'coupancode.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="coupancode.php"> Coupon Code</a>
+                                        </li>
+
+                                    <?php  } ?> 
+									<?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
+                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'days_price.php') !== false ? "menuitem-active" : "" ?>">
+                                            <a href="days_price.php"> Days Price</a>
                                         </li>
 
                                     <?php  } ?>
@@ -402,8 +408,8 @@
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'add_product.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="add_product.php"> Add Product</a>
                                         </li>
-                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'manage_sponsor_product.php') !== false || strpos($_SERVER['PHP_SELF'], 'add_sponser_product.php') !== false ? "menuitem-active" : "" ?>">
-                                            <a href="manage_sponsor_product.php"> Add Sponsor Product</a>
+                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'manage_events.php') !== false || strpos($_SERVER['PHP_SELF'], 'add_sponser_product.php') !== false ? "menuitem-active" : "" ?>">
+                                            <a href="manage_events.php"> Add Events</a>
                                         </li>
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'offer-products.php') !== false || strpos($_SERVER['PHP_SELF'], 'offer-products.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="offer-products.php"> Add Offer Product</a>
@@ -436,12 +442,12 @@
 
                         <?php  } ?>
 
-                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'buy-from-turkey-orders.php') !== false ? "menuitem-active" : "" ?>">
+                        <!--<li class="<?= strpos($_SERVER['PHP_SELF'], 'buy-from-turkey-orders.php') !== false ? "menuitem-active" : "" ?>">
                             <a href="buy-from-turkey-orders.php">
                                 <i class="fa fa-cube"></i>
                                 <span> Buy From Turkey Orders </span>
                             </a>
-                        </li>
+                        </li>-->
 
                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'wallet-transactions') !== false || strpos($_SERVER['PHP_SELF'], 'wallet-withdraw-requests') !== false ? "menuitem-active" : ''; ?>">
                             <a href="#wallet" data-toggle="collapse">
@@ -541,8 +547,8 @@
                                 </div>
                             </li> -->
 
-                            <li class=" <?= strpos($_SERVER['PHP_SELF'], 'homepagebanner-website.php') !== false ? "menuitem-active" : "" ?>">
-                                <a href="homepagebanner-website.php">
+                            <li class=" <?= strpos($_SERVER['PHP_SELF'], 'newhomepage_website.php') !== false ? "menuitem-active" : "" ?>">
+                                <a href="newhomepage_website.php">
                                     <i class="fa fa-laptop"></i>
                                     <span> Home Banner </span>
                                 </a>
