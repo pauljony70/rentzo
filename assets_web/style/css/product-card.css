@@ -48,16 +48,25 @@
 }
 
 @media (max-width: 767px) {
+
     .product-card .product-title,
     .product-card .rent-heading,
     .product-card .rent-price {
         font-size: 8px;
-        line-height: 10px;        
+        line-height: 10px;
     }
 
     .product-card-footer {
         font-size: 10px;
         font-weight: 500;
         line-height: 10px;
+    }
+
+    .product-card-img {
+        height: 123px;
+    }
+
+    .product-card-body {
+        height: 65px;
     }
 }

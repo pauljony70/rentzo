@@ -16,7 +16,7 @@
 <script>
   setTimeout(function() {
     $('.loaderScreen').css('display', 'none');
-  }, 1000);
+  }, 500);
 
   var csrfName = $(".txt_csrfname").attr("name"); //
   var csrfHash = $(".txt_csrfname").val(); // CSRF hash
@@ -29,28 +29,10 @@
     location.href = link;
   }
 
-  // JavaScript code to handle the dropdown
-  document.getElementById("searchButton").addEventListener("click", function(event) {
-    // Handle search button click logic here
-
-    // Prevent the click event from propagating up to the parent elements
-    event.stopPropagation();
-  });
-
-  // Handle other click events inside the navbar
-  // For example, if you have other elements with click handlers inside the navbar
-  document.querySelectorAll("body").forEach(function(item) {
-    item.addEventListener("click", function(event) {
-      // Handle click logic for nav items here
-
-      // Prevent the click event from propagating up to the parent elements
-      event.stopPropagation();
-    });
-  });
-
   $(document).on('input', '#search', function() {
+    var searchResultsContainer = $(this).parent().parent().parent().parent().find('#searchResults');
     var search = $(this).val();
-    $("#searchResults").html('');
+    searchResultsContainer.html('');
 
     $.ajax({
       method: "get",
@@ -69,12 +51,12 @@
             `<li>
               <a class="dropdown-item" href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}">
                 <div class="card search-card">
-                  <div class="d-flex">
+                  <div class="d-flex align-items-center">
                     <div class="d-flex-center search-card_image" style="background-image: url(${site_url}/media/${this.imgurl});"></div>
                     <div class="w-100">
                       <div class="card-body py-2 h-100 d-flex flex-column justify-content-evenly">
                         <div class="w-100 d-flex justify-content-between">
-                          <h6 class="card-title" style="white-space: normal;">${this.name}</h6>
+                          <h6 class="card-title line-clamp-2" style="white-space: normal;">${this.name}</h6>
                         </div>
                         <p class="card-text d-flex"><small class="text-muted">${this.price}</small></p>
                       </div>
@@ -93,12 +75,12 @@
 
         product_html += `<li><a class="dropdown-item text-primary fw-bold text-center bg-light" href="${site_url}index.php/search/s?search=${search}" style="border-radius: 5px;">See all</a></li>`;
 
-        $("#searchResults").html(product_html);
+        searchResultsContainer.html(product_html);
 
         // Show the dropdown and use Bootstrap's dropdown function to handle its behavior
-        $('#searchResults').dropdown('toggle');
+        searchResultsContainer.dropdown('show');
       } else {
-        $('#searchResults').dropdown('hide');
+        searchResultsContainer.dropdown('hide');
       }
     }).fail(function() {
       console.log('Failed');
@@ -106,23 +88,25 @@
   });
 
   $(document).on('focus', '#search', function() {
-    $('#search').addClass('focus-within');
-    $('#searchButton').addClass('focus-within');
+    $(this).addClass('focus-within');
+    $(this).siblings('#searchButton').addClass('focus-within');
   });
 
   $(document).on('blur', '#search', function() {
-    $('#search').removeClass('focus-within');
-    $('#searchButton').removeClass('focus-within');
+    $(this).removeClass('focus-within');
+    $(this).siblings('#searchButton').removeClass('focus-within');
   });
-
 
 
   // Hide the dropdown when clicking outside the input box
-  $(document).on('click', function(event) {
+  $(document).on('click', 'body', function(event) {
     if (!$(event.target).closest('#searchResults').length && !$(event.target).is('#search')) {
-      $('#searchResults').dropdown('toggle');
+      $('.searchResults').each(function() {
+        $(this).dropdown('hide');
+      });
     }
   });
+
 
 
 
@@ -185,9 +169,9 @@
 
         //hideloader();
 
-        document.querySelector('#cart_count').innerText = response;
+        // document.querySelector('#cart_count').innerText = response;
         document.querySelectorAll('#badge-cart-count').forEach(element => {
-          element.innerText = response;
+          // element.innerText = response;
         });
       }
 

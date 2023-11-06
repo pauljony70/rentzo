@@ -696,7 +696,7 @@ class Home_model extends CI_Model
 			$home_result = $query->result_object();
 			foreach ($home_result as $banners) {
 				$img_decode1 = json_decode($banners->image);
-				$banners->image = MEDIA_URL . $img_decode1->{$dimension};
+				$banners->image = base_url('media/') . $img_decode1->{$dimension};
 				$banner_result[] = $banners;
 			}
 		}

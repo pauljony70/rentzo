@@ -11,7 +11,7 @@
         border-radius: 50%;
         font-size: 12px;
         top: -7px;
-        left: 15px;
+        right: -7px;
         font-weight: 700;
     }
 
@@ -31,133 +31,37 @@
         transition: var(--mr-accordion-transition);
     }
 
-    /*  @media (max-width: 767px) {
+    @media (max-width: 768px) {
         .icon-count {
-            line-height: 18px;
-            height: 16px;
-            width: 16px;
+            font-size: 8px;
+            line-height: 12px;
+            height: 12px;
+            width: 12px;
             top: 0px;
-            right: 6px;
+            right: -5px;
         }
     }
 
-    @media (max-width: 576px) {
+    @media (max-width: 425px) {
         .icon-count {
-            top: 0;
-            right: 4px;
+            font-size: 8px;
+            line-height: 12px;
+            height: 12px;
+            width: 12px;
+            top: 0px;
+            right: -5px;
         }
     }
-
-    @media (max-width: 992px) and (min-width: 768px) {
-        .icon-count {
-            top: -7.5px;
-            right: 12px;
-        }
-    } */
 </style>
 
-<!-- For Mobile Sidebar -->
-<style>
-    @media (max-width: 991px) {
-        #navbar_for_desktop {
-            display: none;
-        }
-
-        #navbar_for_mobile {
-            display: flex;
-            height: 45px;
-        }
-
-        /* .mobile_view_main_div {
-            background-color: #f4f5f9;
-        } */
-
-        .down_link_pages {
-            font-size: 15px;
-            color: black;
-            font-weight: 400;
-        }
-
-        .sub_category_item {
-            /* border: 1px solid black; */
-            padding: 6px;
-            /* background-color: aliceblue; */
-            /* border-radius: 3px; */
-            margin: 4px 0px;
-        }
-
-        .sub_category_item_nested {
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-between;
-            text-decoration: none;
-            border-radius: 4px;
-            padding: 0px;
-        }
-
-        .first_level_category {
-            font-weight: 700;
-            font-size: 15px;
-        }
-
-        .second_level_category {
-            font-weight: 500;
-            font-size: 14px;
-            color: #181818;
-        }
-
-        .third_level_category {
-            font-weight: 500;
-            font-size: 13px;
-            color: #373737;
-        }
-
-        .last_level_category {
-            font-weight: 400;
-            font-size: 12px;
-            color: #585858;
-        }
-
-        .categories {
-            padding: 0;
-        }
-
-        .ruler {
-            margin: 0;
-        }
-
-        .username_btn_mobile {
-            padding: 2px 12px;
-        }
-
-        .accordion {
-            --mr-accordion-btn-icon-width: 0.90rem;
-        }
-
-        <?php if ($default_language == 1) : ?>.accordion-button::after {
-            margin-right: auto;
-            margin-left: 0;
-        }
-
-        <?php endif; ?>
-    }
-
-    #close_btn_offcanvas {
-        border: 1px solid #ff6600;
-        color: #FF6600 !important;
-        background-color: #FFFFFF;
-        padding: 7px 13px 5px 13px;
-    }
-</style>
 
 <!-- New Navbar -->
-<?php $theme_color = "#ff6600"; ?>
 <div class="dropdown-overlay"></div>
 <header class="navbar-light navbar-sticky" style="position: sticky; top: -1px; z-index: 999;">
     <!-- Part 1 Navbar (Logo, Search, Cart and User Details) -->
     <nav class="navbar menu-navbar navbar-expand-lg bg-body-tertiary py-0">
-        <div class="d-flex justify-content-between container">
-            <a class="navbar-brand" href="#">
+        <div class="d-flex justify-content-lg-between justify-content-center container">
+            <a class="navbar-brand" href="<?= base_url('home') ?>">
                 <img src="<?= base_url('assets_web/images/logo.svg') ?>" alt="<?= get_settings('system_name'); ?>" srcset="">
             </a>
             <div class="w-100 d-none d-lg-block mx-xl-5 mx-4">
@@ -177,17 +81,17 @@
                 </ul>
             </div>
             <div class="d-none d-lg-flex align-items-center">
-                <form action="<?php echo base_url ?>search/s" class="d-flex" role="search">
+                <form action="<?= base_url('search/s') ?>" class="d-flex" role="search">
                     <div class="position-relative">
                         <div class="input-group search-input-group">
-                            <input type="text" class="form-control" autocomplete="off" id="search" placeholder="Enter text here" aria-label="Search" aria-describedby="button-addon2">
-                            <button class="btn" type="button" id="searchButton">
+                            <input type="text" class="form-control" autocomplete="off" id="search" name="search" value="<?= isset($_REQUEST['search']) ? $_REQUEST['search'] : '' ?>" placeholder="What are you looking for?" aria-label="Search" aria-describedby="button-addon2">
+                            <button class="btn" type="submit" id="searchButton">
                                 <img src="<?= base_url('assets_web/images/icons/magnify-glass.svg') ?>" alt="Icon">
                             </button>
                         </div>
 
                         <div class="dropdown position-absolute w-100 mt-2" style="left: 0; z-index: 1000;">
-                            <ul class="dropdown-menu py-0 w-100" id="searchResults"></ul>
+                            <ul class="dropdown-menu searchResults py-0 w-100" id="searchResults"></ul>
                         </div>
                     </div>
 
@@ -208,13 +112,52 @@
         </div>
     </nav>
 
+    <nav class="navbar menu-navbar d-flex d-lg-none bg-white">
+        <div class="container mobile-nav">
+            <div class="mobile-nav-flex d-flex align-items-center justify-content-between w-100">
+                <button type="button" class="hamberger-icon btn px-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <form action="<?= base_url('search/s') ?>" class="d-flex" role="search">
+                    <div class="position-relative">
+                        <div class="input-group search-input-group">
+                            <input type="text" class="form-control" autocomplete="off" id="search" name="search" value="<?= isset($_REQUEST['search']) ? $_REQUEST['search'] : '' ?>" placeholder="What are you looking for?" aria-label="Search" aria-describedby="button-addon2">
+                            <button class="btn ps-0" type="submit" id="searchButton">
+                                <img src="<?= base_url('assets_web/images/icons/magnify-glass.svg') ?>" alt="Icon">
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="dropdown position-absolute w-100 mt-2" style="left: 0; z-index: 1000; top: 43px;">
+                    <ul class="dropdown-menu container searchResults py-0 w-100" id="searchResults"></ul>
+                </div>
+                <div class="nav-icons-div d-flex align-items-center">
+                    <a href="#Wishlist" class="" title="Wishlist">
+                        <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
+                    </a>
+                    <a href="#Cart" class="position-relative" title="Cart">
+                        <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
+                        <span class="icon-count">
+                            <div id="badge-cart-count">2</div>
+                        </span>
+                    </a>
+                    <a href="#Profile" class="" title="Profile">
+                        <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <!-- Part 2 Navbar (Categories) -->
     <nav class="navbar-expand-lg navbar-light bg-light shadow-sm bg-white category-navbar">
         <div class="container position-relative">
             <div class="navbar-collapse w-100 collapse" id="navbarCollapse2">
 
                 <ul class="menu-items mb-0 px-0 w-100 justify-content-around">
-                    <?php foreach ($header_cat as $maincat) : ?>
+                    <?php
+                    $maincats = array_slice($header_cat, 0, 7);
+                    foreach ($maincats as $maincat) : ?>
                         <li class="menu-li">
                             <a href="<?= base_url('shop/' . $maincat['cat_slug']) ?>" class="menu-item py-3"><?= $maincat['cat_name'] ?></a>
                             <?php if (count($maincat['subcat_1']) > 0) : ?>
@@ -310,189 +253,65 @@
 
 </header>
 
-<!-- New Mobile SIdebar -->
-<div class="offcanvas offcanvas-<?php if ($default_language == 1) echo "end";
-                                else echo "start"; ?> w-100" tabindex="-1" id="offcanvasMarurang" aria-labelledby="offcanvasExampleLabel" style="overflow: scroll;">
-    <div class="offcanvas-header">
-        <?php if (!empty($this->session->userdata("user_id"))) { ?>
-            <a class="border btn rounded-0 username_btn_mobile">
-                <h6 class="fw-bold text-center d-inline-flex align-items-center mb-0 w-100 justify-content-center">
-                    <img src="<?= base_url() ?>assets_web/images/svgs/user.svg" style="height: 20px;">
-                    <span class="mt-2"><?php echo substr($this->session->userdata("user_name"), 0, 12) ?></span>
-                </h6>
-            </a>
-        <?php } else { ?>
-            <a href="<?= base_url('login') ?>" class="btn btn-outline-primary text-uppercase <?= $default_language == 1 ? 'ms-1' : 'me-1' ?>" style="border-radius: 0px;"><?= $this->lang->line('login/signup'); ?></a>
-        <?php } ?>
-        <button type="button" id="close_btn_offcanvas" class="text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
+<!-- New Mobile Sidebar -->
+<div class="offcanvas offcanvas-start w-75" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header align-items-center">
+        <div class="user-location">
+            <div class="container d-flex align-items-center">
+                <img src="<?= base_url('assets_web/images/location-pin.svg') ?>" alt="Location">
+                <div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</div>
+            </div>
+        </div>
+        <button type="button" class="close-btn-offcanvas text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
-    <div class="mobile_view_main_div">
-        <div class="container px-1">
-            <div class="row">
-                <div class="col-12">
-                    <!-- Accordian Start -->
-                    <div class="accordion accordion-icon accordion-bg-light" id="accordionExample2">
-                        <?php $i = 1; /* for ($i = 1; $i <= 1; $i++) { */
-                        foreach ($header_cat as $header_cat_mobile_data) {
-                        ?>
-                            <!-- Item -->
-                            <div class="accordion-item">
-                                <h6 class="accordion-header font-base" id="heading-">
-                                    <button class="<?= count($header_cat_mobile_data['subcat_1']) > 0 ? 'accordion-button' : 'custom-accordion-button' ?> fw-bold rounded collapsed mt-1 px-0 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-<?= $i ?>" aria-expanded="false" aria-controls="collapse-<?= $i ?>">
-                                        <span class="first_level_category"><?= $header_cat_mobile_data['cat_name'] ?></span>
-                                    </button>
-                                </h6>
-                                <!-- Body -->
-                                <?php if (count($header_cat_mobile_data['subcat_1']) > 0) : ?>
-                                    <div id="collapse-<?= $i ?>" class="accordion-collapse collapse" aria-labelledby="heading-1" data-bs-parent="#accordionExample2">
-                                        <div class="py-0">
-                                            <ul class="<?= $default_language == 1 ? 'pe-3 ps-0' : 'ps-3 pe-0' ?> mb-1">
-                                                <!-- Nested Accordian -->
-                                                <?php $j = 1;
-                                                foreach ($header_cat_mobile_data['subcat_1'] as $subcat_1_data) { ?>
-                                                    <li class="sub_category_item px-0">
-                                                        <div class="accordion accordion-icon accordion-bg-light" id="accordionExamplesub_subcategory-<?= $j ?>">
-                                                            <div class="accordion-item">
-                                                                <p class="accordion-header font-base" id="heading-1">
-                                                                    <a class="sub_category_item_nested w-100 <?= count($subcat_1_data['subsubcat_2']) > 0 ? 'accordion-button' : '' ?> collapsed" data-bs-toggle="collapse" data-bs-target="#collapse_sub-subcate-<?= $j ?>" aria-expanded="true" aria-controls="collapse_sub-subcate-<?= $j ?>">
-                                                                        <span class="second_level_category <?= $default_language == 1 ? 'text-end' : '' ?>" style="margin-right: 10px;"><?= $subcat_1_data['cat_name'] ?></span>
-                                                                    </a>
-                                                                </p>
-                                                                <!-- Body -->
-                                                                <?php if (count($subcat_1_data['subsubcat_2']) > 0) : ?>
-                                                                    <div id="collapse_sub-subcate-<?= $j ?>" class="accordion-collapse collapse " aria-labelledby="heading-1" data-bs-parent="#accordionExamplesub_subcategory-<?= $j ?>">
-                                                                        <div class="py-0">
-                                                                            <ul class="<?= $default_language == 1 ? 'pe-3 ps-0' : 'ps-3 pe-0' ?>">
-                                                                                <!-- Sub Sub-subcategory 4 layer -->
-                                                                                <!-- Double Nested Accordian -->
-                                                                                <?php
-                                                                                foreach ($subcat_1_data['subsubcat_2'] as $subcat_2_data) { ?>
-                                                                                    <li class="sub_category_item">
-                                                                                        <a href="<?= base_url($subcat_2_data['cat_slug']) ?>" class="sub_category_item_nested w-100">
-                                                                                            <span class="third_level_category" style="margin-right: 10px;">
-                                                                                                <?php echo $subcat_2_data['cat_name']; ?>
-                                                                                            </span>
-                                                                                        </a>
-                                                                                    </li>
-                                                                                <?php
-                                                                                } ?>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                <?php endif; ?>
+    <div class="offcanvas-body">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <?php foreach ($maincats as $header_cat_mobile_data) : ?>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="<?= count($header_cat_mobile_data['subcat_1']) > 0 ? '' : 'no-arrow' ?> accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#<?= $header_cat_mobile_data['cat_slug'] ?>" aria-expanded="false" aria-controls="<?= $header_cat_mobile_data['cat_slug'] ?>">
+                            <?= $header_cat_mobile_data['cat_name'] ?>
+                        </button>
+                    </h2>
+                    <?php if (count($header_cat_mobile_data['subcat_1']) > 0) : ?>
+                        <div id="<?= $header_cat_mobile_data['cat_slug'] ?>" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body py-0">
+                                <?php foreach ($header_cat_mobile_data['subcat_1'] as $subcat_1_data) : ?>
+                                    <div class="accordion accordion-flush" id="<?= $header_cat_mobile_data['cat_slug'] ?>Example">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="<?= count($subcat_1_data['subsubcat_2']) > 0 ? '' : 'no-arrow' ?> accordion-button pe-0 collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#<?= $subcat_1_data['cat_slug'] ?>" aria-expanded="false" aria-controls="<?= $subcat_1_data['cat_slug'] ?>">
+                                                    <?= $subcat_1_data['cat_name'] ?>
+                                                </button>
+                                            </h2>
+                                            <?php if (count($subcat_1_data['subsubcat_2']) > 0) : ?>
+                                                <div id="<?= $subcat_1_data['cat_slug'] ?>" class="accordion-collapse collapse" data-bs-parent="#<?= $subcat_1_data['cat_slug'] ?>Example">
+                                                    <div class="accordion-body py-0">
+                                                        <?php foreach ($subcat_1_data['subsubcat_2'] as $subcat_2_data) : ?>
+                                                            <div class="accordion accordion-flush" id="<?= $subcat_1_data['cat_slug'] ?>Example">
+                                                                <div class="accordion-item">
+                                                                    <h2 class="accordion-header">
+                                                                        <button class="no-arrow accordion-button pe-0 collapsed fw-light" type="button" data-bs-toggle="collapse" data-bs-target="#<?= $subcat_2_data['cat_slug'] ?>" aria-expanded="false" aria-controls="<?= $subcat_2_data['cat_slug'] ?>">
+                                                                            <?= $subcat_2_data['cat_name'] ?>
+                                                                        </button>
+                                                                    </h2>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </li>
-                                                <?php $j++;
-                                                } ?>
-                                            </ul>
+                                                        <?php endforeach; ?>
+                                                    </div>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
-                                <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
-                            <hr class="ruler">
-                        <?php $i++;
-                        } ?>
-                    </div>
-                    <!-- Accordian END -->
-
-                    <ul class="category_one categories mb-0">
-                        <li class="nav-item mt-5 py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>order">
-                                <img src="<?= base_url() ?>assets_web/images/svgs/order.svg" style="height: 20px;">
-                                <?= $this->lang->line('my-orders'); ?>
-                            </a>
-                        </li>
-                        <li style="display:none" class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>buy-from-turkey-orders">
-                                <img src="<?= base_url() ?>assets_web/images/svgs/order.svg" style="height: 20px;">
-                                <?= $this->lang->line('user-buy-from-turkey-orders'); ?>
-                            </a>
-                        </li>
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>my-wallet">
-                                <img src="<?= base_url() ?>assets_web/images/svgs/wallet.svg" style="height: 20px;">
-                                <?= $this->lang->line('my-wallet'); ?>
-                            </a>
-                        </li>
-                        <li style="display:none" class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>wholesale-products">
-                                <img src="<?= base_url() ?>assets_web/images/svgs/wholesale.svg" style="height: 20px;">
-                                <?= $this->lang->line('wholesale'); ?>
-                            </a>
-                        </li>
-                        <li style="display:none" class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>buy-from-turkey">
-                                <img src="<?= base_url() ?>assets_web/images/turkey.svg" style="height: 20px;">
-                                <?= $this->lang->line('buy-from-turkey'); ?>
-                            </a>
-                        </li>
-                    </ul>
-                    <hr class="mb-0">
-                    <ul style="display:none" class="category_two categories mb-0">
-                        <li class="nav-item py-1">
-                            <div class="accordion" id="languageaccordion">
-                                <div class="accordion-item">
-                                    <h6 class="accordion-header font-base" id="headingOne">
-                                        <button class="accordion-button fw-bold rounded collapsed mt-1 px-0 py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLanguage" aria-expanded="false" aria-controls="collapseLanguage">
-                                            <span class="down_link_pages"><?= $this->lang->line('change-language'); ?></span>
-                                            <?php if ($default_language == 1) { ?>
-                                                <span class="fw-bolder" style="position:absolute; left: 20px;">En</span>
-                                            <?php } else { ?>
-                                                <span class="fw-bolder" style="position:absolute; right: 20px;">أر</span>
-                                            <?php } ?>
-                                        </button>
-                                    </h6>
-                                    <div id="collapseLanguage" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#languageaccordion">
-                                        <div class="accordion-body p-0">
-                                            <ul class="<?= $default_language == 1 ? 'pe-3 ps-0' : 'ps-3 pe-0' ?> mb-1">
-                                                <li class="sub_category_item px-0 m-0">
-                                                    <img src="<?= base_url('assets_web/images/country/oman-flag.svg') ?>" style="height: 20px;">
-                                                    <button type="button" class="btn p-0 m-0 ms-3 down_link_pages" style="border: none;" onclick="get_language_nav('1')">Arabic</button>
-                                                </li>
-                                                <li class="sub_category_item px-0 m-0">
-                                                    <img src="<?= base_url('assets_web/images/country/uk-flag.svg') ?>" style="height: 20px;">
-                                                    <button type="button" class="btn p-0 m-0 ms-3 down_link_pages" style="border: none;" onclick="get_language_nav('2')">English</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <hr class="mt-0">
-                    <ul class="category_two categories mb-0">
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>become_seller"><?= $this->lang->line('footer-become-a-seller'); ?></a>
-                        </li>
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>about"><?= $this->lang->line('footer-about-us'); ?></a>
-                        </li>
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>contact"><?= $this->lang->line('footer-contact-us'); ?></a>
-                        </li>
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>privacy"><?= $this->lang->line('footer-privacy-policy'); ?></a>
-                        </li>
-                        <li class="nav-item py-1">
-                            <a class="down_link_pages" href="<?php echo base_url ?>tearm"><?= $this->lang->line('terms-and-condition'); ?></a>
-                        </li>
-                    </ul>
-                    <?php if (!empty($this->session->userdata("user_id"))) { ?>
-                        <hr class="mt-0">
-                        <ul class="category_two categories mb-0">
-                            <li class="nav-item py-1">
-                                <a href="<?php echo base_url; ?>logout" class="btn btn-primary w-100 text-center pt-2">
-                                    <span class="text-center">Logout</span>
-                                </a>
-                            </li>
-                        </ul>
-                    <?php } ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            </div>
+                <hr class="m-0">
+            <?php endforeach; ?>
         </div>
     </div>
 </div>
@@ -516,42 +335,6 @@
         </div>
     </div>
 </div>
-
-<!-- Mobile Search Modal  -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="searchModalLabel"></h5>
-                <button type="button" class="btn-close bg-light rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body w-100 h-100 d-flex align-items-center justify-content-center">
-                <div class=" container">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 mx-auto">
-                            <form action="<?php echo base_url ?>search/s" class="d-flex" role="search">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <button class="btn btn-primary" type="submit">
-                                                <?= $this->lang->line("search-text") ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <input class="form-control me-2" autocomplete="off" id="search" type="search" name="search" value="<?php if (isset($_REQUEST['search'])) {
-                                                                                                                                            echo $_REQUEST['search'];
-                                                                                                                                        } ?>" type="search" placeholder="Search" aria-label="Search">
-                                </div>
-                                <!-- <button class="btn btn-primary d-flex text-light d-flex-center" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button> -->
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 <input type="hidden" class="site_url" value="<?php echo site_url(); ?>">

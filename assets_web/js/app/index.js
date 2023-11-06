@@ -1,5 +1,5 @@
 var categorySwiper = new Swiper(".section-5-category-div", {
-	slidesPerView: 2.5,
+	slidesPerView: 4.7,
 	spaceBetween: 30,
 	freeMode: true,
 	grabCursor: true,
@@ -9,8 +9,8 @@ var categorySwiper = new Swiper(".section-5-category-div", {
 	forceToAxis: false,
 	breakpoints: {
 		640: {
-			slidesPerView: 3.5,
-			spaceBetween: 20,
+			slidesPerView: 5.5,
+			spaceBetween: 30,
 		},
 		1024: {
 			slidesPerView: 6.5,
@@ -86,18 +86,32 @@ var eventSwiper = new Swiper(".event-swiper", {
 });
 
 var brandSwiper = new Swiper(".brand-swiper", {
-	slidesPerView: 3,
-	spaceBetween: 15,
+	slidesPerView: 1.8,
+	spaceBetween: 35,
 	freeMode: true,
 	grabCursor: true,
 	mousewheel: {
 		forceToAxis: true,
 	},
 	forceToAxis: false,
+	pagination: {
+		el: ".swiper-pagination",
+		clickable: true
+	},
+	breakpoints: {
+		640: {
+			slidesPerView: 2,
+			spaceBetween: 35,
+		},
+		1020: {
+			slidesPerView: 3,
+			spaceBetween: 35,
+		},
+	},
 });
 
 var testimonialSwiper = new Swiper(".testimonial-swiper", {
-	slidesPerView: 3,
+	slidesPerView: 1,
 	spaceBetween: 15,
 	freeMode: true,
 	grabCursor: true,
@@ -108,5 +122,15 @@ var testimonialSwiper = new Swiper(".testimonial-swiper", {
 	navigation: {
 		nextEl: ".swiper-btn-next",
 		prevEl: ".swiper-btn-prev",
+	},
+	breakpoints: {
+		767: {
+			slidesPerView: 2,
+			spaceBetween: 35,
+		},
+		1020: {
+			slidesPerView: 3,
+			spaceBetween: 35,
+		},
 	},
 });
