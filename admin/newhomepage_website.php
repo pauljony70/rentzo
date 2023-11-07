@@ -67,12 +67,12 @@ if (isset($_POST['code'])) {
 				echo "Failed to add " . $_POST['bannersection_type'] . " Title.";
 			}
 		} else {
-			$query1 = $conn->query("UPDATE `homepage_banner`  SET ,image='" . $_POST['section_title'] . "'' WHERE type ='" . $_POST['bannersection_type'] . "'");
+			$query1 = $conn->query("UPDATE `homepage_banner`  SET image='" . $_POST['section_title'] . "'' WHERE type ='" . $_POST['bannersection_type'] . "'");
 
 			$query1->execute();
 			$query1->store_result();
-			$rows = $query1->affected_rows;
-			if ($rows > 0) {
+			$rows1 = $query1->affected_rows;
+			if ($rows1 > 0) {
 				echo $_POST['bannersection_type'] . " Section Title Update Successfully.";
 			} else {
 				echo "Failed to add " . $_POST['bannersection_type'] . " Title.";
@@ -886,16 +886,20 @@ if (isset($_POST['code'])) {
 								<div class="container">
 									<div class="row">
 										<div class="col-12">
-											<h3 style="text-align: center;"> Special Deals Banner</h3><br>
+											<h3 style="text-align: center;"> New Arrival</h3><br>
 										</div>
 										<?php
-										$section1_image1 = $section1_link1 =  $section1_image2 = $section1_link2 = $section1_type2 = $section1_image3 = $section1_link3 = $section1_type3 = $section1_link4 = $section1_type4 = '';
+										$section1_image1 = $section1_link1 =  $section1_image2 = $section1_link2 = $section1_type2 = $section1_image3 = $section1_link3 = $section1_type3 = $section1_link4 = $section1_type4 = $section1_link5 = $section1_type5 = $section1_link6 = $section1_type6 =  $section1_link7 = $section1_type7 = $section1_link8 = $section1_type8 = '';
 										//sql for top banner
 										$query1 = $conn->query("SELECT * FROM `homepage_banner` WHERE section = 'section_four_banner'");
 										$section1_type1 = 'section_four_banner1';
 										$section1_type2 = 'section_four_banner2';
 										$section1_type3 = 'section_four_banner3';
 										$section1_type4 = 'section_four_banner4';
+										$section1_type5 = 'section_four_banner5';
+										$section1_type6 = 'section_four_banner6';
+										$section1_type7 = 'section_four_banner7';
+										$section1_type8 = 'section_four_banner8';
 										if ($query1->num_rows > 0) {
 
 
@@ -919,6 +923,26 @@ if (isset($_POST['code'])) {
 													$img_decode4 = json_decode($rows1['image']);
 													$section1_image4 = MEDIAURL . $img_decode4->{'200-200'};
 													$section1_link4 = $rows1['link'];
+												}
+												if ($rows1['type'] == 'section_four_banner5') {
+													$img_decode5 = json_decode($rows1['image']);
+													$section1_image5 = MEDIAURL . $img_decode5->{'200-200'};
+													$section1_link5 = $rows1['link'];
+												}
+												if ($rows1['type'] == 'section_four_banner6') {
+													$img_decode6 = json_decode($rows1['image']);
+													$section1_image6 = MEDIAURL . $img_decode6->{'200-200'};
+													$section1_link6 = $rows1['link'];
+												}
+												if ($rows1['type'] == 'section_four_banner7') {
+													$img_decode7 = json_decode($rows1['image']);
+													$section1_image7 = MEDIAURL . $img_decode7->{'200-200'};
+													$section1_link7 = $rows1['link'];
+												}
+												if ($rows1['type'] == 'section_four_banner8') {
+													$img_decode8 = json_decode($rows1['image']);
+													$section1_image8 = MEDIAURL . $img_decode8->{'200-200'};
+													$section1_link8 = $rows1['link'];
 												}
 											}
 										}
@@ -955,10 +979,195 @@ if (isset($_POST['code'])) {
 												</div>
 											</div>
 										</div>
+										<div class="col-6 col-md-3 mb-2">
+											<div class="icon-box" style="height:150px; background-image: url('<?= $section1_image5; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
+
+												<div class="icon-img">
+													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section_four_banner('<?= $section1_link5; ?>', '<?= $section1_type5; ?>');">Upload</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-6 col-md-3 mb-2">
+											<div class="icon-box" style="height:150px; background-image: url('<?= $section1_image6; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
+
+												<div class="icon-img">
+													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section_four_banner('<?= $section1_link6; ?>', '<?= $section1_type6; ?>');">Upload</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-6 col-md-3 mb-2">
+											<div class="icon-box" style="height:150px; background-image: url('<?= $section1_image7; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
+
+												<div class="icon-img">
+													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section_four_banner('<?= $section1_link7; ?>', '<?= $section1_type7; ?>');">Upload</button>
+												</div>
+											</div>
+										</div>
+										<div class="col-6 col-md-3 mb-2">
+											<div class="icon-box" style="height:150px; background-image: url('<?= $section1_image8; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
+
+												<div class="icon-img">
+													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section_four_banner('<?= $section1_link8; ?>', '<?= $section1_type8; ?>');">Upload</button>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 							</section>
+							
+							
+							
+							
 							<?php
+							$section8_image1 = $section8_link1 =  $section8_image2 = $section8_link2 = $section8_type2 = $section8_image3 = $section8_link3 = $section8_type3 =  $section8_link4 = $section8_type4 = '';
+							//sql for top banner
+							$query18 = $conn->query("SELECT * FROM `homepage_banner` WHERE section = 'section8'");
+
+							$section8_type1 = 'bottom1';
+							$section8_type2 = 'bottom2';
+							$section8_type3 = 'bottom3';
+							$section8_type4 = 'bottom4';
+							if ($query18->num_rows > 0) {
+
+
+								while ($rows1 = $query18->fetch_assoc()) {
+									if ($rows1['type'] == 'bottom1') {
+										$img_decode1 = json_decode($rows1['image']);
+										$section8_image1 = MEDIAURL . $img_decode1->{'610-400'};
+										$section8_link1 = $rows1['link'];
+									}
+									if ($rows1['type'] == 'bottom2') {
+										$img_decode2 = json_decode($rows1['image']);
+										$section8_image2 = MEDIAURL . $img_decode2->{'610-400'};
+										$section8_link2 = $rows1['link'];
+									}
+									if ($rows1['type'] == 'bottom3') {
+										$img_decode3 = json_decode($rows1['image']);
+										$section8_image3 = MEDIAURL . $img_decode3->{'610-400'};
+										$section8_link3 = $rows1['link'];
+									}
+									if ($rows1['type'] == 'bottom4') {
+										$img_decode4 = json_decode($rows1['image']);
+										$section8_image4 = MEDIAURL . $img_decode4->{'610-400'};
+										$section8_link4 = $rows1['link'];
+									}
+								}
+							}
+							?>
+
+							<section class="sector">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-12">
+											<h3 style="text-align:center;"> 1*3 Banner</h3><br>
+										</div>
+										<div class="col-lg-6 text-light mb-2">
+											<div class="icon-boxx" style="background-image: url('<?= $section8_image1; ?>');">
+												<div class="icon-text">
+
+													<h4><b>Banner 1</b></h4>
+													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																						?>', '<?= $section8_link1; ?>', '<?= $section8_type1; ?>');">Upload</button>
+												</div>
+
+											</div>
+
+										</div>
+										<div class="row col-lg-6 text-light mb-2">
+											<div class="col-lg-12 text-light mb-2">
+												<div class="icon-boxx" style="background-image: url('<?= $section8_image2; ?>');">
+													<div class="icon-text">
+
+														<h4><b>Banner 2</b></h4>
+														<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																							?>', '<?= $section8_link2; ?>', '<?= $section8_type2; ?>');">Upload</button>
+													</div>
+
+												</div>
+
+											</div>
+												<div class="col-lg-6 text-light mb-2">
+													<div class="icon-boxx" style="background-image: url('<?= $section8_image3; ?>');">
+														<div class="icon-text">
+
+
+															<h4><b>Banner 3</b></h4>
+															<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																								?>', '<?= $section8_link3; ?>', '<?= $section8_type3; ?>');">Upload</button>
+														</div>
+
+													</div>
+
+												</div>
+												<div class="col-lg-6 text-light mb-2">
+													<div class="icon-boxx" style="background-image: url('<?= $section8_image4; ?>');">
+														<div class="icon-text">
+
+
+															<h4><b>Banner 4</b></h4>
+															<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																								?>', '<?= $section8_link4; ?>', '<?= $section8_type4; ?>');">Upload</button>
+														</div>
+
+													</div>
+
+												</div>
+										</div>
+									</div>
+								</div>
+							</section>
+
+							
+							
+							<section>
+								<div class="container">
+									<div class="row">
+										<div class="col-md-12">
+											<h3 style="text-align:center;"> Product Section 2 </h3><br>
+										</div>
+										<?php
+										//sql for top banner
+										$query37 = $conn->query("SELECT pp.id, pd.prod_name, pd.featured_img FROM product_details pd,popular_product pp WHERE pd.status IN(1) AND pp.product_id= pd.product_unique_id  AND pp.type = 'prod_section_2'");
+
+
+										?>
+										<?php if ($query37->num_rows <= 8) { ?>
+											<div class="col-md-12 ">
+												<button type="button" class="btn btn-danger waves-effect waves-light mb-2" onclick="add_section_title('prod_section2_title');">Add Section Title</button></h4>
+												<button type="button" class="btn btn-danger waves-effect waves-light mb-2" onclick="add_banner_section7('prod_section_2');">Add Products</button></h4>
+											</div>
+										<?php } ?>
+
+										<?php
+										if ($query37->num_rows > 0) {
+											while ($rows3 = $query37->fetch_assoc()) {
+												$imgarray = json_decode($rows3['featured_img'], true);
+												$imageurl = MEDIAURL . $imgarray['72-72'];
+										?>
+												<div class="col-md-4 m-0" id="popdiv<?= $rows3['id']; ?>">
+													<div class="tabb-color">
+														<span style="position: absolute;float: right;right: 20px;top: 2px;"><a href="javascript:void(0)" onclick="delete_products('<?= $rows3['id']; ?>');"><i class="fa fa-trash"></i></a></span>
+														<div class="yello-img">
+															<img src="<?= $imageurl;  ?>">
+														</div>
+														<div class="yello-text">
+
+															<p><b><?= $rows3['prod_name']; ?></b></p>
+
+
+														</div>
+													</div>
+												</div>
+										<?php }
+										} ?>
+									</div>
+								</div>
+							</section>
+							
+							
+							<?php
+							/*
+							
 							$section6_image1 = $section6_link1 = '';
 							//sql for top banner
 							$query9 = $conn->query("SELECT * FROM `homepage_banner` WHERE section = 'section6'");
@@ -1144,7 +1353,7 @@ if (isset($_POST['code'])) {
 								</div>
 							</section><!-- End Featured Section -->
 							<!-- ======= Portfolio Section ======= -->
-							<?php */ ?>
+							<?php */ /* ?>
 							<section id="portfolio" class="portfolio mt-2">
 								<div class="container">
 									<div class="row">
@@ -1537,89 +1746,13 @@ if (isset($_POST['code'])) {
 							</section>
 
 
-							<?php
-							$section8_image1 = $section8_link1 =  $section8_image2 = $section8_link2 = $section8_type2 = $section8_image3 = $section8_link3 = $section8_type3 = '';
-							//sql for top banner
-							$query18 = $conn->query("SELECT * FROM `homepage_banner` WHERE section = 'section8'");
-
-							$section8_type1 = 'bottom1';
-							$section8_type2 = 'bottom2';
-							$section8_type3 = 'bottom3';
-							if ($query18->num_rows > 0) {
-
-
-								while ($rows1 = $query18->fetch_assoc()) {
-									if ($rows1['type'] == 'bottom1') {
-										$img_decode1 = json_decode($rows1['image']);
-										$section8_image1 = MEDIAURL . $img_decode1->{'610-400'};
-										$section8_link1 = $rows1['link'];
-									}
-									if ($rows1['type'] == 'bottom2') {
-										$img_decode2 = json_decode($rows1['image']);
-										$section8_image2 = MEDIAURL . $img_decode2->{'610-400'};
-										$section8_link2 = $rows1['link'];
-									}
-									if ($rows1['type'] == 'bottom3') {
-										$img_decode3 = json_decode($rows1['image']);
-										$section8_image3 = MEDIAURL . $img_decode3->{'610-400'};
-										$section8_link3 = $rows1['link'];
-									}
-								}
-							}
-							?>
-
-							<section class="sector">
-								<div class="container">
-									<div class="row">
-										<div class="col-md-12">
-											<h3 style="text-align:center;"> 1*2 Banner</h3><br>
-										</div>
-										<div class="col-lg-4 text-light mb-2">
-											<div class="icon-boxx" style="background-image: url('<?= $section8_image1; ?>');">
-												<div class="icon-text">
-
-													<h4><b>Banner 1</b></h4>
-													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
-																																						?>', '<?= $section8_link1; ?>', '<?= $section8_type1; ?>');">Upload</button>
-												</div>
-
-											</div>
-
-										</div>
-										<div class="col-lg-4 text-light mb-2">
-											<div class="icon-boxx" style="background-image: url('<?= $section8_image2; ?>');">
-												<div class="icon-text">
-
-													<h4><b>Banner 2</b></h4>
-													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
-																																						?>', '<?= $section8_link2; ?>', '<?= $section8_type2; ?>');">Upload</button>
-												</div>
-
-											</div>
-
-										</div>
-										<div class="col-lg-4 text-light mb-2">
-											<div class="icon-boxx" style="background-image: url('<?= $section8_image3; ?>');">
-												<div class="icon-text">
-
-
-													<h4><b>Banner 3</b></h4>
-													<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
-																																						?>', '<?= $section8_link3; ?>', '<?= $section8_type3; ?>');">Upload</button>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</section>
-
 							
 
 						</div>
 					</div>
 				</div>
+				
+				<?php */ ?>
 
 				<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -1727,7 +1860,7 @@ if (isset($_POST['code'])) {
 									<label for="name">Add title</label>
 									<div class="form-group d-flex" id="product_div">
 										<div class="frmSearch">
-											<input type="text" class="form-control1" id="section_title" placeholder="Section Title" />
+											<input type="text" class="form-control" id="section_title" placeholder="Section Title" />
 											
 										</div>
 

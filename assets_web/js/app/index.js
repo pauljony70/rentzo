@@ -1,3 +1,64 @@
+var csrfName = $(".txt_csrfname").attr("name");
+var csrfHash = $(".txt_csrfname").val();
+var site_url = $(".site_url").val();
+
+$(function () {
+  
+  window.onload = get_home_bottom_products("prod_section_1");
+ 
+});
+
+function get_home_bottom_products(type) {
+  $.ajax({
+    method: "get",
+    url: site_url + "get_home_products",
+    data: { type: type, [csrfName]: csrfHash },
+    success: function (response) {
+      //hideloader();
+      var parsedJSON = JSON.parse(response);
+      var order = parsedJSON.length;
+      var product_html = "";
+	
+      if (order != 0) {
+        $("#" + type + "_products").empty();
+        $(parsedJSON).each(function () {
+          product_html +=
+            '<div class="col-12 col-md-6 col-xl-3"> <div class="alsoVi"><div class="Vi-image"><img src="' +
+            this.imgurl +
+            '" class="img-fluid" alt=""></div>';
+          product_html +=
+            '<div class="Vi-text"> <div class="Vi-pTitle"><h5>' +
+            this.name +
+            "</h5></div>";
+          product_html +=
+            '<div class="Vi-price"><div><span class=" text-muted">' + def_price + '</span><h2>' +
+            this.price +
+            "</h2></div> <div>";
+          product_html +=
+            '<a onclick="add_to_cart_product(event,' +
+            "'" +
+            this.id +
+            "','" +
+            this.sku +
+            "','" +
+            this.vendor_id +
+            "','" +
+            user_id +
+            "','1','0','2'," +
+            "'" +
+            user_id +
+            "'" +
+            ')" class="btn btn-primary addToCart"><i class="fas fa-shopping-cart"></i></a></div></div></div></div></div> ';
+        });
+      } else {
+        //product_html = "No Record Found.";
+      }
+      $("#" + type + "_products").html(product_html);
+    },
+  });
+}
+
+
 var categorySwiper = new Swiper(".section-5-category-div", {
 	slidesPerView: 4.7,
 	spaceBetween: 30,

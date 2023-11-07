@@ -103,12 +103,14 @@
 						<span style="color: #666666;">Grab the best deal on </span>
 						<span style="color: var(--bs-primary);"> Camera’s</span>
 					</div>
-					<!-- <div class="d-flex align-items-center">
+					<!--<div class="d-flex align-items-center">
 						<span class="view-all">View All</span>
 						<i class="fa-solid fa-chevron-right ms-2"></i>
-					</div> -->
+					</div>-->
 				</div>
 				<div class="swiper product-swiper" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
+					<div class="swiper-slide" id="prod_section_1_products">
+						</div> 
 					<div class="swiper-wrapper">
 						<?php for ($i = 0; $i < 10; $i++) : ?>
 							<div class="swiper-slide">
