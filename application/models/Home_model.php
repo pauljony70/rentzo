@@ -57,6 +57,64 @@ class Home_model extends CI_Model
 		return $category_result;
 	}
 
+	function get_home_review($language)
+	{
+		$start = 0;
+		$sortby = 1;
+		$devicetype = 1;
+		$prod_result = array();
+
+
+
+		$this->db->select('pr.title,comment,pr.rating,al.fullname,al.profile_pic,pd.featured_img');
+		$this->db->join('product_details pd', 'pd.product_unique_id = pr.product_id', 'INNER');
+		$this->db->join('appuser_login al', 'al.user_unique_id = pr.user_id', 'INNER');
+		$this->db->where(array('pr.status' => 1));
+		$this->db->order_by("pr.review_id", 'DESC');
+		$this->db->limit(15, $start);
+		$query = $this->db->get('product_review pr');
+
+
+		if ($query->num_rows() > 0) {
+			$review_result = $query->result_object();
+
+			$product_array = array();
+			foreach ($review_result as $review_data) {
+
+				$product_array['title'] = $review_data->title;
+				$product_array['comment'] = $review_data->comment;
+				$product_array['rating'] = $review_data->rating;
+				$product_array['name'] = $review_data->fullname;
+				$product_array['profile_pic'] = $review_data->profile_pic;
+
+				$img_decode = json_decode($review_data->featured_img);
+
+				if ($devicetype == 1) {
+					if (isset($img_decode->{MOBILE})) {
+						$img = $img_decode->{MOBILE};
+					} else {
+						$img = $review_data->featured_img;
+					}
+				} else {
+					if (isset($img_decode->{DESKTOP})) {
+						$img = $img_decode->{DESKTOP};
+					} else {
+						$img = $review_data->featured_img;
+					}
+				}
+
+
+				$product_array['imgurl'] = MEDIA_URL . $img;
+
+
+				$prod_result[] = $product_array;
+			}
+		}
+
+		return $prod_result;
+	}
+
+
 	function all_product_request()
 	{
 		$prod_result = array();
@@ -701,7 +759,7 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
-	
+
 	function get_header_banner_request($section, $dimension)
 	{
 		$this->db->select('*');
@@ -721,7 +779,7 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
-	
+
 	function get_home_product_title_request($section)
 	{
 		$this->db->select('*');
@@ -1060,7 +1118,7 @@ class Home_model extends CI_Model
 	}
 
 
-	function get_home_products($language, $title,$type, $timezone)
+	function get_home_products($language, $title, $type, $timezone)
 	{
 		$prod_result = array();
 		$product_array = array();
@@ -1229,10 +1287,10 @@ class Home_model extends CI_Model
 				}
 			}
 		}
-		
+
 		$res_result = array();
 		$res_result['product_array'] = $product_array;
-		
+
 		$this->db->select('*');
 
 		$this->db->where(array('section' => $title));

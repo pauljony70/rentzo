@@ -173,13 +173,13 @@
 						</div>
 					</div>
 					<div class="col-md-9 d-block d-md-none">
-						<div class="row">
-							<?php for ($i = 0; $i < 10; $i++) : ?>
+						<div class="row" id="home_events_mobile">
+							<!-- <?php for ($i = 0; $i < 10; $i++) : ?>
 								<div class="col-6 col-sm-4 pb-3">
 									<img src="<?= base_url('assets_web/images/event.jpeg') ?>" class="event-card-img" alt="">
 									<div class="event-title text-center line-clamp-1">Wedding</div>
 								</div>
-							<?php endfor; ?>
+							<?php endfor; ?> -->
 						</div>
 					</div>
 				</div>
@@ -268,34 +268,55 @@
 				<div class="container">
 					<div class="swiper testimonial-swiper">
 						<div class="swiper-wrapper mb-4">
-							<?php for ($i = 0; $i < 10; $i++) : ?>
+							<?php foreach ($review_data as $reviews) { ?>
 								<div class="swiper-slide">
 									<div class="card">
 										<div class="card-body">
 											<div class="d-flex align-items-center mb-3 customer-profile">
-												<img class="customer-img" src="<?= base_url('assets_web/images/user.svg') ?>" alt="User Name">
+												<img class="customer-img" src="<?= $reviews['profile_pic']; ?>" alt="<?= $reviews['name']; ?>">
 												<div class="d-flex flex-column ms-4">
-													<div class="customer-name">Josh Smith</div>
-													<div class="customer-des">Manager of The New York Times</div>
+													<div class="customer-name"><?= $reviews['name']; ?></div>
+													<div class="customer-des"><?= $reviews['title']; ?></div>
 													<div class="d-flex stars">
-														<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-														<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-														<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-														<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-														<img src="<?= base_url('assets_web/images/icons/star-grey.svg') ?>" alt="Star">
+														<?php
+														$rating = round($reviews['rating'] * 2) / 2;
+														// Calculate the whole number and fractional part of the rating
+														$wholeNumber = floor($rating);
+														$fractionalPart = $rating - $wholeNumber;
+
+														// Loop through the whole number part and display solid stars
+														for ($i = 0; $i < $wholeNumber; $i++) {
+															echo '<img src="' . base_url('assets_web/images/icons/star-yellow.svg') . '" alt="Star">';
+														}
+
+														// Check the fractional part to display half or empty star
+														if ($fractionalPart >= 0.5) {
+															echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
+														} else {
+															echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+														}
+
+														// Calculate the remaining empty stars
+														$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
+
+														// Display the remaining empty stars
+														for ($i = 0; $i < $emptyStars; $i++) {
+															echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+														}
+														?>
 													</div>
 												</div>
 											</div>
 											<div class="review mb-2">
-												“They are have a perfect touch for make something so professional ,interest and useful for a lot of people .”
+												“<?= $reviews['comment']; ?>”
 											</div>
 											<div class="review-img text-center">
-												<img src="<?= base_url('assets_web/images/product.svg') ?>" alt="">
+												<img src="<?= $reviews['imgurl']; ?>" alt="">
 											</div>
 										</div>
 									</div>
 								</div>
-							<?php endfor; ?>
+							<?php } ?>
 						</div>
 						<div class="swiper-navigation d-flex justify-content-center align-items-center py-2">
 							<div class="swiper-btn-prev">

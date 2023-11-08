@@ -31,6 +31,7 @@
 	<link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css">
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
 
 	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
@@ -190,14 +191,37 @@
 							-->
 							<div class="d-flex mb-4 ratings-tab align-items-center justify-content-between">
 								<div class="d-flex flex-wrap align-items-center">
-									<div class="d-flex stars">
-										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
-										<img src="<?= base_url('assets_web/images/icons/star-grey.svg') ?>" alt="Star">
-									</div>
-									<a href="#review_of_product" class="rating-details ms-2">(<?= $product_review_total['total_rows'] ?> Reviews)</a>
+									<?php if ($product_review_total['total_rows'] > 0) : ?>
+										<div class="d-flex stars me-2">
+											<?php
+											$rating = round(($product_review_total['total_rating'] / $product_review_total['total_rows']) * 2) / 2;
+											// Calculate the whole number and fractional part of the rating
+											$wholeNumber = floor($rating);
+											$fractionalPart = $rating - $wholeNumber;
+
+											// Loop through the whole number part and display solid stars
+											for ($i = 0; $i < $wholeNumber; $i++) {
+												echo '<img src="' . base_url('assets_web/images/icons/star-yellow.svg') . '" alt="Star">';
+											}
+
+											// Check the fractional part to display half or empty star
+											if ($fractionalPart >= 0.5) {
+												echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
+											} else {
+												echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+											}
+
+											// Calculate the remaining empty stars
+											$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
+
+											// Display the remaining empty stars
+											for ($i = 0; $i < $emptyStars; $i++) {
+												echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+											}
+											?>
+										</div>
+									<?php endif; ?>
+									<a href="#review_of_product" class="rating-details">(<?= $product_review_total['total_rows'] ?> Reviews)</a>
 									<div class="seperator mx-3">|</div>
 									<div class="d-flex align-items-center stock-status">
 										In Stock
@@ -477,8 +501,8 @@
 					Review of Product 
 					---------------------------------------------------
 				-->
-				<div class="row reviews-row" id="review_of_product">
-					<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
+				<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
+					<div class="row reviews-row" id="review_of_product">
 						<div class="d-flex align-items-center mb-2 mb-md-4">
 							<label class="product_detail_headings" for="">Reviews</label>
 							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
@@ -543,50 +567,8 @@
 								</div>
 							</div>
 						<?php endforeach; ?>
-						<!-- <?php foreach ($product_review as $review) : ?>
-							<div class="review-details d-flex mt-3">
-								<div class="d-flex pt-1">
-									<?php
-									$rating = round($review->rating * 2) / 2;
-									// Calculate the whole number and fractional part of the rating
-									$wholeNumber = floor($rating);
-									$fractionalPart = $rating - $wholeNumber;
-									?>
-									<?php
-									// Loop through the whole number part and display solid stars
-									for ($i = 0; $i < $wholeNumber; $i++) {
-										echo '<img src="' . base_url('assets_web/images/icons/star-yellow.svg') . '" alt="Star">';
-									}
-
-									// Check the fractional part to display half or empty star
-									if ($fractionalPart >= 0.5) {
-										echo '<i class="fa-solid fa-star-half-stroke"></i>';
-									} else {
-										echo '<img src="' . base_url('assets_web/images/icons/star-.svg') . '" alt="Star">';
-									}
-
-									// Calculate the remaining empty stars
-									$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
-
-									// Display the remaining empty stars
-									for ($i = 0; $i < $emptyStars; $i++) {
-										echo '<img src="' . base_url('assets_web/images/icons/star-.svg') . '" alt="Star">';
-									}
-									?>
-								</div>
-								<div class="d-flex flex-column mx-2">
-									<div class="review-text">
-										<b><?= $review->review_title ?></b>, <?= $review->review_comment ?>
-									</div>
-								</div>
-							</div>
-							<div class="d-flex mt-2">
-								<span class="fw-bolder"><?= $review->user_name; ?> | </span>
-								<span class="mx-2"><?= date('d M Y', strtotime($review->review_date)); ?></span>
-							</div>
-						<?php endforeach; ?> -->
-					<?php endif; ?>
-				</div>
+					</div>
+				<?php endif; ?>
 			</div>
 		</section>
 		<!--End: Slider Section -->
@@ -771,16 +753,17 @@
 		<!--/*Trending Section -->
 
 		<!--Trending Section -->
-		<!-- <section class="trending-section container px-1 px-md-2">
+		<section class="trending-section container mb-3 mb-md-5">
 			<?php if (!empty($related_product)) { ?>
-				<h4 class="<?= $default_language == 1 ? 'me-3 me-lg-3' : 'ms-3 ms-lg-3' ?>"><?= $this->lang->line('related-items') ?></h4>
+				<div class="d-flex align-items-center mb-3 mb-md-5">
+					<div class="heading-border"></div>
+					<div class="heading ms-3">Related Items</div>
+				</div>
 			<?php } ?>
-			<div class="swiper slider-trending" style="--swiper-navigation-color: #fff; --swiper-navigation-size: 18px;">
+			<div class="swiper slider-trending" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
 				<div class="swiper-wrapper" id="related_product"></div>
-				<div class="swiper-button-next"></div>
-				<div class="swiper-button-prev"></div>
 			</div>
-		</section> -->
+		</section>
 		<!--/*Trending Section -->
 
 		<!--Trending Section -->
@@ -795,42 +778,6 @@
 			</div>
 		</section> -->
 		<!--/*Trending Section -->
-
-		<!-- <div class="btn-wrap btn-mb pBtns1 mt-3 <?= $product_custom_cloth == 10 ? 'justify-content-end' : '' ?>" id="btn-mb">
-			<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
-				<?php if ($product_custom_cloth != 10) { ?>
-					<a href="#" onclick="add_to_cart_product_buynow(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-lg btn-primary">
-						<div class="d-flex justify-content-center align-items-center h-100">
-							<i class="fa-solid fa-bolt"></i>
-							<div class="mx-2 mt-1 fw-bolder text-uppercase"><?= $this->lang->line('buy-now') ?></div>
-						</div>
-					</a>
-				<?php }
-				if ($product_custom_cloth == 10) { ?>
-					<a target="_blank" href="https://api.whatsapp.com/send?phone=<?= '%2B91' . whatsapp_number . '&text=hi';  ?>" class="btn btn-success text-light text-center">
-						<div class="d-flex justify-content-center align-items-center">
-							<i class="fa-brands fa-whatsapp me-2" style="font-size: 20px;"></i>
-							<span style="vertical-align: middle;">WhatsApp</span>
-						</div>
-					</a>
-				<?php } else { ?>
-
-					<a href="#" onclick="add_to_cart_products(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-lg btn-secondary d-flex align-items-center justify-content-center mx-2">
-						<div class="d-flex justify-content-center align-items-center h-100">
-							<i class="fa-solid fa-cart-shopping"></i>
-							<div class="mx-2 mt-1 fw-bolder text-uppercase"><?= $this->lang->line('add-to-cart') ?></div>
-						</div>
-					</a>
-				<?php } ?>
-			<?php } else { ?>
-				<button type="button" class="btn btn-lg btn-secondary d-flex align-items-center justify-content-center" style="width: fit-content;">
-					<div class="d-flex justify-content-center align-items-center h-100">
-						<div class="mx-2 mt-1 fw-bolder text-uppercase"><?= $this->lang->line('out-of-stock') ?></div>
-					</div>
-				</button>
-			<?php } ?>
-		</div> -->
-
 	</main>
 
 	<?php include("include/footer.php") ?>

@@ -2,7 +2,7 @@
     border: 1px solid var(--bs-warning);
 }
 
-.product-card-img {
+.product-card .product-card-img {
     height: 206px;
     object-fit: contain;
 }
@@ -62,7 +62,7 @@
         line-height: 10px;
     }
 
-    .product-card-img {
+    .product-card .product-card-img {
         height: 123px;
     }
 

@@ -832,6 +832,21 @@ img.outof_stock {
     object-fit: cover;
 }
 
+.trending-section .heading-border {
+    width: 20px;
+    height: 40px;
+    background: var(--bs-primary);
+    border-radius: 4px;
+}
+
+.trending-section .heading {
+    color: var(--bs-primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+}
+
 @media(max-width:992px) {
     .left-block {
         top: 115px;

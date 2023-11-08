@@ -298,18 +298,20 @@ class Home extends REST_Controller
 		// $this->load->view('website/home.php', $this->data);
 		$default_language = $this->session->userdata("default_language");
 		$this->data['header_banner'] = $this->home_model->get_header_banner_request('section1', '1920-680');
-		$this->data['deals_banners'] = $this->home_model->get_header_banner_request('section_four_banner', '200-200');
-		$this->data['home_section2'] = $this->home_model->get_home_section2_request('section2');
-		$this->data['home_section4'] = $this->home_model->get_header_banner_request('section4', '1930-150');
-		$this->data['home_section10'] = $this->home_model->get_header_banner_request('section10', '1900-320');
-		$this->data['home_section11'] = $this->home_model->get_header_banner_request('section11', '1900-320');
-		$this->data['home_section12'] = $this->home_model->get_header_banner_request('section12', '1900-320');
 		$this->data['home_section5'] = $this->home_model->get_header_section5_request('section5');
-		$this->data['home_section6'] = $this->home_model->get_header_banner_request('section6', '1900-320');
-		$this->data['home_bottom_banner'] = $this->home_model->get_header_banner_request('section8', '610-400');
-		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, '','Offers', '');
-		$this->data['brands'] = $this->Brand_model->getTopBrands($default_language, '1');
-		$this->data['category'] = $this->home_model->get_category();
+		// $this->data['deals_banners'] = $this->home_model->get_header_banner_request('section_four_banner', '200-200');
+		// $this->data['home_section2'] = $this->home_model->get_home_section2_request('section2');
+		// $this->data['home_section4'] = $this->home_model->get_header_banner_request('section4', '1930-150');
+		// $this->data['home_section10'] = $this->home_model->get_header_banner_request('section10', '1900-320');
+		// $this->data['home_section11'] = $this->home_model->get_header_banner_request('section11', '1900-320');
+		// $this->data['home_section12'] = $this->home_model->get_header_banner_request('section12', '1900-320');
+		// $this->data['home_section6'] = $this->home_model->get_header_banner_request('section6', '1900-320');
+		// $this->data['home_bottom_banner'] = $this->home_model->get_header_banner_request('section8', '610-400');
+		// $this->data['offers_product'] = $this->home_model->get_home_products($default_language, '','Offers', '');
+		// $this->data['brands'] = $this->Brand_model->getTopBrands($default_language, '1');
+		// $this->data['category'] = $this->home_model->get_category();
+
+		$this->data['review_data'] = $this->home_model->get_home_review($default_language);
 
 
 		$this->load->view('website/index.php', $this->data);

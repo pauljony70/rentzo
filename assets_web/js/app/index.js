@@ -66,9 +66,11 @@ function get_home_events() {
 			var parsedJSON = JSON.parse(response);
 			var order = parsedJSON.length;
 			var product_html = "";
+			var product_htmls = "";
 			var count = 1;
 			if (order != 0) {
 				$("#home_events").empty();
+				$("#home_events_mobile").empty();
 				$(parsedJSON).each(function () {
 					product_html +=
 						`<div class="swiper-slide">
@@ -79,12 +81,18 @@ function get_home_events() {
 								</div>
 							</a>
 						</div>`;
+					product_htmls +=
+						`<div class="col-6 col-sm-4 pb-3">
+							<img src="${this.event_image}" class="event-card-img" alt="">
+							<div class="event-title text-center line-clamp-1">${this.name}</div>
+						</div>`;
 					count++;
 				});
 			} else {
 
 			}
 			$("#home_events").html(product_html);
+			$("#home_events_mobile").html(product_htmls);
 			new Swiper(".event-swiper", {
 				slidesPerView: 2.7,
 				spaceBetween: 10,

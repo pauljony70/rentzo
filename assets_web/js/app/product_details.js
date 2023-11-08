@@ -244,64 +244,45 @@ function related_product() {
 				$("#related_product").empty();
 				$(parsedJSON).each(function () {
 					product_html +=
-						`<div class="swiper-slide product-card-swiper px-2 py-1">
-							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-								<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-									<span class="discount text-uppercase">
-										<div>${this.offpercent}</div>
-									</span>
-									<span class="wishlist"><i class="fa fa-heart-o"></i></span>
-								</div>
-								<div class="image-container zoom-img">
-									<img src="${site_url}media/${this.imgurl}" class="zoom-img thumbnail-image">
-								</div>
-								<div class="product-detail-container p-2 mb-1">
-									<div class="justify-content-between align-items-center" style="padding:5px;">
-										<p class="dress-name mb-0">${this.name}</p>	
-										<div class="d-flex align-items-center justify-content-start flex-row mt-2" style="width: 100%;">
-											<span class="new-price">${this.mrp}</span>
-											<small class="old-price text-right mx-1">${this.price}</small>
-										</div>
+						`<div class="swiper-slide">
+							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
+								<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+								<div class="card-body d-flex flex-column product-card-body">
+									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
+									<div class="card-text d-flex justify-content-between py-1">
+										<div class="rent-heading">Rent</div>
+										<div class="rent-price">${this.price}</div>
 									</div>
-									<div class="d-flex justify-content-between align-items-center mt-1" style="padding: 0 5px;">
-										<div class="d-flex align-items-center">
-											<i class="fa-solid fa-star"></i>
-											<div class="rating-number">4.8</div>
-										</div>
-										<button class="btn btn-primary text-center text-uppercase card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event, '${this.id}', '${this.sku}', '${this.vendor_id}', '${user_id}', '1', '0', '2', '${qoute_id}')">${default_language === 1 ? 'يشتري' : 'BUY'}</button>
+									<div class="product-card-footer pt-1">
+										<div class="text-success">Available Today</div>
 									</div>
 								</div>
 							</a>
 						</div>`;
 				});
-			} else {
-				$('#sameProd').hide();
-			}
+			} else { }
 			$("#related_product").html(product_html);
 			new Swiper('.slider-trending', {
-				slidesPerView: 2,
+				slidesPerView: 2.7,
+				spaceBetween: 15,
 				freeMode: true,
 				grabCursor: true,
 				mousewheel: {
 					forceToAxis: true,
 				},
 				forceToAxis: false,
-				navigation: {
-					nextEl: ".swiper-button-next",
-					prevEl: ".swiper-button-prev",
-				},
 				breakpoints: {
-					576: {
-						slidesPerView: 3
-					},
-					768: {
-						slidesPerView: 4
+					640: {
+						slidesPerView: 3.5,
+						spaceBetween: 15,
 					},
 					1024: {
-						slidesPerView: 5
+						slidesPerView: 4.5,
+						spaceBetween: 15,
 					},
-					1200: {
-						slidesPerView: 6
+					1400: {
+						slidesPerView: 5.5,
+						spaceBetween: 15,
 					},
 				},
 			});
