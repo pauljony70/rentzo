@@ -5,9 +5,9 @@
 // define('USER', 'root');
 // define('PASS', '');
 define('HOST', 'localhost');
-define('DB1', 'mydatabase');
-define('USER', 'mydatabase');
-define('PASS', 'AtX66WHjncxb8RDc');
+define('DB1', 'rentzo');
+define('USER', 'root');
+define('PASS', '');
 
 $conn = new mysqli(HOST, USER, PASS, DB1);
 
@@ -17,8 +17,8 @@ $defaultstatus= "inactive";
 
 $publickey_server ="6543210987654321";
 
-define('BASEURL', "https://www.rentzo.co.in/");
-// define('BASEURL', "http://localhost/ebuy/");
+// define('BASEURL', "https://www.rentzo.co.in/");
+define('BASEURL', "http://localhost/rentzo/");
 
 $image_size = 500000;
 $file_kb = ($image_size/1000).' KB';

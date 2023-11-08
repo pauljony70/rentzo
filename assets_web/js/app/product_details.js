@@ -70,7 +70,11 @@ $(function () {
 	});
 });
 
-/* Initialize Swiper */
+/* 
+ * ---------------------------------------------------
+ * Initialize Desktop Gallery
+ * ---------------------------------------------------
+ */
 var swiper = new Swiper(".product-details-swiper-sm", {
 	spaceBetween: 10,
 	slidesPerView: 4,
@@ -80,10 +84,6 @@ var swiper = new Swiper(".product-details-swiper-sm", {
 
 var swiper2 = new Swiper(".product-details-swiper", {
 	spaceBetween: 10,
-	pagination: {
-		el: ".swiper-pagination",
-		clickable: true,
-	},
 	loop: true,
 	autoplay: {
 		delay: 2500,
@@ -94,9 +94,53 @@ var swiper2 = new Swiper(".product-details-swiper", {
 	},
 	breakpoints: {
 		768: {
-			// autoplay: false,
+			autoplay: false,
 		},
 	},
+});
+
+
+/* 
+ * ---------------------------------------------------
+ * Initialize Mobile Gallery
+ * ---------------------------------------------------
+ */
+var swiperMobileThumbs = new Swiper(".product-details-swiper-sm-mob", {
+	spaceBetween: 10,
+	slidesPerView: 3,
+	freeMode: true,
+	watchSlidesProgress: true,
+	direction: 'vertical'
+});
+
+var swiperMobileMain = new Swiper(".product-details-swiper-mob", {
+	spaceBetween: 10,
+	loop: true,
+	autoplay: {
+		delay: 2500,
+		disableOnInteraction: true,
+	},
+	thumbs: {
+		swiper: swiperMobileThumbs,
+	},
+});
+
+/* 
+ * ---------------------------------------------------
+ * Mouse hover zoom
+ * ---------------------------------------------------
+ */
+var options2 = {
+	fillContainer: true,
+	zoomWidth: 500,
+	offset: {
+		vertical: 0,
+		horizontal: 0
+	}
+};
+
+document.querySelectorAll('Zoom-1').forEach(element => {
+	new ImageZoom(element, options2);
 });
 
 var shareIcon = document.querySelector('.share-icon');
@@ -1099,7 +1143,7 @@ $("#review_form").submit(function (event) {
 	});
 });
 
-$(window).scroll(function () {
+/* $(window).scroll(function () {
 	var scrollTop = $(this).scrollTop();
 	$('.nav_inner').css({
 		opacity: function () {
@@ -1113,7 +1157,7 @@ $(window).scroll(function () {
 	} else {
 		document.getElementsByClassName("responsive_nav")[0].style["boxShadow"] = "";
 	}
-});
+}); */
 
 function mobileShareLink(url) {
 	if (navigator.share) {

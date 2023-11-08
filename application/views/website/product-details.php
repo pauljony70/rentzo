@@ -15,7 +15,7 @@
 	<?php } else { ?>
 		<meta name="og_title" property="og:title" content="<?= $productdetails['name']; ?>" />
 	<?php } ?>
-	<meta name="og_site_name" property="og:site_name" content="Ebuy.om" />
+	<meta name="og_site_name" property="og:site_name" content="Rentzo.om" />
 
 	<?php if ($productdetails['meta_key'] != '') { ?>
 		<meta property="og:keywords" content="<?= $productdetails['meta_key']; ?>" />
@@ -31,6 +31,8 @@
 	<link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css">
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
+
+	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
 </head>
 
@@ -84,11 +86,26 @@
 		<input type="hidden" name="whatsapp_number" value="<?= whatsapp_number; ?>" id="whatsapp_number">
 
 		<!--Start: Slider Section -->
-		<section class="product-slider my-5">
+		<section class="product-slider my-2 my-md-5">
 			<div class="container">
 				<div class="row">
-					<!-- For Image -->
-					<div class="col-md-5 product-gallery">
+					<div class="col-12">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb mb-4">
+								<a href="#" class="breadcrumb-item">Home</a>
+								<a href="#" class="breadcrumb-item">Library</a>
+								<li class="breadcrumb-item active" aria-current="page"><?= $productdetails['name']; ?></li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+				<div class="row mb-5">
+					<!--
+						--------------------------------------------------- 
+						Desktop image gallery
+						---------------------------------------------------
+					-->
+					<div class="col-md-5 product-gallery d-none d-md-block">
 						<div class="left-block">
 							<?php if ($productdetails['stock_status'] == 'Out of Stock' || $productdetails['stock'] <= 0) { ?>
 								<?php if ($default_language == 1) : ?>
@@ -97,11 +114,14 @@
 									<img alt="" class="outof_stock" src="<?= weburl . 'assets/img/out-of-stock-en.png'; ?>">
 								<?php endif; ?>
 							<?php } ?>
+							<div class="app-figure" id="zoom-fig">
+
+							</div>
 							<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px;" class="swiper product-details-swiper">
 								<div class="swiper-wrapper">
 									<?php if (!empty($productdetails['gallary_img_url'])) {
 										foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
-											<a class="swiper-slide my-auto spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $gallary['url']) ?>">
+											<a class="swiper-slide my-auto spotlight zoom-img" id="img-container" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $gallary['url']) ?>">
 												<img src="<?= base_url('media/' . $gallary['url']) ?>" />
 											</a>
 										<?php }
@@ -120,9 +140,8 @@
 										</div>
 									<?php } ?>
 								</div>
-								<div class="swiper-pagination"></div>
 							</div>
-							<div <?= $default_language == 1 ? 'dir="rtl"' : '' ?> thumbsSlider="" class="swiper product-details-swiper-sm">
+							<div thumbsSlider="" class="swiper product-details-swiper-sm d-none d-md-block">
 								<div class="swiper-wrapper">
 									<?php if (!empty($productdetails['gallary_img_url'])) {
 										foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
@@ -153,7 +172,7 @@
 						<div class="right-block">
 							<!-- Name of Product -->
 							<div class="d-flex justify-content-between align-items-center">
-								<h1 class="product-name line-clamp-2 mb-4 mt-4 mt-md-0"><?= $productdetails['name']; ?></h1>
+								<h1 class="product-name line-clamp-2 mb-2 mb-md-4"><?= $productdetails['name']; ?></h1>
 							</div>
 
 							<!-- Rating of Product -->
@@ -164,9 +183,13 @@
 								</div>
 							</div>
 
-							<!-- Rating of Product -->
+							<!-- 
+								---------------------------------------------------
+								Rating of Product 
+								---------------------------------------------------
+							-->
 							<div class="d-flex mb-4 ratings-tab align-items-center justify-content-between">
-								<div class="d-flex align-items-center">
+								<div class="d-flex flex-wrap align-items-center">
 									<div class="d-flex stars">
 										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
 										<img src="<?= base_url('assets_web/images/icons/star-yellow.svg') ?>" alt="Star">
@@ -193,7 +216,7 @@
 												<a target="_blank" href="whatsapp://send?text=<?= $actual_link ?>" class="brand-icon whatsapp">
 													<img src="<?= base_url('assets_web/images/brands/whatsapp.svg') ?>" alt="Facebook" srcset="">
 												</a>
-												<a target="_blank" href="http://twitter.com/share?url=<?= $actual_link ?>&text=I ♥ this product on EBuy! <?= $productdetails['name']; ?>&via=Ebuy&hashtags=buyonebuy" class="brand-icon twitter">
+												<a target="_blank" href="http://twitter.com/share?url=<?= $actual_link ?>&text=I ♥ this product on Rentzo! <?= $productdetails['name']; ?>&via=Rentzo&hashtags=buyonRentzo" class="brand-icon twitter">
 													<img src="<?= base_url('assets_web/images/brands/twitter.svg') ?>" alt="Twitter" srcset="">
 												</a>
 												<a target="_blank" href="https://www.pinterest.com/pin/create/button/?url=<?= $actual_link ?>&media=<?= urlencode(weburl . 'media/' . $main_url_img) ?>&description=<?= urlencode($productdetails['name'] . ' - ' . strip_tags($productdetails['short_desc'])) ?>" class="brand-icon pinterest">
@@ -205,21 +228,88 @@
 									</span>
 									<span class="mobile-share-icon" onclick="mobileShareLink('<?= $actual_link ?>')">
 										<div class="d-flex align-items-center" id="share-btn">
-											<i class="fa-solid fa-share"></i>
-											<div class="share-text mx-1"><?= $this->lang->line('share') ?></div>
+											<img src="<?= base_url('assets_web/images/icons/share.svg') ?>" alt="Share">
 										</div>
 									</span>
 								</div>
 							</div>
 
-							<!-- Price of Product -->
+							<!-- 
+								---------------------------------------------------
+								Price of Product 
+								---------------------------------------------------
+							-->
 							<div class="rent-price">
-								$2.25/ day
+								<?= $productdetails['price']; ?>/ day
 							</div>
 
-							<hr>
+							<hr class="d-none d-md-block">
 
-							<!-- Rent Details of Product -->
+							<!--
+								--------------------------------------------------- 
+								Mobile image gallery
+								---------------------------------------------------
+							-->
+							<div class="row image-gallery-mob my-3 d-flex d-md-none">
+								<div class="col-9 h-100 pe-1">
+									<div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px;" class="swiper product-details-swiper-mob">
+										<div class="swiper-wrapper">
+											<?php if (!empty($productdetails['gallary_img_url'])) {
+												foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
+													<a class="swiper-slide spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $gallary['url']) ?>">
+														<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+													</a>
+												<?php }
+											} else { ?>
+												<a class="swiper-slide spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
+													<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+												</a>
+											<?php } ?>
+											<?php if ($productdetails['youtube_url'] != '') { ?>
+												<div class="swiper-slide">
+													<video style="height:inherit;width:inherit;" id="product-video">
+														<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+													</video>
+													<a id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b"></i></a>
+													<a data-bs-toggle="modal" data-bs-target="#videoModal" class="fullscreen-button text-dark" style="position: absolute; top: 95%; right: -15px; transform: translate(-50%, -50%);"><i class="fas fa-expand" style="font-size: 1rem; padding: 12px 13px; border-radius:50%; background-color: #ffffff8b"></i></a>
+												</div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-3 h-100 ps-1">
+									<div thumbsSlider="" class="swiper product-details-swiper-sm-mob py-0">
+										<div class="swiper-wrapper">
+											<?php if (!empty($productdetails['gallary_img_url'])) {
+												foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
+													<div class="swiper-slide">
+														<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+													</div>
+												<?php }
+											} else { ?>
+												<div class="swiper-slide">
+													<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+												</div>
+											<?php } ?>
+											<?php if ($productdetails['youtube_url'] != '') { ?>
+												<div class="swiper-slide">
+													<video style="height:inherit;width:inherit;">
+														<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+													</video>
+													<a style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.0rem; padding: 8px 12px; border-radius:50%; background-color: #ffffff8b"></i></a>
+												</div>
+											<?php } ?>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--
+								--------------------------------------------------- 
+								Rent Details of Product
+								---------------------------------------------------
+							-->
 							<table class="rent-details-table text-center mb-4">
 								<thead>
 									<tr>
@@ -281,7 +371,7 @@
 							<div id="cart_btns" class="mb-5"></div>
 
 							<!-- Add to Cart and By now and Whatsapp Buttons -->
-							<div class="btn-wrap align-items-center pBtns d-flex mb-4">
+							<div class="btn-wrap align-items-center pBtns bg-white d-flex mb-4 py-2 py-md-0">
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
 									<a href="#" class="btn btn-warning">For Rent</a>
 
@@ -297,13 +387,17 @@
 								<?php } ?>
 
 								<!-- <a class="btn btn-light wishlist-btn heart-container mx-2" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)">
-											<div class="d-flex justify-content-center align-items-center h-100">
-												<i class="fa-<?= $productdetails['wishlist_count'] > 0 ? 'solid' : 'regular' ?> fa-heart add-to-wishlist"></i>
-											</div>
-										</a> -->
+										<div class="d-flex justify-content-center align-items-center h-100">
+											<i class="fa-<?= $productdetails['wishlist_count'] > 0 ? 'solid' : 'regular' ?> fa-heart add-to-wishlist"></i>
+										</div>
+									</a> -->
 							</div>
 
-							<!-- Badges -->
+							<!-- 
+								---------------------------------------------------
+								Badges 
+								---------------------------------------------------
+							-->
 							<div class="badges mb-4">
 								<div class="d-flex flex-wrap">
 									<img src="<?= base_url('assets_web/images/badges/badge1.png') ?>" alt="Badge">
@@ -312,7 +406,11 @@
 								</div>
 							</div>
 
-							<!-- Cart Offcanvas -->
+							<!-- 
+								---------------------------------------------------
+								Cart Offcanvas 
+								---------------------------------------------------
+							-->
 							<div class="offcanvas offcanvas-start" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
 								<div class="offcanvas-header">
 									<h5 id="cartOffcanvasLabel" class="fw-bolder fs-4 mb-0 mt-1"><?= $this->lang->line('cart') ?></h5>
@@ -329,7 +427,11 @@
 								</div>
 							</div>
 
-							<!-- Product Info Table -->
+							<!-- 
+								---------------------------------------------------
+								Product Info Table 
+								---------------------------------------------------
+							-->
 							<?php if (!empty($productdetails['product_info'])) : ?>
 								<div class="table-responsive mb-4">
 									<label class="mb-3 product_detail_headings" for="">Product Specification</label>
@@ -349,7 +451,11 @@
 								</div>
 							<?php endif; ?>
 
-							<!-- Product Details and Reviews -->
+							<!-- 
+								---------------------------------------------------
+								Product Details 
+								---------------------------------------------------
+							-->
 							<div class="product-details mb-4">
 								<label class="mb-3 product_detail_headings" for="">About This Product</label>
 								<div class="product-full-desc product_description_content"><?= $productdetails['fulldetail']; ?></div>
@@ -363,35 +469,52 @@
 								<?php } ?>
 							</div>
 
-							<!-- Review of Product -->
-							<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
-								<div class="mt-5" id="review_of_product">
-									<label class="fw-bolder mb-2 product_detail_headings" for=""><?= $this->lang->line('reviews-for-this-product') ?></label>
-									<?php if ($productdetails['order_count'] > 0) : ?>
-										<div class="add-reviews btn-wrap d-block">
-											<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewsModal"><?= $this->lang->line('add_reviews') ?></a>
+						</div>
+					</div>
+				</div>
+				<!-- 
+					---------------------------------------------------
+					Review of Product 
+					---------------------------------------------------
+				-->
+				<div class="row reviews-row" id="review_of_product">
+					<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
+						<div class="d-flex align-items-center mb-2 mb-md-4">
+							<label class="product_detail_headings" for="">Reviews</label>
+							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
+						</div>
+						<?php if ($productdetails['order_count'] > 0) : ?>
+							<div class="add-reviews btn-wrap d-block">
+								<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewsModal">Add Review</a>
+							</div>
+						<?php endif; ?>
+						<?php foreach ($product_review as $review) : ?>
+							<div class="d-flex">
+								<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1">
+								<div class="ms-3">
+									<div class="d-flex justify-content-between mb-2">
+										<div class="user-profile d-flex align-items-center">
+											<div class="user-name"><?= $review->user_name; ?></div>
 										</div>
-									<?php endif; ?>
-									<?php foreach ($product_review as $riview) : ?>
-										<div class="review-details d-flex mt-3">
-											<div class="d-flex pt-1">
+										<div class="d-flex flex-column">
+											<div class="review-date text-end"><?= date('d M Y', strtotime($review->review_date)); ?></div>
+											<div class="d-flex stars text-end mt-auto">
 												<?php
-												$rating = round($riview->rating * 2) / 2;
+												$rating = round($review->rating * 2) / 2;
 												// Calculate the whole number and fractional part of the rating
 												$wholeNumber = floor($rating);
 												$fractionalPart = $rating - $wholeNumber;
-												?>
-												<?php
+
 												// Loop through the whole number part and display solid stars
 												for ($i = 0; $i < $wholeNumber; $i++) {
-													echo '<i class="fa-solid fa-star"></i>';
+													echo '<img src="' . base_url('assets_web/images/icons/star-yellow.svg') . '" alt="Star">';
 												}
 
 												// Check the fractional part to display half or empty star
 												if ($fractionalPart >= 0.5) {
-													echo '<i class="fa-solid fa-star-half-stroke"></i>';
+													echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
 												} else {
-													echo '<i class="fa-regular fa-star"></i>';
+													echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
 												}
 
 												// Calculate the remaining empty stars
@@ -399,25 +522,70 @@
 
 												// Display the remaining empty stars
 												for ($i = 0; $i < $emptyStars; $i++) {
-													echo '<i class="fa-regular fa-star"></i>';
+													echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
 												}
 												?>
 											</div>
-											<div class="d-flex flex-column mx-2">
-												<div class="review-text">
-													<b><?= $riview->review_title ?></b>, <?= $riview->review_comment ?>
-												</div>
-											</div>
 										</div>
-										<div class="d-flex mt-2">
-											<span class="fw-bolder"><?= $riview->user_name; ?> | </span>
-											<span class="mx-2"><?= date('d M Y', strtotime($riview->review_date)); ?></span>
-										</div>
-									<?php endforeach; ?>
+									</div>
+									<div class="review-title">
+										<?= $review->review_title ?>
+									</div>
+									<div class="review-text mb-4">
+										<?= $review->review_comment ?>
+									</div>
+									<div class="review-images d-flex">
+										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
+										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
+										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
+										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
+									</div>
 								</div>
-							<?php endif; ?>
-						</div>
-					</div>
+							</div>
+						<?php endforeach; ?>
+						<!-- <?php foreach ($product_review as $review) : ?>
+							<div class="review-details d-flex mt-3">
+								<div class="d-flex pt-1">
+									<?php
+									$rating = round($review->rating * 2) / 2;
+									// Calculate the whole number and fractional part of the rating
+									$wholeNumber = floor($rating);
+									$fractionalPart = $rating - $wholeNumber;
+									?>
+									<?php
+									// Loop through the whole number part and display solid stars
+									for ($i = 0; $i < $wholeNumber; $i++) {
+										echo '<img src="' . base_url('assets_web/images/icons/star-yellow.svg') . '" alt="Star">';
+									}
+
+									// Check the fractional part to display half or empty star
+									if ($fractionalPart >= 0.5) {
+										echo '<i class="fa-solid fa-star-half-stroke"></i>';
+									} else {
+										echo '<img src="' . base_url('assets_web/images/icons/star-.svg') . '" alt="Star">';
+									}
+
+									// Calculate the remaining empty stars
+									$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
+
+									// Display the remaining empty stars
+									for ($i = 0; $i < $emptyStars; $i++) {
+										echo '<img src="' . base_url('assets_web/images/icons/star-.svg') . '" alt="Star">';
+									}
+									?>
+								</div>
+								<div class="d-flex flex-column mx-2">
+									<div class="review-text">
+										<b><?= $review->review_title ?></b>, <?= $review->review_comment ?>
+									</div>
+								</div>
+							</div>
+							<div class="d-flex mt-2">
+								<span class="fw-bolder"><?= $review->user_name; ?> | </span>
+								<span class="mx-2"><?= date('d M Y', strtotime($review->review_date)); ?></span>
+							</div>
+						<?php endforeach; ?> -->
+					<?php endif; ?>
 				</div>
 			</div>
 		</section>

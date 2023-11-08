@@ -307,7 +307,7 @@ class Home extends REST_Controller
 		$this->data['home_section5'] = $this->home_model->get_header_section5_request('section5');
 		$this->data['home_section6'] = $this->home_model->get_header_banner_request('section6', '1900-320');
 		$this->data['home_bottom_banner'] = $this->home_model->get_header_banner_request('section8', '610-400');
-		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, 'Offers', '');
+		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, '','Offers', '');
 		$this->data['brands'] = $this->Brand_model->getTopBrands($default_language, '1');
 		$this->data['category'] = $this->home_model->get_category();
 
@@ -318,9 +318,10 @@ class Home extends REST_Controller
 	function get_home_products_get()
 	{
 		$type = $this->input->get('type');
+		$title = $this->input->get('title');
 		$timezone = $this->input->get('timezone');
 		$default_language = $this->session->userdata("default_language");
-		$response = $this->home_model->get_home_products($default_language, $type, $timezone);
+		$response = $this->home_model->get_home_products($default_language, $title,$type, $timezone);
 
 		echo json_encode($response);
 	}
@@ -339,6 +340,34 @@ class Home extends REST_Controller
 
 		echo json_encode($response);
 	}
+	
+	function get_home_arival_banner_get()
+	{
+
+		$response = $this->home_model->get_header_banner_request('section_four_banner', '200-200');
+
+		echo json_encode($response);
+	}
+	
+	function get_home_events_get()
+	{
+
+		$response = $this->home_model->get_home_events_request();
+
+		echo json_encode($response);
+	}
+	
+	function get_home_product_title_get()
+	{
+
+		$type = $this->input->get('type');
+		
+		$response = $this->home_model->get_home_product_title_request($type);
+
+		echo json_encode($response);
+	}
+	
+	
 
 
 	function checkpincode_get()

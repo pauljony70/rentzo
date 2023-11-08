@@ -210,3 +210,7 @@ User logged in - IP: 223.233.75.51 - System Name: srv424130 - Timestamp: 2023-11
 User logged in - IP: 223.233.75.51 - System Name: srv424130 - Timestamp: 2023-11-03 10:06:03
 User logged in - IP: 202.179.156.49 - System Name: srv424130 - Timestamp: 2023-11-04 16:28:11
 User logged in - IP: 103.232.127.223 - System Name: srv424130 - Timestamp: 2023-11-06 13:33:05
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-07 10:53:39
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-07 18:05:00
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-07 18:07:13
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-08 10:37:59

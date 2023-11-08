@@ -684,6 +684,24 @@ class Home_model extends CI_Model
 	}
 
 
+	function get_home_events_request()
+	{
+		$this->db->select('*');
+		$query = $this->db->get('events');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners) {
+				$img_decode1 = json_decode($banners->event_image);
+				$banners->event_image = base_url('media/') . $img_decode1->{'430-590'};
+				$banner_result[] = $banners;
+			}
+		}
+
+		return $banner_result;
+	}
+	
 	function get_header_banner_request($section, $dimension)
 	{
 		$this->db->select('*');
@@ -697,6 +715,25 @@ class Home_model extends CI_Model
 			foreach ($home_result as $banners) {
 				$img_decode1 = json_decode($banners->image);
 				$banners->image = base_url('media/') . $img_decode1->{$dimension};
+				$banner_result[] = $banners;
+			}
+		}
+
+		return $banner_result;
+	}
+	
+	function get_home_product_title_request($section)
+	{
+		$this->db->select('*');
+
+		$this->db->where(array('section' => $section));
+		$query = $this->db->get('homepage_banner');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners) {
+				$banners->image = $banners->image;
 				$banner_result[] = $banners;
 			}
 		}
@@ -1023,7 +1060,7 @@ class Home_model extends CI_Model
 	}
 
 
-	function get_home_products($language, $type, $timezone)
+	function get_home_products($language, $title,$type, $timezone)
 	{
 		$prod_result = array();
 		$product_array = array();
@@ -1192,8 +1229,26 @@ class Home_model extends CI_Model
 				}
 			}
 		}
+		
+		$res_result = array();
+		$res_result['product_array'] = $product_array;
+		
+		$this->db->select('*');
 
-		return $product_array;
+		$this->db->where(array('section' => $title));
+		$query = $this->db->get('homepage_banner');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners) {
+				$banners->image = $banners->image;
+				$banner_result[] = $banners->image;
+			}
+		}
+		$res_result['title'] = $banner_result;
+
+		return $res_result;
 	}
 
 	function get_order_details_products($language, $type)

@@ -8,7 +8,7 @@
 <script src="<?= base_url('assets_web/libs/select2/js/select2.min.js') ?>"></script>
 <script src="<?php echo base_url; ?>assets_web/js/slick.min.js"></script>
 <script src="<?php echo base_url; ?>assets_web/js/global.js"></script>
-<script src="<?php echo base_url(); ?>assets_web/js/custom.js"></script>
+<script src="<?php echo base_url(); ?>assets_web/js/app/common.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/js/topbar.js"></script>
 
 
