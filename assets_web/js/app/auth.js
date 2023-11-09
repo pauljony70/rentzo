@@ -10,8 +10,12 @@ const submitOtpBtn = loginContainter ? loginContainter.querySelector('#sendOtpLo
 const submitSignUpForm = signupContainter ? signupContainter.querySelector('#sendOtpLogInBtn') : null;
 const resendOtpBtn = document.getElementById("resendOtpBtn");
 const loginOtpBox = document.querySelector('.otp-field');
-const editBtn = document.querySelector('#login-otp-container .fa-pen-to-square');
-const fullName = document.querySelector('#fullname');
+const signupPhoneOtpBox = document.querySelector('.phone-otp-field');
+const signupEmailOtpBox = document.querySelector('.email-otp-field');
+const editBtn = document.querySelectorAll('#login-otp-container .fa-pen-to-square');
+const fullname = document.querySelector('#fullname');
+const signupPhone = document.querySelector('#phone_number');
+const signupEmail = document.querySelector('#email');
 var countdownInterval = '';
 
 
@@ -100,78 +104,33 @@ const sendLoginOtp = () => {
 
 const sendRegistrationOtp = () => {
     loginLoader.className = "";
-    var phone = document.getElementById('log_mobileno');
-    var phonev = phone.value;
-    var countryCode = '';
-    var qouteid = '';
-    var input_type = checkInputType(phonev);
-    var phoneFlag = 0;
-    var nameFlag = 0;
+    document.getElementById('error-alert-div').classList.add('d-none');
 
-    if (phonev == "" || phonev == null) {
-        loginLoader.classList.add('d-none');
-        if (default_language === 1)
-            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
-        else
-            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.');
-        phoneFlag = 0;
-    } else if (input_type !== 'email' && input_type !== 'phone') {
-        loginLoader.classList.add('d-none');
-        if (default_language === 1)
-            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
-        else
-            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.');;
-        phoneFlag = 0;
-    } else {
-        setSuccessMsg(phone);
-        phoneFlag = 1;
-    }
-
-    if (input_type === 'phone') {
-        var iti = window.intlTelInputGlobals.getInstance(phone);
-        var selectedCountryData = iti.getSelectedCountryData();
-        var countryCode = selectedCountryData.dialCode;
-    }
-
-    if (fullName.value == "" || fullName.value == null) {
-        loginLoader.classList.add('d-none');
-        if (default_language === 1)
-            setErrorMsg(fullName, '<i class="fa-solid fa-circle-xmark"></i> الإسم الكامل ضروري.');
-        else
-            setErrorMsg(fullName, '<i class="fa-solid fa-circle-xmark"></i> Full name is required.');
-        nameFlag = 0;
-    } else {
-        setSuccessMsg(fullName);
-        nameFlag = 1
-    }
-
-
-    if (nameFlag == 1 && phoneFlag == 1) {
+    if (validateSignUpForm()) {
         $.ajax({
             method: 'POST',
             url: site_url + 'signup',
             data: {
                 language: default_language,
-                devicetype: "1",
-                phone: phonev,
-                country_code: countryCode,
-                user_name: fullName.value,
+                fullname: fullname.value,
+                phone: signupPhone.value,
+                email: signupEmail.value,
                 [csrfName]: csrfHash,
             },
             success: function (response) {
                 loginLoader.classList.add('d-none');
                 if (response.status == 1) {
-                    setSuccessMsg(phone);
                     signupInputContainer.classList.add('d-none');
                     loginOtpContainer.classList.remove('d-none');
                     startResendTimer();
                 } else {
-                    setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                    document.getElementById('error-alert-div').classList.remove('d-none');
+                    document.getElementById('error-alert').textContent = response.msg;
                 }
             },
             error: function (response) {
                 loginLoader.classList.add('d-none');
-                setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
+                console.log(response);
             }
         });
     }
@@ -276,36 +235,40 @@ if (submitSignUpForm) {
 
     submitSignUpForm.addEventListener('click', () => {
         loginLoader.className = "";
-        var phone = document.getElementById('log_mobileno');
-        var phonev = phone.value;
-        var otp_login = getOTPVal("otp-field");
-        var input_type = checkInputType(phonev);
+        var phone_otp = getOTPVal("phone-otp-field");
+        var email_otp = getOTPVal("email-otp-field");
 
-        if (otp_login === '') {
+        if (phone_otp === '') {
             loginLoader.classList.add('d-none');
-            if (default_language === 1)
-                setOtpErrorMsg(loginOtpBox, '<i class="fa-solid fa-circle-xmark"></i> كلمة المرور لمرة واحدة فارغة.')
-            else
-                setOtpErrorMsg(loginOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP is empty.')
-        } else if (otp_login.length !== 6) {
+            setOtpErrorMsg(signupPhoneOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP is empty.')
+        } else if (phone_otp.length !== 6) {
             loginLoader.classList.add('d-none');
-            if (default_language === 1)
-                setOtpErrorMsg(loginOtpBox, '<i class="fa-solid fa-circle-xmark"></i> يجب أن يكون طول كلمة المرور لمرة واحدة ستة.')
-            else
-                setOtpErrorMsg(loginOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.')
+            setOtpErrorMsg(signupPhoneOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.')
         } else {
-            setOtpSuccessMsg(loginOtpBox);
+            setOtpSuccessMsg(signupPhoneOtpBox);
         }
 
-        if (fullName.value != "" && phonev != "" && otp_login.length === 6 && (input_type === 'email' || input_type === 'phone')) {
+        if (email_otp === '') {
+            loginLoader.classList.add('d-none');
+            setOtpErrorMsg(signupEmailOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP is empty.')
+        } else if (email_otp.length !== 6) {
+            loginLoader.classList.add('d-none');
+            setOtpErrorMsg(signupEmailOtpBox, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.')
+        } else {
+            setOtpSuccessMsg(signupEmailOtpBox);
+        }
+
+        if (validateSignUpForm() && phone_otp.length === 6 && email_otp.length === 6) {
             $.ajax({
                 method: 'POST',
                 url: site_url + 'verify_otp',
                 data: {
                     language: default_language,
-                    phone: phonev,
-                    otp: otp_login,
-                    user_name: fullName.value,
+                    fullname: fullname.value,
+                    phone: signupPhone.value,
+                    email: signupEmail.value,
+                    phone_otp: phone_otp,
+                    email_otp: email_otp,
                     [csrfName]: csrfHash,
                 },
                 success: function (response) {
@@ -327,92 +290,276 @@ if (submitSignUpForm) {
     });
 }
 
-editBtn.addEventListener('click', () => {
-    loginLoader.className = "";
-    clearOTPVal('otp-field');
-    intializeOtpContainer(loginOtpBox);
-    setTimeout(() => {
-        clearInterval(countdownInterval);
-        resendOtpBtn.innerText = "RESEND OTP";
-        resendOtpBtn.disabled = false;
-        loginOtpContainer.classList.add('d-none');
-        if (loginInputContainer)
-            loginInputContainer.classList.remove('d-none');
-        else
-            signupInputContainer.classList.remove('d-none');
-        loginLoader.className = "d-none";
-    }, 500);
+const validateSignUpForm = () => {
+    var nameFlag = 0;
+    var emailFlag = 0;
+    var phoneFlag = 0;
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (fullname.value == "" || fullname.value == null) {
+        loginLoader.classList.add('d-none');
+        setErrorMsg(fullname, '<i class="fa-solid fa-circle-xmark"></i> Full name is required.');
+        nameFlag = 0;
+    } else {
+        setSuccessMsg(fullname);
+        nameFlag = 1
+    }
+
+    if (signupEmail.value == "" || signupEmail.value == null) {
+        loginLoader.classList.add('d-none');
+        setErrorMsg(signupEmail, '<i class="fa-solid fa-circle-xmark"></i> Email is required.');
+        emailFlag = 0;
+    } else if (!emailRegex.test(signupEmail.value)) {
+        loginLoader.classList.add('d-none');
+        setErrorMsg(signupEmail, '<i class="fa-solid fa-circle-xmark"></i> Invalid email.');;
+        emailFlag = 0;
+    } else {
+        setSuccessMsg(signupEmail);
+        emailFlag = 1;
+    }
+
+    if (signupPhone.value == "" || signupPhone.value == null) {
+        loginLoader.classList.add('d-none');
+        setErrorMsg(signupPhone, '<i class="fa-solid fa-circle-xmark"></i> Phone no is required.');
+        phoneFlag = 0;
+    } else if (!(/^\d{10}$/.test(signupPhone.value.replace(/\s|-/g, '')))) {
+        loginLoader.classList.add('d-none');
+        setErrorMsg(signupPhone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no.');;
+        phoneFlag = 0;
+    } else {
+        setSuccessMsg(signupPhone);
+        phoneFlag = 1;
+    }
+
+    if (nameFlag == 1 && emailFlag == 1 && phoneFlag == 1)
+        return true
+    else
+        return false;
+}
+
+editBtn.forEach(element => {
+    element.addEventListener('click', () => {
+        loginLoader.className = "";
+        clearOTPVal('otp-field');
+        intializeOtpContainer(loginOtpBox);
+        setTimeout(() => {
+            clearInterval(countdownInterval);
+            resendOtpBtn.innerText = "RESEND OTP";
+            resendOtpBtn.disabled = false;
+            loginOtpContainer.classList.add('d-none');
+            if (loginInputContainer)
+                loginInputContainer.classList.remove('d-none');
+            else
+                signupInputContainer.classList.remove('d-none');
+            loginLoader.className = "d-none";
+        }, 500);
+    });
 });
 
 // For OTP Screen
 const inputs = document.querySelectorAll(".otp-field > input");
+const signupPhoneinputs = document.querySelectorAll(".phone-otp-field > input");
+const signupEmailinputs = document.querySelectorAll(".email-otp-field > input");
 const button = document.querySelector(".btn");
 
-window.addEventListener("load", () => inputs[0].focus());
+// window.addEventListener("load", () => inputs[0].focus());
 button.setAttribute("disabled", "disabled");
 
-inputs[0].addEventListener("paste", function (event) {
-    event.preventDefault();
+if (inputs.length > 0) {
+    inputs[0].addEventListener("paste", function (event) {
+        event.preventDefault();
 
-    const pastedValue = (event.clipboardData || window.clipboardData).getData(
-        "text"
-    );
-    const otpLength = inputs.length;
+        var pastedValue = (event.clipboardData || window.clipboardData).getData(
+            "text"
+        );
+        var otpLength = inputs.length;
 
-    for (let i = 0; i < otpLength; i++) {
-        if (i < pastedValue.length) {
-            inputs[i].value = pastedValue[i];
-            inputs[i].removeAttribute("disabled");
-            inputs[i].focus;
-        } else {
-            inputs[i].value = ""; // Clear any remaining inputs
-            inputs[i].focus;
-        }
-    }
-});
-
-inputs.forEach((input, index1) => {
-    input.addEventListener("keyup", (e) => {
-        const currentInput = input;
-        const nextInput = input.nextElementSibling;
-        const prevInput = input.previousElementSibling;
-
-        if (currentInput.value.length > 1) {
-            currentInput.value = "";
-            return;
-        }
-
-        if (
-            nextInput &&
-            nextInput.hasAttribute("disabled") &&
-            currentInput.value !== ""
-        ) {
-            nextInput.removeAttribute("disabled");
-            nextInput.focus();
-        }
-
-        if (e.key === "Backspace") {
-            inputs.forEach((input, index2) => {
-                if (index1 <= index2 && prevInput) {
-                    input.setAttribute("disabled", true);
-                    input.value = "";
-                    prevInput.focus();
-                }
-            });
-        }
-
-        button.classList.remove("active");
-        button.setAttribute("disabled", "disabled");
-
-        const inputsNo = inputs.length;
-        if (!inputs[inputsNo - 1].disabled && inputs[inputsNo - 1].value !== "") {
-            button.classList.add("active");
-            button.removeAttribute("disabled");
-
-            return;
+        for (let i = 0; i < otpLength; i++) {
+            if (i < pastedValue.length) {
+                inputs[i].value = pastedValue[i];
+                inputs[i].removeAttribute("disabled");
+                inputs[i].focus;
+            } else {
+                inputs[i].value = ""; // Clear any remaining inputs
+                inputs[i].focus;
+            }
         }
     });
-});
+
+    inputs.forEach((input, index1) => {
+        input.addEventListener("keyup", (e) => {
+            var currentInput = input;
+            var nextInput = input.nextElementSibling;
+            var prevInput = input.previousElementSibling;
+
+            if (currentInput.value.length > 1) {
+                currentInput.value = "";
+                return;
+            }
+
+            if (
+                nextInput &&
+                nextInput.hasAttribute("disabled") &&
+                currentInput.value !== ""
+            ) {
+                nextInput.removeAttribute("disabled");
+                nextInput.focus();
+            }
+
+            if (e.key === "Backspace") {
+                inputs.forEach((input, index2) => {
+                    if (index1 <= index2 && prevInput) {
+                        input.setAttribute("disabled", true);
+                        input.value = "";
+                        prevInput.focus();
+                    }
+                });
+            }
+
+            button.classList.remove("active");
+            button.setAttribute("disabled", "disabled");
+
+            var inputsNo = inputs.length;
+            if (!inputs[inputsNo - 1].disabled && inputs[inputsNo - 1].value !== "") {
+                button.classList.add("active");
+                button.removeAttribute("disabled");
+
+                return;
+            }
+        });
+    });
+}
+
+if (signupPhoneinputs.length > 0) {
+    signupPhoneinputs[0].addEventListener("paste", function (event) {
+        event.preventDefault();
+
+        var pastedValue = (event.clipboardData || window.clipboardData).getData(
+            "text"
+        );
+        var otpLength = signupPhoneinputs.length;
+
+        for (let i = 0; i < otpLength; i++) {
+            if (i < pastedValue.length) {
+                signupPhoneinputs[i].value = pastedValue[i];
+                signupPhoneinputs[i].removeAttribute("disabled");
+                signupPhoneinputs[i].focus;
+            } else {
+                signupPhoneinputs[i].value = ""; // Clear any remaining signupPhoneinputs
+                signupPhoneinputs[i].focus;
+            }
+        }
+    });
+
+    signupPhoneinputs.forEach((input, index1) => {
+        input.addEventListener("keyup", (e) => {
+            var currentInput = input;
+            var nextInput = input.nextElementSibling;
+            var prevInput = input.previousElementSibling;
+
+            if (currentInput.value.length > 1) {
+                currentInput.value = "";
+                return;
+            }
+
+            if (
+                nextInput &&
+                nextInput.hasAttribute("disabled") &&
+                currentInput.value !== ""
+            ) {
+                nextInput.removeAttribute("disabled");
+                nextInput.focus();
+            }
+
+            if (e.key === "Backspace") {
+                signupPhoneinputs.forEach((input, index2) => {
+                    if (index1 <= index2 && prevInput) {
+                        input.setAttribute("disabled", true);
+                        input.value = "";
+                        prevInput.focus();
+                    }
+                });
+            }
+
+            button.classList.remove("active");
+            button.setAttribute("disabled", "disabled");
+
+            var inputsNo = signupPhoneinputs.length;
+            if (!signupPhoneinputs[inputsNo - 1].disabled && signupPhoneinputs[inputsNo - 1].value !== "") {
+                button.classList.add("active");
+                button.removeAttribute("disabled");
+
+                return;
+            }
+        });
+    });
+}
+
+if (signupEmailinputs.length > 0) {
+    signupEmailinputs[0].addEventListener("paste", function (event) {
+        event.preventDefault();
+
+        var pastedValue = (event.clipboardData || window.clipboardData).getData(
+            "text"
+        );
+        var otpLength = signupEmailinputs.length;
+
+        for (let i = 0; i < otpLength; i++) {
+            if (i < pastedValue.length) {
+                signupEmailinputs[i].value = pastedValue[i];
+                signupEmailinputs[i].removeAttribute("disabled");
+                signupEmailinputs[i].focus;
+            } else {
+                signupEmailinputs[i].value = ""; // Clear any remaining signupEmailinputs
+                signupEmailinputs[i].focus;
+            }
+        }
+    });
+
+    signupEmailinputs.forEach((input, index1) => {
+        input.addEventListener("keyup", (e) => {
+            var currentInput = input;
+            var nextInput = input.nextElementSibling;
+            var prevInput = input.previousElementSibling;
+
+            if (currentInput.value.length > 1) {
+                currentInput.value = "";
+                return;
+            }
+
+            if (
+                nextInput &&
+                nextInput.hasAttribute("disabled") &&
+                currentInput.value !== ""
+            ) {
+                nextInput.removeAttribute("disabled");
+                nextInput.focus();
+            }
+
+            if (e.key === "Backspace") {
+                signupEmailinputs.forEach((input, index2) => {
+                    if (index1 <= index2 && prevInput) {
+                        input.setAttribute("disabled", true);
+                        input.value = "";
+                        prevInput.focus();
+                    }
+                });
+            }
+
+            button.classList.remove("active");
+            button.setAttribute("disabled", "disabled");
+
+            var inputsNo = signupEmailinputs.length;
+            if (!signupEmailinputs[inputsNo - 1].disabled && signupEmailinputs[inputsNo - 1].value !== "") {
+                button.classList.add("active");
+                button.removeAttribute("disabled");
+
+                return;
+            }
+        });
+    });
+}
 
 const getOTPVal = (otpDivClass) => {
     var otpVal = '';
@@ -473,6 +620,16 @@ $(document).ready(function () {
     if (input) {
         input.addEventListener('input', () => {
             document.querySelector('#login-input').innerText = input.value;
+        });
+    }
+    if (signupPhone) {
+        signupPhone.addEventListener('input', () => {
+            document.querySelector('#signup-input-phone').innerText = signupPhone.value;
+        });
+    }
+    if (signupEmail) {
+        signupEmail.addEventListener('input', () => {
+            document.querySelector('#signup-input-email').innerText = signupEmail.value;
         });
     }
 });

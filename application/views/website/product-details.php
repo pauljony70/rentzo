@@ -18,7 +18,7 @@
 	<meta name="og_site_name" property="og:site_name" content="Rentzo.om" />
 
 	<?php if ($productdetails['meta_key'] != '') { ?>
-		<meta property="og:keywords" content="<?= $productdetails['meta_key']; ?>" /> 
+		<meta property="og:keywords" content="<?= $productdetails['meta_key']; ?>" />
 	<?php } ?>
 
 	<?php if ($productdetails['meta_value'] != '') { ?>
@@ -28,6 +28,12 @@
 	<?php } ?>
 	<meta name="og_image" property="og:image" content="<?= weburl . 'media/' . $main_url_img; ?>" />
 
+	<!-- Plugin Css -->
+	<!-- <link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css"> -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+	<link rel="stylesheet" href="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.css') ?>">
+
+	<!-- Custom Css -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
 
@@ -120,23 +126,23 @@
 								<div class="swiper-wrapper">
 									<?php if (!empty($productdetails['gallary_img_url'])) {
 										foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
-											<a class="swiper-slide my-auto spotlight zoom-img" id="img-container" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $gallary['url']) ?>">
+											<a class="swiper-slide aaaaa" data-fancybox="group" href="<?= base_url('media/' . $gallary['url']) ?>">
 												<img src="<?= base_url('media/' . $gallary['url']) ?>" />
 											</a>
 										<?php }
 									} else { ?>
-										<a class="swiper-slide my-auto spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
+										<a class="swiper-slide" data-fancybox="group" href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
 											<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
 										</a>
 									<?php } ?>
 									<?php if ($productdetails['youtube_url'] != '') { ?>
-										<div class="swiper-slide my-auto">
+										<a class="swiper-slide my-auto" data-fancybox="group" href="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>">
 											<video style="height:inherit;width:inherit;" id="product-video">
 												<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
 											</video>
-											<a id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b"></i></a>
-											<a data-bs-toggle="modal" data-bs-target="#videoModal" class="fullscreen-button text-dark" style="position: absolute; top: 95%; right: -15px; transform: translate(-50%, -50%);"><i class="fas fa-expand" style="font-size: 1rem; padding: 12px 13px; border-radius:50%; background-color: #ffffff8b"></i></a>
-										</div>
+											<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b"></i></div>
+											<div data-bs-toggle="modal" data-bs-target="#videoModal" class="fullscreen-button text-dark" style="position: absolute; top: 95%; right: -15px; transform: translate(-50%, -50%);"><i class="fas fa-expand" style="font-size: 1rem; padding: 12px 13px; border-radius:50%; background-color: #ffffff8b"></i></div>
+										</a>
 									<?php } ?>
 								</div>
 							</div>
@@ -278,12 +284,12 @@
 										<div class="swiper-wrapper">
 											<?php if (!empty($productdetails['gallary_img_url'])) {
 												foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
-													<a class="swiper-slide spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $gallary['url']) ?>">
+													<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= base_url('media/' . $gallary['url']) ?>">
 														<img src="<?= base_url('media/' . $gallary['url']) ?>" />
 													</a>
 												<?php }
 											} else { ?>
-												<a class="swiper-slide spotlight zoom-img" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
+												<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
 													<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
 												</a>
 											<?php } ?>
@@ -395,9 +401,9 @@
 							<!-- Add to Cart and By now and Whatsapp Buttons -->
 							<div class="btn-wrap align-items-center pBtns bg-white d-flex mb-4 py-2 py-md-0">
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
-									<a href="#" class="btn btn-warning">For Rent</a>
+									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
 
-									<a href="#" onclick="add_to_cart_products(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
+									<a href="#" onclick="add_to_cart_product_buynow(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
 										Buy Now
 									</a>
 								<?php } else { ?>
@@ -417,14 +423,53 @@
 
 							<!-- 
 								---------------------------------------------------
-								Badges 
+								Rent Offcanvas 
 								---------------------------------------------------
 							-->
-							<div class="badges mb-4">
-								<div class="d-flex flex-wrap">
-									<img src="<?= base_url('assets_web/images/badges/badge1.png') ?>" alt="Badge">
-									<img src="<?= base_url('assets_web/images/badges/badge2.png') ?>" alt="Badge">
-									<img src="<?= base_url('assets_web/images/badges/badge3.png') ?>" alt="Badge">
+							<div class="offcanvas offcanvas-end" tabindex="-1" id="rentOffcanvas" aria-labelledby="rentOffcanvasLabel">
+								<div class="offcanvas-header">
+									<h5 class="offcanvas-title" id="rentOffcanvasLabel">Offcanvas</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+								</div>
+								<div class="offcanvas-body">
+									<!-- <div class="day-slider-div px-2 mb-5">
+										<div id="day-slider"></div>
+									</div> -->
+									<div class="slider-container">
+										<label for="day-slider">Select Number of Days:</label>
+										<div class="slider">
+											<div class="dividers">
+												<div class="divider"></div>
+												<div class="divider"></div>
+												<div class="divider"></div>
+												<div class="divider"></div>
+											</div>
+											<input type="range" id="day-slider" min="1" max="7" step="2" value="1">
+											<div class="pointer"></div>
+										</div>
+										<span id="slider-value">1</span> days
+									</div>
+									<div id="app">
+										<div class="p-rel rm-sticky-tenure__selector">
+											<div class="vue-slider vue-slider-ltr range-slider" v-bind:setvalue="selectedValue" show="true" speed="0.3" piecewise="true" piecewiselabel="true" bgstyle="{Object}" piecewisestyle="{Object}" sliderstyle="{Object}" style="padding: 10px 0px; width: auto; height: 4px;">
+												<!-- Slider content goes here -->
+											</div>
+										</div>
+									</div>
+
+									<div>
+										Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+									</div>
+									<div class="dropdown mt-3">
+										<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+											Dropdown button
+										</button>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="#">Action</a></li>
+											<li><a class="dropdown-item" href="#">Another action</a></li>
+											<li><a class="dropdown-item" href="#">Something else here</a></li>
+										</ul>
+									</div>
 								</div>
 							</div>
 
@@ -448,6 +493,20 @@
 									</div>
 								</div>
 							</div>
+
+							<!-- 
+								---------------------------------------------------
+								Badges 
+								---------------------------------------------------
+							-->
+							<div class="badges mb-4">
+								<div class="d-flex flex-wrap">
+									<img src="<?= base_url('assets_web/images/badges/badge1.png') ?>" alt="Badge">
+									<img src="<?= base_url('assets_web/images/badges/badge2.png') ?>" alt="Badge">
+									<img src="<?= base_url('assets_web/images/badges/badge3.png') ?>" alt="Badge">
+								</div>
+							</div>
+
 
 							<!-- 
 								---------------------------------------------------
@@ -501,7 +560,7 @@
 				-->
 				<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
 					<div class="row reviews-row" id="review_of_product">
-						<div class="d-flex align-items-center mb-2 mb-md-4">
+						<div class="d-flex align-items-center mb-3 mb-md-4">
 							<label class="product_detail_headings" for="">Reviews</label>
 							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
 						</div>
@@ -511,12 +570,15 @@
 							</div>
 						<?php endif; ?>
 						<?php foreach ($product_review as $review) : ?>
-							<div class="d-flex">
-								<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1">
-								<div class="ms-3">
+							<div class="d-flex mb-3">
+								<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1 d-none d-md-block">
+								<div class="ms-0 ms-md-3">
 									<div class="d-flex justify-content-between mb-2">
-										<div class="user-profile d-flex align-items-center">
-											<div class="user-name"><?= $review->user_name; ?></div>
+										<div class="d-flex align-items-center">
+											<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1 d-block d-md-none">
+											<div class="user-profile d-flex align-items-center ms-2 ms-md-0">
+												<div class="user-name"><?= $review->user_name; ?></div>
+											</div>
 										</div>
 										<div class="d-flex flex-column">
 											<div class="review-date text-end"><?= date('d M Y', strtotime($review->review_date)); ?></div>
@@ -556,7 +618,7 @@
 									<div class="review-text mb-4">
 										<?= $review->review_comment ?>
 									</div>
-									<div class="review-images d-flex">
+									<div class="review-images d-flex flex-wrap">
 										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
 										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
 										<img src="<?= base_url('assets_web/images/product2.svg') ?>" alt="Review">
@@ -782,8 +844,14 @@
 
 	<?php include("include/script.php") ?>
 
+	<!-- Plugin JS -->
 	<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+	<script src="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.js') ?>"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
+
+	<!-- Custom JS -->
 	<script type="text/javascript" src="<?= base_url('assets_web/js/index.js') ?>"></script>
 	<script src="<?= base_url(); ?>assets_web/js/app/product_details.js"></script>
 
@@ -835,7 +903,7 @@
 					playButton.style.display = "flex";
 				}
 			});
-		} 
+		}
 
 		const createOfferTimer = () => {
 			// Desktop Timer Container
@@ -903,6 +971,9 @@
 
 		createOfferTimer();
 	</script>
+
+	<!-- Plugin JS -->
+	<!-- <script type="text/javascript" src="https://punjablive1.com/dist/js/toastify.js"></script> -->
 
 </body>
 

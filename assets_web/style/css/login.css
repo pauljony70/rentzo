@@ -23,14 +23,18 @@
     cursor: pointer;
 }
 
-.otp-field {
+.otp-field,
+.phone-otp-field,
+.email-otp-field {
     flex-direction: row;
     column-gap: 40px;
     display: flex;
     align-items: center;
 }
 
-.otp-field input {
+.otp-field input,
+.phone-otp-field input,
+.email-otp-field input {
     height: 42px;
     width: 42px;
     border-radius: 0px;
@@ -42,12 +46,18 @@
     transition: border 0.3s ease;
 }
 
-.otp-field input:focus {
+.otp-field input:focus,
+.phone-otp-field input:focus,
+.email-otp-field input:focus {
     border: 1px solid #333 !important;
 }
 
 .otp-field input::-webkit-inner-spin-button,
-.otp-field input::-webkit-outer-spin-button {
+.otp-field input::-webkit-outer-spin-button,
+.phone-otp-field input::-webkit-inner-spin-button,
+.phone-otp-field input::-webkit-outer-spin-button,
+.email-otp-field input::-webkit-inner-spin-button,
+.email-otp-field input::-webkit-outer-spin-button {
     display: none;
 }
 
@@ -103,7 +113,7 @@
     border: none;
     border-radius: 0;
     border-bottom: var(--bs-border-width) solid var(--bs-border-color);
-    padding-left: .25rem!important;
+    padding-left: .25rem !important;
 }
 
 .form-container .btn-primary {

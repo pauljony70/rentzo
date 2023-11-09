@@ -208,44 +208,34 @@ class UserAuthController extends REST_Controller
 	public function signup_post()
 	{
 
-		$requiredparameters = array('language', 'phone', 'user_name');
+		$requiredparameters = array('language', 'fullname', 'phone', 'email');
 
 		$language_code = removeSpecialCharacters($this->post('language'));
-		$mobile_number  = removeSpecialCharacters($this->post('phone'));
-		$country_code  = removeSpecialCharacters($this->post('country_code'));
-		$user_name  = removeSpecialCharacters($this->post('user_name'));
-
-
+		$fullname  = removeSpecialCharacters($this->post('fullname'));
+		$country_code = '';
+		$phone  = removeSpecialCharacters($this->post('phone'));
+		$email  = removeSpecialCharacters($this->post('email'));
 
 		$validation = $this->parameterValidation($requiredparameters, $this->post()); //$this->post() holds post values
 
 		if ($validation == 'valid') {
-			$input_type = checkInputType($mobile_number);
-			if ($input_type !== 'Nothing') {
-				$otp = $this->sms_model->generateNumericOTP(6);
-				if ($input_type == 'Phone') {
-					$message = 'Dear customer welcome onboard ! ' . $otp . ' is your OTP to login your EBuy account. EBUY';
-					$sms_sent = $this->sms_model->send_sms_new($message, $country_code, $mobile_number);
-
-
-					if ($sms_sent == 'disabled') {
-						$this->responses(0, get_phrase('sms_disabled', $language_code));
-					} else if ($sms_sent == 'sent') {
-						$this->user_model->save_user_otp($mobile_number, $otp);
-						$this->responses(1, get_phrase('sms_sent', $language_code));
-					} else {
-						$this->responses(0, get_phrase('sms_failed', $language_code));
-					}
-				} else if ($input_type == 'Email') {
-					$sms_sent = $this->email_model->sendRegistrationEmailOtp($mobile_number);
-					$this->responses(1, get_phrase('sms_sent', $language_code));
-				}
-			} else if (!$mobile_number) {
+			if (!$phone) {
 				$this->responses(0, get_phrase('mobile_mandatory', $language_code));
-			} else if (!$user_name) {
+			} else if (!$fullname) {
+				$this->responses(0, get_phrase('user_name_mandatory', $language_code));
+			} else if (!$email) {
 				$this->responses(0, get_phrase('user_name_mandatory', $language_code));
 			} else {
-				$this->responses(0, get_phrase('invalid_mobile_or_email', $language_code));
+				$user = $this->db->where('phone', $phone)->or_where('email', $email)->get('appuser_login')->row_array();
+				if (empty($user)) {
+					$phone_otp = $this->sms_model->generateNumericOTP(6);
+					$message = 'Dear customer welcome onboard ! ' . $phone_otp . ' is your OTP to login your EBuy account. EBUY';
+					$this->sms_model->send_sms_new($message, $country_code, $phone);
+					$this->user_model->save_user_otp($phone, $phone_otp);
+					$this->email_model->sendRegistrationEmailOtp($email);
+					$this->responses(1, get_phrase('sms_sent', $language_code));
+				}
+				$this->responses(0, get_phrase('user already exists', $language_code));
 			}
 		} else {
 			echo $validation; //These are parameters are missing.
