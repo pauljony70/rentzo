@@ -415,23 +415,6 @@
     return (/^\d+$/.test(str));
   }
 
-  const checkInputType = (input) => {
-    const emailRegex = /^\S+@\S+\.\S+$/; // Regular expression for email pattern
-    const phoneRegex = /^\d+$/; // Regular expression for phone number pattern
-
-    if (emailRegex.test(input)) {
-      return 'email';
-    } else if (phoneRegex.test(input)) {
-      if (input.length >= 7 && input.length <= 15) {
-        return 'phone';
-      } else {
-        return 'invalid phone length';
-      }
-    } else {
-      return 'nothing';
-    }
-  }
-
   function sendEmailOtp() {
 
 

@@ -87,6 +87,7 @@ if (!function_exists('send_email_smtp')) {
 		$smtp_host = get_settings('smtp_host');
 		$smtp_port = get_settings('smtp_port');
 		$smtp_user = get_settings('smtp_user');
+		$system_email = get_settings('system_email');
 		$smtp_password = get_settings('smtp_password');
 		$system_name = get_settings('system_name');
 
@@ -114,9 +115,9 @@ if (!function_exists('send_email_smtp')) {
 
 
 		if ($CI->email->send()) {
-			//echo 'Your email was sent, thanks chamil.';
+			// echo 'Your email was sent, thanks chamil.';
 		} else {
-			//show_error($CI->email->print_debugger());
+			// show_error($CI->email->print_debugger());
 		}
 	}
 }

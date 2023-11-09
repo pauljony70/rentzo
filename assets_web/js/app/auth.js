@@ -25,6 +25,23 @@ const checkInputValue = (input) => {
     }
 }
 
+const checkInputType = (input) => {
+    const emailRegex = /^\S+@\S+\.\S+$/; // Regular expression for email pattern
+    const phoneRegex = /^\d+$/; // Regular expression for phone number pattern
+
+    if (emailRegex.test(input)) {
+        return 'email';
+    } else if (phoneRegex.test(input)) {
+        if (input.length === 10) {
+            return 'phone';
+        } else {
+            return 'Invalid phone length';
+        }
+    } else {
+        return 'nothing';
+    }
+}
+
 const sendLoginOtp = () => {
     loginLoader.className = "";
     var phone = document.getElementById('log_mobileno');
@@ -35,26 +52,16 @@ const sendLoginOtp = () => {
 
     if (phonev == "" || phonev == null) {
         loginLoader.classList.add('d-none');
-        if (default_language === 1)
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
-        else
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.')
+        setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.')
     } else if (input_type !== 'email' && input_type !== 'phone') {
         loginLoader.classList.add('d-none');
-        if (default_language === 1)
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
+        if (input_type === 'nothing')
+            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.')
         else
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.')
+            setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${input_type}`)
     } else {
-        setInTelSuccessMsg(phone);
+        setSuccessMsg(phone);
     }
-
-    if (input_type === 'phone') {
-        var iti = window.intlTelInputGlobals.getInstance(phone);
-        var selectedCountryData = iti.getSelectedCountryData();
-        var countryCode = selectedCountryData.dialCode;
-    }
-
 
     if (phonev != "" && (input_type === 'email' || input_type === 'phone')) {
         $.ajax({
@@ -73,22 +80,19 @@ const sendLoginOtp = () => {
             success: function (response) {
                 loginLoader.classList.add('d-none');
                 if (response.msg == 'User not exist') {
-                    if (default_language === 1)
-                        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> الرجاء التسجيل قبل تسجيل الدخول.')
-                    else
-                        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Please signup before login.')
+                    setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Please signup before login.')
                 } else if (response.msg == 'Sms sent') {
-                    setInTelSuccessMsg(phone);
-                    loginInputContainer.className = "d-none";
-                    loginOtpContainer.className = "";
+                    setSuccessMsg(phone);
+                    loginInputContainer.classList.add('d-none');
+                    loginOtpContainer.classList.remove('d-none');
                     startResendTimer();
                 } else {
-                    setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                    setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
                 }
             },
             error: function (response) {
                 loginLoader.classList.add('d-none');
-                setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
+                setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
             }
         });
     }
@@ -107,19 +111,19 @@ const sendRegistrationOtp = () => {
     if (phonev == "" || phonev == null) {
         loginLoader.classList.add('d-none');
         if (default_language === 1)
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
+            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
         else
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.');
+            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.');
         phoneFlag = 0;
     } else if (input_type !== 'email' && input_type !== 'phone') {
         loginLoader.classList.add('d-none');
         if (default_language === 1)
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
+            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
         else
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.');;
+            setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.');;
         phoneFlag = 0;
     } else {
-        setInTelSuccessMsg(phone);
+        setSuccessMsg(phone);
         phoneFlag = 1;
     }
 
@@ -157,17 +161,17 @@ const sendRegistrationOtp = () => {
             success: function (response) {
                 loginLoader.classList.add('d-none');
                 if (response.status == 1) {
-                    setInTelSuccessMsg(phone);
-                    signupInputContainer.className = "d-none";
-                    loginOtpContainer.className = "";
+                    setSuccessMsg(phone);
+                    signupInputContainer.classList.add('d-none');
+                    loginOtpContainer.classList.remove('d-none');
                     startResendTimer();
                 } else {
-                    setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                    setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
                 }
             },
             error: function (response) {
                 loginLoader.classList.add('d-none');
-                setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
+                setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
             }
         });
     }
@@ -197,17 +201,17 @@ if (submitOtpBtn) {
         if (phonev == "" || phonev == null) {
             loginLoader.classList.add('d-none');
             if (default_language === 1)
-                setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
+                setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني فارغ.')
             else
-                setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.')
+                setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone no or email is empty.')
         } else if (input_type !== 'email' && input_type !== 'phone') {
             loginLoader.classList.add('d-none');
             if (default_language === 1)
-                setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
+                setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف أو البريد الإلكتروني غير صالح.')
             else
-                setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.')
+                setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone no or email.')
         } else {
-            setInTelSuccessMsg(phone);
+            setSuccessMsg(phone);
             if (otp_login === '') {
                 loginLoader.classList.add('d-none');
                 if (default_language === 1)
@@ -329,17 +333,13 @@ editBtn.addEventListener('click', () => {
     intializeOtpContainer(loginOtpBox);
     setTimeout(() => {
         clearInterval(countdownInterval);
-        resendOtpBtn.className = 'fw-bolder';
-        if (default_language === 1)
-            resendOtpBtn.innerText = "أعد إرسال كلمة المرور لمرة واحدة";
-        else
-            resendOtpBtn.innerText = "RESEND OTP";
+        resendOtpBtn.innerText = "RESEND OTP";
         resendOtpBtn.disabled = false;
-        loginOtpContainer.className = "d-none";
+        loginOtpContainer.classList.add('d-none');
         if (loginInputContainer)
-            loginInputContainer.className = "";
+            loginInputContainer.classList.remove('d-none');
         else
-            signupInputContainer.className = "";
+            signupInputContainer.classList.remove('d-none');
         loginLoader.className = "d-none";
     }, 500);
 });
@@ -451,7 +451,6 @@ function startResendTimer() {
         resendOtpInText = 'أعد إرسال كلمة المرور لمرة واحدة بتنسيق';
     }
     resendOtpBtn.innerHTML = resendOtpInText + ': <span class="fw-bolder text-dark">00:30</span>';
-    resendOtpBtn.className = 'text-muted fw-bold';
 
     var remainingSeconds = 30;
     countdownInterval = setInterval(function () {
@@ -462,7 +461,6 @@ function startResendTimer() {
         if (remainingSeconds <= 0) {
             // Reset the timer element and enable the button
             clearInterval(countdownInterval);
-            resendOtpBtn.className = 'fw-bolder';
             resendOtpBtn.innerText = resendOtpText;
             resendOtpBtn.disabled = false;
         }
@@ -472,29 +470,9 @@ function startResendTimer() {
 $(document).ready(function () {
     // Initialize the plugin on the input field with the id 'phone'
     const input = document.querySelector("#log_mobileno");
-    const mobileNo = document.querySelector("#mobileno");
     if (input) {
         input.addEventListener('input', () => {
-            var input_type = checkInputValue(input.value);
             document.querySelector('#login-input').innerText = input.value;
-            if (input_type === 'email') {
-                var iti = window.intlTelInputGlobals.getInstance(input);
-                if (iti) {
-                    iti.destroy();
-                    input.style.cssText = "";
-                }
-            } else if (input_type === 'phone') {
-                var iti = window.intlTelInputGlobals.getInstance(input);
-                if (!iti) {
-                    window.intlTelInput(input, {
-                        initialCountry: "om",
-                        onlyCountries: ["om", "bh", "kw", "qa", "sa", "ae"],
-                        separateDialCode: true,
-                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/js/utils.js"
-                    });
-                }
-            }
-            input.focus();
         });
     }
 });

@@ -10,7 +10,7 @@ class Sms_model extends CI_Model
 
 	function send_sms_new($message = '', $country_code = '', $reciever_phone = '')
 	{
-		if ($country_code == 968) {
+		/* if ($country_code == 968) {
 			$message = urlencode($message);
 			$url = "https://www.ismartsms.net/iBulkSMS/HttpWS/SMSDynamicAPI.aspx?UserId=ebuy_webs&Password=Rn3@9jwe73&MobileNo={$country_code}{$reciever_phone}&Message={$message}&Lang=0&FLashSMS=N";
 			$ch = curl_init($url);
@@ -36,7 +36,8 @@ class Sms_model extends CI_Model
 			}
 		} else {
 			$sms_sent = 'disabled';
-		}
+		} */
+		$sms_sent = "sent";
 		return $sms_sent;
 	}
 
@@ -136,7 +137,5 @@ class Sms_model extends CI_Model
 		$result = curl_exec($ch);
 
 		curl_close($ch);
-		//print_r($result);
-		//return $result;
 	}
 }

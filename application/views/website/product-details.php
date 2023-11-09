@@ -18,7 +18,7 @@
 	<meta name="og_site_name" property="og:site_name" content="Rentzo.om" />
 
 	<?php if ($productdetails['meta_key'] != '') { ?>
-		<meta property="og:keywords" content="<?= $productdetails['meta_key']; ?>" />
+		<meta property="og:keywords" content="<?= $productdetails['meta_key']; ?>" /> 
 	<?php } ?>
 
 	<?php if ($productdetails['meta_value'] != '') { ?>
@@ -27,8 +27,6 @@
 		<meta property="og:description" content="<?= strip_tags($productdetails['short_desc']); ?>" />
 	<?php } ?>
 	<meta name="og_image" property="og:image" content="<?= weburl . 'media/' . $main_url_img; ?>" />
-
-	<link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css">
 
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
@@ -837,7 +835,7 @@
 					playButton.style.display = "flex";
 				}
 			});
-		}
+		} 
 
 		const createOfferTimer = () => {
 			// Desktop Timer Container
@@ -905,8 +903,6 @@
 
 		createOfferTimer();
 	</script>
-
-	<script type="text/javascript" src="https://punjablive1.com/dist/js/toastify.js"></script>
 
 </body>
 

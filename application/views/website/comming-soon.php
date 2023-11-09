@@ -10580,7 +10580,7 @@ Primary use:
     <div class="flex-w flex-str size1 overlay1">
         <div class="flex-w flex-col-sb wsize1 bg0 p-l-65 p-t-37 p-b-50 p-r-80 respon1">
             <div class="wrappic1">
-                <a href="#">
+                <a href="<?= base_url('home') ?>">
                     <img src="<?= base_url('assets_web/images/logo.svg') ?>" alt="Logo">
                 </a>
             </div>
