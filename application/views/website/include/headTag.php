@@ -20,6 +20,7 @@
 <!-- Plugins css -->
 <link rel="stylesheet" href="<?= base_url('assets_web/css/bootstrap.min.css') ?>">
 <link rel="stylesheet" href="<?= base_url('assets_web/libs/fontawesome/css/all.min.css') ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets_web/libs/sweetalert2/sweetalert2.min.css'); ?>" />
 
 
 <!-- Custom css -->
@@ -51,7 +52,6 @@
 <!-- Global CSS with bootstrap 5.2 -->
 <!-- <link rel="stylesheet" href="<?php echo base_url; ?>assets_web/style/css/global.css"> -->
 <!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url; ?>assets_web/style/css/slick-theme.css" /> -->
-<!-- <link rel="stylesheet" href="<?php echo base_url(); ?>assets_web/libs/sweetalert2/sweetalert2.min.css" /> -->
 <!-- <link rel="stylesheet" href="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.css') ?>" /> -->
 <!-- <link href="<?= base_url('assets_web/libs/select2/css/select2.min.css') ?>" rel="stylesheet" /> -->
 <!-- <style>

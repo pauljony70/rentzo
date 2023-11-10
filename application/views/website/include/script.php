@@ -1,17 +1,7 @@
 <script src="<?php echo base_url; ?>assets_web/js/jquery.min.js"></script>
-<script src="<?php echo base_url; ?>assets_web/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo base_url; ?>assets_web/js/spotlight.bundle.js"></script>
+<script src="<?php echo base_url; ?>assets_web/js/bootstrap.bundle.min.js"></script>  
 <script src="<?php echo base_url(); ?>assets_web/libs/sweetalert2/sweetalert2.min.js"></script>
-<script src="<?php echo base_url(); ?>assets_web/libs/dropify/dist/js/dropify.min.js"></script>
-<script src="<?php echo base_url(); ?>assets_web/js/native-toast.js"></script>
-<script src="<?php echo base_url; ?>assets_web/js/nouislider.min.js"></script>
-<script src="<?= base_url('assets_web/libs/select2/js/select2.min.js') ?>"></script>
-<script src="<?php echo base_url; ?>assets_web/js/slick.min.js"></script>
-<script src="<?php echo base_url; ?>assets_web/js/global.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/js/app/common.js"></script>
-<script src="<?php echo base_url(); ?>assets_web/js/topbar.js"></script>
-
-
 
 <script>
   setTimeout(function() {
@@ -500,8 +490,6 @@
     }
 
   }
-
-  $('.dropify').dropify();
 
   const countryShort = ["om", "bh", "kw", "qa", "sa", "ae"];
 

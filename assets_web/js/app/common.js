@@ -89,14 +89,16 @@ function setOtpSuccessMsg(ele) {
 }
 
 function intializeOtpContainer(ele) {
-  const formGroup = ele.parentElement;
-  const formInputs = formGroup.querySelectorAll('input');
-  const span = formGroup.querySelector('#error');
-  span.innerHTML = "";
-  span.style.cssText = "";
-  formInputs.forEach(formInput => {
-    formInput.style.cssText = ""
-  });
+  if (ele) {
+    const formGroup = ele.parentElement;
+    const formInputs = formGroup.querySelectorAll('input');
+    const span = formGroup.querySelector('#error');
+    span.innerHTML = "";
+    span.style.cssText = "";
+    formInputs.forEach(formInput => {
+      formInput.style.cssText = ""
+    });
+  }
 }
 
 function setDropifyErrorMsg(input, ele, errormsgs) {

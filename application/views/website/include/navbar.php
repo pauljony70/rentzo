@@ -54,7 +54,6 @@
     }
 </style>
 
-
 <!-- New Navbar -->
 <div class="dropdown-overlay"></div>
 <header class="navbar-light navbar-sticky" style="position: sticky; top: -1px; z-index: 999;">
@@ -99,15 +98,21 @@
                 <a href="#" class="ms-3" title="Wishlist">
                     <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
                 </a>
-                <a href="#" class="ms-3 position-relative" title="Cart">
+                <a href="<?= base_url('cart') ?>" class="ms-3 position-relative" title="Cart">
                     <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
                     <span class="icon-count">
                         <div id="badge-cart-count">2</div>
                     </span>
                 </a>
-                <a href="#" class="ms-3" title="Profile">
-                    <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
-                </a>
+                <?php if ($this->session->userdata('user_id') == '') : ?>
+                    <a href="<?= base_url('login') ?>" class="ms-3" title="Profile">
+                        <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
+                    </a>
+                <?php else : ?>
+                    <a href="#" class="ms-3" title="<?= $this->session->userdata('user_name') ?>">
+                        <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </nav>
@@ -135,15 +140,21 @@
                     <a href="#Wishlist" class="" title="Wishlist">
                         <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
                     </a>
-                    <a href="#Cart" class="position-relative" title="Cart">
+                    <a href="<?= base_url('cart') ?>" class="position-relative" title="Cart">
                         <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
                         <span class="icon-count">
                             <div id="badge-cart-count">2</div>
                         </span>
                     </a>
-                    <a href="#Profile" class="" title="Profile">
-                        <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
-                    </a>
+                    <?php if ($this->session->userdata('user_id') == '') : ?>
+                        <a href="<?= base_url('login') ?>" class="" title="Profile">
+                            <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
+                        </a>
+                    <?php else : ?>
+                        <a href="#" class="" title="<?= $this->session->userdata('user_name') ?>">
+                            <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

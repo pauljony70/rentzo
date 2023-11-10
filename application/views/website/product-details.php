@@ -32,12 +32,12 @@
 	<!-- <link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css"> -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 	<link rel="stylesheet" href="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.css') ?>">
+	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
 	<!-- Custom Css -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
 
-	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
 </head>
 
@@ -140,8 +140,7 @@
 											<video style="height:inherit;width:inherit;" id="product-video">
 												<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
 											</video>
-											<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b"></i></div>
-											<div data-bs-toggle="modal" data-bs-target="#videoModal" class="fullscreen-button text-dark" style="position: absolute; top: 95%; right: -15px; transform: translate(-50%, -50%);"><i class="fas fa-expand" style="font-size: 1rem; padding: 12px 13px; border-radius:50%; background-color: #ffffff8b"></i></div>
+											<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b; color: #333"></i></div>
 										</a>
 									<?php } ?>
 								</div>
@@ -294,13 +293,12 @@
 												</a>
 											<?php } ?>
 											<?php if ($productdetails['youtube_url'] != '') { ?>
-												<div class="swiper-slide">
+												<a href="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" data-fancybox="mobile-group" class="swiper-slide">
 													<video style="height:inherit;width:inherit;" id="product-video">
 														<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
 													</video>
-													<a id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b"></i></a>
-													<a data-bs-toggle="modal" data-bs-target="#videoModal" class="fullscreen-button text-dark" style="position: absolute; top: 95%; right: -15px; transform: translate(-50%, -50%);"><i class="fas fa-expand" style="font-size: 1rem; padding: 12px 13px; border-radius:50%; background-color: #ffffff8b"></i></a>
-												</div>
+													<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b; color: #333"></i></div>
+												</a>
 											<?php } ?>
 										</div>
 									</div>
@@ -432,29 +430,14 @@
 									<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 								</div>
 								<div class="offcanvas-body">
-									<!-- <div class="day-slider-div px-2 mb-5">
-										<div id="day-slider"></div>
-									</div> -->
-									<div class="slider-container">
-										<label for="day-slider">Select Number of Days:</label>
-										<div class="slider">
-											<div class="dividers">
-												<div class="divider"></div>
-												<div class="divider"></div>
-												<div class="divider"></div>
-												<div class="divider"></div>
-											</div>
-											<input type="range" id="day-slider" min="1" max="7" step="2" value="1">
-											<div class="pointer"></div>
-										</div>
-										<span id="slider-value">1</span> days
+									<div class="d-flex justify-content-between mb-2">
+										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
+										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
+										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
+										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
 									</div>
-									<div id="app">
-										<div class="p-rel rm-sticky-tenure__selector">
-											<div class="vue-slider vue-slider-ltr range-slider" v-bind:setvalue="selectedValue" show="true" speed="0.3" piecewise="true" piecewiselabel="true" bgstyle="{Object}" piecewisestyle="{Object}" sliderstyle="{Object}" style="padding: 10px 0px; width: auto; height: 4px;">
-												<!-- Slider content goes here -->
-											</div>
-										</div>
+									<div class="day-slider-div px-2 mb-5">
+										<div id="day-slider"></div>
 									</div>
 
 									<div>
@@ -852,7 +835,6 @@
 
 
 	<!-- Custom JS -->
-	<script type="text/javascript" src="<?= base_url('assets_web/js/index.js') ?>"></script>
 	<script src="<?= base_url(); ?>assets_web/js/app/product_details.js"></script>
 
 	<script>
@@ -872,108 +854,7 @@
 				b
 			};
 		}
-
-		var video = document.getElementById('product-video');
-		var playButton = document.getElementById('custom-play-button');
-		var fullscreenBtn = document.querySelector('.fullscreen-button ');
-
-		if (playButton && video) {
-			playButton.addEventListener('click', function() {
-				video.play();
-				playButton.style.display = 'none';
-			});
-
-			video.addEventListener('pause', function() {
-				playButton.style.display = 'block';
-			});
-
-			video.addEventListener('click', function() {
-				if (video.paused) {
-					video.play();
-					playButton.style.display = "none";
-				} else {
-					video.pause();
-					playButton.style.display = "flex";
-				}
-			});
-
-			fullscreenBtn.addEventListener('click', () => {
-				if (!video.paused) {
-					video.pause();
-					playButton.style.display = "flex";
-				}
-			});
-		}
-
-		const createOfferTimer = () => {
-			// Desktop Timer Container
-			const timer_container_pd = document.querySelectorAll('.timer_container_prod_details');
-			const hour = document.querySelectorAll('.timer_text_pd.hour');
-			const minute = document.querySelectorAll('.timer_text_pd.minute');
-			const second = document.querySelectorAll('.timer_text_pd.second');
-
-			// Tab, Mobile Timer Container
-			const timer_container_mob = document.querySelectorAll('.timer_container_prod_details_tab_mob');
-			const hour_mob = document.querySelectorAll('.timer_text_tab_mob.hour');
-			const minute_mob = document.querySelectorAll('.timer_text_tab_mob.minute');
-			const second_mob = document.querySelectorAll('.timer_text_tab_mob.second');
-			if (timer_container_pd && timer_container_mob) {
-				const offer_start_date_str = '<?= $productdetails['offer_start_date'] ?>';
-				const offer_end_date_str = '<?= $productdetails['offer_end_date'] ?>';
-
-				// Convert offer start and end dates to JavaScript Date objects in Asia/Muscat time zone
-				const offer_start_date = new Date(offer_start_date_str + " GMT+4");
-				const offer_end_date = new Date(offer_end_date_str + " GMT+4");
-
-				// Get the current date in user's time zone
-				const current_date = new Date();
-
-				// Check if the offer has started
-				if (current_date >= offer_start_date && current_date <= offer_end_date) {
-					// Calculate remaining time if the offer has started
-					const time_difference = offer_end_date - current_date;
-					const remaining_hours = Math.floor(time_difference / (1000 * 60 * 60));
-					const remaining_minutes = Math.floor((time_difference % (1000 * 60 * 60)) / (1000 * 60));
-					const remaining_seconds = Math.floor((time_difference % (1000 * 60)) / 1000);
-					console.log(remaining_hours);
-					hour.forEach(element => {
-						element.innerText = remaining_hours
-					});
-					minute.forEach(element => {
-						element.innerText = remaining_minutes
-					});
-					second.forEach(element => {
-						element.innerText = remaining_seconds
-					});
-
-					hour_mob.forEach(element => {
-						element.innerText = remaining_hours
-					});
-					minute_mob.forEach(element => {
-						element.innerText = remaining_minutes
-					});
-					second_mob.forEach(element => {
-						element.innerText = remaining_seconds
-					});
-
-					updateTimerElements(hour, minute, second, timer_container_pd);
-					updateTimerElements(hour_mob, minute_mob, second_mob, timer_container_mob);
-				} else {
-					timer_container_pd.forEach(element => {
-						element.remove();
-					});
-					timer_container_mob.forEach(element => {
-						element.remove();
-					});
-				}
-			}
-		}
-
-		createOfferTimer();
 	</script>
-
-	<!-- Plugin JS -->
-	<!-- <script type="text/javascript" src="https://punjablive1.com/dist/js/toastify.js"></script> -->
 
 </body>
 

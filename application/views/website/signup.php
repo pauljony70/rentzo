@@ -52,8 +52,8 @@
                         </div>
                     </form>
                     <div class="next-page-div text-center">
-                        <span>New to <?= get_settings('system_name') ?>?</span>
-                        <a href="<?= base_url('sign-up') ?>" class="ms-2">Create an account</a>
+                        <span>Already have account?</span>
+                        <a href="<?= base_url('login') ?>" class="ms-2">Log in</a>
                     </div>
                 </div>
             </div>
@@ -67,6 +67,10 @@
             <div class="col-md-6 form-container ps-0 ps-md-5">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <div class="heading mb-4 mb-md-5">Verification</div>
+                    <div class="alert alert-danger d-flex align-items-center d-none" role="alert" id="otp-error-alert-div">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <div class="ms-2" id="otp-error-alert"></div>
+                    </div>
                     <div class="d-flex align-items-center mb-3 mb-md-4">
                         <div class="des">Enter OTP send to <span id="signup-input-phone"></span></div>
                         <i class="fa-regular fa-pen-to-square text-muted ms-3"></i>

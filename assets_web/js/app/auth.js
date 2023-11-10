@@ -206,16 +206,7 @@ if (submitOtpBtn) {
                 success: function (response) {
                     if (response.msg == 'Login successfully') {
                         setOtpSuccessMsg(loginOtpBox);
-                        if (document.referrer) {
-                            if (document.referrer !== site_url.concat('login')) {
-                                // window.location.href = document.referrer;
-                                window.history.go(-1);
-                            } else {
-                                window.location.href = site_url;
-                            }
-                        } else {
-                            window.location.href = site_url;
-                        }
+                        window.history.go(-1);
                     } else {
                         loginLoader.classList.add('d-none');
                         setOtpErrorMsg(loginOtpBox, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
@@ -235,6 +226,7 @@ if (submitSignUpForm) {
 
     submitSignUpForm.addEventListener('click', () => {
         loginLoader.className = "";
+        document.getElementById('otp-error-alert-div').classList.add('d-none');
         var phone_otp = getOTPVal("phone-otp-field");
         var email_otp = getOTPVal("email-otp-field");
 
@@ -273,16 +265,18 @@ if (submitSignUpForm) {
                 },
                 success: function (response) {
                     if (response.status == 1) {
-                        setOtpSuccessMsg(loginOtpBox);
-                        window.location.href = site_url;
+                        document.getElementById('otp-error-alert-div').classList.add('d-none');
+                        // window.location.href = document.referrer;
+                        window.history.go(-1);
                     } else {
                         loginLoader.classList.add('d-none');
-                        setOtpErrorMsg(loginOtpBox, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                        document.getElementById('otp-error-alert-div').classList.remove('d-none');
+                        document.getElementById('otp-error-alert').textContent = response.msg;
                     }
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     loginLoader.classList.add('d-none');
-                    setOtpErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${errorThrown}.`)
+                    console.log(errorThrown);
                 }
             });
 
@@ -342,7 +336,11 @@ editBtn.forEach(element => {
     element.addEventListener('click', () => {
         loginLoader.className = "";
         clearOTPVal('otp-field');
+        clearOTPVal('phone-otp-field');
+        clearOTPVal('email-otp-field');
         intializeOtpContainer(loginOtpBox);
+        intializeOtpContainer(signupPhoneOtpBox);
+        intializeOtpContainer(signupEmailOtpBox);
         setTimeout(() => {
             clearInterval(countdownInterval);
             resendOtpBtn.innerText = "RESEND OTP";
@@ -572,15 +570,30 @@ const getOTPVal = (otpDivClass) => {
 
 const clearOTPVal = (otpDivClass) => {
     const inputs = document.querySelectorAll('.' + otpDivClass + ' > *[id]');
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].value = '';
+
+    if (inputs.length > 0) {
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].value = '';
+
+            // Disable all inputs except the first one
+            if (i !== 0) {
+                inputs[i].disabled = true;
+            } else {
+                inputs[i].disabled = false;
+                inputs[i].focus(); // Optional: Set focus to the first input
+            }
+        }
     }
 }
 
 // Resend OTP Timer
 resendOtpBtn.addEventListener("click", function () {
     clearOTPVal('otp-field');
+    clearOTPVal('phone-otp-field');
+    clearOTPVal('email-otp-field');
     intializeOtpContainer(loginOtpBox);
+    intializeOtpContainer(signupPhoneOtpBox);
+    intializeOtpContainer(signupEmailOtpBox);
     if (loginInputContainer)
         sendLoginOtp();
     else
@@ -593,10 +606,6 @@ function startResendTimer() {
     var resendOtpText = 'RESEND OTP';
     var resendOtpInText = 'Resend OTP in';
     // Show the timer element and set it to 30 seconds
-    if (default_language == 1) {
-        resendOtpText = 'إعادة إرسال كلمة المرور لمرة واحدة';
-        resendOtpInText = 'أعد إرسال كلمة المرور لمرة واحدة بتنسيق';
-    }
     resendOtpBtn.innerHTML = resendOtpInText + ': <span class="fw-bolder text-dark">00:30</span>';
 
     var remainingSeconds = 30;

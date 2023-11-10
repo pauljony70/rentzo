@@ -130,11 +130,12 @@ var swiperMobileMain = new Swiper(".product-details-swiper-mob", {
  * Rent Day Slider
  * ---------------------------------------------------
  */
-/* var daySlider = document.getElementById('day-slider');
+var daysSlider = document.getElementById('day-slider');
 
-noUiSlider.create(daySlider, {
-	start: [1],
+noUiSlider.create(daysSlider, {
+	start: 1,
 	margin: 20,
+	// connect: 'lower',
 	connect: true,
 	range: {
 		'min': 1,
@@ -143,27 +144,36 @@ noUiSlider.create(daySlider, {
 	step: 2,
 	pips: {
 		mode: 'steps',
-		density: 3
+		density: 50,
+		format: {
+			to: function (value) {
+				return value + ' day';
+			},
+			from: function (value) {
+				// In case you need to convert the formatted value back to the original value
+				return value.replace(' day', '');
+			}
+		}
 	}
-}); */
-const slider = document.getElementById('day-slider');
-const output = document.getElementById('slider-value');
-
-slider.addEventListener('input', () => {
-	const value = slider.value;
-	output.textContent = value;
-
-	// Calculate position for the pointer based on the selected value
-	const min = slider.min;
-	const max = slider.max;
-	const offset = ((value - min) / (max - min)) * 100;
 });
 
+var activePips = [null, null];
 
-new Vue({
-	el: '#app',
-	data: {
-		selectedValue: '3+'
+daysSlider.noUiSlider.on('update', function (values, handle) {
+	// Remove the active class from the current pip
+	if (activePips[handle]) {
+		activePips[handle].classList.remove('active-pip');
+	}
+
+	// Match the formatting for the pip
+	var dataValue = Math.round(values[handle]);
+
+	// Find the pip matching the value
+	activePips[handle] = daysSlider.querySelector('.noUi-value[data-value="' + dataValue + '"]');
+
+	// Add the active class
+	if (activePips[handle]) {
+		activePips[handle].classList.add('active-pip');
 	}
 });
 

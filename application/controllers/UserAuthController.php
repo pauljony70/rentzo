@@ -245,13 +245,14 @@ class UserAuthController extends REST_Controller
 	public function verify_otp_post()
 	{
 		// echo $this->session->tempdata('email_otp'); exit;
-		$requiredparameters = array('language', 'phone', 'otp', 'user_name');
+		$requiredparameters = array('language', 'fullname', 'phone', 'email', 'phone_otp', 'email_otp');
 
 		$language_code = removeSpecialCharacters($this->post('language'));
-		$mobile_number  = removeSpecialCharacters($this->post('phone'));
-		$otp  = removeSpecialCharacters($this->post('otp'));
-		$user_name  = removeSpecialCharacters($this->post('user_name'));
-		// print_r($emailotp); exit;
+		$fullname  = removeSpecialCharacters($this->post('fullname'));
+		$phone  = removeSpecialCharacters($this->post('phone'));
+		$email  = removeSpecialCharacters($this->post('email'));
+		$phone_otp  = removeSpecialCharacters($this->post('phone_otp'));
+		$email_otp  = removeSpecialCharacters($this->post('email_otp'));
 
 		$validation = $this->parameterValidation($requiredparameters, $this->post()); //$this->post() holds post values
 		$invalid_response = array(
@@ -260,27 +261,31 @@ class UserAuthController extends REST_Controller
 			"update_by" => ""
 		);
 		if ($validation == 'valid') {
-			$input_type = checkInputType($mobile_number);
-			if ($input_type !== 'Nothing') {
-				if ($input_type == 'Phone') {
-					$otp1 = $this->user_model->get_user_otp($mobile_number);
-				} else if ($input_type == 'Email') {
-					$otp1 = $this->session->tempdata('email_otp');
-				}
-				if ($otp == $otp1) {
-					$validate_user = $this->user_model->validate_user($mobile_number, $user_name, $input_type);
+			if (!$fullname) {
+				$this->responses(0, get_phrase('user_name_mandatory', $language_code));
+			} else if (!$phone) {
+				$this->responses(0, get_phrase('mobile_mandatory', $language_code));
+			} else if (!$email) {
+				$this->responses(0, get_phrase('email_mandatory', $language_code));
+			} else if (!$phone_otp) {
+				$this->responses(0, get_phrase('phone_otp_mandatory', $language_code));
+			} else if (!$email_otp) {
+				$this->responses(0, get_phrase('email_otp_mandatory', $language_code));
+			} else {
+				$otp1 = $this->user_model->get_user_otp($phone);
+				$otp2 = $this->session->tempdata('email_otp');
+				if ($phone_otp == $otp1 && $email_otp == $otp2) {
+					$validate_user = $this->user_model->validate_user($fullname, $phone, $email);
 					if ($validate_user) {
 						if ($validate_user['status'] == 1) {
-							if (empty($this->session->userdata('user_id'))) {
-								$newdata = array(
-									'user_id'  => $validate_user['user_id'],
-									'user_name'  => $validate_user['name'],
-									'user_phone'  => $validate_user['phone'],
-									'user_email'  => $validate_user['email'],
-									'logged_in' => TRUE
-								);
-								$this->session->set_userdata($newdata);
-							}
+							$newdata = array(
+								'user_id'  => $validate_user['user_id'],
+								'user_name'  => $validate_user['name'],
+								'user_phone'  => $validate_user['phone'],
+								'user_email'  => $validate_user['email'],
+								'logged_in' => TRUE
+							);
+							$this->session->set_userdata($newdata);
 							$this->responses(1, get_phrase('login_successfully', $language_code), $validate_user);
 						} else if ($validate_user['status'] == 'exist') {
 							$this->responses(0, get_phrase('phone_or_email_already_exist', $language_code), $invalid_response);
@@ -290,17 +295,9 @@ class UserAuthController extends REST_Controller
 					} else {
 						$this->responses(0, get_phrase('invalid_request', $language_code), $invalid_response);
 					}
-				} else if (!$otp) {
-					$this->responses(0, get_phrase('otp_mandatory', $language_code), $invalid_response);
 				} else {
-					$this->responses(0, get_phrase('invalid_otp', $language_code), $invalid_response);
+					$this->responses(0, get_phrase('invalid_phone_or_email_otp', $language_code), $invalid_response);
 				}
-			} else if (!$mobile_number) {
-				$this->responses(0, get_phrase('mobile_mandatory', $language_code));
-			} else if (!$user_name) {
-				$this->responses(0, get_phrase('user_name_mandatory', $language_code));
-			} else {
-				$this->responses(0, get_phrase('invalid_mobile_or_email', $language_code));
 			}
 		} else {
 			echo $validation; //These are parameters are missing.

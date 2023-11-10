@@ -12,13 +12,13 @@ class User_model extends CI_Model
 
 
 	//Functiofor validate user
-	function validate_user($user_phone = '', $user_name, $input_type)
+	function validate_user($fullname, $phone, $email)
 	{
 		$user_result = array();
 
 		$this->db->select('*');
-		$this->db->where(array('phone' => $user_phone));
-		$this->db->or_where(array('email' => $user_phone));
+		$this->db->where(array('phone' => $phone));
+		$this->db->or_where(array('email' => $email));
 		$query = $this->db->get('appuser_login');
 
 		if ($query->num_rows() > 0) {
@@ -27,14 +27,13 @@ class User_model extends CI_Model
 			die();
 		} else {
 			$user_unique_id = 'U' . $this->random_strings(10);
-			if ($input_type == 'Phone')
-				$data['phone'] = $user_phone;
-			else if ($input_type == 'Email')
-				$data['email'] = $user_phone;
+			
 			$data['login_method'] = 'general';
 			$data['status'] = 1;
 			$data['user_unique_id'] = $user_unique_id;
-			$data['fullname'] = $user_name;
+			$data['fullname'] = $fullname;
+			$data['phone'] = $phone;
+			$data['email'] = $email;
 			$data['password'] = '';
 			$data['create_by'] = $this->date_time;
 
@@ -46,14 +45,6 @@ class User_model extends CI_Model
 			$query1 = $this->db->get('appuser_login');
 
 			$user_result1 = $query1->result_object()[0];
-
-			$wallet_id = generateUniqueWalletID();
-			
-			$data_wallet['user_id'] = $user_result1->user_unique_id;
-			$data_wallet['wallet_id'] = $wallet_id;
-			$data_wallet['amount'] = 0;
-			$data_wallet['created_at'] = $this->date_time;
-			$this->db->insert('wallet_summery',$data_wallet);
 
 			$img_decode = json_decode($user_result1->profile_pic);
 
@@ -325,12 +316,12 @@ class User_model extends CI_Model
 
 			$user_result1 = $query1->result_object()[0];
 			$wallet_id = generateUniqueWalletID();
-			
+
 			$data_wallet['user_id'] = $user_result1->user_unique_id;
 			$data_wallet['wallet_id'] = $wallet_id;
 			$data_wallet['amount'] = 0;
 			$data_wallet['created_at'] = $this->date_time;
-			$this->db->insert('wallet_summery',$data_wallet);
+			$this->db->insert('wallet_summery', $data_wallet);
 
 			$img_decode = json_decode($user_result1->profile_pic);
 
