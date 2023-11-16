@@ -5,8 +5,55 @@
 	<?php $title = "Wishlist";
 	include("include/headTag.php") ?>
 </head>
-
+<style>
+.my-order-page .right-block .wrap {
+    border-radius: 3px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+.my-order-page .right-block .wrap .wrap-block {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+}
+.my-order-page .right-block .wrap .wrap-details {
+    margin: 0px 20px;
+}
+.my-order-page .right-block .wrap h5 a, .my-order-page .right-block .wrap h6 a {
+    color: #4f5362;
+}
+.my-order-page .left-block {
+    padding: 20px;
+    border-radius: 3px;
+}
+.my-order-page .left-block .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.wishlist-page .left-block .cart-details {
+    align-items: unset;
+}
+.cart-page .left-block .card {
+    border-radius: 3px;
+}
+.wishlist-page .cart-details {
+    position: relative;
+}
+.cart-page .left-block .card img {
+    display: block;
+    margin: 0 auto;
+    height: 160px;
+    object-fit: contain;
+}
+.old-price {
+		text-decoration: line-through;
+		padding-bottom: 2px;
+		color: #162b75;
+	}
+</style>
 <body>
+
 
 	<?php
 	include("include/topbar.php")
@@ -40,7 +87,7 @@
 											<div class="row">
 												<div class="col-4 col-md-4">
 													<a href="<?php echo base_url . $wishlist_product['web_url'] . '?pid=' . $wishlist_product['prodid'] . '&sku=' . $wishlist_product['sku'] . '&sid=' . $wishlist_product['vendor_id']; ?>">
-														<img src="<?php echo weburl . 'media/' . $wishlist_product['imgurl']; ?>" class="product-thumb" />
+														<img width="200px" src="<?php echo weburl . 'media/' . $wishlist_product['imgurl']; ?>" class="product-thumb" />
 													</a>
 												</div>
 												<div class="col-8 col-md-8">

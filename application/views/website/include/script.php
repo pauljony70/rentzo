@@ -6,7 +6,7 @@
 <script>
   setTimeout(function() {
     $('.loaderScreen').css('display', 'none');
-  }, 100);
+  }, 300);
 
   var csrfName = $(".txt_csrfname").attr("name"); //
   var csrfHash = $(".txt_csrfname").val(); // CSRF hash

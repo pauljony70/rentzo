@@ -161,7 +161,7 @@ class Home extends REST_Controller
 		$src = $_REQUEST['search'];
 		$this->data['search_title'] = $src;
 		$this->data['search'] = $this->home_model->get_search_product_request($default_language, $src, 2);
-		$this->data['search_sponsor'] = $this->home_model->get_search_sponsor_product_request($default_language, $src, 2);
+		// $this->data['search_sponsor'] = $this->home_model->get_search_sponsor_product_request($default_language, $src, 2);
 		$this->load->view('website/search.php', $this->data);
 	}
 

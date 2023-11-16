@@ -5,7 +5,9 @@
 	<?php $title = "Track Order";
 	include("include/headTag.php") ?>
 </head>
+<style>
 
+</style>
 <body>
 
 	<?php
@@ -22,7 +24,7 @@
 			<div class="container px-1">
 				<div class="row mt-4">
 
-					<div class="col-lg-9">
+					<div class="col-lg-12">
 						<div class="left-block box-shadow-4">
 							<h5 class="title"><?= $this->lang->line('track-order') ?></h5>
 							<div class="row">
@@ -185,47 +187,7 @@
 						</div>
 					</div>
 
-					<div class="col-lg-3 mt-4 mt-lg-0">
-						<div class="right-block p-0">
-							<h5 class="mb-4"><?= $this->lang->line('home-you-may-like') ?></h5>
-							<div class="row mt-0">
-								<?php foreach ($offers_product as $offers_product_data) { ?>
-									<div class="col-6 col-sm-4 col-md-3 col-lg-12 card p-1">
-										<a href="<?= base_url . $offers_product_data['sku'] . '?pid=' . $offers_product_data['id'] . '&sku=' . $offers_product_data['sku'] . '&sid=' . $offers_product_data['vendor_id']; ?>" class="card h-100 d-flex flex-column justify-content-between product-link-card">
-											<?php if ($offers_product_data['price'] !== $offers_product_data['mrp']) : ?>
-												<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-													<span class="discount" style="direction: ltr;"><?= $offers_product_data['offpercent'] ?></span>
-													<span class="wishlist"><i class="fa fa-heart-o"></i></span>
-												</div>
-											<?php endif; ?>
-											<div class="image-container zoom-img">
-												<img src="<?= $offers_product_data['imgurl']; ?>" class="zoom-img thumbnail-image">
-											</div>
-											<div class="product-detail-container p-2 mb-1">
-												<div class="justify-content-between align-items-center" style="padding:5px;">
-													<p class="dress-name mb-0"><?= $offers_product_data['name']; ?></p>
-													<div class="d-flex align-items-center justify-content-start flex-row mt-2" style="width: 100%;">
-														<span class="new-price"><?= $offers_product_data['price']; ?></span>
-														<small class="old-price text-right mx-1"><?= $offers_product_data['price'] !== $offers_product_data['mrp'] ? $offers_product_data['mrp'] : '' ?></small>
-													</div>
-												</div>
-												<div class="d-flex justify-content-between align-items-center mt-1" style="padding: 0 5px;">
-													<div class="d-flex align-items-center">
-														<?php if ($offers_product_data['rating']['total_rows'] > 0) : ?>
-															<i class="fa-solid fa-star fa-lg" style="color: #FFD700;"></i>
-															<div class="rating-number ms-2 mt-1"><?= $offers_product_data['rating']['total_rating'] / $offers_product_data['rating']['total_rows'] ?></div>
-														<?php endif; ?>
-													</div>
-													<button class="btn btn-primary text-center card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event,'<?= $offers_product_data['id'] ?>','<?= $offers_product_data['sku'] ?>','<?= $offers_product_data['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')"><?= $this->lang->line('buy') ?></button>
-												</div>
-											</div>
-										</a>
-									</div>
-								<?php } ?>
-
-							</div>
-						</div>
-					</div>
+					
 
 				</div>
 			</div>

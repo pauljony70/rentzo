@@ -45,7 +45,7 @@
 									<input type="text" name="order_id" id="order_id" class="form-control"/>
 								</div>
 								<div class="col-md-12 text-center">
-									<a onclick="track_order()" class="btn btn-default"><?= $this->lang->line('track'); ?> </a>
+									<a onclick="track_order()" class="btn btn-primary"><?= $this->lang->line('track'); ?> </a>
 								</div>
 							</form>
 						</div>

@@ -51,7 +51,7 @@
 													<div class="row">
 														<div class="col-3 p-0 product-thumb">
 															<a href="<?php echo base_url; ?>orderDetails/<?php echo $order_history['order_id']; ?>/<?php echo $order_history['prod_id']; ?>">
-																<img src="<?php echo weburl . 'media/' . $order_history['prod_img']; ?>" class="product-thumb" />
+																<img height="160px" src="<?php echo weburl . 'media/' . $order_history['prod_img']; ?>" class="product-thumb" />
 															</a>
 														</div>
 														<div class="col-9">
