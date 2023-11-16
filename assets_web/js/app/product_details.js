@@ -435,7 +435,7 @@ function add_to_cart_product_buynow(ele, event, pid, sku, vendor_id, user_id, qt
 	var csrfHash = $('.txt_csrfname').val(); // CSRF hash
 	var site_url = $('.site_url').val(); // CSRF hash
 	event.preventDefault();
-	/*if (user_id == '') {
+	if (user_id == '') {
 		window.location.href = site_url.concat('login');
 	} else {
 		var buttonInnerHTML = ele.innerHTML;
@@ -463,47 +463,47 @@ function add_to_cart_product_buynow(ele, event, pid, sku, vendor_id, user_id, qt
 					firstValue = parts[0];
 					secondValue = parts[1];
 				}
-			}*/
-
-	$.ajax({
-
-		method: 'post',
-		url: site_url + 'buynowProductCart',
-		data: {
-			language: default_language,
-			pid: pid,
-			sku: sku,
-			sid: vendor_id,
-			user_id: user_id,
-			qty: qty,
-			referid: referid,
-			//affiliated_by: secondValue == pid ? firstValue : null,
-			devicetype: 2,
-			qouteid: qouteid,
-			[csrfName]: csrfHash
-		},
-
-		success: function (response) {
-			//ele.innerHTML = buttonInnerHTML;
-			addto_cart_count();
-
-			if (!response.status) {
-				Swal.fire({
-					type: "error",
-					text: response.msg,
-					showCancelButton: true,
-					showCloseButton: true,
-					confirmButtonColor: '#ff6600',
-					timer: 3000,
-				});
 			}
-			else {
-				location.href = site_url + "cart";
-			}
+
+			$.ajax({
+
+				method: 'post',
+				url: site_url + 'buynowProductCart',
+				data: {
+					language: default_language,
+					pid: pid,
+					sku: sku,
+					sid: vendor_id,
+					user_id: user_id,
+					qty: qty,
+					referid: referid,
+					//affiliated_by: secondValue == pid ? firstValue : null,
+					devicetype: 2,
+					qouteid: qouteid,
+					[csrfName]: csrfHash
+				},
+
+				success: function (response) {
+					//ele.innerHTML = buttonInnerHTML;
+					addto_cart_count();
+
+					if (!response.status) {
+						Swal.fire({
+							type: "error",
+							text: response.msg,
+							showCancelButton: true,
+							showCloseButton: true,
+							confirmButtonColor: '#ff6600',
+							timer: 3000,
+						});
+					}
+					else {
+						location.href = site_url + "cart";
+					}
+				}
+			});
 		}
-	});
-	//}
-	//}
+	}
 }
 
 function add_to_cart_products(
@@ -528,16 +528,6 @@ function add_to_cart_products(
 		document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML = '';
 		document.querySelector('#offcanvas-loader').className = "";
 		var qty = 1;
-		var firstValue = '';
-		var secondValue = '';
-		const affiliated_by = getCookie("affiliated_by");
-		if (affiliated_by) {
-			const parts = affiliated_by.split('-');
-			if (parts.length === 2) {
-				firstValue = parts[0];
-				secondValue = parts[1];
-			}
-		}
 		$.ajax({
 			method: "post",
 			url: site_url + "addProductCart",
@@ -549,7 +539,6 @@ function add_to_cart_products(
 				user_id: user_id,
 				qty: qty,
 				referid: referid,
-				affiliated_by: secondValue == pid ? firstValue : null,
 				devicetype: 2,
 				qouteid: qouteid,
 				[csrfName]: csrfHash,
@@ -579,7 +568,7 @@ function add_to_cart_products(
 										<div class="card-body">
 											<div class="row">
 												<div class="col-3">
-													<img src="${site_url + 'media/' + cartItem.imgurl}" alt="">
+													<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
 												</div>
 												<div class="col-9">
 													<div class="d-flex flex-column">
@@ -615,14 +604,14 @@ function add_to_cart_products(
 								</div>
 							</div>
 							<hr class="m-0 px-2">
-							<div class="btn-wrap btn-oc d-flex py-2">
-								<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light">
+							<div class="btn-oc d-flex py-2">
+								<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
 									<div class="d-flex justify-content-center align-items-center h-100">
 										<i class="fa-solid fa-cart-shopping"></i>
 										<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
 									</div>
 								</a>
-								<button class="btn btn-lg btn-light waves-effect waves-light">
+								<button class="btn btn-lg btn-light waves-effect waves-light w-100">
 									<div class="d-flex justify-content-center align-items-center h-100">
 										<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
 									</div>
@@ -677,7 +666,7 @@ function add_product_qty(
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="${site_url + 'media/' + cartItem.imgurl}" alt="">
+											<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
 										</div>
 										<div class="col-9">
 											<div class="d-flex flex-column">
@@ -713,14 +702,14 @@ function add_product_qty(
 							</div>
 						</div>
 						<hr class="m-0 px-2">
-						<div class="btn-wrap btn-oc d-flex py-2">
-							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light">
+						<div class="btn-oc d-flex py-2">
+							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
 								<div class="d-flex justify-content-center align-items-center h-100">
 									<i class="fa-solid fa-cart-shopping"></i>
 									<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
 								</div>
 							</a>
-							<button class="btn btn-lg btn-light waves-effect waves-light">
+							<button class="btn btn-lg btn-light waves-effect waves-light w-100">
 								<div class="d-flex justify-content-center align-items-center h-100">
 									<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
 								</div>
@@ -765,7 +754,7 @@ function delete_cart(prod_id, user_id, qouteid) {
 								<div class="card-body">
 									<div class="row">
 										<div class="col-3">
-											<img src="${site_url + 'media/' + cartItem.imgurl}" alt="">
+											<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
 										</div>
 										<div class="col-9">
 											<div class="d-flex flex-column">
@@ -801,14 +790,14 @@ function delete_cart(prod_id, user_id, qouteid) {
 							</div>
 						</div>
 						<hr class="m-0 px-2">
-						<div class="btn-wrap btn-oc d-flex py-2">
-							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light">
+						<div class="btn-oc d-flex py-2">
+							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
 								<div class="d-flex justify-content-center align-items-center h-100">
 									<i class="fa-solid fa-cart-shopping"></i>
 									<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
 								</div>
 							</a>
-							<button class="btn btn-lg btn-light waves-effect waves-light">
+							<button class="btn btn-lg btn-light waves-effect waves-light w-100">
 								<div class="d-flex justify-content-center align-items-center h-100">
 									<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
 								</div>

@@ -48,19 +48,31 @@ class Delivery_model extends CI_Model
 		return $information;
 	}
 
-	function get_city($country_id)
+	function get_city($stateid)
 	{
 		$return = array();
-		$i = 0;
-		$query = $this->db->get_where('city', ['country_id' => $country_id]);
-
-		$state_array = $query->result_array();
-
-		$information = array(
-			'status' => 1,
-			'msg' =>   "Details here",
-			'data' => $state_array
-		);
+		$i =0;
+		$this->db->select('city_id, city_name');
+		if($stateid != 0)
+		{
+			$this->db->where('state_code',$stateid);
+		}
+		$this->db->order_by('city_name','ASC');
+		
+		$query = $this->db->get('city');
+		$state_array = $query->result_object();
+		foreach($state_array as $state_details){
+			$return[$i] = 
+        					array(	
+        					    'id' => $state_details->city_id,
+        						'name' => $state_details->city_name);
+              		   $i = $i+1;  			  
+                $status = 1;
+                $msg = "Details here";
+		}
+		$information =array( 'status' => $status,
+                              'msg' =>   $msg,
+                              'data' => $return);
 		return $information;
 	}
 

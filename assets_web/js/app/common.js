@@ -129,13 +129,28 @@ function priceFormat(value) {
 const buttonLoader = (ele) => {
   ele.innerHTML =
     `<div class="spinner-border spinner-border text-light" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>`;
+      <span class="visually-hidden">Loading...</span>
+    </div>`;
 }
 
 const buttonLoaderPrimary = (ele) => {
   ele.innerHTML =
     `<div class="spinner-border spinner-border-sm text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>`;
+      <span class="visually-hidden">Loading...</span>
+    </div>`;
+}
+
+// Function to retrieve the value of a specific cookie
+function getCookie(name) {
+  const cookieString = document.cookie;
+  const cookies = cookieString.split('; ');
+
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+
+  return null;
 }

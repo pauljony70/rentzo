@@ -39,22 +39,25 @@ class Checkout extends REST_Controller
 
 	public function thankyou_get($order_id)
 	{
-		if ($this->session->tempdata('place_order_status') === 1) {
+		/*if ($this->session->tempdata('place_order_status') === 1) {
 			$default_language = $this->session->userdata("default_language");
 			$this->data['order_id'] = $order_id;
 			$this->data['recommended_product'] = $this->home_model->get_home_products($default_language, 'Recommended', '');
 			$this->load->view('website/thankyou.php', $this->data);  // ye view/website folder hai
 		} else {
 			redirect($this->agent->referrer());
-		}
+		}*/
+		$this->data['order_id'] = $order_id;
+		$this->load->view('website/thankyou.php', $this->data);
 	}
 
 
 	public function get_city_post()
-	{
-		$country_id = $this->post('country_id');
-		$city_detail = $this->delivery_model->get_city($country_id);
+	{	
+		$stateid = $this->post('stateid');
+		$city_detail = $this->delivery_model->get_city($stateid);
 		echo json_encode($city_detail);
+	
 	}
 
 	public function get_region_post()
@@ -362,21 +365,25 @@ class Checkout extends REST_Controller
 	// function for placeOrder
 	public function placeOrder_post()
 	{
-		$requiredparameters = array('language', 'fullname', 'mobile', 'email', 'area', 'fulladdress', 'country', 'region', 'governorate', 'lat', 'lng', 'addresstype', 'payment_id', 'payment_mode');
+		$requiredparameters = array('language', 'fullname', 'mobile', 'email', 'fulladdress', 'addresstype', 'payment_id', 'payment_mode','state','city_id');
 
 		$language_code = removeSpecialCharacters($this->post('language'));
+		//$user_id = 'c2sc22sc';
 		$user_id = removeSpecialCharacters($this->session->userdata('user_id'));
 		$qouteid = removeSpecialCharacters($this->session->userdata('qoute_id'));
 		$fullname = removeSpecialCharacters($this->post('fullname'));
 		$mobile = removeSpecialCharacters($this->post('mobile'));
 		$email = removeSpecialCharacters($this->post('email'));
-		$area = removeSpecialCharacters($this->post('area'));
+		$area = '';
 		$fulladdress = removeSpecialCharacters($this->post('fulladdress'));
-		$country = removeSpecialCharacters($this->post('country'));
-		$region = removeSpecialCharacters($this->post('region'));
-		$governorate = removeSpecialCharacters($this->post('governorate'));
-		$lat = removeSpecialCharacters($this->post('lat'));
-		$lng = removeSpecialCharacters($this->post('lng'));
+		$country = '1';
+		$region = '';
+		$governorate = '';
+		$lat = '';
+		$lng = '';
+		$state = removeSpecialCharacters($this->post('state'));
+		$city = removeSpecialCharacters($this->post('city'));
+		$city_id = removeSpecialCharacters($this->post('city_id'));
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
 		$payment_id = removeSpecialCharacters($this->post('payment_id'));
 		$payment_mode = removeSpecialCharacters($this->post('payment_mode'));
@@ -389,7 +396,7 @@ class Checkout extends REST_Controller
 		if ($validation == 'valid') {
 			if (($user_id || $qouteid) && $fullname && $mobile && $fulladdress && $country && $addresstype && $payment_id && $payment_mode) {
 
-				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value);
+				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id);
 
 				if ($order_detail['status'] == 'update') {
 					$this->session->set_tempdata('place_order_status', 1, 5);

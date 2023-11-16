@@ -532,3 +532,13 @@
         width: 100%;
     }
 }
+
+#offcanvasSidebar {
+    width: 450px;
+}
+
+@media(max-width: 576px) {
+    #offcanvasSidebar {
+        width: 75%;
+    }
+}

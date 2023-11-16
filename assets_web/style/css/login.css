@@ -27,8 +27,9 @@
 .phone-otp-field,
 .email-otp-field {
     flex-direction: row;
-    column-gap: 40px;
+    column-gap: 8px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -81,6 +82,10 @@
 
 .auth-image-container .image img {
     width: 80%;
+}
+
+.form-container {
+    min-height: 450px;
 }
 
 .form-container .heading {
@@ -159,4 +164,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media(max-width: 767px) {
+    .auth-image-container .heading {
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+    .auth-image-container .des {
+        font-size: 10px;
+    }
+
+    .form-container .heading {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+    }
+
+    .form-container .des {
+        font-size: 14px;
+    }
+
+    .form-container .next-page-div span,
+    .form-container .next-page-div a,
+    .form-container .next-page-div button {
+        font-size: 14px;
+    }
+
 }

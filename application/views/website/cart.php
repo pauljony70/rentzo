@@ -15,6 +15,14 @@
 			box-shadow: 0 0 6px rgb(47 171 115);
 			animation: rotateBoth 3s infinite linear;
 		}
+		.old-price
+		{
+			text-decoration : line-through;
+		}
+		li 
+		{	
+			list-style-type:none;
+		}
 
 		@keyframes rotateBoth {
 
@@ -151,7 +159,7 @@
 												<div class="row">
 													<div class="col-3">
 														<a href="<?php echo base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer">
-															<img src="<?php echo weburl . 'media/' . $cart_product['imgurl']; ?>" alt="">
+															<img width="150px" src="<?php echo weburl . 'media/' . $cart_product['imgurl']; ?>" alt="">
 														</a>
 													</div>
 													<div class="col-9">
@@ -175,13 +183,13 @@
 																<?php endforeach; ?>
 															</div>
 															<div class="rate mb-2">
-																<h5 class="product_price_cart"><?= $cart_product['price']; ?></h5>
-																<div class="old-price"><?= $cart_product['price'] != $cart_product['mrp'] ? $cart_product['mrp'] : '' ?></div>
+																<span class="product_price_cart"><?= $cart_product['price']; ?></span>
+																<small class="old-price"><?= $cart_product['price'] != $cart_product['mrp'] ? $cart_product['mrp'] : '' ?></small>
 															</div>
 															<div class="quantity mb-2">
 																<div class="input-group">
 																	<button type="button" class="btn btn-primary minus" type="button" id="" onclick="add_product_qty('<?= $cart_product['prodid']; ?>','<?= $cart_product['sku']; ?>','<?= $cart_product['vendor_id']; ?>','<?= $this->session->userdata('user_id'); ?>',<?= $cart_product['qty']; ?>-1,'',2,'<?= $cart['qoute_id']; ?>')"><i class="fa-solid fa-minus"></i></button>
-																	<input type="number" class="form-control text-center" placeholder="" value="<?= $cart_product['qty'] ?>" readonly>
+																	<input type="number" style="width:50px" class="form-control1 text-center" placeholder="" value="<?= $cart_product['qty'] ?>" readonly>
 																	<button type="button" class="btn btn-primary plus" type="button" id="" onclick="add_product_qty('<?= $cart_product['prodid']; ?>','<?= $cart_product['sku']; ?>','<?= $cart_product['vendor_id']; ?>','<?= $this->session->userdata('user_id'); ?>',<?= $cart_product['qty'] + 1; ?>,'',2,'<?= $cart['qoute_id']; ?>')"><i class="fa-solid fa-plus"></i></button>
 																</div>
 															</div>
@@ -234,7 +242,7 @@
 											<h5><?php echo $cart['payable_amount']; ?></h5>
 										</li>
 									</ul>
-									<a href="<?php echo base_url; ?>checkout" id="cart-continue-btn" class="btn btn-block btn-default text-uppercase w-100" style="bottom:10px;"><?= $this->lang->line('continue') ?></a>
+									<a href="<?php echo base_url; ?>checkout" id="cart-continue-btn" class="btn btn-block btn-primary text-uppercase w-100" style="bottom:10px;"><?= $this->lang->line('continue') ?></a>
 									<!-- <div class="continue text-center mt-3">
 										<h6><?= $this->lang->line('you-will-save') ?> <?php echo $cart['total_discount']; ?> <?= $this->lang->line('on-this-order') ?></h6>
 									</div> -->
@@ -242,7 +250,7 @@
 							<?php } ?>
 						</div>
 					</div>
-
+					<br><br>
 				</div>
 			</section>
 			<!--End: Cart Section -->

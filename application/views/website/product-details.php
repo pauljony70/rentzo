@@ -401,7 +401,7 @@
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
 									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
 
-									<a href="#" onclick="add_to_cart_product_buynow(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
+									<a href="#" onclick="add_to_cart_products(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
 										Buy Now
 									</a>
 								<?php } else { ?>
@@ -412,11 +412,11 @@
 									</button>
 								<?php } ?>
 
-								<!-- <a class="btn btn-light wishlist-btn heart-container mx-2" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)">
-										<div class="d-flex justify-content-center align-items-center h-100">
-											<i class="fa-<?= $productdetails['wishlist_count'] > 0 ? 'solid' : 'regular' ?> fa-heart add-to-wishlist"></i>
-										</div>
-									</a> -->
+								<a class="btn btn-light wishlist-btn heart-container mx-2" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)">
+									<div class="d-flex justify-content-center align-items-center h-100">
+										<i class="fa-<?= $productdetails['wishlist_count'] > 0 ? 'solid' : 'regular' ?> fa-heart add-to-wishlist"></i>
+									</div>
+								</a>
 							</div>
 
 							<!-- 
@@ -426,8 +426,10 @@
 							-->
 							<div class="offcanvas offcanvas-end" tabindex="-1" id="rentOffcanvas" aria-labelledby="rentOffcanvasLabel">
 								<div class="offcanvas-header">
-									<h5 class="offcanvas-title" id="rentOffcanvasLabel">Offcanvas</h5>
-									<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+									<h5 class="offcanvas-title" id="rentOffcanvasLabel">How many days for rent</h5>
+									<button type="button" class="close-btn-offcanvas text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
+										<i class="fa-solid fa-xmark"></i>
+									</button>
 								</div>
 								<div class="offcanvas-body">
 									<div class="d-flex justify-content-between mb-2">
@@ -439,20 +441,45 @@
 									<div class="day-slider-div px-2 mb-5">
 										<div id="day-slider"></div>
 									</div>
-
-									<div>
-										Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+									<div class="calender"></div>
+									<div class="dates-div">
+										<div class="d-flex align-items-center">
+											<div class="heading">Arrival Date</div>
+											<div class="d-flex align-items-center date ms-5">
+												<div class="image">
+													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
+												</div>
+												<div class="ms-2">15/11/2023</div>
+											</div>
+										</div>
+										<hr>
+										<div class="d-flex align-items-center">
+											<div class="heading">Arrival Date</div>
+											<div class="d-flex align-items-center date ms-5">
+												<div class="image">
+													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
+												</div>
+												<div class="ms-2">15/11/2023</div>
+											</div>
+										</div>
 									</div>
-									<div class="dropdown mt-3">
-										<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-											Dropdown button
-										</button>
-										<ul class="dropdown-menu">
-											<li><a class="dropdown-item" href="#">Action</a></li>
-											<li><a class="dropdown-item" href="#">Another action</a></li>
-											<li><a class="dropdown-item" href="#">Something else here</a></li>
-										</ul>
+									<div class="availability-status mt-3 text-success">
+										Available on this date
 									</div>
+									<hr>
+									<div class="security-deposit d-flex justify-content-between">
+										<div>Security deposit</div>
+										<div><?= price_format(100) ?></div>
+									</div>
+									<div class="security-deposit-des text-danger mt-3">Security deposit is refundable **</div>
+								</div>
+								<div class="offcanvas-footer d-flex flex-column justify-content-center align-items-center">
+									<div class="d-flex justify-content-between w-100 mb-4">
+										<div class="heading">Total Rent</div>
+										<div id="selected-day">5 Days</div>
+										<div id="total-rent"><?= price_format(11.25) ?></div>
+									</div>
+									<div class="btn btn-primary w-100">Continue</div>
 								</div>
 							</div>
 
@@ -461,15 +488,17 @@
 								Cart Offcanvas 
 								---------------------------------------------------
 							-->
-							<div class="offcanvas offcanvas-start" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+							<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
 								<div class="offcanvas-header">
-									<h5 id="cartOffcanvasLabel" class="fw-bolder fs-4 mb-0 mt-1"><?= $this->lang->line('cart') ?></h5>
-									<button type="button" class="text-reset" data-bs-dismiss="offcanvas" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+									<h5 id="cartOffcanvasLabel" class="fw-bolder fs-4 mb-0 mt-1">Cart</h5>
+									<button type="button" class="close-btn-offcanvas text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
+										<i class="fa-solid fa-xmark"></i>
+									</button>
 								</div>
 								<div class="offcanvas-body">
 									<div class="row"></div>
 								</div>
-								<div class="offcanvas-footer"></div>
+								<div class="offcanvas-footer py-0"></div>
 								<div id="offcanvas-loader">
 									<div class="spinner-border text-primary" role="status">
 										<span class="visually-hidden">Loading...</span>
@@ -489,6 +518,17 @@
 									<img src="<?= base_url('assets_web/images/badges/badge3.png') ?>" alt="Badge">
 								</div>
 							</div>
+
+							<!-- 
+								---------------------------------------------------
+								Return Policy 
+								---------------------------------------------------
+							-->
+							<?php if ($productdetails['return_policy_title'] != '') { ?>
+								<div class="return-product mb-4">
+									<button type="button" data-bs-toggle="modal" data-bs-target="#policyModal">RETURN POILICY</button>
+								</div>
+							<?php } ?>
 
 
 							<!-- 
@@ -523,14 +563,6 @@
 							<div class="product-details mb-4">
 								<label class="mb-3 product_detail_headings" for="">About This Product</label>
 								<div class="product-full-desc product_description_content"><?= $productdetails['fulldetail']; ?></div>
-								<?php if ($productdetails['return_policy_title'] != '') { ?>
-									<div class="return-product mt-4">
-										<h5><?= $this->lang->line('return-policy') ?></h5>
-										<a style="text-decoration:none;" href="return-policy.html" data-bs-toggle="modal" data-bs-target="#policyModal">
-											<?= $productdetails['return_policy_title']; ?>
-										</a>
-									</div>
-								<?php } ?>
 							</div>
 
 						</div>
@@ -542,7 +574,7 @@
 					---------------------------------------------------
 				-->
 				<?php if (!empty($product_review) || $productdetails['order_count'] > 0) : ?>
-					<div class="row reviews-row" id="review_of_product">
+					<div class="row reviews-row mb-5" id="review_of_product">
 						<div class="d-flex align-items-center mb-3 mb-md-4">
 							<label class="product_detail_headings" for="">Reviews</label>
 							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
@@ -610,6 +642,9 @@
 								</div>
 							</div>
 						<?php endforeach; ?>
+					</div>
+					<div class="mb-4-mb-md-5 text-center">
+						<a href="#" class="show-all-review">Show All &nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
 					</div>
 				<?php endif; ?>
 			</div>

@@ -12,6 +12,11 @@
 		.checkout-page .left-block .nav-pills .nav-link.active .form-check-input {
 			background-image: none;
 		}
+		
+		li 
+		{	
+			list-style-type:none;
+		}
 
 		.form-check-input:active,
 		.form-check-input:checked {
@@ -171,21 +176,6 @@
 										<div class="left-block">
 											<h5><?= $this->lang->line('add-new-add'); ?></h5>
 											<form id="formoid" action="" class="form row g-3" method="post">
-												<div class="form-group">
-													<div class="col-12">
-														<div id="map-container">
-															<div id="map"></div>
-															<div id="current-location-control" class="custom-control"></div>
-															<div id="search-container">
-																<input type="text" class="" id="search_address" placeholder="Search Address" autocomplete="off">
-															</div>
-														</div>
-													</div>
-												</div>
-												<!-- Latitude Input -->
-												<input type="hidden" value="23.607506019227948" id="lat" name="lat">
-												<!-- Longitude Input -->
-												<input type="hidden" value="58.51290997249288" id="lng" name="lng">
 												<div class="col-md-12">
 													<label class="form-label"><?= $this->lang->line('fullname'); ?></label>
 													<input type="text" class="form-control" id="fullname_a" name="name" />
@@ -207,30 +197,33 @@
 													<span id="error"></span>
 												</div>
 												<div class="col-md-6">
-													<label class="form-label"><?= $this->lang->line('country'); ?></label>
-													<select class="form-select" id="country" name="country" disabled>
-														<option value=""><?= $this->lang->line('select_country'); ?></option>
-														<?php foreach ($get_country['data'] as $country) : ?>
-															<option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
-														<?php endforeach; ?>
+													<label class="form-label">State</label>
+													<select class="form-control" id="state" name="state">
+
+														<option value="">Select State</option>
+
 													</select>
-													<span id="error"></span>
+													<span id="state_error" style="color:red;"></span>
 												</div>
-												<div class="col-md-6" id="region-div">
-													<label class="form-label"><?= $this->lang->line('region'); ?></label>
-													<input type="text" class="form-control" id="region" name="region" disabled />
-													<span id="error"></span>
+
+												<div class="col-md-6">
+													<label class="form-label">City</label>
+													<select name="city" id="city" class="form-control">
+
+														<option>Select City</option>
+
+														<?php foreach ($get_city as $city_data) { ?>
+
+															<option <?php if ($this->session->userdata('city_id') == $city_data['city_id']) {
+																		echo 'selected';
+																	} ?> value="<?php echo $city_data['city_id']; ?>"><?php echo $city_data['city_name']; ?></option>
+
+														<?php } ?>
+
+													</select>
+													<span id="city_error" style="color:red;"></span>
 												</div>
-												<div class="col-md-6" id="governorates-div">
-													<label class="form-label"><?= $this->lang->line('governorate'); ?></label>
-													<input type="text" class="form-control" id="governorates" name="governorates" disabled />
-													<span id="error"></span>
-												</div>
-												<div class="col-md-6" id="area-div">
-													<label class="form-label"><?= $this->lang->line('area'); ?></label>
-													<input type="text" class="form-control" id="area" name="area" disabled />
-													<span id="error"></span>
-												</div>
+												
 												<input type="hidden" value="<?= $this->session->userdata('user_id'); ?>" type="user_id" id="user_id" name="user_id">
 											</form>
 										</div>
@@ -239,8 +232,8 @@
 								</div>
 							</div>
 
-
-							<div class="payment-option">
+							<br><br>
+							<div class="payment-option mx-2">
 								<h5><?= $this->lang->line('payment-option'); ?></h5>
 								<form name="paymentOptions">
 									<div class="form-check p-0">
@@ -330,7 +323,7 @@
 								<form>
 									<div class="input-group">
 										<input type="text" class="form-control" name="coupon_code" id="coupon_code" placeholder="Discount Code" />
-										<span onclick="get_checkout_data()" class="input-group-text btn btn-default"><?= $this->lang->line('apply'); ?></span>
+										<span onclick="get_checkout_data()" class="input-group-text btn btn-info"><?= $this->lang->line('apply'); ?></span>
 									</div>
 									<span id="coupon_message" style="color:#438F29;font-weight:600"></span>
 								</form>
@@ -374,14 +367,15 @@
 									<input type="hidden" name="delivery_zip" id="delivery_zip" value="" />
 									<input type="hidden" name="delivery_country" id="delivery_country" value="India" />
 									<input type="hidden" name="delivery_tel" id="delivery_tel" value="" />
-									<div id="place-order-btn-div">
-										<button type="button" onclick="place_order_data(event)" href="javascript:void(0);" class="btn btn-default btn-block fw-bolder text-uppercase paymentMethodBtn" id="paymentMethodBtn"><?= $this->lang->line('place-order') ?></button>
+									<div id="place-order-btn-div" class="text-center">
+										<button type="button" onclick="place_order_data(event)" href="javascript:void(0);" class="btn btn-primary btn-block fw-bolder text-uppercase paymentMethodBtn" id="paymentMethodBtn"><?= $this->lang->line('place-order') ?></button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
+				<br><br>
 			</div>
 		</section>
 		<!--End: Check-Out Page -->
@@ -393,6 +387,118 @@
 	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/js/intlTelInput.min.js"></script>
 	<script src="<?= base_url('assets_web/js/app/gmap.js') ?>"></script>
 	<script>
+	
+		$(function() {
+			//window.onload = get_checkout_data();
+			window.onload = getStatedata();
+			window.onload = getCitydata(0);
+		});
+
+		$('#state').on('change', function() {
+			getCitydata(this.value);
+		});
+
+		
+		function getStatedata() {
+			//   successmsg("prod id "+item );
+			//alert('ddddd');
+			$.ajax({
+				method: 'POST',
+				url: site_url + "get_state",
+				data: {
+					language: default_language,
+					[csrfName]: csrfHash
+				},
+				success: function(response) {
+					// successmsg(response); // display response from the PHP script, if any
+					var data = $.parseJSON(response);
+					$('#state').empty();
+					$('#tcity').empty();
+					var o = new Option("Select State", "");
+					$("#state").append(o);
+					if (data["status"] == "1") {
+						$getcity = true;
+						var stateid = '' // <?php $state; ?>;
+						$firstitemid = '';
+						$firstitemflag = true;
+						//  successmsg('<?php echo "some info"; ?>');
+						// successmsg("state "+ stateid );
+						$(data["data"]).each(function() {
+							//	successmsg(this.id +"--"+stateid+"--");
+							if (stateid === this.id) {
+								// successmsg("match==="+stateid);
+								var o = new Option(this.name, this.id);
+								$("#state").append(o);
+								$('#state').val(this.id);
+								$getcity = false;
+								//getCitydata(this.id);
+							} else {
+								var o = new Option(this.name, this.id);
+								$("#state").append(o);
+							}
+
+							if ($firstitemflag == true) {
+								$firstitemflag = false;
+								$firstitemid = this.id;
+							}
+						});
+
+						if ($getcity == true) {
+							$getcity = false;
+							// getCitydata( $firstitemid );
+						}
+
+					} else {
+						successmsg(data["msg"]);
+					}
+				}
+			});
+		}
+
+		function getCitydata(stateid) {
+			// successmsg("state id "+stateid );
+			$.ajax({
+				method: 'POST',
+				url: site_url + "get_city",
+				data: {
+					stateid: stateid,
+					[csrfName]: csrfHash
+				},
+				success: function(response) {
+					// successmsg(response); // display response from the PHP script, if any
+					var data = $.parseJSON(response);
+					$('#city').empty();
+					var o = new Option("Select", "");
+					$("#city").append(o);
+					if (data["status"] == "1") {
+						var cityid = '';
+
+						$(data["data"]).each(function() {
+							//	successmsg(this.name+"---"+cityid);
+							if (cityid === this.id) {
+								// successmsg("match==="+stateid);
+								var o = new Option(this.name, this.id);
+								$("#city").append(o);
+								$('#city').val(this.id);
+
+							} else {
+								var o = new Option(this.name, this.id);
+								$("#city").append(o);
+							}
+							//	var o = new Option(this.name, this.id);
+							//   $("#selectcity").append(o);
+							// pass PHP variable declared above to JavaScript variable
+
+						});
+
+					} else {
+						successmsg(data["msg"]);
+					}
+				}
+			});
+		}
+	
+	
 		var timeout = null;
 		$('#captcha_test').keyup(function() {
 			clearTimeout(timeout);
@@ -527,6 +633,313 @@
 			var pincode = $('#pincode').val();
 			get_checkout_data(pincode);
 		}
+		
+		function place_order_data(event) {
+			var tab = 'true';
+
+
+			var address_id = $('#defaultAdderess:checked').val();
+			var user_id = $('#user_id').val();
+
+
+			var fullname = $("#fullname_a").val();
+			var mobile = $("#mobile").val();
+			var state = $("#state").val();
+			var pincode = $("#pincode").val();
+			var city = $("#city").val();
+			var email = $("#email").val();
+			var user_id = $("#user_id").val();
+			var fulladdress = $("#fulladdress").val();
+			var city_id = $("#city option:selected").val();
+			
+			
+			const validateAddressForm = () => {
+			if ($('#fullname_a').val() !== '' && $('#fulladdress').val() !== '' && $('#city').val() !== '' && $('#state').val() !== '' && $('#pincode').val() !== '' && $('#mobile').val() !== '' && $('#email').val() !== '') {
+				/*Swal.fire({
+					position: 'center',
+					icon: 'success',
+					title: 'saved',
+					showConfirmButton: false,
+					timer: 1500
+				});*/
+				return true;
+			} else if ($('#fullname_a').val() !== '' || $('#fulladdress').val() !== '' || $('#city').val() !== '' || $('#city').val() !== 'Select' || $('#state').val() !== '' || $('#state').val() !== 'Select State' || $('#pincode').val() !== '' || $('#mobile').val() !== '' || $('#email').val() !== '') {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: "Please fill all the required field",
+					showConfirmButton: false,
+					timer: 1500
+				});
+				return true;
+			} else {
+				Swal.fire({
+					position: 'center',
+					icon: 'error',
+					title: "Your address can't be blank",
+					showConfirmButton: false,
+					timer: 1500
+				});
+				return false;
+			}
+		}
+
+
+			//if (user_id !== '') {
+				/*if (validateAddressForm()) {
+
+					$.ajax({
+						method: "post",
+						url: site_url + "getUserAddress",
+						data: {
+							language: default_language,
+							user_id: user_id,
+							[csrfName]: csrfHash
+						},
+						success: function(response) {
+
+							var parsedJSON = response.Information.address_details;
+
+							if (parsedJSON == '') {
+								addUserAddress();
+							} else {
+								var isNewAddress = true;
+								$(parsedJSON).each(function() {
+									console.log('a');
+									console.log(this)
+									if (this.fullname === fullname && this.mobile === mobile && this.state === state && this.pincode === pincode && this.city_id === city && this.email === email && this.fulladdress === fulladdress) {
+										console.log('b')
+										isNewAddress = false;
+										return false;
+									}
+								});
+								if (isNewAddress) {
+									addUserAddress();
+								}
+							}
+						}
+					}); */
+
+
+					/* $.ajax({
+						method: "post",
+						url: site_url + "addUserAddress",
+						data: {
+							language: default_language,
+							username: fullname,
+							mobile: $("#mobile").val(),
+							pincode: $("#pincode").val(),
+							locality: "",
+							fulladdress: $("#fulladdress").val(),
+							state: $("#state").val(),
+							city: $('#city').find(":selected").text(),
+							addresstype: "home",
+							email: $("#email").val(),
+							city_id: $("#city option:selected").val(),
+							[csrfName]: csrfHash,
+						},
+						success: function(response) {
+							//hideloader();
+							// location.reload();
+						},
+					}); 
+				}*/
+			//}
+
+			if (fullname == '') {
+				Swal.fire({
+					position: "center",
+					//icon: "success",
+					title: 'Please Select Address',
+					showConfirmButton: false,
+					confirmButtonColor: "#ff5400",
+					timer: 3000,
+				});
+			} else {
+
+
+				//alert("active---"+tab+"---");
+
+				if (fulladdress == "" || fulladdress == null && fullname == "" || fullname == null && state == "" || state == null && city == "" || city == null) {
+
+					if (fullname == "" || fullname == null) {
+						$("#fullname1_error").text("Please Add Name.");
+					} else {
+						$("#fullname1_error").text("");
+					}
+					if (mobile == "" || mobile == null) {
+						$("#mobile_error").text("Please Add Mobile No.");
+					} else {
+						$("#mobile_error").text("");
+					}
+					if (state == "" || state == null) {
+						$("#state_error").text("Please Select State.");
+					} else {
+						$("#state_error").text("");
+					}
+					//else if(pincode == "" || pincode == null)
+					//{
+					//alert('please Add Pincode.');
+					//}
+					if (city == "" || city == null) {
+						$("#city_error").text("Please Select City.");
+					} else {
+						$("#city_error").text("");
+					}
+
+					if (email == "" || email == null) {
+						$("#emails_error").text("Please Add Emails.");
+					} else {
+						$("#emails_error").text("");
+					}
+
+					if (fulladdress == "" || fulladdress == null) {
+						$("#fulladdress_error").text("Please Add Full Address.");
+					} else {
+						$("#fulladdress_error").text("");
+					}
+
+					/*if( ){
+					  /// write address filed validation code
+					}else if(){ */
+
+				} else {
+
+					$("#fullname1_error").text("");
+					$("#emails_error").text("");
+					$("#mobile_error").text("");
+					$("#state_error").text("");
+					$("#city_error").text("");
+					$("#fulladdress_error").text("");
+
+					if (tab == 'true') {
+
+						// alert("call true");
+
+						var spinner = '<div class="spinner-border" role="status"><span class="se-only"></span></div> Please Wait..';
+						$('.paymentMethodBtn').html(spinner);
+						// $(".paymentMethodBtn").prop('disabled', true);
+						$('.paymentMethodBtn').addClass('disabled-link');
+						// alert(" place order req send ");
+						var coupon_code = $('#coupon_code').val();
+						var coupon_value = $('#coupo_discount_value').text();
+
+						$.ajax({
+							method: "post",
+							url: site_url + "placeOrder",
+							data: {
+								language: default_language,
+								fullname: fullname,
+								mobile: mobile,
+								locality: '',
+								fulladdress: fulladdress,
+								city: $('#city').find(":selected").text(),
+								state: state,
+								pincode: pincode,
+								addresstype: 'Home',
+								email: email,
+								payment_id: 'Pay12345',
+								payment_mode: 'COD',
+								city_id: city_id,
+								coupon_code: coupon_code,
+								coupon_value: coupon_value,
+								[csrfName]: csrfHash,
+							},
+							success: function(response) {
+								// $(".paymentMethodBtn").prop('disabled', false);
+								$('.paymentMethodBtn').removeClass('disabled-link');
+								$('.paymentMethodBtn').text('Place Order');
+								//hideloader();
+
+								if (response.status == 1) {
+									// alert(response.status);
+									//location.href = site_url + "thankyou/" + order_id;
+
+									var imgurl = $("#imgurl").val();
+
+									var order_id = response.Information.order_id;
+									var message = 'Dear *' + fullname + '* ,';
+									message += ' Your Order has been placed Successfully.';
+									$.ajax({
+										method: 'get',
+										url: site_url + 'send_whatsapp_msg',
+										data: {
+											number: '91'.concat(mobile),
+											type: 'media',
+											message: message.replace(/ /g, "%20"),
+											media_url: site_url + 'media/' + imgurl,
+											// filename: '',
+											instance_id: '64258107A62A7',
+											access_token: '14e3c33fbe98cd4ac95bb8f15c2d9023'
+										},
+										success: function(response) {
+											// alert(JSON.stringify(JSON.parse(response), null, 2));
+										}
+									});
+
+
+									setTimeout(function() {
+
+
+										location.href = site_url + "thankyou/" + order_id;
+									}, 100);
+
+								} else {
+									/*Swal.fire({
+										position: "center",
+										//icon: "success",
+										title: response.Information.order_msg,
+										showConfirmButton: false,
+										confirmButtonColor: "#ff5400",
+										timer: 3000,
+									});*/
+								}
+								//alert(response.Information.order_msg);
+								//var order_id = response.Information.order_id
+								//location.href=site_url+'thankyou/'+ order_id;
+
+								//var parsedJSON = JSON.parse(response);
+								//$(parsedJSON.Information).each(function() {
+								//	 alert(this.order_id);
+								//});
+								//location.href=site_url+'thankyou';
+							},
+						});
+
+
+					} else {
+						//alert ("call else ");
+						///$('#payment-tab').
+						$('#address-tab').attr('aria-selected', false);
+						$("#address-tab").removeClass('active');
+						$("#address").removeClass('active');
+						$("#address").removeClass('show');
+
+						$("#payment-tab").addClass('active');
+						$("#payment").addClass('active');
+						$("#payment").addClass('show');
+						$('#payment-tab').attr('aria-selected', true);
+					}
+
+				}
+
+
+				/*
+				  event.preventDefault();
+				  var fullname = $("#name").val();
+				  var mobile = $("#mobile").val();
+				  var state = $("#state").val();
+				  var pincode = $("#pincode").val();
+				  var city = $("#city").val();
+				  var email = $("#email").val();
+				  var user_id = $("#user_id").val();
+				  var fulladdress = $("textarea#address").val();
+				  
+				  
+
+				 */
+			}
+		}
 
 
 		$(document).on('change', '.defaultAdderess', function() {
@@ -611,7 +1024,7 @@
 			});
 		});
 
-		function place_order_data(event) {
+		function place_order_data_old(event) {
 			var tab = 'true';
 
 			var address_id = $('.defaultAdderess:checked').val();
@@ -730,7 +1143,7 @@
 			});
 		}
 
-		const addUserAddress = () => {
+		/*const addUserAddress = () => {
 			$.ajax({
 				method: "post",
 				url: site_url + "addUserAddress",
@@ -738,7 +1151,7 @@
 					language: default_language,
 					username: $('#fullname_a').val(),
 					email: $('#email').val(),
-					country_code: window.intlTelInputGlobals.getInstance(document.getElementById('mobile')).getSelectedCountryData().dialCode,
+					country_code: '1',
 					mobile: $('#mobile').val(),
 					fulladdress: $('#fulladdress').val(),
 					lat: $('#lat').val(),
@@ -782,7 +1195,7 @@
 			});
 			return response;
 
-		}
+		}*/
 
 		$(document).ready(function() {
 			$("#address_div_id").click(function() {

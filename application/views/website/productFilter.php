@@ -13,6 +13,17 @@
 		margin-left: 10px;
 		margin-top: 3px;
 	}
+	
+	img.zoom-img.thumbnail-image {
+		width: -webkit-fill-available;
+		height : 250px;
+	}
+	
+	.old-price {
+		text-decoration: line-through;
+		padding-bottom: 2px;
+		color: #162b75;
+	}
 
 	@media (max-width: 767.98px) {
 		img.outof_stock {
@@ -48,6 +59,8 @@
 		left: -17px;
 		right: auto;
 	}
+	
+	
 
 	<?php endif; ?>
 </style>
@@ -207,9 +220,9 @@
 					<div class="col-md-3 col-lg-2 d-none d-md-block px-1">
 						<aside id="filtersContainer">
 							<div class="container-fluid px-1">
-								<div class="row">
-									<div class="p-0">
-										<div class="card filter-card">
+								<div class="row"> 
+									<div class="p-3">
+										<div class="card filter-card p-3">
 											<?php foreach ($product_filter as $p_weight) : ?>
 												<div class="card-body px-0">
 													<h6 class="mb-2"><?= $p_weight['name'] ?></h6>
@@ -247,7 +260,7 @@
 												<hr class="my-0">
 											<?php endforeach; ?>
 
-											<?php if (!empty($price_filter['min_price']) && !empty($price_filter['max_price'])) :  ?>
+											<?php /* if (!empty($price_filter['min_price']) && !empty($price_filter['max_price'])) :  ?>
 												<?php if ($price_filter['min_price'] != $price_filter['max_price']) :  ?>
 													<!-- Prize Slider -->
 													<div class="my-0">
@@ -265,7 +278,7 @@
 														</div>
 													</div>
 												<?php endif; ?>
-											<?php endif; ?>
+											<?php endif;*/ ?>
 											<hr class="my-0">
 											<div class="card-body px-0">
 												<h6 class="mb-2"><?= $this->lang->line('rating'); ?></h6>
@@ -305,11 +318,11 @@
 					<article class="col-md-9 col-lg-10 px-1" id="filterProducts0">
 						<div class="container-fluid px-md-2 px-lg-4"></div>
 						<div class="trending-section filter empty-cart row" id="category_sponsor_product"></div>
-						<div class="trending-section filter empty-product row" id="category_product"></div>
+						<div class="trending-section filter empty-product row mx-2 mt-3" id="category_product"></div>
 						<div class="loading-container text-center m-5" id="wholesale_product">
 							<div class="spinner-border text-primary" role="status">
 								<span class="visually-hidden">Loading...</span>
-							</div>
+							</div> 
 						</div>
 					</article>
 				</div>
@@ -387,12 +400,12 @@
 									`<div class="col-6 col-sm-4 col-lg-3 p-3">
 									${out_of_stock}
 									<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-										<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
+										<!--<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
 											<span class="discount text-uppercase">
 												<div>${this.offpercent}</div>
 											</span>
 											<span class="wishlist"><i class="fa fa-heart-o"></i></span>
-										</div>
+										</div>-->
 										<div class="image-container zoom-img">
 											<img src="${site_url}/media/${this.imgurl}" class="zoom-img thumbnail-image">
 										</div>
@@ -588,7 +601,7 @@
 		}
 
 		window.addEventListener('load', () => {
-			rangeSlider();
+			//rangeSlider();
 
 			isFetching = true;
 			get_category_product(hidden_catid, '', 0, () => {

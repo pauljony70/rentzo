@@ -16,7 +16,7 @@
 
     <div class="container login-containter my-4 my-md-5" id="login-containter">
         <div class="row" id="login-input-container">
-            <div class="col-md-6 px-2 px-md-3 auth-image-container">
+            <div class="col-md-6 px-2 px-md-3 auth-image-container py-3">
                 <div class="heading mb-2">"Shop Smart, Rent First."</div>
                 <div class="des">Unlock Ownership through Renting</div>
                 <div class="image text-center">
@@ -45,12 +45,12 @@
             </div>
         </div>
         <div class="row d-none" id="login-otp-container">
-            <div class="col-md-6 p-3 auth-image-container">
+            <div class="col-md-6 p-3 auth-image-container py-3">
                 <div class="image text-center">
                     <img src="<?= base_url('assets_web/images/otp-screen.png') ?>" alt="Image">
                 </div>
             </div>
-            <div class="col-md-6 form-container ps-0 ps-md-5">
+            <div class="col-md-6 form-container ps-md-5">
                 <div class="d-flex flex-column justify-content-center h-100">
                     <div class="heading mb-3">Verification</div>
                     <div class="d-flex align-items-center mb-4 mb-md-5">

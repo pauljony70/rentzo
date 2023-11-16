@@ -34,7 +34,7 @@ class Checkout_model extends CI_Model
 
 		$this->db->select("prod_id, attr_sku, vendor_id, qty");
 
-		$this->db->where(array('user_id' => $user_id));
+		//$this->db->where(array('user_id' => $user_id));
 
 		$coupon_discount = 0;
 		$query = $this->db->get('cartdetails');
@@ -287,7 +287,7 @@ class Checkout_model extends CI_Model
 
 	//function for place order
 
-	function place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value)
+	function place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id)
 	{
 		$status = array('status' => '');
 		$delivery_array = $order = array();
@@ -311,7 +311,7 @@ class Checkout_model extends CI_Model
 		if ($query->num_rows() > 0) {
 			$order_id = strtoupper('ODR' . $this->random_strings(6) . date("hi") . rand(1, 99));
 
-			$add_order = $this->create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress,  $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value);
+			$add_order = $this->create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress,  $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id);
 
 			if ($add_order != 'add') {
 				return false;
@@ -1142,7 +1142,7 @@ class Checkout_model extends CI_Model
 		return $seller_inv;
 	}
 
-	function create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value)
+	function create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id)
 	{
 		$status = '';
 		$order = array();
@@ -1170,7 +1170,10 @@ class Checkout_model extends CI_Model
 		$order['status'] = 'Placed';
 		$order['coupon_code'] = $coupon_code;
 		$order['coupon_value'] = $coupon_value;
-
+		$order['state'] = $state;
+		$order['city'] = $city;
+		$order['cityid'] = $city_id;
+		
 		$query = $this->db->insert('orders', $order);
 		if ($query) {
 			$status = 'add';

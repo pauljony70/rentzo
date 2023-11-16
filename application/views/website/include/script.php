@@ -6,7 +6,7 @@
 <script>
   setTimeout(function() {
     $('.loaderScreen').css('display', 'none');
-  }, 500);
+  }, 100);
 
   var csrfName = $(".txt_csrfname").attr("name"); //
   var csrfHash = $(".txt_csrfname").val(); // CSRF hash
@@ -144,33 +144,19 @@
   addto_cart_count();
 
   function addto_cart_count() {
-    var csrfName = $('.txt_csrfname').attr('name'); //
-    var csrfHash = $('.txt_csrfname').val(); // CSRF hash
-    var site_url = $('.site_url').val(); // CSRF hash
-
     $.ajax({
-
       method: 'get',
       url: site_url + 'cart_count',
       data: {
         [csrfName]: csrfHash
       },
-
       success: function(response) {
-
-        //hideloader();
-
-        // document.querySelector('#cart_count').innerText = response;
         document.querySelectorAll('#badge-cart-count').forEach(element => {
-          // element.innerText = response;
+          element.innerText = response;
         });
       }
 
     });
-
-
-
-
 
   }
 

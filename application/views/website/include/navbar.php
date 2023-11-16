@@ -75,7 +75,7 @@
                         <a class="nav-link" aria-disabled="true">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-disabled="true">Sign Up</a>
+                        <a href="<?= base_url('sign-up') ?>" class="nav-link" aria-disabled="true">Sign Up</a>
                     </li>
                 </ul>
             </div>
@@ -101,7 +101,7 @@
                 <a href="<?= base_url('cart') ?>" class="ms-3 position-relative" title="Cart">
                     <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
                     <span class="icon-count">
-                        <div id="badge-cart-count">2</div>
+                        <div id="badge-cart-count">0</div>
                     </span>
                 </a>
                 <?php if ($this->session->userdata('user_id') == '') : ?>
@@ -143,7 +143,7 @@
                     <a href="<?= base_url('cart') ?>" class="position-relative" title="Cart">
                         <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
                         <span class="icon-count">
-                            <div id="badge-cart-count">2</div>
+                            <div id="badge-cart-count">0</div>
                         </span>
                     </a>
                     <?php if ($this->session->userdata('user_id') == '') : ?>
@@ -265,7 +265,7 @@
 </header>
 
 <!-- New Mobile Sidebar -->
-<div class="offcanvas offcanvas-start w-75" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header align-items-center">
         <div class="user-location">
             <div class="container d-flex align-items-center">
