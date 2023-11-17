@@ -6,6 +6,19 @@
     include("include/headTag.php") ?>
 </head>
 <style>
+	.top-category .card img, .trending-category .card img {
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		padding : 5px;
+		border-radius : 10px;
+	}
+	.top-category .card, .trending-category .card {
+		height: 300px;
+		overflow: hidden;
+		border-radius: 10px;
+		margin : 15px 15px 0px 15px;
+	}
     @media (max-width: 767.98px) {
         .top-category .card {
             height: 200px;
@@ -30,7 +43,7 @@
         <section class="top-category" style="min-height:700px">
             <div class="container px-0">
                 <nav aria-label="breadcrumb" class="px-1">
-                    <ol class="breadcrumb my-5">
+                    <ol class="breadcrumb my-3 mt-4">
                         <li class="breadcrumb-item">Category</li>
                         <li class="breadcrumb-item active fw-bolder" aria-current="page"><?php echo $sub_cat[0]['cat_name']; ?></li>
                     </ol>
@@ -43,7 +56,7 @@
                             foreach ($maincat['subcat_1'] as $subcat_1) {
 
                         ?>
-                                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-1 px-1">
+                                <div class="col-md-6 col-lg-3 mb-2 px-1">
                                     <a href="<?php echo base_url() . 'shop/' . $subcat_1['cat_slug']; ?>">
                                         <div class="card position-relative" style="border: 0.5px solid #ccc;">
                                             <img src="<?php echo MEDIA_URL . $subcat_1['imgurl']; ?>" alt="" class="img-fluid">
@@ -52,7 +65,7 @@
                                             </div>
                                         </div>
                                     </a>
-                                    <h5 class="fw-bolder text-center text-dark mt-2"><?php echo $subcat_1['cat_name']; ?></h5>
+                                    <h6 class="fw-bolder text-center text-dark mt-2"><?php echo $subcat_1['cat_name']; ?></h6>
                                 </div>
                         <?php }
                         } else {

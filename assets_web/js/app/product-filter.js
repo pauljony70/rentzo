@@ -48,36 +48,37 @@ function get_category_product(catid, sortby, pageno, callback) {
                         }
                         var ratingHTML = '';
                         if (this.rating.total_rows > 0) {
-                            var ratingHTML =
-                                `<i class="fa-solid fa-star fa-lg"></i>
-                                        <span class="rating-number">${(this.rating.total_rating / this.rating.total_rows).toFixed(1)}</span>`;
+                            var rating = Math.round((this.rating.total_rating / this.rating.total_rows) * 2) / 2;
+                            ratingHTML += `<div class="rating-number mt-1">${rating}</div>`;
+                            const wholeNumber = Math.floor(rating);
+                            const fractionalPart = rating - wholeNumber;
+                            for (let i = 0; i < wholeNumber; i++) {
+                                ratingHTML += '<img src="assets_web/images/icons/star-yellow.svg" alt="Star">';
+                            }
+                            if (fractionalPart >= 0.5) {
+                                ratingHTML += '<img src="assets_web/images/icons/half-star.svg" alt="Star">';
+                            } else {
+                                ratingHTML += '<img src="assets_web/images/icons/star-grey.svg" alt="Star">';
+                            }
+                            const emptyStars = 5 - wholeNumber - 1;
+                            for (let i = 0; i < emptyStars; i++) {
+                                ratingHTML += '<img src="assets_web/images/icons/star-grey.svg" alt="Star">';
+                            }
+
                         }
                         product_html +=
-                            `<div class="col-6 col-sm-4 col-lg-3 p-3">
+                            `<div class="col-6 col-md-4 p-3 position-relative">
                                 ${out_of_stock}
-                                <a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-                                    <!--<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-                                        <span class="discount text-uppercase">
-                                            <div>${this.offpercent}</div>
-                                        </span>
-                                        <span class="wishlist"><i class="fa fa-heart-o"></i></span>
-                                    </div>-->
-                                    <div class="image-container zoom-img">
-                                        <img src="${site_url}/media/${this.imgurl}" class="zoom-img thumbnail-image">
-                                    </div>
-                                    <div class="product-detail-container p-2 mb-1">
-                                        <div class="justify-content-between align-items-center">
-                                            <p class="dress-name mb-0">${this.name}</p>	
-                                            <div class="d-flex justify-content-start flex-row mt-2" style="width: 100%;">
-                                                <span class="new-price mx-1">${this.price}</span>
-                                                <small class="old-price text-right mx-1">${this.mrp}</small>
-                                            </div>
+                                <a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
+                                    <img src="${site_url}/media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="${this.name}">
+                                    <div class="card-body d-flex flex-column product-card-body">
+                                        <h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
+                                        <div class="d-flex stars py-1">
+                                            ${ratingHTML}
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center pt-1">
-                                            <div class="d-flex align-items-center">
-                                                ${ratingHTML}
-                                            </div>
-                                            <button class="btn btn-primary text-center text-uppercase card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event, '${this.id}', '${this.sku}', '${this.vendor_id}', '${user_id}', '1', '0', '2', '${qoute_id}')">Buy</button>
+                                        <div class="rent-price py-1">${this.price} / day</div>
+                                        <div class="product-location line-clamp-1 py-1">
+                                            Subhas Nagar, Dheradun
                                         </div>
                                     </div>
                                 </a>
@@ -103,7 +104,6 @@ $(document).on('change', '#sort_data_id', function () {
     get_category_product(hidden_catid, sort_id, 0, () => {
         isFetching = false;
     });
-    get_category_sponsor_product(hidden_catid, sort_id, 0);
 });
 
 $(document).on('change', '#flexCheckChecked', function () {
@@ -131,7 +131,6 @@ $(document).on('change', '#flexCheckChecked', function () {
     get_category_product(hidden_catid, sort_id, 0, () => {
         isFetching = false;
     });
-    get_category_sponsor_product(hidden_catid, sort_id, 0);
 });
 
 var radioButtonGroup = document.getElementsByName('rating-radio');
@@ -157,7 +156,7 @@ window.addEventListener('scroll', () => {
         scrollTop,
         clientHeight
     } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 100) {
+    if (scrollTop + clientHeight >= scrollHeight - 450) {
         if (pageNo < total_pages - 1) {
             pageNo++;
             sort_id = $("#sort_data_id").val();
@@ -261,71 +260,6 @@ window.addEventListener('load', () => {
     get_category_product(hidden_catid, '', 0, () => {
         isFetching = false;
     });
-    get_category_sponsor_product(hidden_catid, "", 0);
 
     pageLoadCount++;
 });
-
-
-function get_category_sponsor_product(catid, sortby, pageno) {
-    $.ajax({
-        method: "post",
-        url: site_url + "getCategorysponsorProduct",
-        data: {
-            catid: catid,
-            sortby: sortby,
-            pageno: pageno,
-            [csrfName]: csrfHash,
-            language: default_language,
-            devicetype: devicetype,
-            config_attr: JSON.stringify(filter_array),
-        },
-        success: function (response) {
-            //hideloader();
-
-            var parsedJSON = response.Information;
-
-            var qoute_id = '';
-
-            var order = parsedJSON.length;
-            var product_html = "";
-            if (order != 0) {
-                $("#category_sponsor_product").empty();
-                $(parsedJSON).each(function () {
-                    product_html +=
-                        `<div class="mx-2 py-2" style="width:20rem;">
-                            <a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-                                <div class="image-container mt-3 zoom-img">
-                                    <div class="first">
-                                        <div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-                                            <span class="discount">-25%</span>
-                                            <span class="wishlist"><i class="fa fa-heart-o"></i></span>
-                                        </div>
-                                    </div>
-                                    <img src="${this.imgurl}" class="thumbnail-image">
-                                </div>
-                                <div class="product-detail-container p-2 mb-1">
-                                    <div class="justify-content-between align-items-center">
-                                        <p class="dress-name mb-0">${this.name}</p>	
-                                        <div class="d-flex justify-content-start flex-row mt-2" style="width: 100%;">
-                                            <span class="new-price mx-1">${this.mrp}</span>
-                                            <small class="old-price text-right mx-1">${this.price}</small>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-3 pt-1">
-                                        <div>
-                                            <i class="fa-solid fa-star fa-lg" style="color: #ff6600;"></i>
-                                            <span class="rating-number">4.8</span>
-                                        </div>
-                                        <button class="btn btn-primary text-center card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event, '${this.id}', '${this.sku}', '${this.vendor_id}', '${user_id}', '1', '0', '2', '${qoute_id}')">BUY</button>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>`
-
-                });
-            }
-            $("#category_sponsor_product").html(product_html);
-        },
-    });
-}

@@ -11,75 +11,67 @@ class Address_model extends CI_Model
 	}
 
 	//Functiofor for add product into cart
-	function add_user_address($user_id, $country_code, $mobile, $username, $email, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype)
+	function add_user_address($username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id)
 	{
-		$query1 = $this->db->get_where('appuser_login', array('user_unique_id' => $user_id));
+		$this->db->select('user_unique_id');
+		$this->db->where(array('user_unique_id' => $user_id));
+		$query1 = $this->db->get('appuser_login');
 
 		if ($query1->num_rows() > 0) {
 
-			$query = $this->db->get_where('address', array('user_id' => $user_id));
+			$this->db->select("user_id");
+			$this->db->where(array('user_id' => $user_id));
+
+			$query = $this->db->get('address');
 
 			$address = array();
 			$status = '';
 
 
 			if ($query->num_rows() > 0) {
-				$all_address = $this->get_user_address_details($user_id)['address'];
-				if ($this->checkAddress($all_address, $country_code, $mobile, $username, $email, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype)) {
-					$addressid_count = end($all_address)['address_id'] + 1;
-					$address_json_array =	array(
-						'address_id' => $addressid_count,
-						'fullname' => $username,
-						'email' => $email,
-						'country_code' => $country_code,
-						'mobile' => $mobile,
-						'fulladdress' => $fulladdress,
-						'lat' => $lat,
-						'lng' => $lng,
-						'country_id' => $country_id,
-						'country' => $country,
-						'region_id' => $region_id,
-						'region' => $region,
-						'governorate_id' => $governorate_id,
-						'governorate' => $governorate,
-						'area_id' => $area_id,
-						'area' => $area,
-						'addresstype' => $addresstype,
-					);
+				$all_address1 = $this->get_user_address_details($user_id);
+				$all_address = $all_address1['address'];
 
-					$address_json = array_merge($all_address, array($address_json_array));
-
-					$address['addressarray'] = json_encode($address_json);
-					$address['defaultaddress'] = $addressid_count;
+				$addressid_count = count($all_address) + 1;
+				$address_json_array =	array(
+					'address_id' => $addressid_count,
+					'fullname' => $username,
+					'mobile' => $mobile,
+					'locality' => $locality,
+					'fulladdress' => $fulladdress,
+					'city' => $city,
+					'state' => $state,
+					'pincode' => $pincode,
+					'email' => $email,
+					'addresstype' => $addresstype, 'city_id' => $city_id
+				);
 
 
-					$this->db->where(array('user_id' => $user_id));
+				$address_json = array_merge($all_address, array($address_json_array));
 
-					$query = $this->db->update('address', $address);
-					if ($query) {
-						$status = 'done';
-					}
+				$address['addressarray'] = json_encode($address_json);
+				$address['defaultaddress'] = $addressid_count;
+
+
+				$this->db->where(array('user_id' => $user_id));
+
+				$query = $this->db->update('address', $address);
+				if ($query) {
+					$status = 'done';
 				}
 			} else {
 				$addressid_count = 1;
 				$address_json_array =	array(
 					'address_id' => $addressid_count,
 					'fullname' => $username,
-					'email' => $email,
-					'country_code' => $country_code,
 					'mobile' => $mobile,
+					'locality' => $locality,
 					'fulladdress' => $fulladdress,
-					'lat' => $lat,
-					'lng' => $lng,
-					'country_id' => $country_id,
-					'country' => $country,
-					'region_id' => $region_id,
-					'region' => $region,
-					'governorate_id' => $governorate_id,
-					'governorate' => $governorate,
-					'area_id' => $area_id,
-					'area' => $area,
-					'addresstype' => $addresstype,
+					'city' => $city,
+					'state' => $state,
+					'pincode' => $pincode,
+					'email' => $email,
+					'addresstype' => $addresstype, 'city_id' => $city_id
 				);
 
 				$address['addressarray'] = json_encode(array($address_json_array));
@@ -98,6 +90,64 @@ class Address_model extends CI_Model
 		return $status;
 	}
 
+	function edit_user_address($address_id, $username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id)
+	{
+
+		$this->db->select('user_unique_id');
+		$this->db->where(array('user_unique_id' => $user_id));
+		$query1 = $this->db->get('appuser_login');
+
+		if ($query1->num_rows() > 0) {
+
+			$this->db->select("user_id");
+			$this->db->where(array('user_id' => $user_id));
+
+			$query = $this->db->get('address');
+
+			$address = array();
+			$status = '';
+
+
+			if ($query->num_rows() > 0) {
+				$all_address1 = $this->get_user_address_details($user_id);
+				$all_address = $all_address1['address'];
+				$edited_address = [];
+				foreach ($all_address as $address) :
+					if ($address['address_id'] == $address_id) :
+						$edited_address[] =	[
+							'address_id' => $address_id,
+							'fullname' => $username,
+							'mobile' => $mobile,
+							'locality' => $locality,
+							'fulladdress' => $fulladdress,
+							'city' => $city,
+							'state' => $state,
+							'pincode' => $pincode,
+							'email' => $email,
+							'addresstype' => $addresstype,
+							'city_id' => $city_id
+						];
+					else :
+						$edited_address[] = $address;
+					endif;
+				endforeach;
+
+				// print_r($edited_address);exit;
+
+				$this->db->where(array('user_id' => $user_id));
+
+				$query = $this->db->update('address', array('addressarray' => json_encode($edited_address)));
+				if ($query) {
+					$status = 'done';
+				}
+			}
+		} else {
+			$status = 'not_exist';
+		}
+		return $status;
+	}
+	
+	
 	function checkAddress($all_address, $country_code, $mobile, $username, $email, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype)
 	{
 		$addressExists = false;
@@ -131,70 +181,7 @@ class Address_model extends CI_Model
 		}
 	}
 
-	function edit_user_address($address_id, $user_id, $username, $email, $country_code, $mobile, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype)
-	{
-
-		$this->db->select('user_unique_id');
-		$this->db->where(array('user_unique_id' => $user_id));
-		$query1 = $this->db->get('appuser_login');
-
-		if ($query1->num_rows() > 0) {
-
-			$this->db->select("user_id");
-			$this->db->where(array('user_id' => $user_id));
-
-			$query = $this->db->get('address');
-
-			$address = array();
-			$status = '';
-
-
-			if ($query->num_rows() > 0) {
-				$all_address1 = $this->get_user_address_details($user_id);
-				$all_address = $all_address1['address'];
-				$edited_address = [];
-				foreach ($all_address as $address) :
-					if ($address['address_id'] == $address_id) :
-						$edited_address[] =	[
-							'address_id' => $address_id,
-							'fullname' => $username,
-							'email' => $email,
-							'country_code' => $country_code,
-							'mobile' => $mobile,
-							'fulladdress' => $fulladdress,
-							'lat' => $lat,
-							'lng' => $lng,
-							'country_id' => $country_id,
-							'country' => $country,
-							'region_id' => $region_id,
-							'region' => $region,
-							'governorate_id' => $governorate_id,
-							'governorate' => $governorate,
-							'area_id' => $area_id,
-							'area' => $area,
-							'addresstype' => $addresstype,
-						];
-					else :
-						$edited_address[] = $address;
-					endif;
-				endforeach;
-
-				// print_r($edited_address);exit;
-
-				$this->db->where(array('user_id' => $user_id));
-
-				$query = $this->db->update('address', array('addressarray' => json_encode($edited_address)));
-				if ($query) {
-					$status = 'done';
-				}
-			}
-		} else {
-			$status = 'not_exist';
-		}
-		return $status;
-	}
-
-
+	
 	//Functiofor for delete product from cart
 	function delete_address($user_id, $address_id)
 	{

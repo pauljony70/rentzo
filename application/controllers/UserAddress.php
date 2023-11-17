@@ -22,109 +22,212 @@ class UserAddress extends REST_Controller
 		$this->responses(1, 'Server OK');
 	}
 
-	public function addUserAddress_post()
-	{
-
-		$requiredparameters = array('language', 'username', 'email', 'country_code', 'mobile', 'fulladdress', 'lat', 'lng', 'country_id', 'country', 'region_id', 'region', 'governorate_id', 'governorate', 'area_id', 'area', 'addresstype');
-
+	public function addUserAddress_post(){
+		$requiredparameters = array('language','username','mobile','locality','fulladdress','state','city','addresstype','email','city_id','pincode');
+		
 		$language_code = removeSpecialCharacters($this->post('language'));
-		$user_id = removeSpecialCharacters($this->session->userdata('user_id'));
 		$username = removeSpecialCharacters($this->post('username'));
-		$email = removeSpecialCharacters($this->post('email'));
-		$country_code = removeSpecialCharacters($this->post('country_code'));
 		$mobile = removeSpecialCharacters($this->post('mobile'));
+		$user_id = removeSpecialCharacters($this->session->userdata('user_id'));
+		$locality = removeSpecialCharacters($this->post('locality'));
 		$fulladdress = removeSpecialCharacters($this->post('fulladdress'));
-		$lat = removeSpecialCharacters($this->post('lat'));
-		$lng = removeSpecialCharacters($this->post('lng'));
-		$country_id = removeSpecialCharacters($this->post('country_id'));
-		$country = removeSpecialCharacters($this->post('country'));
-		$region_id = removeSpecialCharacters($this->post('region_id'));
-		$region = removeSpecialCharacters($this->post('region'));
-		$governorate_id = removeSpecialCharacters($this->post('governorate_id'));
-		$governorate = removeSpecialCharacters($this->post('governorate'));
-		$area_id = removeSpecialCharacters($this->post('area_id'));
-		$area = removeSpecialCharacters($this->post('area'));
+		$state = removeSpecialCharacters($this->post('state'));
+		$city = removeSpecialCharacters($this->post('city'));
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
-
-
-		$validation = $this->parameterValidation($requiredparameters, $this->post()); //$this->post() holds post values
-
-		if ($validation == 'valid') {
-			if (trim($user_id) !== '' && trim($country_code) !== '' && is_numeric($mobile) && trim($username) !== '' && trim($email) !== '' && trim($fulladdress) !== '' && trim($lat) !== '' && trim($lng) !== '' && trim($country) !== '' && trim($region) !== '' && trim($governorate) !== '' && trim($area) !== '' && trim($addresstype) !== '') {
-				$address = $this->address_model->add_user_address($user_id, $country_code, $mobile, $username, $email, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype);
-				if ($address == 'done') {
+		$email = removeSpecialCharacters($this->post('email'));
+		$city_id = removeSpecialCharacters($this->post('city_id')); 
+		$pincode = removeSpecialCharacters($this->post('pincode'));
+		
+		
+		$validation = $this->parameterValidation($requiredparameters,$this->post()); //$this->post() holds post values
+		
+    	if($validation=='valid') {
+			if($username && is_numeric($mobile) && $pincode && $user_id && $city && $addresstype){
+				$address = $this->address_model->add_user_address($username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id);
+				if($address =='done'){					
 					//$address_detail = $this->address_model->get_user_address_details_full($user_id);
+							
 					$this->response([
 						$this->config->item('rest_status_field_name') => 1,
-						$this->config->item('rest_message_field_name') => get_phrase('address_added', $language_code)
+						$this->config->item('rest_message_field_name') => get_phrase('address_added',$language_code)
 						//$this->config->item('rest_data_field_name') => $address_detail
+												
 					], self::HTTP_OK);
-				} else if ($address == 'not_exist') {
-					$this->responses(0, get_phrase('please_try_again', $language_code));
-				} else {
-					$this->responses(0, get_phrase('please_try_again', $language_code));
+					
+				
+				}else if($address =='not_exist'){	
+					$this->responses(0,get_phrase('please_try_again',$language_code));
+				}else{
+					$this->responses(0,get_phrase('please_try_again',$language_code));
 				}
-			} else {
+			}else if(!$username){
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
-					$this->config->item('rest_message_field_name') => get_phrase('required_field_missing', $language_code)
+					$this->config->item('rest_message_field_name') => get_phrase('username_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
 				], self::HTTP_OK);
+				
+			}else if(!is_numeric($mobile)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('phone_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+			
+			}/*else if(!is_numeric($pincode)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('pincode_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}*/else if(!is_numeric($user_id)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('please_try_again',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}/*else if(!$email){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('email_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}*/else if(!$city){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('city_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}else if(!$addresstype){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('address_type_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
 			}
-		} else {
-			echo $validation; //These are parameters are missing.
-		}
+			
+    	}
+    	else {
+      		echo $validation; //These are parameters are missing.
+    	}
+		
 	}
 
-	public function editUserAddress_post()
-	{
-		$requiredparameters = array('language', 'username', 'email', 'country_code', 'mobile', 'fulladdress', 'lat', 'lng', 'country', 'region', 'governorate', 'area', 'addresstype');
-
+	public function editUserAddress_post(){
+		$requiredparameters = array('language','username','mobile','fulladdress','state','city','addresstype','email','city_id','pincode');
+		
 		$language_code = removeSpecialCharacters($this->post('language'));
 		$address_id = removeSpecialCharacters($this->post('address_id'));
-		$user_id = removeSpecialCharacters($this->session->userdata('user_id'));
 		$username = removeSpecialCharacters($this->post('username'));
-		$email = removeSpecialCharacters($this->post('email'));
-		$country_code = removeSpecialCharacters($this->post('country_code'));
 		$mobile = removeSpecialCharacters($this->post('mobile'));
+		$user_id = removeSpecialCharacters($this->session->userdata('user_id'));
+		$locality = removeSpecialCharacters($this->post('locality'));
 		$fulladdress = removeSpecialCharacters($this->post('fulladdress'));
-		$lat = removeSpecialCharacters($this->post('lat'));
-		$lng = removeSpecialCharacters($this->post('lng'));
-		$country_id = removeSpecialCharacters($this->post('country_id'));
-		$country = removeSpecialCharacters($this->post('country'));
-		$region_id = removeSpecialCharacters($this->post('region_id'));
-		$region = removeSpecialCharacters($this->post('region'));
-		$governorate_id = removeSpecialCharacters($this->post('governorate_id'));
-		$governorate = removeSpecialCharacters($this->post('governorate'));
-		$area_id = removeSpecialCharacters($this->post('area_id'));
-		$area = removeSpecialCharacters($this->post('area'));
+		$state = removeSpecialCharacters($this->post('state'));
+		$city = removeSpecialCharacters($this->post('city'));
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
+		$email = removeSpecialCharacters($this->post('email'));
+		$city_id = removeSpecialCharacters($this->post('city_id')); 
+		$pincode = removeSpecialCharacters($this->post('pincode'));
 
-		$validation = $this->parameterValidation($requiredparameters, $this->post()); //$this->post() holds post values
-
-		if ($validation == 'valid') {
-			if (trim($user_id) !== '' && trim($country_code) !== '' && is_numeric($mobile) && trim($username) !== '' && trim($email) !== '' && trim($fulladdress) !== '' && trim($lat) !== '' && trim($lng) !== '' && trim($country) !== '' && trim($region) !== '' && trim($governorate) !== '' && trim($area) !== '' && trim($addresstype) !== '') {
-				$address = $this->address_model->edit_user_address($address_id, $user_id, $username, $email, $country_code, $mobile, $fulladdress, $lat, $lng, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $addresstype);
-				if ($address == 'done') {
+		$validation = $this->parameterValidation($requiredparameters,$this->post()); //$this->post() holds post values
+		
+    	if($validation=='valid') {
+			if($username && is_numeric($mobile) && $pincode && $user_id && $city && $addresstype){
+				$address = $this->address_model->edit_user_address($address_id, $username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id);
+				if($address =='done'){					
 					//$address_detail = $this->address_model->get_user_address_details_full($user_id);
-
+							
 					$this->response([
 						$this->config->item('rest_status_field_name') => 1,
-						$this->config->item('rest_message_field_name') => get_phrase('address_added', $language_code)
+						$this->config->item('rest_message_field_name') => get_phrase('address_added',$language_code)
 						//$this->config->item('rest_data_field_name') => $address_detail
-
+												
 					], self::HTTP_OK);
-				} else if ($address == 'not_exist') {
-					$this->responses(0, get_phrase('please_try_again', $language_code));
-				} else {
-					$this->responses(0, get_phrase('please_try_again', $language_code));
+					
+				
+				}else if($address =='not_exist'){	
+					$this->responses(0,get_phrase('please_try_again',$language_code));
+				}else{
+					$this->responses(0,get_phrase('please_try_again',$language_code));
 				}
-			} else {
+			}else if(!$username){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('username_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}else if(!is_numeric($mobile)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('phone_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+			
+			}/*else if(!is_numeric($pincode)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('pincode_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}*/else if(!is_numeric($user_id)){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('please_try_again',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}/*else if(!$email){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('email_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}*/else if(!$city){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('city_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
+			}else if(!$addresstype){
+				$this->response([
+					$this->config->item('rest_status_field_name') => 0,
+					$this->config->item('rest_message_field_name') => get_phrase('address_type_mandatory',$language_code)
+					//$this->config->item('rest_data_field_name') => $address_detail
+											
+				], self::HTTP_OK);
+				
 			}
-		} else {
-			echo $validation; //These are parameters are missing.
-		}
+			
+    	}
+    	else {
+      		echo $validation; //These are parameters are missing.
+    	}
+		
 	}
-
+	
 	// function for delete address
 	public function deleteUserAddress_post()
 	{

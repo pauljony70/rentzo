@@ -95,7 +95,7 @@
                     </div>
 
                 </form>
-                <a href="#" class="ms-3" title="Wishlist">
+                <a href="<?= base_url('wishlist') ?>" class="ms-3" title="Wishlist">
                     <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
                 </a>
                 <a href="<?= base_url('cart') ?>" class="ms-3 position-relative" title="Cart">
@@ -109,7 +109,7 @@
                         <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                     </a>
                 <?php else : ?>
-                    <a href="#" class="ms-3" title="<?= $this->session->userdata('user_name') ?>">
+                    <a href="<?= base_url('logout') ?>" class="ms-3" title="<?= $this->session->userdata('user_name') ?>">
                         <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                     </a>
                 <?php endif; ?>
@@ -117,7 +117,7 @@
         </div>
     </nav>
 
-    <nav class="navbar menu-navbar d-flex d-lg-none bg-white">
+    <nav class="navbar menu-navbar shadow-sm d-flex d-lg-none bg-white">
         <div class="container mobile-nav">
             <div class="mobile-nav-flex d-flex align-items-center justify-content-between w-100">
                 <button type="button" class="hamburger-icon btn px-0" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
@@ -137,7 +137,7 @@
                     <ul class="dropdown-menu container searchResults py-0 w-100" id="searchResults"></ul>
                 </div>
                 <div class="nav-icons-div d-flex align-items-center">
-                    <a href="#Wishlist" class="" title="Wishlist">
+                    <a href="<?= base_url('wishlist') ?>" class="" title="Wishlist">
                         <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
                     </a>
                     <a href="<?= base_url('cart') ?>" class="position-relative" title="Cart">
@@ -151,7 +151,7 @@
                             <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                         </a>
                     <?php else : ?>
-                        <a href="#" class="" title="<?= $this->session->userdata('user_name') ?>">
+                        <a href="<?= base_url('logout') ?>" class="" title="<?= $this->session->userdata('user_name') ?>">
                             <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                         </a>
                     <?php endif; ?>
@@ -214,18 +214,13 @@
                                             </div>
                                         <?php endfor; ?>
                                         <div class="col col-image px-2 pb-5">
-                                            <div class="row g-2 justify-content-center mt-3">
-                                                <div class="col-12">
+                                            <div class="row g-2 justify-content-center mt-3 h-100">
+                                                <div class="col-12 h-100 text-center">
                                                     <a href="#">
-                                                        <img class="nav-img" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
+                                                        <img class="nav-img h-100 w-100" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
                                                     </a>
                                                 </div>
                                                 <br>
-                                                <div class="col-12">
-                                                    <a href="#">
-                                                        <img class="nav-img" src="<?= base_url('media/' . $maincat['web_banner']) ?>" class="btn-transition" alt="app-store">
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -238,18 +233,13 @@
                                             </div>
                                         <?php endfor; ?>
                                         <div class="col col-image px-2 pb-5">
-                                            <div class="row g-2 justify-content-center mt-3">
-                                                <div class="col-12">
+                                            <div class="row g-2 justify-content-center mt-3 h-100">
+                                                <div class="col-12 h-100 text-center">
                                                     <a href="#">
-                                                        <img class="nav-img" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
+                                                        <img class="nav-img h-100 w-100" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
                                                     </a>
                                                 </div>
                                                 <br>
-                                                <div class="col-12">
-                                                    <a href="#">
-                                                        <img class="nav-img" src="<?= base_url('media/' . $maincat['web_banner']) ?>" class="btn-transition" alt="app-store">
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

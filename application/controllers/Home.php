@@ -77,7 +77,7 @@ class Home extends REST_Controller
 
 	public function offers_get()
 	{
-		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, 'home_bottom', '');
+		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, '' ,'home_bottom', ''); 
 		$this->load->view('website/offers.php', $this->data);
 	}
 
@@ -161,7 +161,6 @@ class Home extends REST_Controller
 		$src = $_REQUEST['search'];
 		$this->data['search_title'] = $src;
 		$this->data['search'] = $this->home_model->get_search_product_request($default_language, $src, 2);
-		// $this->data['search_sponsor'] = $this->home_model->get_search_sponsor_product_request($default_language, $src, 2);
 		$this->load->view('website/search.php', $this->data);
 	}
 

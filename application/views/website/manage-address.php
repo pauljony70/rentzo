@@ -318,7 +318,7 @@
 	</main>
 
 	<?php include("include/footer.php") ?>
-	<?php include("include/script.php") ?>
+	<?php include("include/script.php") ?> 
 	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/js/intlTelInput.min.js"></script>
 	<script>
 		$("#address_div").toggle();

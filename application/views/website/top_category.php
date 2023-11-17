@@ -4,6 +4,33 @@
 <head>
     <?php $title = "Top Category";
     include("include/headTag.php") ?>
+	<style>
+	.top-category .card img, .trending-category .card img {
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		padding : 5px;
+		border-radius : 10px;
+	}
+	.top-category .card, .trending-category .card {
+		height: 300px;
+		overflow: hidden;
+		border-radius: 10px;
+		margin : 15px 15px 0px 15px;
+	}
+	.top-category .banners
+	{
+		height: 300px;
+		overflow: hidden;
+		padding : 10px;
+	}
+	.top-category .banners img
+	{
+		height: 100%;
+		object-fit: cover;
+		border-radius: 30px;
+	}
+	</style>
 </head>
 
 <body>
@@ -20,13 +47,16 @@
     <main>
 
         <!-- Top Category section starts here  -->
-        <section class="pt-md-2 pt-2 top-category">
-            <div class="container-fluid">
+        <section class="pt-md-2 pt-2 mt-3 top-category">
+            <div class="container">
                 <div class="col-12">
                     <h5 class="mb-md-4" style="font-size:13px;">All Categories</h5>
                 </div>
+				<div class="row banners mb-3">
+					<img src="<?php echo MEDIA_URL .json_decode(get_settings('category_banner'))->{'280-310'}; ?>" class="mb-1" alt="" >
+				</div>
                 <div class="row">
-                    <?php foreach ($header_cat as $maincat1) { ?>
+				   <?php foreach ($header_cat as $maincat1) { ?>
                         <div class="col-md-6 col-lg-3 mb-2 px-1">
                             <?php if ($maincat1['cat_id'] == 10) { ?>
                                 <a href="<?php echo base_url() . 'explore_sub/' . $maincat1['cat_id']; ?>">
@@ -40,7 +70,7 @@
                                         </div>
                                     </div>
                                     </a>
-                                    <h5 class="fw-bolder text-center text-dark mt-2"><?php echo $maincat1['cat_name']; ?></h5>
+                                    <h6 class="fw-bolder text-center text-dark mt-2"><?php echo $maincat1['cat_name']; ?></h6>
                         </div>
                     <?php } ?>
 

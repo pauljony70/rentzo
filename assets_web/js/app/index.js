@@ -170,7 +170,7 @@ function get_home_products(title, type) {
 					product_html +=
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-								<img src="${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+								<img src="${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="${this.name}">
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
@@ -239,7 +239,7 @@ function get_home_bottom_products(title, type) {
 					product_html +=
 						`<div class="col-4 col-sm-4 col-md-3 mb-3 px-2">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-								<img src="${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+								<img src="${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="${this.name}">
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">

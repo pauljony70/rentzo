@@ -13,9 +13,6 @@ class CategoryProduct_model extends CI_Model
 
 	function get_product_custom_cloth_with_cat($cat_id)
 	{
-
-
-
 		$this->db->select("parent_id");
 		$this->db->where(array('cat_id' => $cat_id, 'status' => 1));
 		$query_cat = $this->db->get('category');
@@ -55,7 +52,6 @@ class CategoryProduct_model extends CI_Model
 
 	function get_product_review($prod_id, $pageno = '')
 	{
-
 		if ($pageno > 0) {
 			$start = ($pageno * LIMIT);
 		} else {
@@ -89,8 +85,7 @@ class CategoryProduct_model extends CI_Model
 	function get_category_product_request($language, $catid, $pageno, $sortby, $min_price, $max_price, $rating, $devicetype, $config_attr)
 	{
 		$prod_result = array();
-		$product_array = array();
-		$per_page = 9;
+		$per_page = 1;
 		if ($pageno > 0) {
 			$start = ($pageno * $per_page);
 		} else {
@@ -143,9 +138,9 @@ class CategoryProduct_model extends CI_Model
 		} else if ($sortby == 2) {
 			$this->db->order_by("price", 'DESC');
 		} else if ($sortby == 3) {
-			$this->db->order_by("pd.created_at", 'DESC');
+			$this->db->order_by("product_details.created_at", 'DESC');
 		} else if ($sortby == 4) {
-			$this->db->order_by("pd.prod_rating_count", 'DESC');
+			$this->db->order_by("product_details.prod_rating_count", 'DESC');
 		}
 
 		$query = $this->db->group_end()->group_by("product_category.prod_id");

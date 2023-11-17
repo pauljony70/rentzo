@@ -300,14 +300,14 @@ class Email_model extends CI_Model
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0; margin-top: 0px;">
 					<div style="border-bottom:1px solid #eee">
-						<a href="' . base_url() . '" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600"><img src="' . base_url('assets_web/images/logo-appbar.png') . '" alt="logo" width="70">
+						<a href="' . base_url() . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600"><img src="' . base_url('assets_web/images/logo.png') . '" alt="logo" width="70">
 					</div>
 					<p style="font-size:1.1em">Hi User,</p>
 					<p>Thank you for choosing ' . $system_name . '. Use the following OTP to complete your password reset procedures. OTP is valid for 3 minutes</p>
-					<h2 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">' . $otp . '</h2>
+					<h2 style="background: #008ecc;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">' . $otp . '</h2>
 					<p style="font-size:0.9em; margin-bottom: 0px">Regards,<br />' . $system_name . '</p>
 					<a style="font-size:0.9em;" href="' . base_url() . '">' . base_url() . '</a><br>
-					<img style="margin-top: 5px;" src="' . base_url('assets_web/images/logo-appbar.png') . '" alt="logo" width="70">
+					<img style="margin-top: 5px;" src="' . base_url('assets_web/images/logo.png') . '" alt="logo" width="70">
 					<hr style="border:none;border-top:1px solid #eee" />
 					<div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
 						<p>' . $system_name . ' Inc</p>
@@ -569,7 +569,7 @@ class Email_model extends CI_Model
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0">
 					<div style="border-bottom:1px solid #eee">
-						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">
+						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600">
 							<h1 class="font-2 mt-2" id="heading"><span style="color: rgb(4, 166, 157);">Baksa</span><span style="color: #EB008B">tales</span></h1>
 						</a>
 					</div>
@@ -591,7 +591,7 @@ class Email_model extends CI_Model
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0">
 					<div style="border-bottom:1px solid #eee">
-						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">
+						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600">
 							<h1 class="font-2 mt-2" id="heading"><span style="color: rgb(4, 166, 157);">Baksa</span><span style="color: #EB008B">tales</span></h1>
 						</a>
 					</div>

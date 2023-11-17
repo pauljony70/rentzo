@@ -1,0 +1,250 @@
+.cart-page .page-title {
+    color: #17183B;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 44px;
+}
+
+.cart-page .cart-count {
+    font-size: 20px;
+    color: #A2A3B1;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 44px;
+}
+
+.cart-details-row {
+    border-radius: 4px;
+    border: 1px solid #D9D9D9;
+    background: #FFF;
+}
+
+.cart-details-row .col-lg-8 .card {
+    border: none;
+}
+
+.cart-details-row .prod-img {
+    height: 194px;
+    object-fit: contain;
+    margin-top: -15px;
+}
+
+.cart-details-row .cart-type-rent {
+    position: relative;
+    background-color: var(--bs-warning);
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.cart-details-row .cart-type-rent .text {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 10px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 52%;
+    left: 10%;
+    transform-origin: top left;
+    transform-origin: 0% 0%;
+    letter-spacing: 2px;
+}
+
+.cart-details-row .cart-type-purchase {
+    background-color: var(--bs-primary);
+    width: 140px;
+    height: 60px;
+    clip-path: inset(0 0 50% 0);
+}
+
+.cart-details-row .cart-type-purchase .text {
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.cart-details-row .delete-cart {
+    color: var(--bs-danger);
+    margin-top: 39px;
+    height: 24px;
+    width: 24px;
+    border: 2px solid var(--bs-danger);
+    cursor: pointer;
+}
+
+.cart-details-row .cart-prod-title {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.attributes tr {
+    height: 35px;
+}
+
+.cart-details-row .attr-name {
+    color: #A2A3B1;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+.cart-details-row .attr-des {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+label#Color {
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+}
+
+.cart-details-row .rent-date-range {
+    color: #17183B;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+.quantity .input-group {
+    border-radius: 4px;
+    border: 1px solid #A2A3B1;
+    width: 160px;
+    height: 55px;
+}
+
+.quantity .input-group input {
+    border: none;
+}
+
+.product_price_cart {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.32px;
+}
+
+.date-range-count {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.security-deposit {
+    color: #17183B;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 10px;
+    letter-spacing: 0.1px;
+}
+
+.price-details-col {
+    border-radius: 2px;
+    border: 1px solid #D1D1D8;
+    position: sticky;
+    top: 82px;
+}
+
+.price-details-col .top-heading {
+    color: #17183B;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+    margin-bottom: 32px;
+}
+
+.cart-sammary,
+.cart-total {
+    margin-bottom: 32px;
+}
+
+.cart-sammary .heading,
+.cart-sammary .price {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+#cart-continue-btn {
+    padding: 18px 40px;
+    border-radius: 18px;
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 767px) {
+    .cart-page .page-title {
+        font-size: 20px;
+    }
+
+    .cart-page .cart-count {
+        font-size: 14px;
+    }
+
+    .cart-details-row {
+        border-radius: 0px;
+        border: none;
+        border-top: 1px solid #D9D9D9;
+        background: #FFF;
+    }
+
+    .cart-details-row .cart-prod-title {
+        font-size: 12px;
+    }
+
+    .attributes tr {
+        height: 28px;
+    }
+
+    .cart-details-row .attr-name,
+    .cart-details-row .attr-des,
+    .security-deposit,
+    .product_price_cart,
+    .date-range-count {
+        font-size: 10px;
+    }
+
+    .cart-details-row .rent-date-range {
+        font-size: 8px;
+    }
+
+    .quantity .input-group {
+        width: 95px;
+        height: 40px;
+    }
+
+    .quantity .input-group * {
+        padding: 4px;
+    }
+
+}

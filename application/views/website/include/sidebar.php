@@ -15,8 +15,6 @@
 				<div class="wrap-details">
 					<h5><?= $this->lang->line('user-my-orders'); ?></h5>
 					<h6><a href="<?= base_url() ?>order"><?= $this->lang->line('all-orders'); ?></a></h6>
-					<h6><a href="<?= base_url() ?>buy-from-turkey-orders"><?= $this->lang->line('user-buy-from-turkey-orders'); ?></a></h6>
-					<h6><a href="<?= base_url() ?>my-wallet"><?= $this->lang->line('my-wallet'); ?></a></h6>
 					<h6><a href="<?= base_url() ?>track"><?= $this->lang->line('track-orders'); ?></a></h6>
 				</div>
 			</div>

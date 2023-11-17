@@ -46,8 +46,10 @@
 						<span style="color: var(--bs-primary);"> Categories</span>
 					</div>
 					<div class="d-flex align-items-center">
-						<span class="view-all">View All</span>
-						<i class="fa-solid fa-chevron-right ms-2"></i>
+						<a href="<?= base_url . 'all_category'; ?>">
+							<span class="view-all">View All</span>
+							<i class="fa-solid fa-chevron-right ms-2"></i>
+						</a>
 					</div>
 				</div>
 				<div class="swiper section-5-category-div" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">

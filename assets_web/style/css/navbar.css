@@ -259,7 +259,7 @@
 }
 
 .nav-img {
-    width: 100%;
+    object-fit: contain;
 }
 
 .col-image,

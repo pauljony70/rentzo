@@ -1,0 +1,114 @@
+.product-card {
+    border: 1px solid var(--bs-primary);
+}
+
+.product-card .product-card-img {
+    height: 314px;
+    object-fit: contain;
+}
+
+.product-card-body {
+    padding: 4px 8px;
+    height: 140px;
+}
+
+.product-card .product-title,
+.product-card .rating-number {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0em;
+    color: #222222;
+}
+
+.product-card .rent-price {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    color: #222222;
+}
+
+.stars {
+    gap: 5px;
+}
+
+.product-card .product-location {
+    color: #B8B8B8;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+img.outof_stock {
+    position: absolute;
+    width: 100px;
+    z-index: 1;
+    margin-left: 0px;
+    margin-top: -5px;
+    left: 12px;
+}
+
+@media (max-width: 1200px) {
+
+    .product-card .product-title,
+    .product-card .rent-price,
+    .product-card .product-location,
+    .product-card .rating-number {
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .product-card .product-card-img {
+        height: 220px;
+    }
+
+    .product-card-body {
+        height: 130px;
+    }
+}
+
+@media (max-width: 992px) {
+
+    .product-card .product-title,
+    .product-card .rent-price,
+    .product-card .product-location,
+    .product-card .rating-number {
+        font-size: 12px;
+        line-height: 14px;
+    }
+
+    .product-card .product-card-img {
+        height: 200px;
+    }
+
+    .product-card-body {
+        height: 110px;
+    }
+}
+
+@media (max-width: 767px) {
+
+    .product-card .product-title,
+    .product-card .rent-price,
+    .product-card .product-location,
+    .product-card .rating-number {
+        font-size: 8px;
+        line-height: 10px;
+    }
+
+    .product-card .product-card-img {
+        height: 180px;
+    }
+
+    .product-card-body {
+        height: 90px;
+    }
+
+    img.outof_stock {
+        width: 70px;
+        margin-left: 1px;
+        margin-top: -3px;
+        left: 12px;
+    }
+}
