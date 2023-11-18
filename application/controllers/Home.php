@@ -68,6 +68,13 @@ class Home extends REST_Controller
 		$this->data['category'] = $this->home_model->get_category();
 		$this->load->view('website/top_category.php', $this->data);
 	}
+	
+	public function events_get($event_id)
+	{
+		$this->data['events'] = $this->home_model->get_events_request($event_id);
+		$this->data['category'] = $this->home_model->get_events_category($this->data['events'][0]->cat_id);
+		$this->load->view('website/events.php', $this->data);
+	}
 
 	public function coupon_list_get()
 	{

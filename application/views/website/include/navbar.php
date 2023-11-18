@@ -109,7 +109,7 @@
                         <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                     </a>
                 <?php else : ?>
-                    <a href="<?= base_url('logout') ?>" class="ms-3" title="<?= $this->session->userdata('user_name') ?>">
+                    <a href="<?= base_url('personal_info') ?>" class="ms-3" title="<?= $this->session->userdata('user_name') ?>">
                         <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                     </a>
                 <?php endif; ?>
@@ -151,7 +151,7 @@
                             <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                         </a>
                     <?php else : ?>
-                        <a href="<?= base_url('logout') ?>" class="" title="<?= $this->session->userdata('user_name') ?>">
+                        <a href="<?= base_url('personal_info') ?>" class="" title="<?= $this->session->userdata('user_name') ?>">
                             <img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Profile" srcset="">
                         </a>
                     <?php endif; ?>

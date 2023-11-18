@@ -311,7 +311,7 @@ class Order_model extends CI_Model
 			$user_id_data = ' and o.user_id = "' . $user_id . '"';
 		}
 
-		$sql = "SELECT o.order_id, o.status, op.prod_id, op.vendor_id, op.prod_name ,  op.prod_name_ar , op.prod_img, op.prod_attr, o.total_price, op.qty, op.prod_price,op.shipping, op.status, op.discount, o.payment_mode,o.create_date, o.discount,o.total_qty FROM orders o, order_product op WHERE o.order_id= op.order_id AND o.buy_from IS NULL AND o.user_id = '$user_id' ORDER BY  o.sno DESC";
+		$sql = "SELECT o.order_id, o.status, op.prod_id, op.vendor_id, op.prod_name ,  op.prod_name_ar , op.prod_img, op.prod_attr, o.total_price, op.qty, op.prod_price,op.shipping, op.status, op.discount, o.payment_mode,o.create_date, o.discount,o.total_qty FROM orders o, order_product op WHERE o.order_id= op.order_id AND o.buy_from IS NULL AND o.user_id = '$user_id' $add_data ORDER BY  o.sno DESC";
 		$query = $this->db->query($sql); // $query = $this->db->$sql;
 		$product_detail_array = array();
 		$orders = array();

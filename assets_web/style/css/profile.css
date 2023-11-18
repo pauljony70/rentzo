@@ -1,0 +1,129 @@
+.sidebar {
+    border-radius: 18px;
+    border: 1px solid var(--bs-primary);
+    background: #F5F5F5;
+    box-shadow: 4px -4px 2px 0px #F3F9FB, 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar .sidebar-header {
+    padding: 15px 25px;
+    background: var(--bs-primary);
+    border: 1px solid var(--bs-primary);
+    border-top-left-radius: 17px;
+    border-top-right-radius: 17px;
+}
+
+.sidebar .profile-image {
+    background: #C4C4C4;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+}
+
+.sidebar .username {
+    color: #FFF;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.sidebar .sidebar-body {
+    padding: 20px 25px;
+}
+
+.sidebar .sidebar-body .d-flex,
+.sidebar-page-links .d-flex {
+    gap: 20px;
+}
+
+.sidebar .sidebar-body .icon img,
+.sidebar-page-links .icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.sidebar .sidebar-body .text,
+.sidebar-page-links .text {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0.64px;
+}
+
+.sidebar-page-links hr {
+    color: #bababa;
+}
+
+@media (max-width : 992px) {
+    .sidebar {
+        border-radius: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .sidebar .sidebar-header {
+        padding: 15px 25px;
+        background: var(--bs-primary);
+        border: 1px solid var(--bs-primary);
+        border-radius: 0;
+    }
+}
+
+@media (max-width : 767px) {
+    .sidebar-page-links .icon img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .sidebar-page-links .text {
+        font-size: 12px;
+    }
+}
+
+/* 
+ * -----------------------------------------
+ * Personal Information 
+ * -----------------------------------------
+ */
+.personal-info {
+    padding: 34px 70px;
+    background: #F5F5F5;
+}
+
+.personal-info .title {
+    color: #000;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.personal-info .form-label {
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.personal-info .form-control {
+    height: 43px;
+    border: none;
+    border-radius: 0;
+}
+
+.personal-info .edit-button {
+    color: #808080;
+    font-feature-settings: 'clig' off, 'liga' off;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

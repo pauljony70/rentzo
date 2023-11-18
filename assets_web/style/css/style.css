@@ -164,38 +164,6 @@ body {
     width: 32px;
 }
 
-.my-order-page .right-block .wrap {
-    border-radius: 3px;
-    padding: 20px;
-    margin-bottom: 15px;
-}
-
-.my-order-page .right-block .wrap .wrap-block {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: start;
-}
-
-.my-order-page .right-block .wrap .wrap-details {
-    margin: 0px 20px;
-}
-
-.my-order-page .right-block .wrap h5 a,
-.my-order-page .right-block .wrap h6 a {
-    color: #4f5362;
-}
-
-.my-order-page .left-block {
-    padding: 20px;
-    border-radius: 3px;
-}
-
-.my-order-page .left-block .title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .wishlist-page .left-block .cart-details {
     align-items: unset;
 }

@@ -742,6 +742,25 @@ class Home_model extends CI_Model
 	}
 
 
+	function get_events_request($event_id)
+	{
+		$this->db->select('*');
+		$this->db->where(array('event_id' => $event_id));
+		$query = $this->db->get('events');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners) {
+				$img_decode1 = json_decode($banners->event_image);
+				$banners->event_image = base_url('media/') . $img_decode1->{'430-590'};
+				$banner_result[] = $banners;
+			}
+		}
+
+		return $banner_result;
+	}
+	
 	function get_home_events_request()
 	{
 		$this->db->select('*');
@@ -1046,6 +1065,67 @@ class Home_model extends CI_Model
 			}
 		}
 
+
+
+
+
+		return $product_array;
+	}
+	
+	function get_events_category($cat_id)
+	{
+
+		
+		$prod_result = array();
+
+		$product_array = array();
+
+		$start = 0;
+
+		$sortby = 1;
+
+		$devicetype = 1;
+
+
+		$this->db->select('*');
+		
+		$this->db->where("cat_id in ($cat_id)",NULL);
+
+
+		/*$this->db->where_in(array('cat_id' => $cat_id));*/
+
+		$query_prod = $this->db->get('category');
+	
+
+
+		if ($query_prod->num_rows() > 0) {
+
+			$prod_result = $query_prod->result_object();
+
+
+
+			$product_array = array();
+
+			foreach ($prod_result as $productdetails) {
+
+				$product_response = array();
+
+				$product_response['cat_id'] = $productdetails->cat_id;
+
+				$product_response['cat_name'] = $productdetails->cat_name;
+				$product_response['cat_slug'] = $productdetails->cat_slug;
+
+				$img_decode1 = json_decode($productdetails->cat_img);
+				$banners = base_url('media/') . $img_decode1->{'430-590'};
+
+
+
+
+				$product_response['web_banner'] = $banners;
+
+				$product_array[] = $product_response;
+			}
+		}
 
 
 

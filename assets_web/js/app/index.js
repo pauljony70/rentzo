@@ -74,7 +74,7 @@ function get_home_events() {
 				$(parsedJSON).each(function () {
 					product_html +=
 						`<div class="swiper-slide">
-							<a href="#" class="card event-card">
+							<a href="events/${this.event_id}" class="card event-card">
 								<img src="${this.event_image}" class="card-img-top event-card-img" alt="">
 								<div class="card-body event-card-body p-0">
 									<h5 class="card-title event-title text-center line-clamp-1">${this.name}</h5>
@@ -83,14 +83,14 @@ function get_home_events() {
 						</div>`;
 					product_htmls +=
 						`<div class="col-6 col-sm-4 pb-3">
-							<img src="${this.event_image}" class="event-card-img" alt="">
-							<div class="event-title text-center line-clamp-1">${this.name}</div>
+							<a href="events/${this.event_id}">
+								<img src="${this.event_image}" class="event-card-img" alt="">
+								<div class="event-title text-center line-clamp-1">${this.name}</div>
+							</a>
 						</div>`;
 					count++;
 				});
-			} else {
-
-			}
+			} else { }
 			$("#home_events").html(product_html);
 			$("#home_events_mobile").html(product_htmls);
 			new Swiper(".event-swiper", {

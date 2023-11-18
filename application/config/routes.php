@@ -202,6 +202,7 @@ $route['notification'] = 'Home/notification';
 $route['personal_info'] = 'Home/personal_info';
 $route['send_whatsapp_msg'] = 'Home/send_whatsapp_msg';
 $route['checkpincode'] = 'Home/checkpincode';
+$route['get_address'] = 'Home/get_address';
 
 // search
 $route['search/(:any)'] = 'Home/search_data/$1';
@@ -281,6 +282,7 @@ $route['term_and_conditions'] = 'Home/tearm';
 $route['404'] = 'Home/error';
 $route['get_search_products'] = 'Home/get_search_products';
 $route['all_category'] = 'Home/all_category';
+$route['events/(:any)'] = 'Home/events/$1';
 $route['coupon_list'] = 'Home/coupon_list';
 $route['explore'] = 'Home/explore';
 $route['home'] = 'Home/home_page';
