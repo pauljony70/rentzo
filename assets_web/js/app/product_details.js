@@ -184,6 +184,8 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 				if (unavailableDates.includes(formattedDate)) {
 					isUnavailableInRange = true;
 					break;
+				} else {
+					isUnavailableInRange = false;
 				}
 			}
 
@@ -234,7 +236,7 @@ var calendar = new FullCalendar.Calendar(calendarEl, {
 	eventDidMount: function (info) {
 		// Apply conditional cursor style for future dates that are not in the unavailableDates array
 		if (info.event.display === 'background') {
-			info.el.parentElement.parentElement.parentElement.parentElement.style.cssText = 'cursor: not-allowed'
+			info.el.parentElement.parentElement.parentElement.parentElement.style.cssText = 'cursor: not-allowed';
 		}
 	}
 });
@@ -287,9 +289,13 @@ daysSlider.noUiSlider.on('update', function (values, handle) {
 			date.setDate(date.getDate() + i);
 			var formattedDate = date.toISOString().split('T')[0];
 			if (unavailableDates.includes(formattedDate)) {
+				// Reset the slider to the previous valid state
+				daysSlider.noUiSlider.set(dateRange);
+				
 				document.querySelector('.availability-status').classList.remove('text-success');
 				document.querySelector('.availability-status').classList.add('text-danger');
 				document.querySelector('.availability-status').textContent = "Not available on this date";
+
 				return;
 			}
 		}
