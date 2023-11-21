@@ -291,7 +291,7 @@ daysSlider.noUiSlider.on('update', function (values, handle) {
 			if (unavailableDates.includes(formattedDate)) {
 				// Reset the slider to the previous valid state
 				daysSlider.noUiSlider.set(dateRange);
-				
+
 				document.querySelector('.availability-status').classList.remove('text-success');
 				document.querySelector('.availability-status').classList.add('text-danger');
 				document.querySelector('.availability-status').textContent = "Not available on this date";
@@ -315,6 +315,8 @@ daysSlider.noUiSlider.on('update', function (values, handle) {
 	}
 
 	dateRange = newdateRange;
+	document.querySelector('#selected-day').textContent = dateRange + ' Days';
+	document.querySelector('#total-rent').textContent = document.querySelector('#day' + dateRange + '_price').textContent;
 
 	// Add background color to the new selected date range
 	if (selectedDate) {
@@ -355,6 +357,86 @@ daysSlider.noUiSlider.on('update', function (values, handle) {
 		activePips[handle].classList.add('active-pip');
 	}
 });
+
+/* 
+ * ---------------------------------------------------
+ * Add to cart for rent
+ * ---------------------------------------------------
+ */
+function addto_cart_rent(ele, event, pid, sku, vendor_id, user_id, qty, referid, devicetype, qouteid) {
+	event.preventDefault();
+	if (user_id == '') {
+		window.location.href = site_url.concat('login');
+	} else {
+		var buttonInnerHTML = ele.innerHTML;
+		var qty = 1;
+		var rent_price = document.querySelector('#total-rent').textContent.replace(/[^\d.]/g, '');
+		var arrivalDateText = document.querySelector('#arrival-date').textContent;
+		var returnDateText = document.querySelector('#return-date').textContent;
+		// Parse the date strings
+		var arrivalDate = new Date(arrivalDateText);
+		var returnDate = new Date(returnDateText);
+		if (!isNaN(arrivalDate.getTime()) && !isNaN(returnDate.getTime())) {
+			if (arrivalDate <= returnDate) {
+				$.ajax({
+					method: "post",
+					url: site_url + "addProductCartRent",
+					data: {
+						language: default_language,
+						pid: pid,
+						sku: sku,
+						sid: vendor_id,
+						user_id: user_id,
+						qty: qty,
+						referid: referid,
+						devicetype: 2,
+						qouteid: qouteid,
+						rent_price: rent_price,
+						rent_from_date: arrivalDate,
+						rent_to_date: returnDate,
+						cart_type: 'Rent',
+						[csrfName]: csrfHash,
+					},
+					success: function (response) {
+						addto_cart_count();
+						ele.innerHTML = buttonInnerHTML;
+						if (!response.status) {
+							Swal.fire({
+								type: "error",
+								text: response.msg,
+								showCancelButton: true,
+								showCloseButton: true,
+								confirmButtonColor: '#ff6600',
+								timer: 3000,
+							});
+						} else {
+							window.location = site_url + "cart";
+
+						}
+					},
+				});
+			} else {
+				nativeToast({
+					message: 'Return date should be after or equal to arrival date',
+					position: 'bottom',
+					type: 'error',
+					square: true,
+					edge: false,
+					debug: false
+				});
+			}
+		} else {
+			nativeToast({
+				message: 'Choose arrival and return date',
+				position: 'bottom',
+				type: 'error',
+				square: true,
+				edge: false,
+				debug: false
+			});
+		}
+	}
+}
 
 var shareIcon = document.querySelector('.share-icon');
 var hoverCard = document.querySelector('.hover-card');

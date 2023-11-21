@@ -32,12 +32,12 @@
 	<!-- <link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css"> -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 	<link rel="stylesheet" href="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.css') ?>">
-	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
-
+	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/libs/nativetoast/native-toast.css') ?>">
+	
 	<!-- Custom Css -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
-
+	
 
 </head>
 
@@ -435,10 +435,10 @@
 								</div>
 								<div class="offcanvas-body">
 									<div class="d-flex justify-content-between mb-2">
-										<div class="day-wise-rent-price"><?= price_format($productdetails['day1_price']) ?></div>
-										<div class="day-wise-rent-price"><?= price_format($productdetails['day3_price']) ?></div>
-										<div class="day-wise-rent-price"><?= price_format($productdetails['day5_price']) ?></div>
-										<div class="day-wise-rent-price"><?= price_format($productdetails['day7_price']) ?></div>
+										<div class="day-wise-rent-price" id="day1_price"><?= price_format($productdetails['day1_price']) ?></div>
+										<div class="day-wise-rent-price" id="day3_price"><?= price_format($productdetails['day3_price']) ?></div>
+										<div class="day-wise-rent-price" id="day5_price"><?= price_format($productdetails['day5_price']) ?></div>
+										<div class="day-wise-rent-price" id="day7_price"><?= price_format($productdetails['day7_price']) ?></div>
 									</div>
 									<div class="day-slider-div px-2 mb-5">
 										<div id="day-slider"></div>
@@ -453,7 +453,7 @@
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
 												</div>
-												<div class="ms-2" id="arrival-date"><?= date('d/m/Y'); ?></div>
+												<div class="ms-2" id="arrival-date">-/-/-</div>
 											</div>
 										</div>
 										<hr>
@@ -463,27 +463,27 @@
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
 												</div>
-												<div class="ms-2" id="return-date"><?= date('d/m/Y'); ?></div>
+												<div class="ms-2" id="return-date">-/-/-</div>
 											</div>
 										</div>
 									</div>
 									<div class="availability-status mt-3 text-success">
-										Available on this date
+										<!-- Available on this date -->
 									</div>
 									<hr>
 									<div class="security-deposit d-flex justify-content-between">
 										<div>Security deposit</div>
-										<div><?= price_format(100) ?></div>
+										<div><?= price_format($productdetails['security_deposit']) ?></div>
 									</div>
 									<div class="security-deposit-des text-danger mt-3">Security deposit is refundable **</div>
 								</div>
 								<div class="offcanvas-footer d-flex flex-column justify-content-center align-items-center">
 									<div class="d-flex justify-content-between w-100 mb-4">
 										<div class="heading">Total Rent</div>
-										<div id="selected-day">5 Days</div>
-										<div id="total-rent"><?= price_format(11.25) ?></div>
+										<div id="selected-day">1 Days</div>
+										<div id="total-rent"><?= price_format($productdetails['day1_price']) ?></div>
 									</div>
-									<div class="btn btn-primary w-100">Continue</div>
+									<div class="btn btn-primary w-100" onclick="addto_cart_rent(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')">Continue</div>
 								</div>
 							</div>
 
@@ -871,7 +871,8 @@
 	<script src="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.js') ?>"></script>
 	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
 	<script src="<?= base_url('assets_web/libs/moment/min/moment.min.js') ?>"></script>
-
+	<script src="<?php echo base_url('assets_web/libs/nativetoast/native-toast.js') ?>"></script>
+	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
 	<!-- Custom JS -->
 	<script src="<?= base_url(); ?>assets_web/js/app/product_details.js"></script>

@@ -764,11 +764,6 @@ img.outof_stock {
     height: 35px;
 }
 
-.native-toast {
-    font-weight: bolder;
-    text-transform: uppercase;
-}
-
 .image-gallery-mob {
     height: 289px;
 }

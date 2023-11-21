@@ -69,6 +69,73 @@ class Cart_model extends CI_Model
 		$status['quote_id'] = $quote_id;
 		return $status;
 	}
+	
+	function add_product_cart_rent($prod_id, $sku, $sid, $user_id, $qty, $referid, $affiliated_by, $qouteid,$rent_price,$rent_from_date,$rent_to_date,$cart_type)
+	{
+		if ($qouteid == 0 || $qouteid == "") {
+			$quote_id =  date("dm") . date("hi") . rand(1, 99); //    rand(1000,9999).substr(strtotime("now"), 4, 10);
+		} else {
+			$quote_id =  $qouteid;
+		}
+
+		$this->db->select("id");
+
+		if ($user_id) {
+			$this->db->where(array('prod_id' => $prod_id, 'user_id' => $user_id));
+		} else if ($quote_id) {
+			$this->db->where(array('prod_id' => $prod_id, 'qoute_id' => $quote_id));
+		}
+		$query = $this->db->get('cartdetails');
+
+		$cart = $status = array();
+
+		if ($query->num_rows() > 0) {
+			$cart['prod_id'] = $prod_id;
+			$cart['attr_sku'] = $sku;
+			$cart['vendor_id'] = $sid;
+			$cart['user_id'] = $user_id;
+			$cart['qty'] = $qty;
+			$cart['refer_id'] = $referid;
+			$cart['affiliated_by'] = $affiliated_by;
+			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = $rent_price;
+			$cart['rent_from_date'] = $rent_from_date;
+			$cart['rent_to_date'] = $rent_to_date;
+			$cart['cart_type'] = $cart_type;
+
+			if ($user_id) {
+				$this->db->where(array('prod_id' => $prod_id, 'user_id' => $user_id));
+			} else if ($quote_id) {
+				$this->db->where(array('prod_id' => $prod_id, 'qoute_id' => $quote_id));
+			}
+
+			$query = $this->db->update('cartdetails', $cart);
+			if ($query) {
+				$status['status'] = 'update';
+			}
+		} else {
+
+			$cart['prod_id'] = $prod_id;
+			$cart['attr_sku'] = $sku;
+			$cart['vendor_id'] = $sid;
+			$cart['user_id'] = $user_id;
+			$cart['qty'] = $qty;
+			$cart['refer_id'] = $referid;
+			$cart['affiliated_by'] = $affiliated_by;
+			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = $rent_price;
+			$cart['rent_from_date'] = $rent_from_date;
+			$cart['rent_to_date'] = $rent_to_date;
+			$cart['cart_type'] = $cart_type;
+
+			$query = $this->db->insert('cartdetails', $cart);
+			if ($query) {
+				$status['status'] = 'add';
+			}
+		}
+		$status['quote_id'] = $quote_id;
+		return $status;
+	}
 
 
 	//Functiofor for delete product from cart
@@ -207,7 +274,7 @@ class Cart_model extends CI_Model
 		if ($shipping_city) {
 			$delivery_array = $this->delivery_model->get_delivery_city_details_request($shipping_city);
 		}
-		$this->db->select("prod_id, attr_sku, vendor_id, qty,qoute_id");
+		$this->db->select("prod_id, attr_sku, vendor_id, qty,qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
 
 		$this->db->where(array('user_id' => $user_id));
 
@@ -226,9 +293,25 @@ class Cart_model extends CI_Model
 				$vendor_id = $cart_detail->vendor_id;
 				$qty = $cart_detail->qty;
 				$qoute_id = $cart_detail->qoute_id;
+				$rent_price = $cart_detail->rent_price;
+				$rent_from_date = $cart_detail->rent_from_date;
+				$rent_to_date = $cart_detail->rent_to_date;
+				$cart_type = $cart_detail->cart_type;
+				if($cart_type == '')
+				{
+					$cart_type = 'Purchase';
+				}
+				$total_days = '';
+				if($rent_from_date != '' && $rent_to_date != '')
+				{
+					$earlier = new DateTime($rent_from_date);
+					$later = new DateTime($rent_to_date);
+					
+					$total_days = $later->diff($earlier)->format("%a")+1;
+				}
 
 				//check product details
-				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy	,sellerlogin.companyname as seller, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id");
+				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy	,sellerlogin.companyname as seller, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id,security_deposit");
 				//join for get vendor product
 				$this->db->join('vendor_product vp', 'vp.product_id = product_details.product_unique_id', 'INNER');
 				$this->db->join('sellerlogin', 'sellerlogin.seller_unique_id = vp.vendor_id', 'INNER');
@@ -260,6 +343,7 @@ class Cart_model extends CI_Model
 					$product_detail['web_url'] = $prod_result[0]->web_url;
 					$product_detail['purchase_limit'] = $prod_result[0]->product_purchase_limit;
 					$product_detail['available_stock'] = $prod_result[0]->product_stock;
+					$product_detail['security_deposit'] = $prod_result[0]->security_deposit;
 					$product_detail['qty'] = $qty;
 					$product_detail['configure_attr'] = array();
 					$product_detail['mrp'] = price_format(0);
@@ -267,6 +351,11 @@ class Cart_model extends CI_Model
 					$product_detail['totaloff'] = price_format(0);
 					$product_detail['offpercent'] = 0;
 					$product_detail['shipping_fee'] = 0;
+					$product_detail['rent_price'] = $rent_price;
+					$product_detail['rent_from_date'] = $rent_from_date;
+					$product_detail['rent_to_date'] = $rent_to_date;
+					$product_detail['total_days'] = $total_days;
+					$product_detail['cart_type'] = $cart_type;
 					if ($devicetype == 1) {
 						$img_decode = json_decode($prod_result[0]->featured_img);
 						$img = '';
@@ -348,6 +437,17 @@ class Cart_model extends CI_Model
 							$product_detail['shipping_fee'] = price_format($delivery_array['basic_fee']);
 						}
 					}
+					
+					if($rent_price != '')
+					{
+						$product_detail['mrp'] = $rent_price;
+						$product_detail['mrp1'] = $rent_price * $qty;
+						$product_detail['price1'] = $rent_price * $qty;
+						$product_detail['price'] = $rent_price;
+						$product_detail['totaloff'] = '';
+					}
+					
+					
 				}
 
 
@@ -357,6 +457,7 @@ class Cart_model extends CI_Model
 				//$total_item += $product_detail['qty'];
 				$total_item += $query_prod->num_rows();
 				$total_shipping_fee += $shipping_fee1;
+
 
 				unset($product_detail['mrp1']);
 				unset($product_detail['price1']);

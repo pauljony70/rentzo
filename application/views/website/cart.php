@@ -32,7 +32,7 @@
 				<div class="container">
 					<div class="d-flex mb-4">
 						<div class="page-title">Cart</div>
-						<span class="cart-count ms-5"><?php echo $cart['total_item']; ?> ITEMS</span>
+						<span class="cart-count ms-5"><?= $cart['total_item']; ?> ITEMS</span>
 					</div>
 					<div class="row cart-details-row pb-5">
 						<div class="col-lg-8 ps-0">
@@ -41,11 +41,11 @@
 									<div class="card-body p-0">
 										<div class="row">
 											<div class="col-3">
-												<div class="cart-type-purchase">
-													<div class="text">Purchase</div>
+												<div class="cart-type-<?= $cart_product['cart_type'] == 'Rent' ? 'rent' : 'purchase'; ?>">
+													<div class="text"><?= $cart_product['cart_type']; ?></div>
 												</div>
-												<a href="<?php echo base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer">
-													<img class="w-100 prod-img ps-3" src="<?php echo weburl . 'media/' . $cart_product['imgurl']; ?>" alt="">
+												<a href="<?= base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer">
+													<img class="w-100 prod-img ps-3" src="<?= weburl . 'media/' . $cart_product['imgurl']; ?>" alt="">
 												</a>
 											</div>
 											<div class="col-9">
@@ -55,7 +55,7 @@
 													</div>
 												</div>
 												<div class="mt-4">
-													<a class="cart-prod-title" href="<?php echo base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer"><?= $cart_product['name']; ?></a>
+													<a class="cart-prod-title" href="<?= base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer"><?= $cart_product['name']; ?></a>
 												</div>
 												<div class="d-flex justify-content-between my-3">
 													<table class="attributes">
@@ -79,7 +79,9 @@
 														</tbody>
 													</table>
 													<div class="rent-date-range">
-														2 oct 2023 to 5 oct 2023
+														<?php if ($cart_product['rent_from_date'] != '' &&  $cart_product['rent_to_date'] != '') {
+															echo date('d M Y', strtotime($cart_product['rent_from_date'])) . ' to ' . date('d M Y', strtotime($cart_product['rent_to_date']));
+														} ?>
 													</div>
 												</div>
 												<div class="d-flex justify-content-between mb-2">
@@ -95,13 +97,15 @@
 														</div>
 													</div>
 													<div class="d-flex flex-column align-items-end justify-content-end">
-														<div class="d-flex security-deposit mb-3">
-															<div class="heading me-3 me-md-5">Security Deposit</div>
-															<div class="amount"><?= price_format(100) ?></div>
-														</div>
+														<?php if ($cart_product['cart_type'] == 'Rent') : ?>
+															<div class="d-flex security-deposit mb-3">
+																<div class="heading me-3 me-md-5"><?= $cart_product['security_deposit'] != '' ? 'Security Deposit' : '' ?></div>
+																<div class="amount"><?= $cart_product['security_deposit'] != '' ? price_format($cart_product['security_deposit']) : '' ?></div>
+															</div>
+														<?php endif; ?>
 														<div class="d-flex">
-															<div class="date-range-count me-3 me-md-5">3 Days</div>
-															<div class="product_price_cart"><?= $cart_product['price']; ?></div>
+															<div class="date-range-count me-3 me-md-5"><?= $cart_product['total_days'] != '' ? '3 Days' : '' ?></div>
+															<div class="product_price_cart"><?= $cart_product['rent_price'] != '' ? price_format($cart_product['rent_price']) : $cart_product['price'] ?></div>
 														</div>
 													</div>
 												</div>
@@ -132,7 +136,7 @@
 										<div class="price text-end fw-bolder"><?= $cart['payable_amount']; ?></div>
 									</div>
 								</div>
-								<a href="<?php echo base_url; ?>checkout" id="cart-continue-btn" class="btn btn-primary w-100">Proceed to Checkout</a>
+								<a href="<?= base_url('checkout') ?>" id="cart-continue-btn" class="btn btn-primary w-100">Proceed to Checkout</a>
 							</div>
 						</div>
 					</div>

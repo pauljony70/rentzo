@@ -244,6 +244,7 @@ $route['add-bank-details'] = 'Home/addBankDetails';
 $route['cart'] = 'Home/cart_details';
 $route['deleteProductCart'] = 'Cart/deleteProductCart';
 $route['addProductCart'] = 'Cart/addProductCart';
+$route['addProductCartRent'] = 'Cart/addProductCartRent';
 $route['buynowProductCart'] = 'Cart/buynowProductCart';
 $route['deleteProductCart_buynow'] = 'Cart/deleteProductCart_buynow';
 $route['cart_count'] = 'Home/cart_count';
