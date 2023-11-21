@@ -145,7 +145,7 @@
 						<a class="btn btn-lg btn-primary px-1 text-white fs-6 fw-bold text-decoration-none" id="applyFilterBtn" data-bs-toggle="offcanvas" href="#filterOffcanvas" role="button" aria-controls="filterOffcanvas" style="white-space: nowrap;">
 							<div class="d-flex align-items-center">
 								<i class="fa-solid fa-filter"></i>
-								<div class="<?= $default_language == 1 ? 'me-1' : 'ms-1' ?>"><?= $this->lang->line('apply-filters') ?></div>
+								<div class="<?= $default_language == 1 ? 'me-1' : 'ms-1' ?>">Apply Filters</div>
 							</div>
 						</a>
 					</div>

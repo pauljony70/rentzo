@@ -29,7 +29,7 @@
 		<div class="user-location">
 			<div class="container d-flex d-md-none align-items-center mt-2 mb-4">
 				<img src="<?= base_url('assets_web/images/icons/location-pin.svg') ?>" alt="Location">
-				<div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</div>
+				<div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal"><span id="address_data1"><?= $this->session->userdata("address") != '' ? $this->session->userdata("address") : 'Location' ?></span></div>
 			</div>
 		</div>
 
@@ -201,7 +201,7 @@
 						<span style="color: var(--bs-primary);"> Brands</span>
 					</div>
 					<div class="d-flex align-items-center">
-						<a href="<?= base_url . 'brand'; ?>"><span class="view-all">View All</span>
+						<a href="<?= base_url . 'brands'; ?>"><span class="view-all">View All</span>
 							<i class="fa-solid fa-chevron-right ms-2"></i></a>
 					</div>
 				</div>

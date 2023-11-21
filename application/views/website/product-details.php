@@ -183,7 +183,9 @@
 							<div class="product-location mb-2">
 								<div class="d-flex">
 									<img src="<?= base_url('assets_web/images/icons/location-pin-grey.svg') ?>" alt="Location">
-									<div class="location ms-2">Location Name city, state</div>
+									<div class="location ms-2"><?php foreach ($prod_city['data'] as $city_data) {
+																	echo $city_data['name'] . ',';
+																}  ?></div>
 								</div>
 							</div>
 
@@ -339,16 +341,18 @@
 							<table class="rent-details-table text-center mb-4">
 								<thead>
 									<tr>
-										<th class="px-4 py-3">Rent for 3 days</th>
-										<th class="px-4 py-3">Rent for 5 days</th>
-										<th class="px-4 py-3">Rent for 7 days</th>
+										<?php if ($productdetails['day1_price'] != '') { ?><th class="px-4 py-3">Rent for 1 days</th> <?php } ?>
+										<?php if ($productdetails['day3_price'] != '') { ?><th class="px-4 py-3">Rent for 3 days</th> <?php } ?>
+										<?php if ($productdetails['day5_price'] != '') { ?><th class="px-4 py-3">Rent for 5 days</th> <?php } ?>
+										<?php if ($productdetails['day7_price'] != '') { ?><th class="px-4 py-3">Rent for 7 days</th> <?php } ?>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td class="py-4">$6.00</td>
-										<td class="py-4">$10.00</td>
-										<td class="py-4">$12.00</td>
+										<?php if ($productdetails['day1_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day1_price']); ?></td><?php } ?>
+										<?php if ($productdetails['day3_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day3_price']); ?></td><?php } ?>
+										<?php if ($productdetails['day5_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day5_price']); ?></td><?php } ?>
+										<?php if ($productdetails['day7_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day7_price']); ?></td><?php } ?>
 									</tr>
 								</tbody>
 							</table>
@@ -394,14 +398,12 @@
 								</div>
 							</div>
 
-							<div id="cart_btns" class="mb-5"></div>
-
 							<!-- Add to Cart and By now and Whatsapp Buttons -->
 							<div class="btn-wrap align-items-center pBtns bg-white d-flex mb-4 py-2 py-md-0">
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
 									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
 
-									<a href="#" onclick="add_to_cart_products(this, event,'<?php echo $productdetails['id'] ?>','<?php echo $productdetails['sku'] ?>','<?php echo $productdetails['vendor_id'] ?>','<?php echo $this->session->userdata('user_id'); ?>',1,'',2,'<?php echo $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
+									<a href="#" onclick="add_to_cart_products(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
 										Buy Now
 									</a>
 								<?php } else { ?>
@@ -433,15 +435,17 @@
 								</div>
 								<div class="offcanvas-body">
 									<div class="d-flex justify-content-between mb-2">
-										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
-										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
-										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
-										<div class="day-wise-rent-price"><?= price_format(10) ?></div>
+										<div class="day-wise-rent-price"><?= price_format($productdetails['day1_price']) ?></div>
+										<div class="day-wise-rent-price"><?= price_format($productdetails['day3_price']) ?></div>
+										<div class="day-wise-rent-price"><?= price_format($productdetails['day5_price']) ?></div>
+										<div class="day-wise-rent-price"><?= price_format($productdetails['day7_price']) ?></div>
 									</div>
 									<div class="day-slider-div px-2 mb-5">
 										<div id="day-slider"></div>
 									</div>
-									<div class="calender"></div>
+									<div id="calendar-div" class="mb-4">
+										<div id="calendar"></div>
+									</div>
 									<div class="dates-div">
 										<div class="d-flex align-items-center">
 											<div class="heading">Arrival Date</div>
@@ -449,17 +453,17 @@
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
 												</div>
-												<div class="ms-2">15/11/2023</div>
+												<div class="ms-2" id="arrival-date"><?= date('d/m/Y'); ?></div>
 											</div>
 										</div>
 										<hr>
 										<div class="d-flex align-items-center">
-											<div class="heading">Arrival Date</div>
+											<div class="heading">Return Date</div>
 											<div class="d-flex align-items-center date ms-5">
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
 												</div>
-												<div class="ms-2">15/11/2023</div>
+												<div class="ms-2" id="return-date"><?= date('d/m/Y'); ?></div>
 											</div>
 										</div>
 									</div>
@@ -695,7 +699,7 @@
 							<br>
 
 							<div class="wrap">
-								<?php echo $productdetails['coupon_terms'];  ?>
+								<?= $productdetails['coupon_terms'];  ?>
 							</div>
 						</div>
 						<!--End: Return Policy Section -->
@@ -859,37 +863,18 @@
 	</main>
 
 	<?php include("include/footer.php") ?>
-
 	<?php include("include/script.php") ?>
 
 	<!-- Plugin JS -->
 	<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 	<script src="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.js') ?>"></script>
-	<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+	<script src="<?= base_url('assets_web/libs/moment/min/moment.min.js') ?>"></script>
 
 
 	<!-- Custom JS -->
 	<script src="<?= base_url(); ?>assets_web/js/app/product_details.js"></script>
-
-	<script>
-		// function to convert hex color to RGB
-		function hexToRgb(hex) {
-			// remove the "#" symbol
-			hex = hex.replace("#", "");
-
-			// convert to RGB
-			const r = parseInt(hex.substring(0, 2), 16);
-			const g = parseInt(hex.substring(2, 4), 16);
-			const b = parseInt(hex.substring(4, 6), 16);
-
-			return {
-				r,
-				g,
-				b
-			};
-		}
-	</script>
 
 </body>
 

@@ -22,12 +22,6 @@
 				</div>
 				<div class="text">Address</div>
 			</a>
-			<a href="<?= base_url('offers') ?>" class="d-flex align-items-center mb-4">
-				<div class="icon">
-					<img src="<?= base_url('assets_web/images/icons/coupon.svg') ?>" alt="Coupons">
-				</div>
-				<div class="text">Coupons</div>
-			</a>
 			<a href="<?= base_url('notification') ?>" class="d-flex align-items-center mb-4">
 				<div class="icon">
 					<img src="<?= base_url('assets_web/images/icons/notification-bell.png') ?>" alt="Notifications">

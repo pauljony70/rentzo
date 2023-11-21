@@ -1,5 +1,5 @@
 <script src="<?php echo base_url; ?>assets_web/js/jquery.min.js"></script>
-<script src="<?php echo base_url; ?>assets_web/js/bootstrap.bundle.min.js"></script>  
+<script src="<?php echo base_url; ?>assets_web/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/libs/sweetalert2/sweetalert2.min.js"></script>
 <script src="<?php echo base_url(); ?>assets_web/js/app/common.js"></script>
 
@@ -18,6 +18,39 @@
 
   function redirect_to_link(link) {
     location.href = link;
+  }
+
+  function get_address() {
+    var address_pincode = $('#address_pincode').val();
+
+    if (address_pincode === '') {
+      $('#pincode_error').text('Pincode is empty.')
+    } else if (address_pincode.length !== 6) {
+      $('#pincode_error').text('Pincode should be 6 in length.')
+    } else {
+
+      $.ajax({
+        method: "get",
+        url: site_url + "get_address",
+        data: {
+          language: default_language,
+          devicetype: 2,
+          address_pincode: address_pincode,
+          [csrfName]: csrfHash,
+        },
+        success: function(response) {
+          if (response == 'no') {
+            $('#pincode_error').text('Invalid Pincode.');
+          } else {
+            $('#address_data').text(response);
+            $('#address_data1').text(response);
+            $('#address_data2').text(response);
+            $('#pincodeModal').modal('hide');
+          }
+        },
+      })
+    }
+
   }
 
   $(document).on('input', '#search', function() {

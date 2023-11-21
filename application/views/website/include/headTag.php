@@ -80,4 +80,4 @@
 </style> -->
 <!-- For language -->
 
-<script src="<?= base_url('assets_web/js/jquery.min.js') ?>"></script>
+<!-- <script src="<?= base_url('assets_web/js/jquery.min.js') ?>"></script> -->

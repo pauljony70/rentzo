@@ -37,7 +37,12 @@ class ProductDetail extends REST_Controller
 		$sid = $_REQUEST['sid'];
 		$default_language = $this->session->userdata("default_language");
 		$this->data['get_city'] = $this->delivery_model->get_delivery_city_request();
+		$this->data['get_rents'] = $this->product_model->get_rents_data_request($pid);
 		$this->data['productdetails'] = $this->product_model->get_product_request($default_language, $pid, $sku, $sid, 1);
+		if($this->data['productdetails']['product_city'] != '')
+		{
+			$this->data['prod_city'] = $this->product_model->get_city($this->data['productdetails']['product_city']);
+		}
 		if (!$this->data['productdetails']) {
 			redirect('/404', 'refresh');
 		}

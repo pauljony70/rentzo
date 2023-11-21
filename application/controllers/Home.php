@@ -322,6 +322,29 @@ class Home extends REST_Controller
 
 		$this->load->view('website/index.php', $this->data);
 	}
+	
+	function get_address_get()
+	{
+		$address_pincode = $this->input->get('address_pincode');
+		$data = file_get_contents('http://www.postalpincode.in/api/pincode/'.$address_pincode);
+		$data = json_decode($data);
+		if(isset($data->PostOffice['0']))
+		{
+			
+			$newdata = array(
+				'address'  => $data->PostOffice['0']->Taluk,
+				'logged_in' => TRUE
+			);
+			$set_data = $this->session->set_userdata($newdata);
+			echo $data->PostOffice['0']->Taluk;
+		}
+		else
+		{
+			echo 'no';
+		}
+		
+		//echo json_encode($response);
+	}
 
 	function get_home_products_get()
 	{
@@ -333,6 +356,7 @@ class Home extends REST_Controller
 
 		echo json_encode($response);
 	}
+	
 	function get_home_cat_products_get()
 	{
 		$type = $this->input->get('type');

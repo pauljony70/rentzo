@@ -69,7 +69,7 @@
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</a>
+                        <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#pincodeModal"><span id="address_data"><?= $this->session->userdata("address") != '' ? $this->session->userdata("address") : 'Location' ?></span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-disabled="true">About</a>
@@ -260,7 +260,7 @@
         <div class="user-location">
             <div class="container d-flex align-items-center">
                 <img src="<?= base_url('assets_web/images/icons/location-pin.svg') ?>" alt="Location">
-                <div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal">Ichapur</div>
+                <div class="location" data-bs-toggle="modal" data-bs-target="#pincodeModal" id="address_data2"><?= $this->session->userdata("address") != '' ? $this->session->userdata("address") : 'Location' ?></div>
             </div>
         </div>
         <button type="button" class="close-btn-offcanvas text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -328,10 +328,11 @@
             <div class="modal-body text-center">
                 <div class="modal-heading mb-4">Please enter your pincode</div>
                 <div class="d-flex justify-content-center">
-                    <input type="text" class="form-control text-center pincode-input mb-2" maxlength="6" onkeypress="return AllowOnlyNumbers(event);">
+                    <input name="address_pincode" id="address_pincode" type="text" class="form-control text-center pincode-input mb-1" maxlength="6" onkeypress="return AllowOnlyNumbers(event);">
                 </div>
+                <div id="pincode_error" class="mb-2" style="font-size:14px;color:red;"></div>
                 <div class="description mb-4">Please enter your current Pincode to better serve you<br> with our services</div>
-                <button type="submit" class="btn">Continue</button>
+                <button type="submit" onclick="get_address()" class="btn">Continue</button>
             </div>
         </div>
     </div>

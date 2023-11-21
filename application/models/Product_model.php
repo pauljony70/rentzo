@@ -9,6 +9,56 @@ class Product_model extends CI_Model
 
 		$this->date_time = date('Y-m-d H:i:s');
 	}
+	
+	function get_city($city_id)
+	{
+		$return = array();
+		$i =0;
+		$this->db->select('city_id, city_name');
+		$this->db->where("city_id in ($city_id)",NULL);
+		$this->db->order_by('city_name','ASC');
+		
+		$query = $this->db->get('city');
+		$state_array = $query->result_object();
+		foreach($state_array as $state_details){
+			$return[$i] = 
+        					array(	
+        					    'id' => $state_details->city_id,
+        						'name' => $state_details->city_name);
+              		   $i = $i+1;  			  
+                $status = 1;
+                $msg = "Details here";
+		}
+		$information =array( 'status' => $status,
+                              'msg' =>   $msg,
+                              'data' => $return);
+		return $information;
+	}
+	
+	function get_rents_data_request($pid)
+	{
+		$return = array();
+		$i =0;
+		$this->db->select('rent_from_date, rent_to_date');
+		$this->db->where_in('prod_id', $pid);
+		
+		$query = $this->db->get('order_product');
+		$state_array = $query->result_object();
+		foreach($state_array as $state_details){
+			$return[$i] = 
+        					array(	
+        					    'rent_from_date' => $state_details->rent_from_date,
+        						'rent_to_date' => $state_details->rent_to_date);
+              		   $i = $i+1;  			  
+                $status = 1;
+                $msg = "Details here";
+		}
+		$information =array( 'status' => $status,
+                              'msg' =>   $msg,
+                              'prod_id' =>   $pid,
+                              'daterange' => $return);
+		return $information;
+	}
 
 	//Functiofor for get category product
 	function get_product_request($language, $pid, $sku, $sid = '', $devicetype = '')
@@ -23,7 +73,7 @@ class Product_model extends CI_Model
 		$wishlist_count = $this->db->where(array('prod_id' => $product_id, 'user_id' => $user_id))->count_all_results('wishlistdetails');
 
 		//get products details
-		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date');
+		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city');
 
 		//join for get minumum price
 		$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -114,6 +164,21 @@ class Product_model extends CI_Model
 				$product_response['seller_mobile'] = $product_details->phone;
 				$product_response['is_usd_price'] = $product_details->is_usd_price;
 				$product_response['affiliate_commission'] = $product_details->affiliate_commission;
+				$product_type = $product_details->product_type;
+				if($product_type == 1)
+				{
+					$product_type = 'Sell';
+				}
+				else if($product_type == 2)
+				{
+					$product_type = 'Rent';
+				}
+				$product_response['product_type'] = $product_type;
+				$product_response['day1_price'] = $product_details->day1_price;
+				$product_response['day3_price'] = $product_details->day3_price;
+				$product_response['day5_price'] = $product_details->day5_price;
+				$product_response['day7_price'] = $product_details->day7_price;
+				$product_response['product_city'] = $product_details->product_city;
 				$product_response['seller_data'] = $this->get_seller_details($product_details->vendor_id);
 				//get other seller 
 				$other_seller_price = $this->get_other_seller_price($product_details->id, $product_details->vendor_id);

@@ -15,13 +15,13 @@
 
 	<?php if (empty($cart['cart_full'])) { ?>
 		<main class="empty-cart mt-0">
-			<section class="mt-5">
+			<section class="my-5">
 				<div class="container">
-					<div class="wrap box-shadow-4">
-						<img src="<?php echo base_url; ?>assets_web/images/empty-cart.png" alt="" class="empty-cart-img" />
-						<h5><?= $this->lang->line('cart-empty'); ?></h5>
-						<p><?= $this->lang->line('add-items'); ?></p>
-						<a href="<?php echo base_url; ?>" class="btn btn-default"><?= $this->lang->line('shop-now'); ?></a>
+					<div class="d-flex flex-column align-items-center empty-cart-image">
+						<img src="<?= base_url('assets_web/images/empty-cart.png') ?>" class="mb-5" alt="Empty Cart">
+						<div class="heading mb-2">Your Cart is Empty</div>
+						<div class="des mb-4">Looks like you haven’t added anything to your cart yet</div>
+						<a href="<?= base_url() ?>" class="btn btn-primary">Go Shop</a>
 					</div>
 				</div>
 			</section>

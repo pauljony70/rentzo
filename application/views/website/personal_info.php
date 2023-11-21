@@ -73,12 +73,6 @@
 						<div class="text">Address</div>
 					</a>
 					<hr>
-					<a href="<?= base_url('offers') ?>" class="d-flex align-items-center">
-						<div class="icon">
-							<img src="<?= base_url('assets_web/images/icons/coupon.svg') ?>" alt="Coupons">
-						</div>
-						<div class="text">Coupons</div>
-					</a>
 					<hr>
 					<a href="<?= base_url('notification') ?>" class="d-flex align-items-center">
 						<div class="icon">

@@ -127,10 +127,127 @@ var swiperMobileMain = new Swiper(".product-details-swiper-mob", {
 
 /* 
  * ---------------------------------------------------
+ * Mouse hover zoom
+ * ---------------------------------------------------
+ */
+var options2 = {
+	fillContainer: true,
+	zoomWidth: 500,
+	offset: {
+		vertical: 0,
+		horizontal: 0
+	}
+};
+
+document.querySelectorAll('Zoom-1').forEach(element => {
+	new ImageZoom(element, options2);
+});
+
+/* 
+ * ---------------------------------------------------
+ * Full calender
+ * ---------------------------------------------------
+ */
+var calendarEl = document.getElementById('calendar');
+var today = new Date().toISOString().split('T')[0]; // Get today's date in the format 'YYYY-MM-DD'
+var unavailableDates = ['2023-11-25', '2023-11-26', '2023-11-27', '2023-11-30']; // Replace with your array of unavailable dates
+var selectedDate = null;
+var isUnavailableInRange = false;
+
+// Create events for unavailable dates
+var unavailableEvents = unavailableDates.map(function (date) {
+	return {
+		start: date,
+		display: 'background',
+		color: 'red',
+	};
+});
+
+var calendar = new FullCalendar.Calendar(calendarEl, {
+	headerToolbar: {
+		left: 'title',
+		center: '',
+		right: 'today prev,next'
+	},
+	events: [
+		...unavailableEvents,
+		// Add more events as needed
+	],
+
+	dateClick: function (info) {
+		if (!unavailableDates.includes(info.dateStr) && info.dateStr >= today) {
+			// Check if any date in the range is unavailable
+			for (var i = 0; i < dateRange; i++) {
+				var date = new Date(info.dateStr);
+				date.setDate(date.getDate() + i);
+				var formattedDate = date.toISOString().split('T')[0];
+				if (unavailableDates.includes(formattedDate)) {
+					isUnavailableInRange = true;
+					break;
+				}
+			}
+
+			if (isUnavailableInRange) {
+				document.querySelector('.availability-status').classList.remove('text-success');
+				document.querySelector('.availability-status').classList.add('text-danger');
+				document.querySelector('.availability-status').textContent = "Not available on this date";
+				return;
+			}
+
+			if (selectedDate) {
+				// Remove background color from the previously selected date and its range
+				for (var i = 0; i < dateRange; i++) {
+					var date = new Date(selectedDate.getAttribute('data-date'));
+					date.setDate(date.getDate() + i);
+					var formattedDate = date.toISOString().split('T')[0];
+					var element = document.querySelector(`[data-date="${formattedDate}"]`);
+					if (element) {
+						element.classList.remove('selected-date');
+					}
+				}
+			}
+
+			// Update the selectedDate variable and calculate the end date
+			selectedDate = info.dayEl;
+			endDate = new Date(selectedDate.getAttribute('data-date'));
+			endDate.setDate(endDate.getDate() + dateRange - 1);
+
+
+			// Add background color to the newly selected date and its range
+			for (var i = 0; i < dateRange; i++) {
+				var date = new Date(info.dateStr);
+				date.setDate(date.getDate() + i);
+				var formattedDate = date.toISOString().split('T')[0];
+				var element = document.querySelector(`[data-date="${formattedDate}"]`);
+				if (element) {
+					element.classList.add('selected-date');
+				}
+			}
+
+			document.querySelector('.availability-status').classList.add('text-success');
+			document.querySelector('.availability-status').classList.remove('text-danger');
+			document.querySelector('.availability-status').textContent = "Available on this date";
+			document.getElementById('arrival-date').textContent = moment(info.dateStr).format("DD/MM/YYYY");
+			document.getElementById('return-date').textContent = moment(endDate.toISOString().split('T')[0]).format("DD/MM/YYYY");
+		}
+	},
+	eventDidMount: function (info) {
+		// Apply conditional cursor style for future dates that are not in the unavailableDates array
+		if (info.event.display === 'background') {
+			info.el.parentElement.parentElement.parentElement.parentElement.style.cssText = 'cursor: not-allowed'
+		}
+	}
+});
+
+calendar.render();
+
+/* 
+ * ---------------------------------------------------
  * Rent Day Slider
  * ---------------------------------------------------
  */
 var daysSlider = document.getElementById('day-slider');
+var dateRange = 1;
 
 noUiSlider.create(daysSlider, {
 	start: 1,
@@ -160,6 +277,62 @@ noUiSlider.create(daysSlider, {
 var activePips = [null, null];
 
 daysSlider.noUiSlider.on('update', function (values, handle) {
+	// Update the dateRange variable
+	var newdateRange = Math.round(values[handle]);
+
+	// Check if the new date range includes any unavailable dates
+	if (selectedDate) {
+		for (var i = 0; i < newdateRange; i++) {
+			var date = new Date(selectedDate.getAttribute('data-date'));
+			date.setDate(date.getDate() + i);
+			var formattedDate = date.toISOString().split('T')[0];
+			if (unavailableDates.includes(formattedDate)) {
+				document.querySelector('.availability-status').classList.remove('text-success');
+				document.querySelector('.availability-status').classList.add('text-danger');
+				document.querySelector('.availability-status').textContent = "Not available on this date";
+				return;
+			}
+		}
+	}
+
+	// Remove background color from the existing selected date range
+	if (selectedDate) {
+		for (var i = 0; i < dateRange; i++) {
+			var date = new Date(selectedDate.getAttribute('data-date'));
+			date.setDate(date.getDate() + i);
+			var formattedDate = date.toISOString().split('T')[0];
+			var element = document.querySelector(`[data-date="${formattedDate}"]`);
+			if (element) {
+				element.classList.remove('selected-date');
+			}
+		}
+	}
+
+	dateRange = newdateRange;
+
+	// Add background color to the new selected date range
+	if (selectedDate) {
+		for (var i = 0; i < dateRange; i++) {
+			var date = new Date(selectedDate.getAttribute('data-date'));
+			date.setDate(date.getDate() + i);
+			var formattedDate = date.toISOString().split('T')[0];
+			var element = document.querySelector(`[data-date="${formattedDate}"]`);
+			if (element) {
+				element.classList.add('selected-date');
+			}
+		}
+
+		endDate = new Date(selectedDate.getAttribute('data-date'));
+		endDate.setDate(endDate.getDate() + dateRange - 1);
+
+
+		document.querySelector('.availability-status').classList.add('text-success');
+		document.querySelector('.availability-status').classList.remove('text-danger');
+		document.querySelector('.availability-status').textContent = "Available on this date";
+		document.getElementById('arrival-date').textContent = moment(selectedDate.getAttribute('data-date')).format("DD/MM/YYYY");
+		document.getElementById('return-date').textContent = moment(endDate.toISOString().split('T')[0]).format("DD/MM/YYYY");
+	}
+
 	// Remove the active class from the current pip
 	if (activePips[handle]) {
 		activePips[handle].classList.remove('active-pip');
@@ -175,25 +348,6 @@ daysSlider.noUiSlider.on('update', function (values, handle) {
 	if (activePips[handle]) {
 		activePips[handle].classList.add('active-pip');
 	}
-});
-
-
-/* 
- * ---------------------------------------------------
- * Mouse hover zoom
- * ---------------------------------------------------
- */
-var options2 = {
-	fillContainer: true,
-	zoomWidth: 500,
-	offset: {
-		vertical: 0,
-		horizontal: 0
-	}
-};
-
-document.querySelectorAll('Zoom-1').forEach(element => {
-	new ImageZoom(element, options2);
 });
 
 var shareIcon = document.querySelector('.share-icon');
@@ -944,17 +1098,6 @@ function get_product_attributes(tag) {
 		var whats_btn = $("#whats_btn").val();
 		var whatsapp_number = $("#whatsapp_number").val();
 		var jsons = JSON.stringify(attribute_array);
-		var buy_now = '';
-		var add_to_cart = '';
-		if (default_language == '1') {
-			buy_now = 'اشتري الآن';
-			add_to_cart = 'أضف إلى السلة';
-			out_of_stock = 'إنتهى من المخزن';
-		} else {
-			buy_now = 'Buy Now';
-			add_to_cart = 'Add to Cart';
-			out_of_stock = 'Out of Stock';
-		}
 		$.ajax({
 			method: "post",
 			url: site_url + "getProductPrice",
@@ -984,7 +1127,6 @@ function get_product_attributes(tag) {
 					}
 					if (this.product_price == '' || this.product_stock == 0) {
 						$('.pBtns').html(`<button type="button" class="btn btn-lg btn-secondary waves-effect waves-light d-flex align-items-center justify-content-center" style="width: fit-content;"><div class="d-flex justify-content-center align-items-center h-100"><div class="mx-2 mt-1 fw-bolder text-uppercase">${out_of_stock}</div></div></button>`);
-						$('.pBtns1').html(`<button type="button" class="btn btn-lg btn-secondary waves-effect waves-light d-flex align-items-center justify-content-center" style="width: fit-content;"><div class="d-flex justify-content-center align-items-center h-100"><div class="mx-2 mt-1 fw-bolder text-uppercase">${out_of_stock}</div></div></button>`);
 					} else {
 
 						if (this.imgurl != '') {
@@ -1007,28 +1149,12 @@ function get_product_attributes(tag) {
 						var discount = (this.product_mrp.replace(/\D/g, '')) - (this.product_price.replace(/\D/g, ''));
 						$("#total_saving").html('JD' + discount);
 
+						product_html +=
+							`<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
 
-						if (whats_btn != 10) {
-							product_html +=
-								`<a href="#" onclick="add_to_cart_product_buynow(this, event,'${pid}','${this.product_attr_sku}','${sid}','${user_id}',1,'',2,'${qoute_id}')" class="btn btn-lg btn-primary waves-effect waves-light">
-									<div class="d-flex justify-content-center align-items-center h-100">
-										<i class="fa-solid fa-bolt"></i>
-										<div class="mx-2 mt-1 fw-bolder text-uppercase">${buy_now}</div>
-									</div>
-								</a>`;
-						}
-						if (whats_btn == 10) {
-							product_html += '&nbsp;<a target="_blank" href="https://api.whatsapp.com/send?phone=%2B91' + whatsapp_number + '&text=hi"  class="btn btn-success"><svg width="35" height="35" viewBox="2 1 24 24" version="1.1" id="svg8" inkscape:version="0.92.4 (5da689c313, 2019-01-14)" sodipodi:docname="1881161.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  xml:space="preserve"><path id="path4" inkscape:connector-curvature="0" d="M16.6,14c-0.2-0.1-1.5-0.7-1.7-0.8c-0.2-0.1-0.4-0.1-0.6,0.1c-0.2,0.2-0.6,0.8-0.8,1c-0.1,0.2-0.3,0.2-0.5,0.1c-0.7-0.3-1.4-0.7-2-1.2c-0.5-0.5-1-1.1-1.4-1.7c-0.1-0.2,0-0.4,0.1-0.5c0.1-0.1,0.2-0.3,0.4-0.4c0.1-0.1,0.2-0.3,0.2-0.4c0.1-0.1,0.1-0.3,0-0.4c-0.1-0.1-0.6-1.3-0.8-1.8C9.4,7.3,9.2,7.3,9,7.3c-0.1,0-0.3,0-0.5,0C8.3,7.3,8,7.5,7.9,7.6C7.3,8.2,7,8.9,7,9.7c0.1,0.9,0.4,1.8,1,2.6c1.1,1.6,2.5,2.9,4.2,3.7c0.5,0.2,0.9,0.4,1.4,0.5c0.5,0.2,1,0.2,1.6,0.1c0.7-0.1,1.3-0.6,1.7-1.2c0.2-0.4,0.2-0.8,0.1-1.2C17,14.2,16.8,14.1,16.6,14 M19.1,4.9C15.2,1,8.9,1,5,4.9c-3.2,3.2-3.8,8.1-1.6,12L2,22l5.3-1.4c1.5,0.8,3.1,1.2,4.7,1.2h0c5.5,0,9.9-4.4,9.9-9.9C22,9.3,20.9,6.8,19.1,4.9 M16.4,18.9c-1.3,0.8-2.8,1.3-4.4,1.3h0c-1.5,0-2.9-0.4-4.2-1.1l-0.3-0.2l-3.1,0.8l0.8-3l-0.2-0.3C2.6,12.4,3.8,7.4,7.7,4.9S16.6,3.7,19,7.5C21.4,11.4,20.3,16.5,16.4,18.9"/></svg>WhatsApp</a>';
-
-						} else {
-							product_html +=
-								`<a href="#" onclick="add_to_cart_products(this, event,'${pid}','${this.product_attr_sku}','${sid}','${user_id}',1,'0',2,'${qoute_id}')" class="btn btn-lg btn-secondary waves-effect waves-light d-flex align-items-center justify-content-center mx-2">
-								<div class="d-flex justify-content-center align-items-center h-100">
-									<i class="fa-solid fa-cart-shopping"></i>
-									<div class="mx-2 mt-1 fw-bolder text-uppercase">${add_to_cart}</div>
-								</div>
+							<a href="#" onclick="add_to_cart_products(this, event,'${pid}','${this.product_attr_sku}','${sid}','${user_id}',1,'0',2,'${qoute_id}')" class="btn btn-primary">
+								Buy Now
 							</a>`;
-						}
 						$(".pBtns").html(product_html);
 						$(".pBtns").append(
 							`<a class="btn btn-light wishlist-btn heart-container mx-2" onclick="add_to_wishlist(event,'${pid}','${this.product_attr_sku}','${sid}','${user_id}',1,'',2)">

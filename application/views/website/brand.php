@@ -60,7 +60,7 @@
     <main class="search">
         <br>
         <section class="allBrand">
-            <div class="mt-0 container-fluid pe-md-5">
+            <div class="mt-0 container pe-md-5">
                 <div class="row">
                     <div class="row mb-md-4">
                         <div class="col-8">
@@ -80,7 +80,7 @@
                                             <img src="<?= $img_url; ?>" class="card-img-top " alt="">
                                         </div>
                                         <div class="card-body">
-                                            <h5 class="card-title text-center fw-normal my-1 my-md-2 fs-5 text-capitalize"><?= $default_language == 1 ? $brand['brand_name_ar'] : $brand['brand_name'] ?></h5>
+                                            <h6 class="card-title text-center fw-normal my-1 my-md-2 fs-5 text-capitalize"><?= $default_language == 1 ? $brand['brand_name_ar'] : $brand['brand_name'] ?></h6>
                                         </div>
                                     </div>
                                 </a>
