@@ -543,7 +543,7 @@ function related_product() {
 					product_html +=
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-								<div class="product-card-img zoom-img">
+								<div class="product-card-img zoom-img rounded-4">
 									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
 								</div>
 								<div class="card-body d-flex flex-column product-card-body">
@@ -619,7 +619,7 @@ function upsell_product() {
 					product_html +=
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-								<div class="product-card-img zoom-img">
+								<div class="product-card-img zoom-img rounded-4">
 									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
 								</div>
 								<div class="card-body d-flex flex-column product-card-body">

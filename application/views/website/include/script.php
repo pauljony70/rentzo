@@ -15,9 +15,13 @@
 
   $("main").attr("id", "common-class");
 
-
   function redirect_to_link(link) {
     location.href = link;
+  }
+
+  if (document.querySelector('#address_data').textContent === 'Location') {
+    var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
+    pincodeModal.show();
   }
 
   function get_address() {

@@ -814,46 +814,6 @@
 		</div>
 		<!--/*Slider Add Reviews Modal -->
 
-		<!--Trending Section -->
-		<section class="trending-section container mb-3 mb-md-5">
-			<?php if (!empty($recently_viewed_product_details)) { ?>
-				<div class="d-flex align-items-center mb-3 mb-md-5">
-					<div class="heading-border"></div>
-					<div class="heading ms-3">Rencently viewed products</div>
-				</div>
-			<?php } ?>
-			<div class="swiper slider-trending2" style="--swiper-navigation-color: #fff; --swiper-navigation-size: 18px;">
-				<div class="swiper-wrapper" id="recently_viewed_products">
-					<?php
-					foreach ($recently_viewed_product_details as $recently_viewed_product_detail) :
-						$params = array(
-							'pid' => $recently_viewed_product_detail['id'],
-							'sku' => $recently_viewed_product_detail['sku'],
-							'sid' => $recently_viewed_product_detail['vendor_id']
-						);
-					?>
-						<div class="swiper-slide">
-							<a href="<?= base_url($recently_viewed_product_detail['web_url']) . '?' . http_build_query($params) ?>" class="d-flex flex-column card product-card rounded-4">
-								<div class="product-card-img zoom-img">
-									<img src="<?= base_url('media/' . $recently_viewed_product_detail['imgurl']) ?>" class="card-img-top rounded-4" alt="<?= $recently_viewed_product_detail['name'] ?>">
-								</div>
-								<div class="card-body d-flex flex-column product-card-body">
-									<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $recently_viewed_product_detail['name'] ?></h5>
-									<div class="card-text d-flex justify-content-between py-1">
-										<div class="rent-heading">Rent</div>
-										<div class="rent-price"><?= $recently_viewed_product_detail['price'] ?></div>
-									</div>
-									<div class="product-card-footer pt-1">
-										<div class="text-success">Available Today</div>
-									</div>
-								</div>
-							</a>
-						</div>
-					<?php endforeach; ?>
-				</div>
-			</div>
-		</section>
-
 		<!-- 
 			---------------------------------------------------
 			Related Products
@@ -885,6 +845,46 @@
 			<?php } ?>
 			<div class="swiper slider-trending" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
 				<div class="swiper-wrapper" id="upsell_product"></div>
+			</div>
+		</section>
+
+		<!--Trending Section -->
+		<section class="trending-section container mb-3 mb-md-5">
+			<?php if (!empty($recently_viewed_product_details)) { ?>
+				<div class="d-flex align-items-center mb-3 mb-md-5">
+					<div class="heading-border"></div>
+					<div class="heading ms-3">Rencently viewed products</div>
+				</div>
+			<?php } ?>
+			<div class="swiper slider-trending2" style="--swiper-navigation-color: #fff; --swiper-navigation-size: 18px;">
+				<div class="swiper-wrapper" id="recently_viewed_products">
+					<?php
+					foreach ($recently_viewed_product_details as $recently_viewed_product_detail) :
+						$params = array(
+							'pid' => $recently_viewed_product_detail['id'],
+							'sku' => $recently_viewed_product_detail['sku'],
+							'sid' => $recently_viewed_product_detail['vendor_id']
+						);
+					?>
+						<div class="swiper-slide">
+							<a href="<?= base_url($recently_viewed_product_detail['web_url']) . '?' . http_build_query($params) ?>" class="d-flex flex-column card product-card rounded-4">
+								<div class="product-card-img zoom-img rounded-4">
+									<img src="<?= base_url('media/' . $recently_viewed_product_detail['imgurl']) ?>" class="card-img-top rounded-4" alt="<?= $recently_viewed_product_detail['name'] ?>">
+								</div>
+								<div class="card-body d-flex flex-column product-card-body">
+									<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $recently_viewed_product_detail['name'] ?></h5>
+									<div class="card-text d-flex justify-content-between py-1">
+										<div class="rent-heading">Rent</div>
+										<div class="rent-price"><?= $recently_viewed_product_detail['price'] ?></div>
+									</div>
+									<div class="product-card-footer pt-1">
+										<div class="text-success">Available Today</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			</div>
 		</section>
 	</main>

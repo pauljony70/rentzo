@@ -263,7 +263,7 @@ img.outof_stock {
 
 .product-details-page .product-slider .right-block .btn-wrap .btn {
     display: inline-flex;
-    padding: 10px 40px;
+    padding: 10px 20px;
     justify-content: center;
     align-items: center;
     gap: 10px;
