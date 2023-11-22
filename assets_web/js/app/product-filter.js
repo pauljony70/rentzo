@@ -40,7 +40,7 @@ function get_category_product(catid, sortby, pageno, callback) {
             if (pageno === 0)
                 $("#category_product").empty();
             if (order != 0 && response.status == 1) {
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 12; i++) {
                     $(parsedJSON).each(function () {
                         var out_of_stock = "";
                         if (this.stock_status == 'Out of Stock' || this.stock <= '0') {

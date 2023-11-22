@@ -73,7 +73,7 @@ class Product_model extends CI_Model
 		$wishlist_count = $this->db->where(array('prod_id' => $product_id, 'user_id' => $user_id))->count_all_results('wishlistdetails');
 
 		//get products details
-		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city,pd.security_deposit');
+		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city,pd.security_deposit,pd.usage_info,pd.is_buy');
 
 		//join for get minumum price
 		$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -179,6 +179,8 @@ class Product_model extends CI_Model
 				$product_response['day5_price'] = $product_details->day5_price;
 				$product_response['day7_price'] = $product_details->day7_price;
 				$product_response['security_deposit'] = $product_details->security_deposit;
+				$product_response['usage_info'] = $product_details->usage_info;
+				$product_response['is_buy'] = $product_details->is_buy;
 				$product_response['product_city'] = $product_details->product_city;
 				$product_response['seller_data'] = $this->get_seller_details($product_details->vendor_id);
 				//get other seller 

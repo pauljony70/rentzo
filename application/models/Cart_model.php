@@ -440,10 +440,10 @@ class Cart_model extends CI_Model
 					
 					if($rent_price != '')
 					{
-						$product_detail['mrp'] = $rent_price;
-						$product_detail['mrp1'] = $rent_price * $qty;
-						$product_detail['price1'] = $rent_price * $qty;
-						$product_detail['price'] = $rent_price;
+						$product_detail['mrp'] = ($product_detail['security_deposit']+$rent_price);
+						$product_detail['mrp1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price'] = ($product_detail['security_deposit']+$rent_price);
 						$product_detail['totaloff'] = '';
 					}
 					

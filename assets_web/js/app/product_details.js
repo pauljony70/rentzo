@@ -42,29 +42,26 @@ $(function () {
 		window.onload = submit_user_pincode(user_pincode);
 	}
 	new Swiper('.slider-trending2', {
-		slidesPerView: 2,
+		slidesPerView: 2.7,
+		spaceBetween: 15,
 		freeMode: true,
 		grabCursor: true,
 		mousewheel: {
 			forceToAxis: true,
 		},
 		forceToAxis: false,
-		navigation: {
-			nextEl: ".swiper-button-next",
-			prevEl: ".swiper-button-prev",
-		},
 		breakpoints: {
-			576: {
-				slidesPerView: 3
-			},
-			768: {
-				slidesPerView: 4
+			640: {
+				slidesPerView: 3.5,
+				spaceBetween: 15,
 			},
 			1024: {
-				slidesPerView: 5
+				slidesPerView: 4.5,
+				spaceBetween: 15,
 			},
-			1200: {
-				slidesPerView: 6
+			1400: {
+				slidesPerView: 5.5,
+				spaceBetween: 15,
 			},
 		},
 	});
@@ -369,15 +366,14 @@ function addto_cart_rent(ele, event, pid, sku, vendor_id, user_id, qty, referid,
 		window.location.href = site_url.concat('login');
 	} else {
 		var buttonInnerHTML = ele.innerHTML;
+		buttonLoader(ele);
 		var qty = 1;
 		var rent_price = document.querySelector('#total-rent').textContent.replace(/[^\d.]/g, '');
-		var arrivalDateText = document.querySelector('#arrival-date').textContent;
-		var returnDateText = document.querySelector('#return-date').textContent;
-		// Parse the date strings
-		var arrivalDate = new Date(arrivalDateText);
-		var returnDate = new Date(returnDateText);
-		if (!isNaN(arrivalDate.getTime()) && !isNaN(returnDate.getTime())) {
-			if (arrivalDate <= returnDate) {
+		var arrivalDateText = moment(document.querySelector('#arrival-date').textContent, 'DD/MM/YYYY', true);
+		var returnDateText = moment(document.querySelector('#return-date').textContent, 'DD/MM/YYYY', true);
+
+		if (arrivalDateText.isValid() && returnDateText.isValid()) {
+			if (arrivalDateText.isSameOrBefore(returnDateText)) {
 				$.ajax({
 					method: "post",
 					url: site_url + "addProductCartRent",
@@ -392,8 +388,8 @@ function addto_cart_rent(ele, event, pid, sku, vendor_id, user_id, qty, referid,
 						devicetype: 2,
 						qouteid: qouteid,
 						rent_price: rent_price,
-						rent_from_date: arrivalDate,
-						rent_to_date: returnDate,
+						rent_from_date: arrivalDateText.format('YYYY-MM-DD'),
+						rent_to_date: returnDateText.format('YYYY-MM-DD'),
 						cart_type: 'Rent',
 						[csrfName]: csrfHash,
 					},
@@ -411,11 +407,11 @@ function addto_cart_rent(ele, event, pid, sku, vendor_id, user_id, qty, referid,
 							});
 						} else {
 							window.location = site_url + "cart";
-
 						}
 					},
 				});
 			} else {
+				ele.innerHTML = buttonInnerHTML;
 				nativeToast({
 					message: 'Return date should be after or equal to arrival date',
 					position: 'bottom',
@@ -426,6 +422,7 @@ function addto_cart_rent(ele, event, pid, sku, vendor_id, user_id, qty, referid,
 				});
 			}
 		} else {
+			ele.innerHTML = buttonInnerHTML;
 			nativeToast({
 				message: 'Choose arrival and return date',
 				position: 'bottom',
@@ -517,6 +514,11 @@ function submit_pincode(event) {
 	}
 }
 
+/* 
+ * ---------------------------------------------------
+ * Related products
+ * ---------------------------------------------------
+ */
 function related_product() {
 	var pid = $("#pid").val();
 	var sid = $("#sid").val();
@@ -541,7 +543,9 @@ function related_product() {
 					product_html +=
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-								<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+								<div class="product-card-img zoom-img">
+									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+								</div>
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
@@ -585,6 +589,11 @@ function related_product() {
 	});
 }
 
+/* 
+ * ---------------------------------------------------
+ * Upsell Products
+ * ---------------------------------------------------
+ */
 function upsell_product() {
 	var pid = $("#pid").val();
 	var sid = $("#sid").val();
@@ -608,31 +617,19 @@ function upsell_product() {
 				$("#upsell_product").empty();
 				$(parsedJSON).each(function () {
 					product_html +=
-						`<div class="swiper-slide product-card-swiper px-2 py-1">
-							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-								<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-									<span class="discount text-uppercase">
-										<div>${this.offpercent}</div>
-									</span>
-									<span class="wishlist"><i class="fa fa-heart-o"></i></span>
+						`<div class="swiper-slide">
+							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
+								<div class="product-card-img zoom-img">
+									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
 								</div>
-								<div class="image-container zoom-img">
-									<img src="${site_url}media/${this.imgurl}" class="zoom-img thumbnail-image">
-								</div>
-								<div class="product-detail-container p-2 mb-1">
-									<div class="justify-content-between align-items-center" style="padding:5px;">
-										<p class="dress-name mb-0">${this.name}</p>	
-										<div class="d-flex align-items-center justify-content-start flex-row mt-2" style="width: 100%;">
-											<span class="new-price">${this.mrp}</span>
-											<small class="old-price text-right mx-1">${this.price}</small>
-										</div>
+								<div class="card-body d-flex flex-column product-card-body">
+									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
+									<div class="card-text d-flex justify-content-between py-1">
+										<div class="rent-heading">Rent</div>
+										<div class="rent-price">${this.price}</div>
 									</div>
-									<div class="d-flex justify-content-between align-items-center mt-1" style="padding: 0 5px;">
-										<div class="d-flex align-items-center">
-											<i class="fa-solid fa-star"></i>
-											<div class="rating-number">4.8</div>
-										</div>
-										<button class="btn btn-primary text-center text-uppercase card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event, '${this.id}', '${this.sku}', '${this.vendor_id}', '${user_id}', '1', '0', '2', '${qoute_id}')">${default_language === 1 ? 'يشتري' : 'BUY'}</button>
+									<div class="product-card-footer pt-1">
+										<div class="text-success">Available Today</div>
 									</div>
 								</div>
 							</a>
@@ -641,30 +638,27 @@ function upsell_product() {
 			} else {
 			}
 			$("#upsell_product").html(product_html);
-			new Swiper('.slider-trending1', {
-				slidesPerView: 2,
+			new Swiper('.slider-trending', {
+				slidesPerView: 2.7,
+				spaceBetween: 15,
 				freeMode: true,
 				grabCursor: true,
 				mousewheel: {
 					forceToAxis: true,
 				},
 				forceToAxis: false,
-				navigation: {
-					nextEl: ".swiper-button-next",
-					prevEl: ".swiper-button-prev",
-				},
 				breakpoints: {
-					576: {
-						slidesPerView: 3
-					},
-					768: {
-						slidesPerView: 4
+					640: {
+						slidesPerView: 3.5,
+						spaceBetween: 15,
 					},
 					1024: {
-						slidesPerView: 5
+						slidesPerView: 4.5,
+						spaceBetween: 15,
 					},
-					1200: {
-						slidesPerView: 6
+					1400: {
+						slidesPerView: 5.5,
+						spaceBetween: 15,
 					},
 				},
 			});
@@ -766,102 +760,114 @@ function add_to_cart_products(
 	} else {
 		var buttonInnerHTML = ele.innerHTML;
 		buttonLoader(ele);
-		document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-		document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML = '';
-		document.querySelector('#offcanvas-loader').className = "";
-		var qty = 1;
-		$.ajax({
-			method: "post",
-			url: site_url + "addProductCart",
-			data: {
-				language: default_language,
-				pid: pid,
-				sku: sku,
-				sid: vendor_id,
-				user_id: user_id,
-				qty: qty,
-				referid: referid,
-				devicetype: 2,
-				qouteid: qouteid,
-				[csrfName]: csrfHash,
-			},
-			success: function (response) {
-				addto_cart_count();
-				ele.innerHTML = buttonInnerHTML;
-				if (!response.status) {
-					Swal.fire({
-						type: "error",
-						text: response.msg,
-						showCancelButton: true,
-						showCloseButton: true,
-						confirmButtonColor: '#ff6600',
-						timer: 3000,
-					});
-				} else {
-					var bsOffcanvas = new bootstrap.Offcanvas('#cartOffcanvas');
-					bsOffcanvas.show();
-					setTimeout(() => {
-						document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-						document.querySelector('#offcanvas-loader').classList.add('d-none');
-						response.Information.forEach(cartItem => {
-							document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML +=
-								`<div class="col-12 mb-3 px-0">
-									<div class="card">
-										<div class="card-body">
-											<div class="row">
-												<div class="col-3">
-													<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
-												</div>
-												<div class="col-9">
-													<div class="d-flex flex-column">
-														<div class="d-flex align-items-center justify-content-between">
-															<div class="cart-prod-title mb-2">${cartItem.name}</div>
-															<i class="fa-regular fa-trash-can ms-2" onclick="delete_cart('${cartItem.prodid}','${user_id}','${qouteid}')" style="cursor: pointer; position: absolute; top: 17px;${default_language == 1 ? `left: 10px;` : `right: 10px`}"></i>
+		Swal.fire({
+			title: 'The buying price of this product is ' + '<br>' + document.querySelector('#product-price').value,
+			text: 'Click ok to add this product in your cart',
+			type: "warning",
+			showCancelButton: true,
+			showCloseButton: true,
+		}).then(function (res) {
+			if (res.value) {
+				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
+				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML = '';
+				document.querySelector('#offcanvas-loader').className = "";
+				var qty = 1;
+				$.ajax({
+					method: "post",
+					url: site_url + "addProductCart",
+					data: {
+						language: default_language,
+						pid: pid,
+						sku: sku,
+						sid: vendor_id,
+						user_id: user_id,
+						qty: qty,
+						referid: referid,
+						devicetype: 2,
+						qouteid: qouteid,
+						[csrfName]: csrfHash,
+					},
+					success: function (response) {
+						addto_cart_count();
+						ele.innerHTML = buttonInnerHTML;
+						if (!response.status) {
+							Swal.fire({
+								type: "error",
+								text: response.msg,
+								showCancelButton: true,
+								showCloseButton: true,
+								confirmButtonColor: '#ff6600',
+								timer: 3000,
+							});
+						} else {
+							var bsOffcanvas = new bootstrap.Offcanvas('#cartOffcanvas');
+							bsOffcanvas.show();
+							setTimeout(() => {
+								document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
+								document.querySelector('#offcanvas-loader').classList.add('d-none');
+								response.Information.forEach(cartItem => {
+									document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML +=
+										`<div class="col-12 mb-3 px-0">
+											<div class="card">
+												<div class="card-body">
+													<div class="row">
+														<div class="col-3">
+															<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
 														</div>
-														<div class="rate mb-2">
-															<h5>${cartItem.price}</h5>
-															<div class="old-price mb-1">${cartItem.mrp}</div>
-															<div class="off-price text-success"><span>${cartItem.offpercent}</span></div>
-														</div>
-														<div class="quantity mb-2">
-															<div class="input-group">
-																<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) - 1},'',2,'${qouteid}')"><i class="fa-solid fa-minus mt-1"></i></button>
-																<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="${cartItem.qty}" readonly>
-																<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) + 1},'',2,'${qouteid}')"><i class="fa-solid fa-plus mt-1"></i></button>
+														<div class="col-9">
+															<div class="d-flex flex-column">
+																<div class="d-flex align-items-center justify-content-between">
+																	<div class="cart-prod-title mb-2">${cartItem.name}</div>
+																	<i class="fa-regular fa-trash-can ms-2" onclick="delete_cart('${cartItem.prodid}','${user_id}','${qouteid}')" style="cursor: pointer; position: absolute; top: 17px;${default_language == 1 ? `left: 10px;` : `right: 10px`}"></i>
+																</div>
+																<div class="rate mb-2">
+																	<h5>${cartItem.price}</h5>
+																	<div class="old-price mb-1">${cartItem.mrp}</div>
+																	<div class="off-price text-success"><span>${cartItem.offpercent}</span></div>
+																</div>
+																<div class="quantity mb-2">
+																	<div class="input-group">
+																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) - 1},'',2,'${qouteid}')"><i class="fa-solid fa-minus mt-1"></i></button>
+																		<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="${cartItem.qty}" readonly>
+																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) + 1},'',2,'${qouteid}')"><i class="fa-solid fa-plus mt-1"></i></button>
+																	</div>
+																</div>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>`;
+								});
+								document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML =
+									`<div class="d-flex align-items-center justify-content-between p-2">
+										<div class="cart-count">${response.Information.length} ${default_language === 1 ? 'غرض' : 'Item'}</div>
+										<div class="cart-total d-flex align-items-center">
+											<div class="cart-total-text">${default_language === 1 ? 'المجموع الفرعي' : 'Subtotal'} : </div>
+											<div class="cart-total-value">&nbsp;${response.total_price}</div>
 										</div>
 									</div>
-								</div>`;
-						});
-						document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML =
-							`<div class="d-flex align-items-center justify-content-between p-2">
-								<div class="cart-count">${response.Information.length} ${default_language === 1 ? 'غرض' : 'Item'}</div>
-								<div class="cart-total d-flex align-items-center">
-									<div class="cart-total-text">${default_language === 1 ? 'المجموع الفرعي' : 'Subtotal'} : </div>
-									<div class="cart-total-value">&nbsp;${response.total_price}</div>
-								</div>
-							</div>
-							<hr class="m-0 px-2">
-							<div class="btn-oc d-flex py-2">
-								<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
-									<div class="d-flex justify-content-center align-items-center h-100">
-										<i class="fa-solid fa-cart-shopping"></i>
-										<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
-									</div>
-								</a>
-								<button class="btn btn-lg btn-light waves-effect waves-light w-100">
-									<div class="d-flex justify-content-center align-items-center h-100">
-										<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
-									</div>
-								</button>
-							</div>`;
-					}, 500);
-				}
-			},
+									<hr class="m-0 px-2">
+									<div class="btn-oc d-flex py-2">
+										<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
+											<div class="d-flex justify-content-center align-items-center h-100">
+												<i class="fa-solid fa-cart-shopping"></i>
+												<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
+											</div>
+										</a>
+										<button class="btn btn-lg btn-light waves-effect waves-light w-100">
+											<div class="d-flex justify-content-center align-items-center h-100">
+												<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
+											</div>
+										</button>
+									</div>`;
+							}, 500);
+						}
+					},
+				});
+			} else {
+				ele.innerHTML = buttonInnerHTML;
+			}
 		});
 	}
 }

@@ -120,7 +120,6 @@
 	}
 	?>
 	<main class="checkout-page mt-0">
-
 		<!-- <?= print_r($data); ?> -->
 		<!--Start: Check-Out Page -->
 
@@ -271,7 +270,7 @@
 									</div>
 								</div>
 								<br><br>
-								<p><?= $this->lang->line('checkout-footer'); ?></p>
+								<!--<p><?= $this->lang->line('checkout-footer'); ?></p>-->
 							</div>
 						</div>
 					</div>
@@ -304,14 +303,14 @@
 										<h6>-<span id="coupo_discount_value"><?= $checkout['coupon_discount']; ?></span></h6>
 									</li>
 								</ul>
-								<ul class="tax d-flex justify-content-between ps-0 my-4">
+								<!--<ul class="tax d-flex justify-content-between ps-0 my-4">
 									<li>
 										<h6><?= $this->lang->line('tax-included'); ?></h6>
 									</li>
 									<li>
 										<h6><span id="tex_value" class="text-dark"><?= $checkout['tax_payable']; ?></span></h6>
 									</li>
-								</ul>
+								</ul>-->
 								<ul class="discount d-flex justify-content-between ps-0 my-4">
 									<li>
 										<h6><?= $this->lang->line('shipping'); ?></h6>
@@ -330,7 +329,7 @@
 							</div>
 							<ul class="total d-flex justify-content-between ps-0 my-5">
 								<li>
-									<h5><?= $this->lang->line('total-amount'); ?> <span class="text-muted">(Inclusive of VAT)</span></h5>
+									<h5><?= $this->lang->line('total-amount'); ?> <span class="text-muted"></span></h5>
 								</li>
 								<li>
 									<h5><span id="total_val"><?= $checkout['total_price']; ?></span></h5>

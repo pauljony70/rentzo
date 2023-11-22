@@ -109,6 +109,15 @@ body {
 
 /*
  * --------------------------------------------------- 
+ * Swal Popup
+ * ---------------------------------------------------
+ */
+.swal2-popup .swal2-title {
+    font-size: 1.5em;
+}
+
+/*
+ * --------------------------------------------------- 
  * Loader screen 
  * ---------------------------------------------------
  */
@@ -170,4 +179,38 @@ body {
 
 .wishlist-page .cart-details {
     position: relative;
+}
+
+/*
+ * --------------------------------------------------- 
+ * Back Button
+ * ---------------------------------------------------
+ */
+.back-btn {
+    color: #000;
+}
+
+/*
+ * --------------------------------------------------- 
+ * Image Effect
+ * ---------------------------------------------------
+ */
+.zoom-img {
+    overflow: hidden;
+    transition: 5s;
+}
+
+.zoom-img img:hover {
+    -webkit-transform: scale(1.09);
+    -moz-transform: scale(1.09);
+    -o-transform: scale(1.09);
+    transform: scale(1.09);
+
+}
+
+.zoom-img img {
+    -webkit-transition: all .4s ease-in-out;
+    -moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -ms-transition: all .4s ease-in-out;
 }

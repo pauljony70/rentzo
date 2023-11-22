@@ -30,9 +30,10 @@
 		<main class="cart-page mt-0">
 			<section class="mt-5">
 				<div class="container">
-					<div class="d-flex mb-4">
-						<div class="page-title">Cart</div>
-						<span class="cart-count ms-5"><?= $cart['total_item']; ?> ITEMS</span>
+					<div class="d-flex align-items-center mb-4">
+						<a href="javascript:void(0)" onclick="history.back(-1)" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+						<div class="page-title mx-5">Cart</div>
+						<span class="cart-count"><?= $cart['total_item']; ?> ITEMS</span>
 					</div>
 					<div class="row cart-details-row pb-5">
 						<div class="col-lg-8 ps-0">

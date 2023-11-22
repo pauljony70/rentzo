@@ -26,15 +26,16 @@ class Checkout_model extends CI_Model
 				return $validate_coupon;
 			}
 		}
+		
 
 		$shiping_detail = 0;
 		$shipping_fee1 = 0;
 		// get delivery details
 		$delivery_array = array();
 
-		$this->db->select("prod_id, attr_sku, vendor_id, qty");
+		$this->db->select("prod_id, attr_sku, vendor_id, qty,rent_price,rent_from_date,cart_type");
 
-		//$this->db->where(array('user_id' => $user_id));
+		$this->db->where(array('user_id' => $user_id));
 
 		$coupon_discount = 0;
 		$query = $this->db->get('cartdetails');
@@ -51,9 +52,13 @@ class Checkout_model extends CI_Model
 				$sku = $cart_detail->attr_sku;
 				$vendor_id = $cart_detail->vendor_id;
 				$qty = $cart_detail->qty;
+				$rent_price = $cart_detail->rent_price;
+				$rent_from_date = $cart_detail->rent_from_date;
+				$rent_to_date = $cart_detail->rent_to_date;
+				$cart_type = $cart_detail->cart_type;
 
 				//check product details
-				$this->db->select("product_sku, prod_name,featured_img,web_url,is_heavy,sellerlogin.companyname as seller,sellerlogin.pincode as seller_pincode, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id,shipping,featured_img,vp.coupon_code,vp.product_tax_class");
+				$this->db->select("product_sku, prod_name,featured_img,web_url,is_heavy,sellerlogin.companyname as seller,sellerlogin.pincode as seller_pincode, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id,shipping,featured_img,vp.coupon_code,vp.product_tax_class,security_deposit");
 				//join for get vendor product
 				$this->db->join('vendor_product vp', 'vp.product_id = product_details.product_unique_id', 'INNER');
 				$this->db->join('sellerlogin', 'sellerlogin.seller_unique_id = vp.vendor_id', 'INNER');
@@ -78,6 +83,7 @@ class Checkout_model extends CI_Model
 					$product_detail['shipping_fee'] = $prod_result[0]->shipping;;
 					$product_detail['seller_pincode'] = $prod_result[0]->seller_pincode;
 					$product_detail['coupon_code_vendor'] = $prod_result[0]->coupon_code;
+					$product_detail['security_deposit'] = $prod_result[0]->security_deposit;
 
 					$tax_details = $this->get_tax_data($prod_result[0]->product_tax_class);
 					$product_detail['product_tax'] =  $tax_details['percent'];
@@ -159,6 +165,18 @@ class Checkout_model extends CI_Model
 							$product_detail['shipping_fee'] = price_format($delivery_array['basic_fee']);
 						}
 					}
+					
+					if($rent_price != '')
+					{
+						$product_detail['mrp'] = ($product_detail['security_deposit']+$rent_price);
+						$product_detail['mrp1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price'] = ($product_detail['security_deposit']+$rent_price);
+						$product_detail['totaloff'] = '';
+					}
+					
+					
+					
 				}
 
 				$net_tax_amount = ($product_detail['price1'] * 100) / ($product_detail['product_tax'] + 100);
@@ -296,7 +314,7 @@ class Checkout_model extends CI_Model
 		$order_id = '';
 
 		$devicetype = 1;
-		$this->db->select("prod_id, attr_sku, vendor_id, qty, affiliated_by, qoute_id");
+		$this->db->select("prod_id, attr_sku, vendor_id, qty, affiliated_by, qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
 
 		if ($user_id) {
 			$this->db->where(array('user_id' => $user_id));
@@ -325,9 +343,13 @@ class Checkout_model extends CI_Model
 				$qty = $cart_detail->qty;
 				$affiliated_by = $cart_detail->affiliated_by;
 				$qoute_id = $cart_detail->qoute_id;
+				$rent_price = $cart_detail->rent_price;
+				$rent_from_date = $cart_detail->rent_from_date;
+				$rent_to_date = $cart_detail->rent_to_date;
+				$cart_type = $cart_detail->cart_type;
 
 				//check product details
-				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy,return_policy_id, vp.product_mrp, vp.product_sale_price, vp.affiliate_commission, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id, prp.policy_validity,prp.policy_type_refund,prp.policy_type_replace,prp.policy_type_exchange,sellerlogin.pincode as seller_pincode,sellerlogin.phone as seller_phone,shipping,vp.coupon_code,vp.seller_price,vp.product_tax_class,product_hsn_code,product_unique_code");
+				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy,return_policy_id, vp.product_mrp, vp.product_sale_price, vp.affiliate_commission, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id, prp.policy_validity,prp.policy_type_refund,prp.policy_type_replace,prp.policy_type_exchange,sellerlogin.pincode as seller_pincode,sellerlogin.phone as seller_phone,shipping,vp.coupon_code,vp.seller_price,vp.product_tax_class,product_hsn_code,product_unique_code,security_deposit");
 
 				//join for get product return policy
 				$this->db->join('product_return_policy prp', 'prp.id = product_details.return_policy_id', 'LEFT');
@@ -364,6 +386,7 @@ class Checkout_model extends CI_Model
 					$product_detail['seller_price'] = $prod_result[0]->seller_price;
 					$product_detail['product_hsn_code'] = $prod_result[0]->product_hsn_code;
 					$product_detail['product_unique_code'] = $prod_result[0]->product_unique_code;
+					$product_detail['security_deposit'] = $prod_result[0]->security_deposit;
 
 					$tax_details = $this->get_tax_data($prod_result[0]->product_tax_class);
 
@@ -466,6 +489,15 @@ class Checkout_model extends CI_Model
 					}
 
 					$invoice_number = $this->generate_invoice_number($product_detail['vendor_id']);
+					
+					if($rent_price != '')
+					{
+						$product_detail['mrp'] = ($product_detail['security_deposit']+$rent_price);
+						$product_detail['mrp1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
+						$product_detail['price'] = ($product_detail['security_deposit']+$rent_price);
+						$product_detail['totaloff'] = '';
+					}
 
 					//calculate shipping fee
 					$shipping_fee1 = 0;
@@ -580,6 +612,9 @@ class Checkout_model extends CI_Model
 					$order_prod['igst'] = $igst;
 					$order_prod['product_hsn_code'] = $product_detail['product_hsn_code'];
 					$order_prod['product_unique_code'] = $product_detail['product_unique_code'];
+					$order_prod['rent_from_date'] = $rent_from_date;
+					$order_prod['rent_to_date'] = $rent_to_date;
+					$order_prod['type'] = $cart_type;
 
 					$query = $this->db->insert('order_product', $order_prod);
 

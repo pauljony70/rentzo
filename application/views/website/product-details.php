@@ -33,11 +33,11 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
 	<link rel="stylesheet" href="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/libs/nativetoast/native-toast.css') ?>">
-	
+
 	<!-- Custom Css -->
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-details.css') ?>">
 	<link rel="stylesheet" type="text/css" href="<?= base_url('assets_web/style/css/product-card.css') ?>">
-	
+
 
 </head>
 
@@ -89,6 +89,7 @@
 		<input type="hidden" name="qoute_id" value="<?= $this->session->userdata("qoute_id"); ?>" id="qoute_id">
 		<input type="hidden" name="whats_btn" value="<?= $product_custom_cloth; ?>" id="whats_btn">
 		<input type="hidden" name="whatsapp_number" value="<?= whatsapp_number; ?>" id="whatsapp_number">
+		<input type="hidden" name="product-price" value="<?= $productdetails['price']; ?>" id="product-price">
 
 		<!--Start: Slider Section -->
 		<section class="product-slider my-2 my-md-5">
@@ -172,8 +173,8 @@
 					</div>
 
 					<!-- For Description of Product -->
-					<div class="col-md-7 product_detail_desc_div">
-						<div class="right-block">
+					<div class="col-md-7 product_detail_desc_div ps-md-5">
+						<div class="right-block ps-md-5">
 							<!-- Name of Product -->
 							<div class="d-flex justify-content-between align-items-center">
 								<h1 class="product-name line-clamp-2 mb-2 mb-md-4"><?= $productdetails['name']; ?></h1>
@@ -269,7 +270,7 @@
 								---------------------------------------------------
 							-->
 							<div class="rent-price">
-								<?= $productdetails['price']; ?>/ day
+								<span id="day1_price"><?= price_format($productdetails['day1_price']); ?></span>/ day
 							</div>
 
 							<hr class="d-none d-md-block">
@@ -341,7 +342,6 @@
 							<table class="rent-details-table text-center mb-4">
 								<thead>
 									<tr>
-										<?php if ($productdetails['day1_price'] != '') { ?><th class="px-4 py-3">Rent for 1 days</th> <?php } ?>
 										<?php if ($productdetails['day3_price'] != '') { ?><th class="px-4 py-3">Rent for 3 days</th> <?php } ?>
 										<?php if ($productdetails['day5_price'] != '') { ?><th class="px-4 py-3">Rent for 5 days</th> <?php } ?>
 										<?php if ($productdetails['day7_price'] != '') { ?><th class="px-4 py-3">Rent for 7 days</th> <?php } ?>
@@ -349,7 +349,6 @@
 								</thead>
 								<tbody>
 									<tr>
-										<?php if ($productdetails['day1_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day1_price']); ?></td><?php } ?>
 										<?php if ($productdetails['day3_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day3_price']); ?></td><?php } ?>
 										<?php if ($productdetails['day5_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day5_price']); ?></td><?php } ?>
 										<?php if ($productdetails['day7_price'] != '') { ?><td class="py-4"><?= price_format($productdetails['day7_price']); ?></td><?php } ?>
@@ -402,10 +401,11 @@
 							<div class="btn-wrap align-items-center pBtns bg-white d-flex mb-4 py-2 py-md-0">
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
 									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
-
-									<a href="#" onclick="add_to_cart_products(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
-										Buy Now
-									</a>
+									<?php if ($productdetails['is_buy']) : ?>
+										<a href="#" onclick="add_to_cart_products(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
+											Buy Now
+										</a>
+									<?php endif; ?>
 								<?php } else { ?>
 									<button type="button" class="btn btn-lg btn-secondary d-flex align-items-center justify-content-center" style="width: fit-content;">
 										<div class="d-flex justify-content-center align-items-center h-100">
@@ -414,7 +414,7 @@
 									</button>
 								<?php } ?>
 
-								<a class="btn btn-light wishlist-btn heart-container mx-2" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)">
+								<a class="btn btn-light wishlist-btn heart-container" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)">
 									<div class="d-flex justify-content-center align-items-center h-100">
 										<i class="fa-<?= $productdetails['wishlist_count'] > 0 ? 'solid' : 'regular' ?> fa-heart add-to-wishlist"></i>
 									</div>
@@ -440,15 +440,15 @@
 										<div class="day-wise-rent-price" id="day5_price"><?= price_format($productdetails['day5_price']) ?></div>
 										<div class="day-wise-rent-price" id="day7_price"><?= price_format($productdetails['day7_price']) ?></div>
 									</div>
-									<div class="day-slider-div px-2 mb-5">
+									<div class="day-slider-div px-2">
 										<div id="day-slider"></div>
 									</div>
-									<div id="calendar-div" class="mb-4">
+									<div id="calendar-div" class="mb-3">
 										<div id="calendar"></div>
 									</div>
 									<div class="dates-div">
 										<div class="d-flex align-items-center">
-											<div class="heading">Arrival Date</div>
+											<div class="heading">From Date</div>
 											<div class="d-flex align-items-center date ms-5">
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
@@ -456,9 +456,9 @@
 												<div class="ms-2" id="arrival-date">-/-/-</div>
 											</div>
 										</div>
-										<hr>
+										<hr class="my-2">
 										<div class="d-flex align-items-center">
-											<div class="heading">Return Date</div>
+											<div class="heading">To Date</div>
 											<div class="d-flex align-items-center date ms-5">
 												<div class="image">
 													<img src="<?= base_url('assets_web/images/icons/calender.svg') ?>" alt="Date">
@@ -467,7 +467,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="availability-status mt-3 text-success">
+									<div class="availability-status mt-2 text-success">
 										<!-- Available on this date -->
 									</div>
 									<hr>
@@ -475,10 +475,10 @@
 										<div>Security deposit</div>
 										<div><?= price_format($productdetails['security_deposit']) ?></div>
 									</div>
-									<div class="security-deposit-des text-danger mt-3">Security deposit is refundable **</div>
+									<div class="security-deposit-des text-danger mt-2">Security deposit is refundable **</div>
 								</div>
 								<div class="offcanvas-footer d-flex flex-column justify-content-center align-items-center">
-									<div class="d-flex justify-content-between w-100 mb-4">
+									<div class="d-flex justify-content-between w-100 mb-3">
 										<div class="heading">Total Rent</div>
 										<div id="selected-day">1 Days</div>
 										<div id="total-rent"><?= price_format($productdetails['day1_price']) ?></div>
@@ -525,14 +525,21 @@
 
 							<!-- 
 								---------------------------------------------------
-								Return Policy 
+								Return Policy & Instructions
 								---------------------------------------------------
 							-->
-							<?php if ($productdetails['return_policy_title'] != '') { ?>
-								<div class="return-product mb-4">
-									<button type="button" data-bs-toggle="modal" data-bs-target="#policyModal">RETURN POILICY</button>
-								</div>
-							<?php } ?>
+							<div class="d-flex return-policy-div">
+								<?php if ($productdetails['return_policy_title'] != '') { ?>
+									<div class="return-product mb-4">
+										<button type="button" data-bs-toggle="modal" data-bs-target="#policyModal">RETURN POLICY</button>
+									</div>
+								<?php } ?>
+								<?php if ($productdetails['usage_info'] != '') { ?>
+									<div class="return-product mb-4">
+										<button class="text-primary" type="button" data-bs-toggle="modal" data-bs-target="#usageInfoModal">USAGE INSTRUCTION</button>
+									</div>
+								<?php } ?>
+							</div>
 
 
 							<!-- 
@@ -582,12 +589,12 @@
 						<div class="d-flex align-items-center mb-3 mb-md-4">
 							<label class="product_detail_headings" for="">Reviews</label>
 							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
+							<?php if ($productdetails['order_count'] > 0) : ?>
+								<div class="add-reviews btn-wrap d-block ms-4">
+									<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewsModal">Add Review</a>
+								</div>
+							<?php endif; ?>
 						</div>
-						<?php if ($productdetails['order_count'] > 0) : ?>
-							<div class="add-reviews btn-wrap d-block">
-								<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewsModal">Add Review</a>
-							</div>
-						<?php endif; ?>
 						<?php foreach ($product_review as $review) : ?>
 							<div class="d-flex mb-3">
 								<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1 d-none d-md-block">
@@ -647,9 +654,11 @@
 							</div>
 						<?php endforeach; ?>
 					</div>
-					<div class="mb-4-mb-md-5 text-center">
-						<a href="#" class="show-all-review">Show All &nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
-					</div>
+					<?php if (count($product_review)) : ?>
+						<div class="mb-4-mb-md-5 text-center">
+							<a href="#" class="show-all-review">Show All &nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></a>
+						</div>
+					<?php endif; ?>
 				<?php endif; ?>
 			</div>
 		</section>
@@ -681,6 +690,33 @@
 			</div>
 		</div>
 		<!--/*Slider Return Policy Modal -->
+
+		<!-- Slider Usage Information Modal -->
+		<div class="modal fade" id="usageInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+				<div class="modal-content">
+					<div class="modal-header border-0 pb-0">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body pt-0 return-policy faq">
+						<!--Start: Return Policy Section -->
+						<div class="container">
+							<div class="header-wrap m-0">
+								<h5><span>Usage Information</span></h5>
+								<!--<p>(15 days product return policy)</p>-->
+							</div>
+							<br>
+
+							<div class="wrap">
+								<?= $productdetails['usage_info']; ?>
+							</div>
+						</div>
+						<!--End: Return Policy Section -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/*Slider Usage Information Modal -->
 
 		<!-- Vendor Coupon Terms & Conditions -->
 		<div class="modal fade" id="couponpolicyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -779,9 +815,12 @@
 		<!--/*Slider Add Reviews Modal -->
 
 		<!--Trending Section -->
-		<!-- <section class="trending-section container px-1 px-md-2">
+		<section class="trending-section container mb-3 mb-md-5">
 			<?php if (!empty($recently_viewed_product_details)) { ?>
-				<h4 class="<?= $default_language == 1 ? 'me-3 me-lg-3' : 'ms-3 ms-lg-3' ?>"><?= $this->lang->line('recently-viewed-products') ?></h4>
+				<div class="d-flex align-items-center mb-3 mb-md-5">
+					<div class="heading-border"></div>
+					<div class="heading ms-3">Rencently viewed products</div>
+				</div>
 			<?php } ?>
 			<div class="swiper slider-trending2" style="--swiper-navigation-color: #fff; --swiper-navigation-size: 18px;">
 				<div class="swiper-wrapper" id="recently_viewed_products">
@@ -793,48 +832,33 @@
 							'sid' => $recently_viewed_product_detail['vendor_id']
 						);
 					?>
-						<div class="swiper-slide product-card-swiper px-2 py-1">
-							<a href="<?= base_url($recently_viewed_product_detail['web_url']) . '?' . http_build_query($params) ?>" class="card h-100 d-flex flex-column justify-content-between product-link-card px-0">
-								<?php if ($recently_viewed_product_detail['price'] !== $recently_viewed_product_detail['mrp']) : ?>
-									<div class="d-flex justify-content-between align-items-center" style="margin-top:-21px;">
-										<span class="discount text-uppercase">
-											<div><?= $recently_viewed_product_detail['offpercent'] ?></div>
-										</span>
-										<span class="wishlist"><i class="fa fa-heart-o"></i></span>
-									</div>
-								<?php endif; ?>
-								<div class="image-container zoom-img">
-									<img src="<?= base_url('media/' . $recently_viewed_product_detail['imgurl']) ?>" class="zoom-img thumbnail-image">
+						<div class="swiper-slide">
+							<a href="<?= base_url($recently_viewed_product_detail['web_url']) . '?' . http_build_query($params) ?>" class="d-flex flex-column card product-card rounded-4">
+								<div class="product-card-img zoom-img">
+									<img src="<?= base_url('media/' . $recently_viewed_product_detail['imgurl']) ?>" class="card-img-top rounded-4" alt="<?= $recently_viewed_product_detail['name'] ?>">
 								</div>
-								<div class="product-detail-container p-2 mb-1">
-									<div class="justify-content-between align-items-center" style="padding:5px;">
-										<p class="dress-name mb-0"><?= $recently_viewed_product_detail['name'] ?></p>
-										<div class="d-flex align-items-center justify-content-start flex-row mt-2" style="width: 100%;">
-											<span class="new-price"><?= $recently_viewed_product_detail['price'] ?></span>
-											<small class="old-price text-right mx-1"><?= $recently_viewed_product_detail['price'] !== $recently_viewed_product_detail['mrp'] ? $recently_viewed_product_detail['mrp'] : '' ?></small>
-										</div>
+								<div class="card-body d-flex flex-column product-card-body">
+									<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $recently_viewed_product_detail['name'] ?></h5>
+									<div class="card-text d-flex justify-content-between py-1">
+										<div class="rent-heading">Rent</div>
+										<div class="rent-price"><?= $recently_viewed_product_detail['price'] ?></div>
 									</div>
-									<div class="d-flex justify-content-between align-items-center mt-1" style="padding: 0 5px;">
-										<div class="d-flex align-items-center">
-											<?php if ($recently_viewed_product_detail['rating']['total_rows'] > 0) : ?>
-												<i class="fa-solid fa-star"></i>
-												<div class="rating-number"><?= $recently_viewed_product_detail['rating']['total_rating'] / $recently_viewed_product_detail['rating']['total_rows'] ?></div>
-											<?php endif; ?>
-										</div>
-										<button class="btn btn-primary text-center text-uppercase card_buy_btn px-4 py-1" onclick="add_to_cart_product_buy(event, '<?= $recently_viewed_product_detail['id'] ?>', '<?= $recently_viewed_product_detail['sku'] ?>', '<?= $recently_viewed_product_detail['vendor_id'] ?>', '<?= $this->session->userdata('user_id') ?>', '1', '0', '2', '<?= $this->session->userdata('quote_id') ?>')"><?= $this->lang->line('buy') ?></button>
+									<div class="product-card-footer pt-1">
+										<div class="text-success">Available Today</div>
 									</div>
 								</div>
 							</a>
 						</div>
 					<?php endforeach; ?>
 				</div>
-				<div class="swiper-button-next"></div>
-				<div class="swiper-button-prev"></div>
 			</div>
-		</section> -->
-		<!--/*Trending Section -->
+		</section>
 
-		<!--Trending Section -->
+		<!-- 
+			---------------------------------------------------
+			Related Products
+			---------------------------------------------------
+		-->
 		<section class="trending-section container mb-3 mb-md-5">
 			<?php if (!empty($related_product)) { ?>
 				<div class="d-flex align-items-center mb-3 mb-md-5">
@@ -846,20 +870,23 @@
 				<div class="swiper-wrapper" id="related_product"></div>
 			</div>
 		</section>
-		<!--/*Trending Section -->
 
-		<!--Trending Section -->
-		<!-- <section class="trending-section container px-1 px-md-2">
+		<!-- 
+			---------------------------------------------------
+			Upsell Products
+			---------------------------------------------------
+		-->
+		<section class="trending-section container mb-3 mb-md-5">
 			<?php if (!empty($upsell_product)) { ?>
-				<h4 class="<?= $default_language == 1 ? 'me-3 me-lg-3' : 'ms-3 ms-lg-3' ?>"><?= $this->lang->line('people-who-bought-this-also-bought') ?></h4>
+				<div class="d-flex align-items-center mb-3 mb-md-5">
+					<div class="heading-border"></div>
+					<div class="heading ms-3">People who bought this also bought</div>
+				</div>
 			<?php } ?>
-			<div class="swiper slider-trending1" style="--swiper-navigation-color: #fff; --swiper-navigation-size: 18px;">
+			<div class="swiper slider-trending" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
 				<div class="swiper-wrapper" id="upsell_product"></div>
-				<div class="swiper-button-next"></div>
-				<div class="swiper-button-prev"></div>
 			</div>
-		</section> -->
-		<!--/*Trending Section -->
+		</section>
 	</main>
 
 	<?php include("include/footer.php") ?>
