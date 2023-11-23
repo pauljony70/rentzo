@@ -119,11 +119,18 @@ function convertToFloat(str) {
   return parseFloat(str.split(' ')[0]);
 }
 
-function priceFormat(value) {
-  if (value > 0)
-    return value.toFixed(2).concat(' ', 'OMR');
-  else
-    return 0;
+function priceFormat(price) {
+  let newPrice = 0;
+  const currency = '₹';
+
+  if (price > 0) {
+    if (price.toString().includes('.')) {
+      newPrice = currency + ' ' + price.toFixed(2);
+    } else {
+      newPrice = currency + ' ' + price.toFixed(2);
+    }
+  }
+  return newPrice;
 }
 
 const buttonLoader = (ele) => {

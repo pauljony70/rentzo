@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<?php $title = "CheckOut";
+	<?php $title = "CheckOut"; 
 	include("include/headTag.php") ?>
 	<style>
 		.cart-page .left-block {

@@ -276,7 +276,7 @@ img.outof_stock {
     line-height: 24px;
 }
 
-.product-details-page .product-slider .right-block .btn-wrap .btn .spinner-border,
+#cartOffcanvas .btn .spinner-border,
 #rentOffcanvas .btn .spinner-border {
     --bs-spinner-width: 1.5rem;
     --bs-spinner-height: 1.5rem;
@@ -652,16 +652,6 @@ img.outof_stock {
     border-radius: 3px;
 }
 
-#cartOffcanvas .offcanvas-footer {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-    border-top: 1px solid #fff;
-    height: 101px;
-}
-
-#cartOffcanvas .offcanvas-footer .btn-light {
-    border: 1px solid #000;
-}
-
 #cartOffcanvas .quantity {
     width: fit-content;
 }
@@ -707,13 +697,15 @@ img.outof_stock {
     font-size: 12px;
 }
 
-#rentOffcanvas .offcanvas-footer {
+#rentOffcanvas .offcanvas-footer,
+#cartOffcanvas .offcanvas-footer {
     box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
     border-top: 1px solid #000;
     height: 111px;
 }
 
-#rentOffcanvas .d-flex {
+#rentOffcanvas .d-flex,
+#cartOffcanvas .d-flex {
     color: #000;
     font-size: 16px;
     font-style: normal;
@@ -721,7 +713,8 @@ img.outof_stock {
     line-height: 18px;
 }
 
-#rentOffcanvas .btn {
+#rentOffcanvas .btn,
+#cartOffcanvas .add-to-cart-btn {
     display: inline-flex;
     padding: 10px 40px;
     justify-content: center;
@@ -1071,6 +1064,11 @@ img.outof_stock {
     }
 }
 
+/* 
+ * ---------------------------------------------------
+ * Full calendar 
+ * ---------------------------------------------------
+ */
 #calendar-div {
     padding: 10px;
     flex-shrink: 0;
@@ -1145,4 +1143,94 @@ img.outof_stock {
 
 .selected-date a {
     color: #fff !important;
+}
+
+/* 
+ * ---------------------------------------------------
+ * Ratings Model
+ * ---------------------------------------------------
+ */
+.rating_star {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.3rem;
+    --stroke: #666;
+    --fill: #ffc73a;
+}
+
+.rating_star input {
+    appearance: unset;
+}
+
+.rating_star label {
+    cursor: pointer;
+}
+
+.rating_star svg {
+    width: 2.3rem;
+    height: 2.3rem;
+    overflow: visible;
+    fill: transparent;
+    stroke: var(--stroke);
+    stroke-linejoin: bevel;
+    stroke-dasharray: 12;
+    animation: idle 4s linear infinite;
+    transition: stroke 0.2s, fill 0.5s;
+}
+
+@keyframes idle {
+    from {
+        stroke-dashoffset: 24;
+    }
+}
+
+.rating_star label:hover svg {
+    stroke: var(--fill);
+}
+
+.rating_star input:checked~label svg {
+    transition: 0s;
+    animation: idle 4s linear infinite, yippee 0.75s backwards;
+    fill: var(--fill);
+    stroke: var(--fill);
+    stroke-opacity: 0;
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 3px;
+}
+
+@keyframes yippee {
+    0% {
+        transform: scale(1);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30% {
+        transform: scale(0);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30.1% {
+        stroke: var(--fill);
+        stroke-dasharray: 0;
+        stroke-linejoin: miter;
+        stroke-width: 8px;
+    }
+
+    60% {
+        transform: scale(1.2);
+        fill: var(--fill);
+    }
 }

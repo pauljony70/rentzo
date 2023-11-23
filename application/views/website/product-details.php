@@ -90,7 +90,8 @@
 		<input type="hidden" name="whats_btn" value="<?= $product_custom_cloth; ?>" id="whats_btn">
 		<input type="hidden" name="whatsapp_number" value="<?= whatsapp_number; ?>" id="whatsapp_number">
 		<input type="hidden" name="product-price" value="<?= $productdetails['price']; ?>" id="product-price">
-
+		<input type="hidden" name="purchase_limit" value="<?= $productdetails['purchase_limit']; ?>" id="purchase_limit">
+		
 		<!--Start: Slider Section -->
 		<section class="product-slider my-2 my-md-5">
 			<div class="container">
@@ -184,9 +185,12 @@
 							<div class="product-location mb-2">
 								<div class="d-flex">
 									<img src="<?= base_url('assets_web/images/icons/location-pin-grey.svg') ?>" alt="Location">
-									<div class="location ms-2"><?php foreach ($prod_city['data'] as $city_data) {
-																	echo $city_data['name'] . ',';
-																}  ?></div>
+									<div class="location ms-2">
+										<?php
+										$city_values = array_column($prod_city['data'], 'name');
+										echo implode(', ', $city_values);
+										?>
+									</div>
 								</div>
 							</div>
 
@@ -402,7 +406,7 @@
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
 									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
 									<?php if ($productdetails['is_buy']) : ?>
-										<a href="#" onclick="add_to_cart_products(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')" class="btn btn-primary">
+										<a data-bs-toggle="offcanvas" href="#cartOffcanvas" role="button" aria-controls="cartOffcanvas" class="btn btn-primary">
 											Buy Now
 										</a>
 									<?php endif; ?>
@@ -494,19 +498,51 @@
 							-->
 							<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
 								<div class="offcanvas-header">
-									<h5 id="cartOffcanvasLabel" class="fw-bolder fs-4 mb-0 mt-1">Cart</h5>
+									<h5 id="cartOffcanvasLabel" class="fw-bolder fs-4 mb-0 mt-1">Product Purchase Detail</h5>
 									<button type="button" class="close-btn-offcanvas text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
 										<i class="fa-solid fa-xmark"></i>
 									</button>
 								</div>
 								<div class="offcanvas-body">
-									<div class="row"></div>
-								</div>
-								<div class="offcanvas-footer py-0"></div>
-								<div id="offcanvas-loader">
-									<div class="spinner-border text-primary" role="status">
-										<span class="visually-hidden">Loading...</span>
+									<div class="row mx-0">
+										<div class="col-12 mb-3 px-0">
+											<div class="card">
+												<div class="card-body">
+													<div class="row">
+														<div class="col-3">
+															<img class="w-100 object-fit-cover" src="<?= base_url('media/' . $productdetails['imgurl']) ?>" alt="<?= $productdetails['name'] ?>">
+														</div>
+														<div class="col-9">
+															<div class="d-flex flex-column">
+																<div class="d-flex align-items-center justify-content-between">
+																	<div class="cart-prod-title mb-2"><?= $productdetails['name'] ?></div>
+																</div>
+																<div class="rate mb-2">
+																	<h5><?= $productdetails['price'] ?></h5>
+																	<div class="old-price mb-1"><?= $productdetails['mrp'] ?></div>
+																	<div class="off-price text-success"><span><?= $productdetails['offpercent'] ?></span></div>
+																</div>
+																<div class="quantity mb-2">
+																	<div class="input-group">
+																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="decrementQuantity()"><i class="fa-solid fa-minus mt-1"></i></button>
+																		<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="1" id="item-qty" readonly>
+																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="incrementQuantity()"><i class="fa-solid fa-plus mt-1"></i></button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
 									</div>
+								</div>
+								<div class="offcanvas-footer d-flex flex-column justify-content-center align-items-center">
+									<div class="d-flex justify-content-between w-100 mb-3">
+										<div class="heading">Quantity: <span id="item-total-qty">1</span></div>
+										<div id="total-cart-price"><?= $productdetails['price'] ?></div>
+									</div>
+									<div class="btn btn-primary add-to-cart-btn w-100" onclick="add_to_cart_products(this, event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2,'<?= $this->session->userdata('qoute_id'); ?>')">Continue</div>
 								</div>
 							</div>
 
@@ -596,9 +632,9 @@
 							<?php endif; ?>
 						</div>
 						<?php foreach ($product_review as $review) : ?>
-							<div class="d-flex mb-3">
+							<div class="col-md-9 d-flex mb-3">
 								<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1 d-none d-md-block">
-								<div class="ms-0 ms-md-3">
+								<div class="ms-0 w-100 ms-md-3">
 									<div class="d-flex justify-content-between mb-2">
 										<div class="d-flex align-items-center">
 											<img src="<?= base_url('assets_web/images/icons/profile-lg.svg') ?>" alt="<?= $review->user_name; ?>" class="user-image p-1 d-block d-md-none">
@@ -749,25 +785,22 @@
 		<div class="modal fade" id="reviewsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reviewsModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down">
 				<div class="modal-content">
-					<div class="d-flex p-2 align-items-center justify-content-between border-bottom">
-						<h5 class="modal-title mt-1 px-2" id="reviewsModalLabel"><?= $this->lang->line('share-your-experience') ?></h5>
-						<button type="button" class="modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">Rate this product</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
 						<form id="review_form" class="form">
-							<div class="form-group mb-1">
-								<label class="form-label mb-0"><?= $this->lang->line('rate-this-product') ?></label>
-							</div>
-							<div class="form-group">
+							<div class="mb-3">
 								<label class="form-label"><?= $this->lang->line('title') ?> </label>
 								<input type="text" class="form-control" name="reviewtitle" id="reviewtitle" placeholder="<?= $this->lang->line('title') ?>" />
 							</div>
-							<div class="form-group">
+							<div class="mb-3">
 								<label class="form-label"><?= $this->lang->line('comment') ?></label>
 								<textarea class="form-control" name="ProductReview" id="ProductReview" rows="5" placeholder="<?= $this->lang->line('comments-here') ?> ..."></textarea>
 							</div>
 
-							<div class="form-group d-flex">
+							<div class="mb-4 d-flex">
 								<div class="rating_star">
 									<input value="5" name="star-radio" id="star-1" type="radio">
 									<label for="star-1">
@@ -801,7 +834,7 @@
 									</label>
 								</div>
 							</div>
-							<button class="btn" type="submit" style="background-color: #ff6600; color:white"><?= $this->lang->line('add_reviews') ?></button>
+							<button class="btn btn-primary" type="submit"><?= $this->lang->line('add_reviews') ?></button>
 						</form>
 					</div>
 					<div id="modal-loader" class="d-none">

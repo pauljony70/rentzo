@@ -742,328 +742,97 @@ function add_to_cart_product_buynow(ele, event, pid, sku, vendor_id, user_id, qt
 	}
 }
 
-function add_to_cart_products(
-	ele,
-	event,
-	pid,
-	sku,
-	vendor_id,
-	user_id,
-	qty,
-	referid,
-	devicetype,
-	qouteid
-) {
+/* 
+ * ---------------------------------------------------
+ * Add to cart
+ * ---------------------------------------------------
+ */
+function add_to_cart_products(ele, event, pid, sku, vendor_id, user_id, qty, referid, devicetype, qouteid) {
 	event.preventDefault();
 	if (user_id == '') {
 		window.location.href = site_url.concat('login');
 	} else {
 		var buttonInnerHTML = ele.innerHTML;
 		buttonLoader(ele);
-		Swal.fire({
-			title: 'The buying price of this product is ' + '<br>' + document.querySelector('#product-price').value,
-			text: 'Click ok to add this product in your cart',
-			type: "warning",
-			showCancelButton: true,
-			showCloseButton: true,
-		}).then(function (res) {
-			if (res.value) {
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML = '';
-				document.querySelector('#offcanvas-loader').className = "";
-				var qty = 1;
-				$.ajax({
-					method: "post",
-					url: site_url + "addProductCart",
-					data: {
-						language: default_language,
-						pid: pid,
-						sku: sku,
-						sid: vendor_id,
-						user_id: user_id,
-						qty: qty,
-						referid: referid,
-						devicetype: 2,
-						qouteid: qouteid,
-						[csrfName]: csrfHash,
-					},
-					success: function (response) {
-						addto_cart_count();
-						ele.innerHTML = buttonInnerHTML;
-						if (!response.status) {
-							Swal.fire({
-								type: "error",
-								text: response.msg,
-								showCancelButton: true,
-								showCloseButton: true,
-								confirmButtonColor: '#ff6600',
-								timer: 3000,
-							});
-						} else {
-							var bsOffcanvas = new bootstrap.Offcanvas('#cartOffcanvas');
-							bsOffcanvas.show();
-							setTimeout(() => {
-								document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-								document.querySelector('#offcanvas-loader').classList.add('d-none');
-								response.Information.forEach(cartItem => {
-									document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML +=
-										`<div class="col-12 mb-3 px-0">
-											<div class="card">
-												<div class="card-body">
-													<div class="row">
-														<div class="col-3">
-															<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
-														</div>
-														<div class="col-9">
-															<div class="d-flex flex-column">
-																<div class="d-flex align-items-center justify-content-between">
-																	<div class="cart-prod-title mb-2">${cartItem.name}</div>
-																	<i class="fa-regular fa-trash-can ms-2" onclick="delete_cart('${cartItem.prodid}','${user_id}','${qouteid}')" style="cursor: pointer; position: absolute; top: 17px;${default_language == 1 ? `left: 10px;` : `right: 10px`}"></i>
-																</div>
-																<div class="rate mb-2">
-																	<h5>${cartItem.price}</h5>
-																	<div class="old-price mb-1">${cartItem.mrp}</div>
-																	<div class="off-price text-success"><span>${cartItem.offpercent}</span></div>
-																</div>
-																<div class="quantity mb-2">
-																	<div class="input-group">
-																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) - 1},'',2,'${qouteid}')"><i class="fa-solid fa-minus mt-1"></i></button>
-																		<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="${cartItem.qty}" readonly>
-																		<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) + 1},'',2,'${qouteid}')"><i class="fa-solid fa-plus mt-1"></i></button>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>`;
-								});
-								document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML =
-									`<div class="d-flex align-items-center justify-content-between p-2">
-										<div class="cart-count">${response.Information.length} ${default_language === 1 ? 'غرض' : 'Item'}</div>
-										<div class="cart-total d-flex align-items-center">
-											<div class="cart-total-text">${default_language === 1 ? 'المجموع الفرعي' : 'Subtotal'} : </div>
-											<div class="cart-total-value">&nbsp;${response.total_price}</div>
-										</div>
-									</div>
-									<hr class="m-0 px-2">
-									<div class="btn-oc d-flex py-2">
-										<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
-											<div class="d-flex justify-content-center align-items-center h-100">
-												<i class="fa-solid fa-cart-shopping"></i>
-												<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
-											</div>
-										</a>
-										<button class="btn btn-lg btn-light waves-effect waves-light w-100">
-											<div class="d-flex justify-content-center align-items-center h-100">
-												<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
-											</div>
-										</button>
-									</div>`;
-							}, 500);
-						}
-					},
-				});
-			} else {
-				ele.innerHTML = buttonInnerHTML;
-			}
-		});
+		qty = document.querySelector('#item-qty').value;
+		if (qty >= 1) {
+			$.ajax({
+				method: "post",
+				url: site_url + "addProductCart",
+				data: {
+					language: default_language,
+					pid: pid,
+					sku: sku,
+					sid: vendor_id,
+					user_id: user_id,
+					qty: qty,
+					referid: referid,
+					devicetype: 2,
+					qouteid: qouteid,
+					[csrfName]: csrfHash,
+				},
+				success: function (response) {
+					addto_cart_count();
+					ele.innerHTML = buttonInnerHTML;
+					if (!response.status) {
+						Swal.fire({
+							type: "error",
+							text: response.msg,
+							showCancelButton: true,
+							showCloseButton: true,
+							confirmButtonColor: '#ff6600',
+							timer: 3000,
+						});
+					} else {
+						redirect_to_link(site_url + 'cart');
+					}
+				},
+			});
+		} else {
+			nativeToast({
+				message: 'Add atleast 1 quantity',
+				position: 'bottom',
+				type: 'error',
+				square: true,
+				edge: false,
+				debug: false
+			});
+			ele.innerHTML = buttonInnerHTML;
+		}
 	}
 }
 
-function add_product_qty(
-	ele,
-	prod_id,
-	sku,
-	vendor_id,
-	user_id,
-	qty,
-	referid,
-	devicetype,
-	qouteid
-) {
-	$.ajax({
-		method: "post",
-		url: site_url + "addProductCart",
-		data: {
-			language: default_language,
-			pid: prod_id,
-			sku: sku,
-			sid: vendor_id,
-			user_id: user_id,
-			qty: qty,
-			referid: referid,
-			devicetype: 2,
-			qouteid: qouteid,
-			[csrfName]: csrfHash,
-		},
-		success: function (response) {
-			//hideloader();
-			//$(".table").load(location.href + " .table");
-			//alert(response.msg);
-			// alert(response.status);
-			//location.reload();
-			if (response.status == 1) {
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-				document.querySelector('#offcanvas-loader').classList.add('d-none');
-				response.Information.forEach(cartItem => {
-					document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML +=
-						`<div class="col-12 mb-3 px-0">
-							<div class="card">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-3">
-											<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
-										</div>
-										<div class="col-9">
-											<div class="d-flex flex-column">
-												<div class="d-flex align-items-center justify-content-between">
-													<div class="cart-prod-title mb-2">${cartItem.name}</div>
-													<i class="fa-regular fa-trash-can ms-2" onclick="delete_cart('${cartItem.prodid}','${user_id}','${qouteid}')" style="cursor: pointer; position: absolute; top: 17px;${default_language == 1 ? `left: 10px;` : `right: 10px`}"></i>
-												</div>
-												<div class="rate mb-2">
-													<h5>${cartItem.price}</h5>
-													<div class="old-price mb-1">${cartItem.mrp}</div>
-													<div class="off-price text-success"><span>${cartItem.offpercent}</span></div>
-												</div>
-												<div class="quantity mb-2">
-													<div class="input-group">
-														<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) - 1},'',2,'${qouteid}')"><i class="fa-solid fa-minus mt-1"></i></button>
-														<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="${cartItem.qty}" readonly>
-														<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) + 1},'',2,'${qouteid}')"><i class="fa-solid fa-plus mt-1"></i></button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>`;
-				});
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML =
-					`<div class="d-flex align-items-center justify-content-between p-2">
-						<div class="cart-count">${response.Information.length} ${default_language === 1 ? 'غرض' : 'Item'}</div>
-							<div class="cart-total d-flex align-items-center">
-								<div class="cart-total-text">${default_language === 1 ? 'المجموع الفرعي' : 'Subtotal'} : </div>
-								<div class="cart-total-value">&nbsp;${response.total_price}</div>
-							</div>
-						</div>
-						<hr class="m-0 px-2">
-						<div class="btn-oc d-flex py-2">
-							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
-								<div class="d-flex justify-content-center align-items-center h-100">
-									<i class="fa-solid fa-cart-shopping"></i>
-									<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
-								</div>
-							</a>
-							<button class="btn btn-lg btn-light waves-effect waves-light w-100">
-								<div class="d-flex justify-content-center align-items-center h-100">
-									<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
-								</div>
-							</button>
-						</div>`;
-			} else {
-				if (response.msg !== 'Cart invalid request') {
-					Swal.fire({
-						title: response.msg,
-						type: 'error',
-						confirmButtonColor: '#FF6600',
-						confirmButtonText: 'OK',
-						timer: 1000
-					});
-				}
-			}
+var maxQuantity = parseInt(document.querySelector('#purchase_limit').value);
+var itemBuyPrice = parseFloat(document.querySelector('#product-price').value.replace(/[^\d.]/g, ''));
+let itemQtyInput = document.querySelector('#item-qty');
 
-		},
-	});
+function incrementQuantity() {
+	let currentQty = parseInt(itemQtyInput.value);
+	if (currentQty < maxQuantity) {
+		currentQty += 1;
+		itemQtyInput.value = currentQty;
+		document.querySelector('#item-total-qty').textContent = currentQty;
+		console.log(itemBuyPrice);
+		document.querySelector('#total-cart-price').textContent = priceFormat(itemBuyPrice * currentQty);
+	} else {
+		nativeToast({
+			message: 'You have reached the purchase limit for this product',
+			position: 'bottom',
+			type: 'error',
+			square: true,
+			edge: false,
+			debug: false
+		});
+	}
 }
-
-function delete_cart(prod_id, user_id, qouteid) {
-	$.ajax({
-		method: "post",
-		url: site_url + "deleteProductCart",
-		data: {
-			language: default_language,
-			pid: prod_id,
-			devicetype: 2,
-			user_id: user_id,
-			qouteid: qouteid,
-			[csrfName]: csrfHash,
-		},
-		success: function (response) {
-			if (response.status == 1) {
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML = '';
-				document.querySelector('#offcanvas-loader').classList.add('d-none');
-				response.Information.forEach(cartItem => {
-					document.querySelector('#cartOffcanvas').querySelector('.offcanvas-body').querySelector('.row').innerHTML +=
-						`<div class="col-12 mb-3 px-0">
-							<div class="card">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-3">
-											<img class="w-100 object-fit-cover" src="${site_url + 'media/' + cartItem.imgurl}" alt="">
-										</div>
-										<div class="col-9">
-											<div class="d-flex flex-column">
-												<div class="d-flex align-items-center justify-content-between">
-													<div class="cart-prod-title mb-2">${cartItem.name}</div>
-													<i class="fa-regular fa-trash-can ms-2" onclick="delete_cart('${cartItem.prodid}','${user_id}','${qouteid}')" style="cursor: pointer; position: absolute; top: 17px;${default_language == 1 ? `left: 10px;` : `right: 10px`}"></i>
-												</div>
-												<div class="rate mb-2">
-													<h5>${cartItem.price}</h5>
-													<div class="old-price mb-1">${cartItem.mrp}</div>
-													<div class="off-price text-success"><span>${cartItem.offpercent}</span></div>
-												</div>
-												<div class="quantity mb-2">
-													<div class="input-group">
-														<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) - 1},'',2,'${qouteid}')"><i class="fa-solid fa-minus mt-1"></i></button>
-														<input type="number" class="form-control p-0 py-1 text-center" placeholder="" value="${cartItem.qty}" readonly>
-														<button type="button" class="btn btn-primary p-0 text-center" type="button" id="" onclick="add_product_qty(this, '${cartItem.prodid}','${cartItem.sku}','${cartItem.vendor_id}','${user_id}',${parseInt(cartItem.qty) + 1},'',2,'${qouteid}')"><i class="fa-solid fa-plus mt-1"></i></button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>`;
-				});
-				document.querySelector('#cartOffcanvas').querySelector('.offcanvas-footer').innerHTML =
-					`<div class="d-flex align-items-center justify-content-between p-2">
-						<div class="cart-count">${response.Information.length} ${default_language === 1 ? 'غرض' : 'Item'}</div>
-							<div class="cart-total d-flex align-items-center">
-								<div class="cart-total-text">${default_language === 1 ? 'المجموع الفرعي' : 'Subtotal'} : </div>
-								<div class="cart-total-value">&nbsp;${response.total_price}</div>
-							</div>
-						</div>
-						<hr class="m-0 px-2">
-						<div class="btn-oc d-flex py-2">
-							<a href="${site_url}cart" class="btn btn-lg btn-secondary waves-effect waves-light w-100">
-								<div class="d-flex justify-content-center align-items-center h-100">
-									<i class="fa-solid fa-cart-shopping"></i>
-									<div class="mx-2 mt-1 fw-bolder text-uppercase">${default_language === 1 ? 'استمر في عربة التسوق' : 'Continue to Cart'}</div>
-								</div>
-							</a>
-							<button class="btn btn-lg btn-light waves-effect waves-light w-100">
-								<div class="d-flex justify-content-center align-items-center h-100">
-									<div class="mx-2 mt-1 fw-bolder text-dark text-uppercase" data-bs-dismiss="offcanvas">${default_language === 1 ? 'مواصلة التسوق' : 'Continue Shopping'}</div>
-								</div>
-							</button>
-						</div>`;
-			} else {
-				if (response.msg !== 'Cart invalid request') {
-					Swal.fire({
-						title: response.msg,
-						type: 'error',
-						confirmButtonColor: '#FF6600',
-						confirmButtonText: 'OK',
-						timer: 1000
-					});
-				}
-			}
-		},
-	});
+function decrementQuantity() {
+	let currentQty = parseInt(itemQtyInput.value);
+	if (currentQty > 1) {
+		currentQty -= 1;
+		itemQtyInput.value = currentQty;
+		document.querySelector('#item-total-qty').value = currentQty;
+		document.querySelector('#total-cart-price').value = itemBuyPrice * currentQty;
+	}
 }
 
 function getRandomInt(min, max) {
