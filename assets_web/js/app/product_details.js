@@ -77,6 +77,10 @@ var swiper = new Swiper(".product-details-swiper-sm", {
 	slidesPerView: 4,
 	freeMode: true,
 	watchSlidesProgress: true,
+	navigation: {
+		nextEl: ".swiper-button-next",
+		prevEl: ".swiper-button-prev",
+	},
 });
 
 var swiper2 = new Swiper(".product-details-swiper", {
@@ -107,7 +111,11 @@ var swiperMobileThumbs = new Swiper(".product-details-swiper-sm-mob", {
 	slidesPerView: 3,
 	freeMode: true,
 	watchSlidesProgress: true,
-	direction: 'vertical'
+	direction: 'vertical',
+	navigation: {
+		nextEl: ".swiper-button-next",
+		prevEl: ".swiper-button-prev",
+	},
 });
 
 var swiperMobileMain = new Swiper(".product-details-swiper-mob", {
@@ -886,10 +894,8 @@ function add_to_wishlist(event, pid, sku, vendor_id, user_id, qty, referid, devi
 	if (user_id == '') {
 		Swal.fire({
 			position: "center",
-			//icon: "success",
-			title: 'please login to add product into wishlist',
-			showConfirmButton: false,
-			confirmButtonColor: '#f42525',
+			type: "error",
+			text: 'Please login to add product into wishlist',
 			timer: 1500
 		})
 	}

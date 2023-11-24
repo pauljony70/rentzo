@@ -51,35 +51,8 @@
 		$actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		?>
 
-		<!-- Video Modal -->
-		<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg d-flex align-items-center h-100 justify-content-center m-0 mx-auto">
-				<div class="modal-content">
-					<!-- <div class="modal-header" style="border: 0;">
-						<button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div> -->
-					<div class="modal-body p-0">
-						<video controls class="w-100">
-							<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
-						</video>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<!-- Share URL -->
 		<input type="text" value="<?= $actual_link; ?>" name="myInput" id="myInput" style="display: none;">
-
-		<!-- Topbar for Mobile -->
-		<!-- <div class="d-flex justify-content-between align-items-center h-100 responsive_nav d-block d-sm-none">
-			<div class="nav_inner"></div>
-			<svg class="fa-angle-left ms-3" onclick="history.back(-1)" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M15.5 19.5 8 12l7.5-7.5" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
-			<svg class="fa-heart me-3" onclick="add_to_wishlist(event,'<?= $productdetails['id'] ?>','<?= $productdetails['sku'] ?>','<?= $productdetails['vendor_id'] ?>','<?= $this->session->userdata('user_id'); ?>',1,'',2)" width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M12 20S3 14.91 3 8.727c0-1.093.375-2.152 1.06-2.997a4.672 4.672 0 0 1 2.702-1.638 4.639 4.639 0 0 1 3.118.463A4.71 4.71 0 0 1 12 6.909a4.71 4.71 0 0 1 2.12-2.354 4.639 4.639 0 0 1 3.118-.463 4.672 4.672 0 0 1 2.701 1.638A4.756 4.756 0 0 1 21 8.727C21 14.91 12 20 12 20z" stroke="#303030" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-			</svg>
-		</div> -->
 
 		<!-- All Hidden Fields to Perform POST Request -->
 		<input type="hidden" name="sku" id="sku" value="<?= $_REQUEST['sku']; ?>">
@@ -91,7 +64,7 @@
 		<input type="hidden" name="whatsapp_number" value="<?= whatsapp_number; ?>" id="whatsapp_number">
 		<input type="hidden" name="product-price" value="<?= $productdetails['price']; ?>" id="product-price">
 		<input type="hidden" name="purchase_limit" value="<?= $productdetails['purchase_limit']; ?>" id="purchase_limit">
-		
+
 		<!--Start: Slider Section -->
 		<section class="product-slider my-2 my-md-5">
 			<div class="container">
@@ -169,30 +142,63 @@
 										</div>
 									<?php } ?>
 								</div>
+								<div class="swiper-button-next"></div>
+								<div class="swiper-button-prev"></div>
 							</div>
 						</div>
 					</div>
 
-					<!-- For Description of Product -->
-					<div class="col-md-7 product_detail_desc_div ps-md-5">
-						<div class="right-block ps-md-5">
+					<!--
+						--------------------------------------------------- 
+						Description of Product
+						---------------------------------------------------
+					-->
+					<div class="col-md-7 product_detail_desc_div ps-lg-5">
+						<div class="right-block ps-lg-5">
 							<!-- Name of Product -->
 							<div class="d-flex justify-content-between align-items-center">
 								<h1 class="product-name line-clamp-2 mb-2 mb-md-4"><?= $productdetails['name']; ?></h1>
 							</div>
 
 							<!-- Rating of Product -->
-							<div class="product-location mb-2">
-								<div class="d-flex">
-									<img src="<?= base_url('assets_web/images/icons/location-pin-grey.svg') ?>" alt="Location">
-									<div class="location ms-2">
-										<?php
-										$city_values = array_column($prod_city['data'], 'name');
-										echo implode(', ', $city_values);
-										?>
-									</div>
+							<?php if (!empty($prod_city['data'])) : ?>
+								<div class="product-location mb-2">
+									<?php if (in_array($this->session->userdata("address"), array_column($prod_city['data'], 'name'))) : ?>
+										<div class="d-flex location text-success">
+											<img src="<?= base_url('assets_web/images/icons/location-pin-grey.svg') ?>" alt="Location">
+											<div class="ms-2">Available in <?= $this->session->userdata("address") ?> </div>
+										</div>
+									<?php else : ?>
+										<div class="d-flex align-items-start">
+											<img src="<?= base_url('assets_web/images/icons/location-pin-grey.svg') ?>" class="mt-1" alt="Location">
+											<div>
+												<div class="d-flex">
+													<div class="location ms-2">
+														<?php
+														$city_values = array_column($prod_city['data'], 'name');
+														$first_five_cities = array_slice($city_values, 0, 5);
+														echo implode(', ', $first_five_cities);
+														?>
+													</div>
+													<?php if (count($prod_city['data']) > 5) : ?>
+														<a class="btn see-more-btn py-0" data-bs-toggle="collapse" href="#collapseLocation" role="button" aria-expanded="false" aria-controls="collapseExample">
+															See all <i class="fa-solid fa-chevron-down"></i>
+														</a>
+													<?php endif; ?>
+												</div>
+												<?php if (count($prod_city['data']) > 5) : ?>
+													<div class="collapse location ms-2" id="collapseLocation">
+														<?php
+														$remaining_cities = array_slice($city_values, 5);
+														echo implode(', ', $remaining_cities);
+														?>
+													</div>
+												<?php endif; ?>
+											</div>
+										</div>
+									<?php endif; ?>
 								</div>
-							</div>
+							<?php endif; ?>
 
 							<!-- 
 								---------------------------------------------------
@@ -208,6 +214,7 @@
 											// Calculate the whole number and fractional part of the rating
 											$wholeNumber = floor($rating);
 											$fractionalPart = $rating - $wholeNumber;
+											$emptyStars = 0;
 
 											// Loop through the whole number part and display solid stars
 											for ($i = 0; $i < $wholeNumber; $i++) {
@@ -216,17 +223,19 @@
 
 											// Check the fractional part to display half or empty star
 											if ($fractionalPart >= 0.5) {
+												// Calculate the remaining empty stars
+												$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
 												echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
 											} else {
-												echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+												// Calculate the remaining empty stars
+												$emptyStars = 5 - $wholeNumber;
 											}
 
-											// Calculate the remaining empty stars
-											$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
-
 											// Display the remaining empty stars
-											for ($i = 0; $i < $emptyStars; $i++) {
-												echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+											if ($emptyStars > 0) {
+												for ($i = 0; $i < $emptyStars; $i++) {
+													echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+												}
 											}
 											?>
 										</div>
@@ -334,6 +343,8 @@
 												</div>
 											<?php } ?>
 										</div>
+										<div class="swiper-button-next"></div>
+										<div class="swiper-button-prev"></div>
 									</div>
 								</div>
 							</div>
@@ -359,6 +370,13 @@
 									</tr>
 								</tbody>
 							</table>
+
+							<?php if (!empty($prod_city['data']) && in_array($this->session->userdata("address"), array_column($prod_city['data'], 'name'))) : ?>
+							<?php else : ?>
+								<div class="text-danger mb-4">
+									Not available in your city
+								</div>
+							<?php endif; ?>
 
 
 							<!-- Description of product that is color and size -->
@@ -404,7 +422,9 @@
 							<!-- Add to Cart and By now and Whatsapp Buttons -->
 							<div class="btn-wrap align-items-center pBtns bg-white d-flex mb-4 py-2 py-md-0">
 								<?php if ($productdetails['stock'] != '0' && $productdetails['stock_status'] != 'Out of Stock') { ?>
-									<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
+									<?php if (!empty($prod_city['data']) && in_array($this->session->userdata("address"), array_column($prod_city['data'], 'name'))) : ?>
+										<a class="btn btn-warning" data-bs-toggle="offcanvas" href="#rentOffcanvas" role="button" aria-controls="rentOffcanvas">For Rent</a>
+									<?php endif; ?>
 									<?php if ($productdetails['is_buy']) : ?>
 										<a data-bs-toggle="offcanvas" href="#cartOffcanvas" role="button" aria-controls="cartOffcanvas" class="btn btn-primary">
 											Buy Now
@@ -658,17 +678,19 @@
 
 												// Check the fractional part to display half or empty star
 												if ($fractionalPart >= 0.5) {
+													// Calculate the remaining empty stars
+													$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
 													echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
 												} else {
-													echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+													// Calculate the remaining empty stars
+													$emptyStars = 5 - $wholeNumber;
 												}
 
-												// Calculate the remaining empty stars
-												$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
-
 												// Display the remaining empty stars
-												for ($i = 0; $i < $emptyStars; $i++) {
-													echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+												if ($emptyStars > 0) {
+													for ($i = 0; $i < $emptyStars; $i++) {
+														echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+													}
 												}
 												?>
 											</div>
@@ -929,9 +951,9 @@
 	<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 	<script src="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.js') ?>"></script>
-	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+	<script src='<?= base_url('assets_web/libs/fullcalendar-6.1.9/dist/index.global.min.js') ?>'></script>
 	<script src="<?= base_url('assets_web/libs/moment/min/moment.min.js') ?>"></script>
-	<script src="<?php echo base_url('assets_web/libs/nativetoast/native-toast.js') ?>"></script>
+	<script src="<?= base_url('assets_web/libs/nativetoast/native-toast.js') ?>"></script>
 	<script src="<?= base_url('assets_web/libs/js-image-zoom-master/package/js-image-zoom.js') ?>"></script>
 
 	<!-- Custom JS -->

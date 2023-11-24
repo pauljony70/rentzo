@@ -93,6 +93,6 @@ defined('ORDER_RECEIVED_NOTIFICATION_TEMP') OR define('ORDER_RECEIVED_NOTIFICATI
 defined('CANCEL_ORDER_TEMP')      OR define('CANCEL_ORDER_TEMP', 2); // place order email template id
 defined('DELIVERED_TEMP')      OR define('DELIVERED_TEMP', 5); // delivered order email template id
 defined('PLACE_ORDER_TEMP')      OR define('PLACE_ORDER_TEMP', 3); // place order email template id
-defined('MEDIA_URL')      OR define('MEDIA_URL', 'https://www.ebuy.om/media/'); // place order email template id
-defined('SITE_URL')      OR define('SITE_URL', 'https://www.ebuy.om/'); // 
+defined('MEDIA_URL')      OR define('MEDIA_URL', 'https://www.rentzo.co.in/media/'); // place order email template id
+defined('SITE_URL')      OR define('SITE_URL', 'https://www.rentzo.co.in/'); // 
 

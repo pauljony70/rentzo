@@ -39,6 +39,10 @@ class Cart_model extends CI_Model
 			$cart['refer_id'] = $referid;
 			$cart['affiliated_by'] = $affiliated_by;
 			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = '';
+			$cart['rent_from_date'] = '';
+			$cart['rent_to_date'] = '';
+			$cart['cart_type'] = '';
 
 			if ($user_id) {
 				$this->db->where(array('prod_id' => $prod_id, 'user_id' => $user_id));
@@ -60,6 +64,10 @@ class Cart_model extends CI_Model
 			$cart['refer_id'] = $referid;
 			$cart['affiliated_by'] = $affiliated_by;
 			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = '';
+			$cart['rent_from_date'] = '';
+			$cart['rent_to_date'] = '';
+			$cart['cart_type'] = '';
 
 			$query = $this->db->insert('cartdetails', $cart);
 			if ($query) {

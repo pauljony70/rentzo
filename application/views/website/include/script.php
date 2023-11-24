@@ -24,15 +24,16 @@
     pincodeModal.show();
   }
 
-  function get_address() {
+  function get_address(ele) {
     var address_pincode = $('#address_pincode').val();
-
+    buttonLoader(ele);
     if (address_pincode === '') {
       $('#pincode_error').text('Pincode is empty.')
+      ele.innerHTML = "Continue";
     } else if (address_pincode.length !== 6) {
       $('#pincode_error').text('Pincode should be 6 in length.')
+      ele.innerHTML = "Continue";
     } else {
-
       $.ajax({
         method: "get",
         url: site_url + "get_address",
@@ -45,11 +46,10 @@
         success: function(response) {
           if (response == 'no') {
             $('#pincode_error').text('Invalid Pincode.');
+            ele.innerHTML = "Continue";
           } else {
-            $('#address_data').text(response);
-            $('#address_data1').text(response);
-            $('#address_data2').text(response);
-            $('#pincodeModal').modal('hide');
+            $('#pincode_error').text();
+            location.reload();
           }
         },
       })

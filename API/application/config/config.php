@@ -25,8 +25,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'https://www.ebuy.om/';
-// $config['base_url'] = '';
+$config['base_url'] = 'https://www.rentzo.co.in/';
 
 /*
 |--------------------------------------------------------------------------

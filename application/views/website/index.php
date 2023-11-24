@@ -293,17 +293,19 @@
 
 														// Check the fractional part to display half or empty star
 														if ($fractionalPart >= 0.5) {
+															// Calculate the remaining empty stars
+															$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
 															echo '<img src="' . base_url('assets_web/images/icons/half-star.svg') . '" alt="Star">';
 														} else {
-															echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+															// Calculate the remaining empty stars
+															$emptyStars = 5 - $wholeNumber;
 														}
 
-														// Calculate the remaining empty stars
-														$emptyStars = 5 - $wholeNumber - 1; // Subtract 1 for the half star
-
 														// Display the remaining empty stars
-														for ($i = 0; $i < $emptyStars; $i++) {
-															echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+														if ($emptyStars > 0) {
+															for ($i = 0; $i < $emptyStars; $i++) {
+																echo '<img src="' . base_url('assets_web/images/icons/star-grey.svg') . '" alt="Star">';
+															}
 														}
 														?>
 													</div>

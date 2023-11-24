@@ -114,6 +114,7 @@ $route['app/customize_clothing_products'] = 'HomeController/customize_clothing_p
 $route['app/home_all_data'] = 'HomeController/home_all_data'; 
 $route['app/home_all_data2'] = 'HomeController/home_all_data2';
 $route['app/top-notifications'] = 'HomeController/getTopNotifications';
+$route['app/rent_product_dates'] = 'HomeController/rent_product_dates';
 
 //product detail
 $route['app/getProductDetails'] = 'Product/getProductDetails';

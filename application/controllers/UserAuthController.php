@@ -176,7 +176,7 @@ class UserAuthController extends REST_Controller
 		if ($validation == 'valid') {
 			if (is_numeric($mobile_number)) {
 
-				$validate_user = $this->user_model->validate_user_login_first($mobile_number);
+				$validate_user = $this->user_model->validate_user_login_first($mobile_number, '');
 				if ($validate_user['status'] == 'not_exist') {
 					$this->responses(0, get_phrase('user_not_exist', $language_code));
 				} else {
@@ -229,7 +229,7 @@ class UserAuthController extends REST_Controller
 				$user = $this->db->where('phone', $phone)->or_where('email', $email)->get('appuser_login')->row_array();
 				if (empty($user)) {
 					$phone_otp = $this->sms_model->generateNumericOTP(6);
-					$message = 'Dear customer welcome onboard ! ' . $phone_otp . ' is your OTP to login your EBuy account. EBUY';
+					$message = 'Dear customer welcome onboard ! ' . $phone_otp . ' is your OTP to login your Rentzo account. Rentzo';
 					$this->sms_model->send_sms_new($message, $country_code, $phone);
 					$this->user_model->save_user_otp($phone, $phone_otp);
 					$this->email_model->sendRegistrationEmailOtp($email);

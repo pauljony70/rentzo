@@ -346,20 +346,17 @@ class User_model extends CI_Model
 	{
 		$user_result = array();
 
-
-
 		$this->db->select('*');
-		if (!empty($user_phone))
+		if (!empty($user_phone)) {
 			$this->db->where(array('phone' => $user_phone));
-		if (!empty($email))
+		}
+		if (!empty($email)) {
 			$this->db->where(array('email' => $email));
-		// $this->db->where(array('login_method' => 'general'));
+		}
 		$query = $this->db->get('appuser_login');
 
 		if ($query->num_rows() > 0) {
-
-			$user_result['status'] = $user_result1->status;
-
+			$user_result['status'] = 1;
 			return $user_result;
 		} else {
 			$user_result['status'] = 'not_exist';

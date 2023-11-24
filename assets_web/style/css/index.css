@@ -1,84 +1,3 @@
-/* .swiper {
-    width: 100%;
-    height: 100%;
-}
-
-.top-categories .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.category-img img {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.brand-img img {
-    width: 85px;
-    height: 85px;
-    border-radius: 8px;
-    object-fit: contain;
-    border: 1px solid #ededed;
-}
-
-.top-categories .swiper-button-next,
-.top-categories .swiper-button-prev {
-    top: 43px;
-}
-
-.swiper-button-next:after,
-.swiper-button-prev:after {
-    transition: color 0.3s, transform 0.3s;
-}
-
-.swiper-button-next:hover:after,
-.swiper-button-prev:hover:after {
-    color: #ff6600;
-    transform: scale(1.3);
-}
-
-.top-categories .swiper-scrollbar {
-    width: 60px;
-    transform: translateX(-50%);
-}
-
-.top-categories .swiper-scrollbar-draggable {
-    cursor: grab;
-}
-
-.top-categories .swiper-scrollbar-draggable:active {
-    cursor: grabbing;
-}
-
-.top-categories h5 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    font-size: small;
-}
-
-.app_downalod_div_content {
-    transform: translateY(20%);
-}
-
-@media (max-width: 570px) {
-    .app_downalod_div_content {
-        transform: translateY(-10%);
-    }
-}
-
-@media (min-width: 570px) and (max-width: 772px) {
-    .app_downalod_div_content {
-        transform: translateY(90%);
-    }
-} */
 .desktop-category-section {
     background-color: #F3F9FB;
     padding-top: 33px;
@@ -362,6 +281,7 @@
 
 .testimonial-section .review-img img {
     width: 250px;
+    height: 250px;
     object-fit: contain;
     border-radius: 6px;
 }

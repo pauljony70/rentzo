@@ -80,7 +80,7 @@
 														</tbody>
 													</table>
 													<div class="rent-date-range">
-														<?php if ($cart_product['rent_from_date'] != '' &&  $cart_product['rent_to_date'] != '') {
+														<?php if ($cart_product['cart_type'] == 'Rent' && $cart_product['rent_from_date'] != '' &&  $cart_product['rent_to_date'] != '') {
 															echo date('d M Y', strtotime($cart_product['rent_from_date'])) . ' to ' . date('d M Y', strtotime($cart_product['rent_to_date']));
 														} ?>
 													</div>
@@ -105,7 +105,9 @@
 															</div>
 														<?php endif; ?>
 														<div class="d-flex">
-															<div class="date-range-count me-3 me-md-5"><?= $cart_product['total_days'] != '' ? '3 Days' : '' ?></div>
+															<?php if ($cart_product['cart_type'] == 'Rent') : ?>
+																<div class="date-range-count me-3 me-md-5"><?= $cart_product['total_days'] != '' ? $cart_product['total_days'] . ' Days' : '' ?></div>
+															<?php endif; ?>
 															<div class="product_price_cart"><?= $cart_product['rent_price'] != '' ? price_format($cart_product['rent_price']) : $cart_product['price'] ?></div>
 														</div>
 													</div>

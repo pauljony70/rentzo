@@ -332,7 +332,7 @@
                 </div>
                 <div id="pincode_error" class="mb-2" style="font-size:14px;color:red;"></div>
                 <div class="description mb-4">Please enter your current Pincode to better serve you<br> with our services</div>
-                <button type="submit" onclick="get_address()" class="btn">Continue</button>
+                <button type="submit" onclick="get_address(this)" class="btn">Continue</button>
             </div>
         </div>
     </div>

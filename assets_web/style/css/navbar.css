@@ -80,6 +80,12 @@
     letter-spacing: 0em;
 }
 
+#pincodeModal .btn .spinner-border {
+    --bs-spinner-width: 0.7rem;
+    --bs-spinner-height: 0.7rem;
+    --bs-spinner-border-width: 0.15em;
+}
+
 .mobile-nav {
     gap: 10px;
 }

@@ -366,7 +366,7 @@ class Checkout_model extends CI_Model
 				$product_detail['qty'] = 0;
 				$product_detail['mrp'] = 0;
 				$product_detail['price'] = 0;
-				$product_detail['price1'] = 0;
+				$product_detail['price1'] = 0; 
 				$product_detail['totaloff'] = 0;
 				$product_detail['totaloff1'] = 0;
 				if ($query_prod->num_rows() > 0) {
