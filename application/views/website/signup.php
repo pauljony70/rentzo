@@ -31,7 +31,7 @@
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <div class="ms-2" id="error-alert"></div>
                     </div>
-                    <form class="form">
+                    <form class="form" action="#" method="post">
                         <div class="form-floating mb-3">
                             <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Name" autocomplete="off">
                             <label class="ps-0" for="fullname">Name</label>
@@ -43,12 +43,12 @@
                             <span id="error"></span>
                         </div>
                         <div class="form-floating mb-4 mb-md-5">
-                            <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Phone Number" autocomplete="off" onkeypress="return AllowOnlyNumbers(event);" maxlength="10">
+                            <input type="number" id="phone_number" name="phone_number" class="form-control" placeholder="Phone Number" autocomplete="off" oninput="enforceMaxLength(this)" maxlength="10">
                             <label class="ps-0" for="phone_number">Phone Number</label>
                             <span id="error"></span>
                         </div>
                         <div class="mb-4 mb-md-5">
-                            <button type="button" class="btn btn-primary py-3" onclick="return false;" id="otp-with-change-addon">Continue</button>
+                            <button type="submit" class="btn btn-primary py-3" id="otp-with-change-addon">Continue</button>
                         </div>
                     </form>
                     <div class="next-page-div text-center">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="row d-none" id="login-otp-container">
+        <div class="row d-none" id="signup-otp-container">
             <div class="col-md-6 p-3 auth-image-container py-3">
                 <div class="image text-center">
                     <img src="<?= base_url('assets_web/images/otp-screen.png') ?>" alt="Image">
@@ -75,7 +75,7 @@
                         <div class="des">Enter OTP send to <span id="signup-input-phone"></span></div>
                         <i class="fa-regular fa-pen-to-square text-muted ms-3"></i>
                     </div>
-                    <form class="form">
+                    <form class="form" action="#" method="post">
                         <div class="form-floating mb-3 mb-md-4" id="log_mobileno-group">
                             <div class="phone-otp-field w-100 mt-2">
                                 <input type="number" id="code1" />
@@ -103,7 +103,7 @@
                             <div id="error"></div>
                         </div>
                         <div class="mb-4 mb-md-5">
-                            <button type="button" class="btn btn-primary py-3" onclick="return false;" id="sendOtpLogInBtn">Verify</button>
+                            <button type="submit" class="btn btn-primary py-3" id="sendOtpLogInBtn">Verify</button>
                         </div>
                     </form>
                     <div class="next-page-div text-center">

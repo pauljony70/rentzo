@@ -327,12 +327,14 @@
         <div class="modal-content">
             <div class="modal-body text-center">
                 <div class="modal-heading mb-4">Please enter your pincode</div>
-                <div class="d-flex justify-content-center">
-                    <input name="address_pincode" id="address_pincode" type="text" class="form-control text-center pincode-input mb-1" maxlength="6" onkeypress="return AllowOnlyNumbers(event);">
-                </div>
-                <div id="pincode_error" class="mb-2" style="font-size:14px;color:red;"></div>
-                <div class="description mb-4">Please enter your current Pincode to better serve you<br> with our services</div>
-                <button type="submit" onclick="get_address(this)" class="btn">Continue</button>
+                <form action="#" id="pincode-form" method="post" onsubmit="get_address(this); return false;">
+                    <div class="d-flex justify-content-center">
+                        <input name="address_pincode" id="address_pincode" type="number" class="form-control text-center pincode-input mb-1" oninput="enforceMaxLength(this)" maxlength="6">
+                    </div>
+                    <div id="pincode_error" class="mb-2" style="font-size:14px;color:red;"></div>
+                    <div class="description mb-4">Please enter your current Pincode to better serve you<br> with our services</div>
+                    <button type="submit" class="btn">Continue</button>
+                </form>
             </div>
         </div>
     </div>

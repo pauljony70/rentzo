@@ -4,22 +4,18 @@
     text-align: center;
 }
 
-/* Chrome, Safari, Edge, Opera */
-#mobile-otp input::-webkit-outer-spin-button,
-#mobile-otp input::-webkit-inner-spin-button,
-#email-otp input::-webkit-outer-spin-button,
-#email-otp input::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Firefox */
-#mobile-otp input[type="number"],
-#email-otp input[type="number"] {
+input[type="number"] {
     -moz-appearance: textfield;
 }
 
-#login-otp-container .fa-pen-to-square {
+#login-otp-container .fa-pen-to-square,
+#signup-otp-container .fa-pen-to-square {
     cursor: pointer;
 }
 

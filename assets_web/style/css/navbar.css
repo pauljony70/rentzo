@@ -58,6 +58,16 @@
     border-radius: 0;
 }
 
+#pincodeModal .pincode-input::-webkit-inner-spin-button,
+#pincodeModal .pincode-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#pincodeModal .pincode-input {
+    -moz-appearance: textfield;
+}
+
 #pincodeModal .description {
     color: #808080;
     font-size: 10px;

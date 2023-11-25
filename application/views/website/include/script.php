@@ -19,20 +19,28 @@
     location.href = link;
   }
 
-  if (document.querySelector('#address_data').textContent === 'Location') {
-    var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
-    pincodeModal.show();
+  if (document.querySelector('#address_data')) {
+    if (document.querySelector('#address_data').textContent === 'Location') {
+      var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
+      pincodeModal.show();
+    }
   }
 
-  function get_address(ele) {
+  function get_address(form) {
     var address_pincode = $('#address_pincode').val();
-    buttonLoader(ele);
+    var submitButton = form.querySelector('button[type="submit"]');
+
+    buttonLoader(submitButton);
+    submitButton.disabled = true;
+
     if (address_pincode === '') {
       $('#pincode_error').text('Pincode is empty.')
-      ele.innerHTML = "Continue";
+      submitButton.innerHTML = "Continue";
+      submitButton.disabled = false;
     } else if (address_pincode.length !== 6) {
       $('#pincode_error').text('Pincode should be 6 in length.')
-      ele.innerHTML = "Continue";
+      submitButton.innerHTML = "Continue";
+      submitButton.disabled = false;
     } else {
       $.ajax({
         method: "get",
@@ -46,7 +54,8 @@
         success: function(response) {
           if (response == 'no') {
             $('#pincode_error').text('Invalid Pincode.');
-            ele.innerHTML = "Continue";
+            submitButton.innerHTML = "Continue";
+            submitButton.disabled = false;
           } else {
             $('#pincode_error').text();
             location.reload();
@@ -54,8 +63,9 @@
         },
       })
     }
-
   }
+
+
 
   $(document).on('input', '#search', function() {
     var searchResultsContainer = $(this).parent().parent().parent().parent().find('#searchResults');

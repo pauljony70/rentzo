@@ -27,14 +27,14 @@
                 <div class="d-flex flex-column justify-content-center h-100 ms-0 ms-md-5">
                     <div class="heading mb-3">Log in</div>
                     <div class="des mb-4 mb-md-5">Enter your details below</div>
-                    <form class="form">
+                    <form class="form" action="#" id="login-input-form" method="post">
                         <div class="form-floating mb-4 mb-md-5" id="log_mobileno-group">
                             <input type="text" id="log_mobileno" name="phone" class="form-control" placeholder="Email or Phone Number" autocomplete="off">
                             <label class="ps-0" for="log_mobileno">Email or Phone Number</label>
                             <span id="error"></span>
                         </div>
                         <div class="mb-4 mb-md-5">
-                            <button type="button" class="btn btn-primary py-3" onclick="return false;" id="otp-with-change-addon">Continue</button>
+                            <button type="submit" class="btn btn-primary py-3" id="otp-with-change-addon">Continue</button>
                         </div>
                     </form>
                     <div class="next-page-div text-center">
@@ -57,7 +57,7 @@
                         <div class="des">Enter OTP send to <span id="login-input"></span></div>
                         <i class="fa-regular fa-pen-to-square text-muted ms-3"></i>
                     </div>
-                    <form class="form">
+                    <form class="form" action="#" id="login-otp-form" method="post">
                         <div class="form-floating mb-4 mb-md-5" id="log_mobileno-group">
                             <div class="otp-field w-100 mt-2">
                                 <input type="number" id="code1" />
@@ -70,12 +70,12 @@
                             <div id="error"></div>
                         </div>
                         <div class="mb-4 mb-md-5">
-                            <button type="button" class="btn btn-primary py-3" onclick="return false;" id="sendOtpLogInBtn">Verify</button>
+                            <button type="submit" class="btn btn-primary py-3" id="sendOtpLogInBtn">Verify</button>
                         </div>
                     </form>
                     <div class="next-page-div text-center">
                         <span>Didn’t receive a OTP ?</span>
-                        <button type="button" class="ms-2" onclick="return false;" id="resendOtpBtn">Resend OTP</button>
+                        <button type="button" class="ms-2" id="resendOtpBtn">Resend OTP</button>
                     </div>
                 </div>
             </div>

@@ -177,3 +177,10 @@ function hexToRgb(hex) {
     b
   };
 }
+
+function enforceMaxLength(input) {
+  const maxLength = input.getAttribute('maxlength');
+  if (input.value.length > maxLength) {
+      input.value = input.value.slice(0, maxLength);
+  }
+}

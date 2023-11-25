@@ -17,24 +17,28 @@ class Checkout extends REST_Controller
 		$this->load->model('delivery_model');
 		$this->load->model('home_model');
 	}
+	
 	public function send_email_get()
 	{
 		echo "hi";
 		send_email_smtp('chiragsavaliya67@gmail.com', "hello", "fleek subject");
 	}
+	
 	public function index_get()
 	{
+		$default_language = $this->session->userdata("default_language");
 		$qoute_id = $this->session->userdata("qoute_id");
 		$user_id = $this->session->userdata("user_id");
 		if ($qoute_id != '' || $user_id != '') {
+			$this->load->model('cart_model');
+			$this->data['cart_items'] = $this->cart_model->get_cart_full_details($default_language, $user_id, 1, $qoute_id, '');
 			$this->data['checkout'] = $this->checkout_model->get_checkout_full_details($user_id, '');
 		} else {
 			$this->data['checkout'] = array();
 		}
 		$this->data['address'] = $this->address_model->get_user_address_details_full($user_id);
-		$this->data['get_country'] = $this->delivery_model->get_country();
-		$this->load->view('website/checkout.php', $this->data);  // ye view/website folder hai
 
+		$this->load->view('website/checkout.php', $this->data);
 	}
 
 	public function thankyou_get($order_id)
@@ -53,11 +57,10 @@ class Checkout extends REST_Controller
 
 
 	public function get_city_post()
-	{	
+	{
 		$stateid = $this->post('stateid');
 		$city_detail = $this->delivery_model->get_city($stateid);
 		echo json_encode($city_detail);
-	
 	}
 
 	public function get_region_post()
@@ -365,7 +368,7 @@ class Checkout extends REST_Controller
 	// function for placeOrder
 	public function placeOrder_post()
 	{
-		$requiredparameters = array('language', 'fullname', 'mobile', 'email', 'fulladdress', 'addresstype', 'payment_id', 'payment_mode','state','city_id');
+		$requiredparameters = array('language', 'fullname', 'mobile', 'email', 'fulladdress', 'addresstype', 'payment_id', 'payment_mode', 'state', 'city_id');
 
 		$language_code = removeSpecialCharacters($this->post('language'));
 		//$user_id = 'c2sc22sc';
@@ -396,7 +399,7 @@ class Checkout extends REST_Controller
 		if ($validation == 'valid') {
 			if (($user_id || $qouteid) && $fullname && $mobile && $fulladdress && $country && $addresstype && $payment_id && $payment_mode) {
 
-				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id);
+				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id);
 
 				if ($order_detail['status'] == 'update') {
 					$this->session->set_tempdata('place_order_status', 1, 5);

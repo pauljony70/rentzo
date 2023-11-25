@@ -1,18 +1,17 @@
-const loginContainter = document.querySelector('#login-containter');
-const signupContainter = document.querySelector('#signup-containter');
 const loginInputContainer = document.querySelector('#login-input-container');
-const signupInputContainer = document.querySelector('#signup-input-container');
 const loginOtpContainer = document.querySelector('#login-otp-container');
+const signupInputContainer = document.querySelector('#signup-input-container');
+const signupOtpContainer = document.querySelector('#signup-otp-container');
+const sendLoginOtpForm = loginInputContainer ? loginInputContainer.querySelector('form') : null;
+const submitOtpForm = loginOtpContainer ? loginOtpContainer.querySelector('form') : null;
+const sendSignUpOtpForm = signupInputContainer ? signupInputContainer.querySelector('form') : null;
+const submitSignUpForm = signupOtpContainer ? signupOtpContainer.querySelector('form') : null;
 const loginLoader = document.querySelector('#login-loader');
-const sendLoginOtpBtn = loginInputContainer ? loginInputContainer.querySelector('#otp-with-change-addon') : null;
-const sendSignUpOtpBtn = signupInputContainer ? signupInputContainer.querySelector('#otp-with-change-addon') : null;
-const submitOtpBtn = loginContainter ? loginContainter.querySelector('#sendOtpLogInBtn') : null;
-const submitSignUpForm = signupContainter ? signupContainter.querySelector('#sendOtpLogInBtn') : null;
 const resendOtpBtn = document.getElementById("resendOtpBtn");
 const loginOtpBox = document.querySelector('.otp-field');
 const signupPhoneOtpBox = document.querySelector('.phone-otp-field');
 const signupEmailOtpBox = document.querySelector('.email-otp-field');
-const editBtn = document.querySelectorAll('#login-otp-container .fa-pen-to-square');
+const editBtn = document.querySelectorAll('.fa-pen-to-square');
 const fullname = document.querySelector('#fullname');
 const signupPhone = document.querySelector('#phone_number');
 const signupEmail = document.querySelector('#email');
@@ -121,7 +120,7 @@ const sendRegistrationOtp = () => {
                 loginLoader.classList.add('d-none');
                 if (response.status == 1) {
                     signupInputContainer.classList.add('d-none');
-                    loginOtpContainer.classList.remove('d-none');
+                    signupOtpContainer.classList.remove('d-none');
                     startResendTimer();
                 } else {
                     document.getElementById('error-alert-div').classList.remove('d-none');
@@ -136,20 +135,25 @@ const sendRegistrationOtp = () => {
     }
 }
 
-if (sendLoginOtpBtn) {
-    sendLoginOtpBtn.addEventListener('click', () => {
-        sendLoginOtp();
+if (sendLoginOtpForm) {
+    sendLoginOtpForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const form = event.target;
+        sendLoginOtp(form);
     });
 }
 
-if (sendSignUpOtpBtn) {
-    sendSignUpOtpBtn.addEventListener('click', () => {
+if (sendSignUpOtpForm) {
+    sendSignUpOtpForm.addEventListener('submit', (event) => {
+        event.preventDefault();
         sendRegistrationOtp();
     });
 }
 
-if (submitOtpBtn) {
-    submitOtpBtn.addEventListener('click', () => {
+if (submitOtpForm) {
+    submitOtpForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
         loginLoader.className = "";
         var phone = document.getElementById('log_mobileno');
         var phonev = phone.value;
@@ -224,7 +228,9 @@ if (submitOtpBtn) {
 
 if (submitSignUpForm) {
 
-    submitSignUpForm.addEventListener('click', () => {
+    submitSignUpForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
         loginLoader.className = "";
         document.getElementById('otp-error-alert-div').classList.add('d-none');
         var phone_otp = getOTPVal("phone-otp-field");
@@ -345,11 +351,14 @@ editBtn.forEach(element => {
             clearInterval(countdownInterval);
             resendOtpBtn.innerText = "RESEND OTP";
             resendOtpBtn.disabled = false;
-            loginOtpContainer.classList.add('d-none');
-            if (loginInputContainer)
+            if (loginInputContainer) {
+                loginOtpContainer.classList.add('d-none');
                 loginInputContainer.classList.remove('d-none');
-            else
+            }
+            else {
+                signupOtpContainer.classList.add('d-none');
                 signupInputContainer.classList.remove('d-none');
+            }
             loginLoader.className = "d-none";
         }, 500);
     });
