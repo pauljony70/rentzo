@@ -164,7 +164,7 @@ class Checkout_model extends CI_Model
 							$shipping_fee1 = $delivery_array['basic_fee'];
 							$product_detail['shipping_fee'] = price_format($delivery_array['basic_fee']);
 						}
-					}
+					} 
 					
 					if($rent_price != '')
 					{

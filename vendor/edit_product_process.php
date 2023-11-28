@@ -16,9 +16,9 @@ if (!isset($_SESSION['admin'])) {
 } else {
 	if ($code == $_SESSION['_token'] && isset($_POST['product_id'])) {
 		$enableproduct = trim(strip_tags($_POST['enableproduct']));
-		$is_usd_price = isset($_POST['is_usd_price']) ? 1 : 0;
-		$wholesale_product = isset($_POST['wholesale_product']) ? 1 : 0;
-		$affiliate_commission = trim(strip_tags($_POST['affiliate_commission'])) === '' ? 0 : trim(strip_tags($_POST['affiliate_commission']));
+		$is_usd_price = 0;
+		$wholesale_product = 0;
+		$affiliate_commission = 0.00;
 		$prod_mrp = trim(strip_tags($_POST['prod_mrp']));
 		$prod_price = trim(strip_tags($_POST['prod_price']));
 		$seller_price = trim(strip_tags($_POST['seller_price']));
@@ -64,10 +64,24 @@ if (!isset($_SESSION['admin'])) {
 		}
 
 
+		$usage_info = trim($_POST['usage_info']);
+		$is_buy = trim($_POST['is_buy']);
+		$day1_price = trim($_POST['day1_price']);
+		$day3_price = trim($_POST['day3_price']);
+		$day5_price = trim($_POST['day5_price']);
+		$day7_price = trim($_POST['day7_price']);
+		$security_deposit = trim($_POST['security_deposit']);
+		
+		$usage_info	=   addslashes($usage_info);
+		$day1_price	=   addslashes($day1_price);
+		$day3_price	=   addslashes($day3_price);
+		$day5_price	=   addslashes($day5_price);
+		$day7_price	=   addslashes($day7_price);
+		$security_deposit	=   addslashes($security_deposit);
+		
+
+
 		$enableproduct			=   addslashes($enableproduct);
-		$is_usd_price			=   addslashes($is_usd_price);
-		$wholesale_product		=   addslashes($wholesale_product);
-		$affiliate_commission	=   addslashes($affiliate_commission);
 		$prod_mrp				=   addslashes($prod_mrp);
 		$prod_price				=   addslashes($prod_price);
 		$seller_price			=   addslashes($seller_price);
@@ -86,6 +100,13 @@ if (!isset($_SESSION['admin'])) {
 		if ($enableproduct != 1) {
 			$enableproduct = 0;
 		}
+		
+		if($is_buy != 1)
+		{
+			$is_buy = 0;
+		}
+		
+		
 
 		if (isset($prod_mrp)  && isset($prod_price)) {
 
@@ -107,12 +128,21 @@ if (!isset($_SESSION['admin'])) {
 
 				$prod_id = $product_id;
 
-				$stmt11 = $conn->prepare("UPDATE `vendor_product` SET `is_usd_price` = ?, `wholesale_product` = ?, `affiliate_commission` = ?, `product_mrp` = ?,`product_sale_price` =?, `product_tax_class` =?, `product_stock` =?, `stock_status` =?, `product_purchase_limit` =?,`product_remark` =?,`product_related_prod` =?, `product_upsell_prod` =?, `enable_status` =?,`coupon_code` =?,`seller_price` = ? WHERE product_id ='" . $prod_id . "' AND vendor_id = '" . $_SESSION['admin'] . "'");
+				$stmt11 = $conn->prepare("UPDATE `vendor_product` SET `is_usd_price` = ?, `wholesale_product` = ?, `affiliate_commission` = ?, `product_mrp` = ?,`product_sale_price` =?, `product_tax_class` =?, `product_stock` =?, `stock_status` =?, `product_purchase_limit` =?,`product_remark` =?,`product_related_prod` =?, `product_upsell_prod` =?, `enable_status` =?,`coupon_code` =?,`seller_price` = ?  WHERE product_id ='" . $prod_id . "' AND vendor_id = '" . $_SESSION['admin'] . "'");
 
 				$stmt11->bind_param("iiissiisisssiss", $is_usd_price, $wholesale_product, $affiliate_commission, $prod_mrp, $prod_price, $selecttaxclass, $prod_qty, $selectstock, $prod_purchase_lmt, $prod_remark, $selectrelatedprod, $selectupsell, $enableproduct, $coupon_code, $seller_price);
 
 				$stmt11->execute();
 				$stmt11->store_result();
+				
+				$stmt100 = $conn->prepare("UPDATE `product_details` SET `usage_info` = ?,`is_buy` = ?,`day1_price`=?,`day3_price`=?,`day5_price`=?,`day7_price`=?,`security_deposit`=? WHERE product_unique_id ='" . $prod_id . "' 	");
+
+				$stmt100->bind_param("sssssss", $usage_info,$is_buy,$day1_price,$day3_price,$day5_price,$day7_price,$security_deposit);
+
+				$stmt100->execute();
+				$stmt100->store_result();
+				
+				
 
 				// code for add product for Attribute - START
 

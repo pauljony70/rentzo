@@ -4,21 +4,51 @@
 <head>
 	<?php $title = "Track Order";
 	include("include/headTag.php") ?>
+	<link rel="stylesheet" href="<?= base_url('assets_web/style/css/order-details.css') ?>">
 </head>
 <style>
 
 </style>
+
 <body>
+	<?php include("include/navbar-brand.php"); ?>
 
-	<?php
-	include("include/topbar.php")
-	?>
-	<?php
-	include("include/navbar.php");
-	?>
+	<main class="order-details-page">
+		<input type="hidden" name="seller_id" id="seller_id" value="<?= $order_details['product_details'][0]['vendor_id'] ?>">
+		<input type="hidden" name="order_id" id="order_id" value="<?= $order_details['order_summery']['order_id'] ?>">
+		<input type="hidden" name="prod_id" id="prod_id" value="<?= $order_details['product_details'][0]['prod_id'] ?>">
 
-	<main class="track-order-page my-order-page">
+		<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
+			Button with data-bs-target
+		</button>
 
+		<div id="unseen-message-count"></div>
+
+		<div class="offcanvas offcanvas-end p-4" tabindex="-1" id="chatOffcanvas" aria-labelledby="chatOffcanvasLabel">
+			<div class="offcanvas-header">
+				<div class="d-flex align-items-center">
+					<div class="d-flex align-items-center justify-content-center profile-img">
+						<img src="<?= base_url('assets_web/images/icons/user.svg') ?>" alt="Seller name" srcset="">
+					</div>
+					<div class="seller-name text-light ms-2 line-clamp-1">Seller Name</div>
+				</div>
+				<a href="#">
+					<img src="<?= base_url('assets_web/images/icons/add-call.svg') ?>" alt="Call" srcset="">
+				</a>
+			</div>
+			<div class="offcanvas-body px-0" id="messageContainer"></div>
+			<div class="offcanvas-footer px-0 pb-0">
+				<form action="#" method="post" id="send-message-form">
+					<div class="input-group">
+						<img src="<?= base_url('assets_web/images/icons/emoji-pen.svg') ?>" class="ps-2" alt="Pen">
+						<input type="text" class="form-control" autocomplete="off" id="message" name="message" value="" placeholder="Enter Message">
+						<button type="submit" class="btn pe-2" id="send-message-btn" disabled>
+							<img src="<?= base_url('assets_web/images/icons/send-message.svg') ?>" class="pe-0" alt="Send">
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
 		<!--Start: Track Order Section -->
 		<section>
 			<div class="container px-1">
@@ -112,6 +142,7 @@
 										<a class="btn btn-success mt-5 text-light pt-2" onclick="cancel_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')"><?= $this->lang->line('cancel-order') ?></a>
 									<?php } ?>
 								</div>
+
 								<div class="col-md-6">
 									<h6><?= $this->lang->line('order-summary') ?></h6>
 									<div class="address-details box-shadow-4">
@@ -187,7 +218,7 @@
 						</div>
 					</div>
 
-					
+
 
 				</div>
 			</div>
@@ -196,13 +227,10 @@
 
 	</main>
 
-	<?php
-	include("include/footer.php")
-	?>
+	<?php include("include/footer.php") ?>
+	<?php include("include/script.php") ?>
+	<script src="<?= base_url('assets_web/js/app/order-details.js') ?>"></script>
 
-	<?php
-	include("include/script.php")
-	?>
 	<script>
 		var csrfName = $('.txt_csrfname').attr('name');
 		var csrfHash = $('.txt_csrfname').val();

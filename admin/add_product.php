@@ -433,9 +433,9 @@ if (!isset($_SESSION['admin'])) {
 										</div>
 										
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions </label>
 											<div class="col-sm-8">
-												<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" required placeholder="Miximum 1000 letters"></textarea>
+												<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info"  placeholder="Miximum 1000 letters"></textarea>
 											</div>
 										</div>
 										<!--<div class="form-group row align-items-center">
@@ -481,14 +481,11 @@ if (!isset($_SESSION['admin'])) {
 												</div>
 											</div>
 										</div>-->
+										
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
+											<label class="col-sm-2 control-label m-0">Is this product available for buy</label>
 											<div class="col-sm-8">
-												<select class="form-control" id="type" name="type">
-													<option>Select Type</option>
-													<option value="1">Sell</option>
-													<option value="2">Rent</option>
-												</select>
+												<input type="checkbox" id="is_buy" value='1' name="is_buy">
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
@@ -513,6 +510,12 @@ if (!isset($_SESSION['admin'])) {
 											<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
 											<div class="col-sm-8">
 												<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" placeholder="7/Day Price ex. 214">
+											</div>
+										</div>
+										<div class="form-group row align-items-center">
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Security deposit (<?= $currency ?>)</label>
+											<div class="col-sm-8">
+												<input type="number" class="form-control" id="security_deposit" name="security_deposit" maxlength="7" placeholder="Security deposit ex. 214">
 											</div>
 										</div>
 										<div class="form-group row align-items-center">

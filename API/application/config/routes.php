@@ -61,6 +61,7 @@ $route['auth/forgot_otp'] = 'UserAuthController/forgot_otp';
 $route['auth/update_password'] = 'UserAuthController/update_password';
 $route['app/send_otp'] = 'UserAuthController/send_otp';
 $route['app/send_otp_verify'] = 'UserAuthController/send_otp_verify';
+$route['app/get_address'] = 'HomeController/get_address';
 $route['app/login_banner'] = 'UserAuthController/login_banner';
 
 //category

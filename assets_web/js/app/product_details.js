@@ -37,10 +37,10 @@ if (urlParams.has("affiliated_by")) {
 $(function () {
 	window.onload = related_product();
 	window.onload = upsell_product();
-	if (user_pincode != '0') {
+	/* if (user_pincode != '0') {
 		$('#check_pincode').val(user_pincode);
 		window.onload = submit_user_pincode(user_pincode);
-	}
+	} */
 	new Swiper('.slider-trending2', {
 		slidesPerView: 2.7,
 		spaceBetween: 15,

@@ -3,6 +3,7 @@ include('session.php');
 if (!isset($_SESSION['admin'])) {
 	header("Location: index.php");
 }
+
 $ordersno = $_REQUEST['orderid'];
 $product_id = $_REQUEST['product_id'];
 $datetime = date('Y-m-d H:i:s');
@@ -10,9 +11,111 @@ if (!$ordersno || !$product_id) {
 	header("Location: manage_orders.php");
 }
 include("header.php");
+?>
 
+<style>
+	.modal.right .modal-dialog {
+		position: fixed;
+		margin: auto;
+		width: 320px;
+		height: 100%;
+		-webkit-transform: translate3d(0%, 0, 0);
+		-ms-transform: translate3d(0%, 0, 0);
+		-o-transform: translate3d(0%, 0, 0);
+		transform: translate3d(0%, 0, 0);
+	}
 
-if (isset($_POST['orderstatus']) && $ordersno && $product_id) {
+	.modal.right .modal-content {
+		height: 100%;
+	}
+
+	.modal.right .modal-body {
+		overflow-y: scroll;
+	}
+
+	.modal.right.fade .modal-dialog {
+		right: 0px;
+		-webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+		-moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+		-o-transition: opacity 0.3s linear, right 0.3s ease-out;
+		transition: opacity 0.3s linear, right 0.3s ease-out;
+	}
+
+	.modal.right.fade.in .modal-dialog {
+		right: 0;
+	}
+
+	.modal-content {
+		border-radius: 0;
+		border: none;
+	}
+
+	#chatModal .modal-header {
+		background-color: var(--primary);
+		height: 66px;
+		border-radius: 18px 18px 0px 0px;
+	}
+
+	#chatModal .modal-header .profile-img {
+		width: 33px;
+		height: 33px;
+		border-radius: 50%;
+		flex-shrink: 0;
+		background: #fff;
+	}
+
+	#chatModal .modal-header .profile-img img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+	}
+
+	#chatModal .modal-body {
+		border: 1px solid var(--primary);
+		display: flex;
+		flex-direction: column-reverse;
+		overflow-y: auto;
+		color: #000;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 15px;
+		letter-spacing: 0.24px;
+	}
+
+	#chatModal .modal-body .user-message .message {
+		border-radius: 2px 0px 0px 2px;
+		border: 1px solid var(--primary);
+		border-right: none;
+		background: rgba(0, 142, 204, 0.60);
+	}
+
+	#chatModal .modal-body .seller-message .message {
+		border-radius: 0px 2px 2px 0px;
+		border: 1px solid var(--primary);
+		border-left: none;
+		background: #F0ECEC;
+	}
+
+	#chatModal .modal-footer .input-group {
+		height: 46px;
+		border: 1px solid var(--primary);
+	}
+
+	#chatModal .modal-footer .input-group .form-control {
+		border: none;
+	}
+
+	#chatModal #send-message-btn {
+		border: none;
+	}
+
+	.btn:disabled {
+		cursor: not-allowed;
+	}
+</style>
+
+<?php if (isset($_POST['orderstatus']) && $ordersno && $product_id) {
 
 	$orderstatus = $_POST['orderstatus'];
 	$ordermessage = trim($_POST['ordermessage']);
@@ -183,10 +286,14 @@ if ($col2) {
 						<div class="card-body">
 							<div class="bs-example widget-shadow" data-example-id="hoverable-table">
 								<div id="printableArea">
+									<input type="hidden" class="form-control1" id="site_url" value=<?= BASEURL; ?>></input>
 									<input type="hidden" class="form-control1" id="sno_order" value=<?= $ordersno; ?>></input>
-
+									<input type="hidden" class="form-control1" id="prod_id" value=<?= $product_id; ?>></input>
+									<input type="hidden" class="form-control1" id="user_id" value=<?= $user_id; ?>></input>
+									<input type="hidden" class="form-control1" id="seller_id" value=<?= $_SESSION['admin']; ?>></input>
 									<input type="hidden" class="form-control1" id="cust_phone" value=<?= $cust_phone; ?>></input>
 									<input type="hidden" class="form-control1" id="cust_email" value=<?= $cust_email; ?>></input>
+									<input type="hidden" name="code_ajax" id="code_ajax" value="<?= $code_ajax; ?>" />
 
 									<!-- title row -->
 									<div class="row invoice-info">
@@ -502,6 +609,44 @@ if ($col2) {
 												</div>
 											<?php } ?>
 
+											<div class="position-relative" style="width: fit-content;">
+												<button type="button" class="btn btn-primary waves-effect waves-light" data-toggle="modal" data-target="#chatModal">
+													Talk to customer
+												</button>
+												<div id="unseen-message-count"></div>
+											</div>
+
+											<div class="modal right fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="chatModalLabel">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content p-3">
+														<div class="modal-header mb-0">
+															<div class="d-flex align-items-center">
+																<div class="d-flex align-items-center justify-content-center profile-img">
+																	<img src="<?= BASEURL . 'assets_web/images/icons/user.svg' ?>" alt="Seller name" srcset="">
+																</div>
+																<div class="seller-name text-light ml-2 line-clamp-1">Seller Name</div>
+															</div>
+															<a href="#">
+																<img src="<?= BASEURL . 'assets_web/images/icons/add-call.svg' ?>" alt="Call" srcset="">
+															</a>
+														</div>
+
+														<div class="modal-body px-0" id="messageContainer"></div>
+
+														<div class="modal-footer px-0 pb-0">
+															<form action="#" method="post" id="send-message-form">
+																<div class="input-group">
+																	<img src="<?= BASEURL . 'assets_web/images/icons/emoji-pen.svg' ?>" class="pl-2" alt="Pen">
+																	<input type="text" class="form-control h-100" autocomplete="off" id="message" name="message" value="" placeholder="Enter Message">
+																	<button type="submit" class="btn pr-1" id="send-message-btn" disabled>
+																		<img src="<?= BASEURL . 'assets_web/images/icons/send-message.svg' ?>" class="pr-2" alt="Send">
+																	</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
 
 										<div class="col-12 dontprint mt-2">
@@ -620,6 +765,8 @@ if ($col2) {
 <!--footer-->
 <?php include('footernew.php'); ?>
 <!--//footer-->
+
+<script src="<?= BASEURL . 'vendor/js/admin/edit-order.js' ?>"></script>
 
 <script>
 	$(function() {

@@ -65,8 +65,7 @@ if (!isset($_SESSION['admin'])) {
 										<thead class="thead-light">
 											<tr>
 												<th>Sno</th>
-												<th>Attributes (ENG)</th>
-												<th>Attributes (Arabic)</th>
+												<th>Attributes</th>
 												<th>Action</th>
 											</tr>
 										</thead>
@@ -120,13 +119,13 @@ if (!isset($_SESSION['admin'])) {
 				<form class="form" id="add_attributes_form" enctype="multipart/form-data">
 
 					<div class="form-group">
-						<label for="name">Attributes (ENG) <span id="notess">(Create new product attributes like - Size, Color, Dimension etc.)</span></label>
+						<label for="name">Attributes <span id="notess">(Create new product attributes like - Size, Color, Dimension etc.)</span></label>
 						<input type="text" class="form-control" id="attributes" placeholder="Attributes">
 					</div>
-					<div class="form-group">
+					<!--<div class="form-group">
 						<label for="name">Attributes (Arabic)</span></label>
 						<input type="text" class="form-control" id="attributes_ar" placeholder="Attributes">
-					</div>
+					</div>-->
 
 
 					<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_attributes_btn">Add</button>
@@ -153,14 +152,14 @@ if (!isset($_SESSION['admin'])) {
 				<form class="form" id="update_attributes_form" enctype="multipart/form-data">
 
 					<div class="form-group">
-						<label for="name">Attributes (ENG) <span id="notess">(Create new product attributes like - Size, Color, Dimension etc. Note -To add values in attribute click on view button (for example -> Size - S / M/ L/ XL).)</span></label>
+						<label for="name">Attributes<span id="notess">(Create new product attributes like - Size, Color, Dimension etc. Note -To add values in attribute click on view button (for example -> Size - S / M/ L/ XL).)</span></label>
 						<input type="text" class="form-control" id="update_attributes" placeholder="Attributes">
 					</div>
 					
-					<div class="form-group">
+					<!--<div class="form-group">
 						<label for="name">Attributes (Arabic)</label>
 						<input type="text" class="form-control" id="update_attributes_ar" placeholder="Attributes">
-					</div>
+					</div>-->
 
 					<input type="hidden" class="form-control" id="attribute_id">
 					<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="update_attributes_btn">Update </button>

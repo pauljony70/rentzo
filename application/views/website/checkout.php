@@ -35,6 +35,36 @@
 
 				<div class="row">
 					<div class="col-lg-7">
+						<div class="row">
+							<?php
+							if (!empty($address['address_details'])) {
+								$last_element = array_pop($address['address_details']);
+								array_unshift($address['address_details'], $last_element);
+								foreach ($address['address_details'] as $key => $add_data) {
+							?>
+									<label for="radio-card-<?= $key ?>" class="radio-card">
+										<input type="radio" class="defaultAdderess" name="radio-card" id="radio-card-<?= $key ?>" value="<?= $add_data['address_id']; ?>" />
+										<div class="card-content-wrapper">
+											<span class="check-icon"></span>
+											<div class="card-content <?= $default_language == 1 ? 'pe-3' : 'ps-3' ?>">
+												<span class="badge mb-2"><?= $add_data['addresstype']; ?></span>
+												<div class="name m-0 mb-1">
+													<h6 class="mb-0"><?= $add_data['fullname']; ?>, </h6>
+												</div>
+												<div class="address m-0">
+													<h6 class="mb-0"><?= $add_data['email'] ?>, +<?= $add_data['country_code'] . ' ' . $add_data['mobile'] ?></h6>
+													<h6 class="m-0"><?= $add_data['fulladdress'] ?></h6>
+													<h6 class="m-0"><?= $add_data['area'] . ', ' . $add_data['governorate'] . ', ' . $add_data['region'] . ', ' . $add_data['country'] ?></h6>
+												</div>
+											</div>
+										</div>
+									</label>
+							<?php
+								}
+							}  ?>
+							<a href="" class="btn btn-light my-4" id="address_div_id"><?= $this->lang->line('add-new-add'); ?></a>
+						</div>
+						
 						<form id="formoid" action="#" class="form row mb-4 mb-md-5" method="post">
 							<div class="col-md-12">
 								<div class="mb-3">
@@ -107,7 +137,7 @@
 							<div class="form-check mb-2">
 								<input class="form-check-input" type="radio" name="flexRadioDefault" id="netBanking" value="online" checked>
 								<label class="form-check-label" for="netBanking">
-									Net Banking /UPI / Credit card/ Debit card
+									Net Banking / UPI / Credit card / Debit card
 								</label>
 							</div>
 							<div class="form-check">
@@ -119,40 +149,12 @@
 						</div>
 
 						<div class="continue paymentMethod0">
-							<!-- <h6 class="text-center"><?= $this->lang->line('you-will-save'); ?> <?= $checkout['total_discount']; ?> <?= $this->lang->line('on-this-order'); ?></h6> -->
-							<?php $str_result = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz'; ?>
-							<form method="post" action="<?= base_url('CCAvenue/save') ?>" id="ccrevenue_checkout_form" onsubmit="return CCAvenueValidateForm()">
-								<input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>">
-								<input type="hidden" name="tid" id="tid" value="" />
-								<input type="hidden" name="merchant_id" value="2153910" readonly />
-								<input type="hidden" name="order_id" id="order_id" value="<?= strtoupper('ODR' . substr(str_shuffle($str_result), 0, 6) . date("hi") . rand(1, 99)); ?>" />
-								<input type="hidden" name="amount" id="amount" value="" />
-								<input type="hidden" name="currency" id="currency" value="INR" />
-								<input type="hidden" name="redirect_url" value="<?= base_url('CCAvenue/response') ?>" />
-								<input type="hidden" name="cancel_url" value="<?= base_url('CCAvenue/response') ?>" />
-								<input type="hidden" name="language" value="EN" />
-								<input type="hidden" name="billing_name" value="" />
-								<input type="hidden" name="billing_address" value="" />
-								<input type="hidden" name="billing_city" value="" />
-								<input type="hidden" name="billing_state" value="" />
-								<input type="hidden" name="billing_zip" value="" />
-								<input type="hidden" name="billing_country" value="India" />
-								<input type="hidden" name="billing_tel" value="" />
-								<input type="hidden" name="billing_email" value="" />
-								<input type="hidden" name="delivery_name" id="delivery_name" value="" />
-								<input type="hidden" name="delivery_address" id="delivery_address" value="" />
-								<input type="hidden" name="delivery_city" id="delivery_city" value="" />
-								<input type="hidden" name="delivery_state" id="delivery_state" value="" />
-								<input type="hidden" name="delivery_zip" id="delivery_zip" value="" />
-								<input type="hidden" name="delivery_country" id="delivery_country" value="India" />
-								<input type="hidden" name="delivery_tel" id="delivery_tel" value="" />
-								<div id="place-order-btn-div">
-									<button type="button" onclick="place_order_data(event)" href="javascript:void(0);" class="btn btn-primary w-100 place-order-btn" id="paymentMethodBtn">Place Order</button>
-								</div>
-							</form>
+							<div id="place-order-btn-div">
+								<button type="button" onclick="place_order_data(event)" href="javascript:void(0);" class="btn btn-primary w-100 place-order-btn" id="paymentMethodBtn">Place Order</button>
+							</div>
 						</div>
 					</div>
-					<div class="col-lg-5 ps-lg-5 mt-5 mt-lg-0">
+					<div class="col-lg-5 ps-xl-5 mt-5 mt-lg-0">
 						<div class="ps-lg-5">
 							<div class="cart-items mb-4">
 								<?php foreach ($cart_items['cart_full'] as $key => $cart) : ?>
@@ -250,7 +252,6 @@
 			</div>
 		</section>
 		<!--End: Check-Out Page -->
-
 	</main>
 
 	<?php include("include/footer.php") ?>

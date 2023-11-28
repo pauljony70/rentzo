@@ -11,6 +11,7 @@
   var csrfName = $(".txt_csrfname").attr("name"); //
   var csrfHash = $(".txt_csrfname").val(); // CSRF hash
   var site_url = $(".site_url").val(); // CSRF hash
+  var user_id = $("#user_id").val(); // CSRF hash
   const default_language = 2;
 
   $("main").attr("id", "common-class");

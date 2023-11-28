@@ -181,7 +181,7 @@ if (!isset($_SESSION['admin'])) {
 
 
 										
-										<div class="form-group row">
+										<!--<div class="form-group row">
 
 											<label class="col-sm-2 control-label mt-1">Select Category **</label>
 
@@ -190,7 +190,7 @@ if (!isset($_SESSION['admin'])) {
 
 												<div id="treeSelect">
 													<div class="p-2">
-														<?php
+														<?php /*
 
 														$query = $conn->query("SELECT * FROM category WHERE parent_id = '0' AND status='1' ORDER BY cat_name ASC");
 
@@ -258,7 +258,7 @@ if (!isset($_SESSION['admin'])) {
 															}
 														}
 
-														?>
+														*/ ?>
 													</div>
 												</div>
 
@@ -268,7 +268,68 @@ if (!isset($_SESSION['admin'])) {
 
 
 
+										</div>-->
+										
+										
+										<div class="form-group row align-items-center">
+											<label class="col-sm-2 control-label m-0">Category Set <span class="text-danger">&#42;&#42;</span> </label>
+											<div id="example1" class="col-sm-8">
+												<input type="text" id="myInput" class="form-control" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+												<div id="treeSelect">
+													<ul id="myUL" class="pt-2">
+														<?php
+
+														$query = $conn->query("SELECT * FROM category WHERE parent_id = '0'  AND status ='1' ORDER BY cat_name ASC");
+
+														if ($query->num_rows > 0) {
+															while ($row = $query->fetch_assoc()) {
+																//echo "SELECT cat_id FROM category WHERE parent_id = '".$row['cat_id']."' ";
+																$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "'  AND status ='1'");
+																//	print_r($query1);
+																if ($query1->num_rows > 0) {
+																	echo '<li><span class="expand" onClick=\'expand("' . $row['cat_id'] . '",this)\'>[-]</span><label style="font-weight:bold" class="mainList ml-1">' . $row['cat_name'] . '</label></li>
+																			 
+																			<ul id="ul' . $row['cat_id'] . '" class="subList" style="display:block;">';
+																	echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
+																	echo	'</ul>';
+																} else {
+																	echo '<li><span class="expand"><input type="checkbox" name="category[]" value="' . $row['cat_id'] . '" class="check_category_limit" onclick="check_category_limit(this);"></span><label class="mainList ml-1"> ' . $row['cat_name'] . '</label></li>
+																			';
+																}
+															}
+														}
+
+														function categoryTree($parent_id, $sub_mark = '')
+														{
+															global $conn;
+															$query = $conn->query("SELECT * FROM category WHERE parent_id = $parent_id  AND status ='1' ORDER BY cat_name ASC");
+
+															if ($query->num_rows > 0) {
+																while ($row = $query->fetch_assoc()) {
+
+																	$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "'  AND status ='1'");
+																	//	print_r($query1);
+																	if ($query1->num_rows > 0) {
+																		echo '<li><span class="expand" onClick=\'expand("' . $row['cat_id'] . '",this)\'>[-]</span><label style="font-weight:bold" class="mainList">' . $row['cat_name'] . '</label></li>
+																			 
+																			<ul id="ul' . $row['cat_id'] . '" class="subList" style="display:block;">';
+																		echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
+																		echo '</ul>';
+																	} else {
+																		echo '<li><input type="checkbox" name="category[]" value="' . $row['cat_id'] . '" class="check_category_limit" onclick="check_category_limit(this);"> <label class="mainList"> ' . $row['cat_name'] . '</label></li>';
+																	}
+																}
+															}
+														}
+
+														?>
+													</ul>
+												</div>
+											</div>
 										</div>
+										
+										
 
 
 

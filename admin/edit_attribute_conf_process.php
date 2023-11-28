@@ -22,7 +22,7 @@ if (!isset($_SESSION['admin'])) {
 	header("Location: index.php");
 	// echo " dashboard redirect to index";
 } else
-if ($code == $_SESSION['_token']  && !empty($namevalue) && !empty($namevalue_ar) && !empty($attribute_id) && !empty($statuss)) {
+if ($code == $_SESSION['_token']  && !empty($namevalue) && !empty($attribute_id) && !empty($statuss)) {
 	//code for Check Brand Exist - START
 	$stmt12 = $conn->prepare("SELECT count(id) FROM product_attributes_set where attribute ='" . $namevalue . "'  AND id !='" . $attribute_id . "' ");
 

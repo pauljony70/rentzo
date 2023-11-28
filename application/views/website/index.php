@@ -17,7 +17,6 @@
 	<?php include("include/navbar.php") ?>
 
 	<main class="index-page">
-		<input type="hidden" id="user_id" value="<?= $this->session->userdata('user_id'); ?>">
 		<input type="hidden" id="qoute_id" value="<?= $this->session->userdata('qoute_id'); ?>">
 		<input type="hidden" name="whatsapp_number" value="<?= whatsapp_number; ?>" id="whatsapp_number">
 

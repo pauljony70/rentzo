@@ -1,0 +1,59 @@
+#chatOffcanvas .offcanvas-header {
+    background-color: var(--bs-primary);
+    height: 66px;
+    border-radius: 18px 18px 0px 0px;
+}
+
+.offcanvas-header .profile-img {
+    width: 33px;
+    height: 33px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #fff;
+}
+
+.offcanvas-header .profile-img img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.offcanvas-body {
+    border: 1px solid var(--bs-primary);
+    display: flex;
+    flex-direction: column-reverse;
+    overflow-y: auto;
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 15px;
+    letter-spacing: 0.24px;
+}
+
+.offcanvas-body .user-message .message {
+    border-radius: 2px 0px 0px 2px;
+    border: 1px solid var(--bs-primary);
+    border-right: none;
+    background: rgba(0, 142, 204, 0.60);
+}
+
+.offcanvas-body .seller-message .message {
+    border-radius: 0px 2px 2px 0px;
+    border: 1px solid var(--bs-primary);
+    border-left: none;
+    background: #F0ECEC;
+}
+
+.offcanvas-footer .input-group {
+    height: 46px;
+    border: 1px solid var(--bs-primary);
+}
+
+.offcanvas-footer .input-group .form-control {
+    border: none;
+}
+
+#send-message-btn {
+    border: none;
+}

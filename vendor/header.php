@@ -395,7 +395,7 @@ header('Cache-Control: no cache');
                   <div class="logo-box">
                     <a href="" class="logo logo-light text-center">
                       <span class="logo-large">
-                        <img src="<?php echo MEDIAURL .json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="40">
+                        <img src="<?php echo MEDIAURL .json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="25">
                       </span>
                     </a>
                   </div>

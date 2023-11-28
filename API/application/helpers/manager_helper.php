@@ -52,9 +52,9 @@ if (!function_exists('price_format')) {
 		$currency = get_settings('system_currency_symbol');
 		if ($price > 0) {
 			if (strpos($price, '.') !== false) {
-				$new_price = number_format($price, 2) . ' ' . $currency;
+				$new_price = $currency . ' ' . number_format($price, 2);
 			} else {
-				$new_price = number_format($price) . ' ' . $currency;
+				$new_price = $currency . ' ' . number_format($price, 2);
 			}
 		}
 		return $new_price;

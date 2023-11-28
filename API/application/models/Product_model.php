@@ -9,6 +9,30 @@ class Product_model extends CI_Model
 
 		$this->date_time = date('Y-m-d H:i:s');
 	}
+
+	function get_city($city_id)
+	{
+		$return = array();
+		$i = 0;
+		$this->db->select('city_id, city_name');
+		$this->db->where("city_id in ($city_id)", NULL);
+		$this->db->order_by('city_name', 'ASC');
+
+		$query = $this->db->get('city');
+		$state_array = $query->result_object();
+		foreach ($state_array as $state_details) {
+			$return[$i] =
+				array(
+					'name' => $state_details->city_name
+				);
+			$i = $i + 1;
+			$status = 1;
+			$msg = "Details here";
+		}
+
+		return $return;
+	}
+
 	function get_product_custom_cloth($prod_id)
 	{
 		$this->db->select("pd.product_unique_id,pc.cat_id");
@@ -61,7 +85,7 @@ class Product_model extends CI_Model
 		$product_response = array();
 
 		//get products details
-		$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar, pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail, pd.prod_fulldetail_ar, pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,brnd.brand_name_ar,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id, vp1.stock_status,vp1.coupon_code,is_usd_price, affiliate_commission');
+		$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar, pd.web_url as web_url, pd.product_sku as sku, pd.usage_info, pd.featured_img as img , "active" as active,vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail, pd.prod_fulldetail_ar, pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,brnd.brand_name_ar,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id, vp1.stock_status,vp1.coupon_code,is_usd_price, affiliate_commission,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city');
 
 		//join for get minumum price
 		$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -158,6 +182,18 @@ class Product_model extends CI_Model
 					$product_response['brand'] = $product_details->brand_name;
 				}
 
+				$product_type = $product_details->product_type;
+				if ($product_type == 1) {
+					$product_type = 'Sell';
+				} else if ($product_type == 2) {
+					$product_type = 'Rent';
+				}
+				$product_response['product_type'] = $product_type;
+				$product_response['day1_price'] = $product_details->day1_price;
+				$product_response['day3_price'] = $product_details->day3_price;
+				$product_response['day5_price'] = $product_details->day5_price;
+				$product_response['day7_price'] = $product_details->day7_price;
+				$product_response['product_city'] = $product_details->product_city !== '' ? $this->get_city($product_details->product_city) : '';
 
 
 				$product_response['rating'] = $product_details->prod_rating;
@@ -176,6 +212,7 @@ class Product_model extends CI_Model
 				$policy_details = $this->get_return_policy($product_details->return_policy_id);
 				$product_response['return_policy_title'] =  $policy_details['title'];
 				$product_response['return_policy_description'] =  $policy_details['policy'];
+				$product_response['usage_info'] =  $product_details->usage_info;
 				$product_response['expected_delivery'] = '';
 
 				$coupon_details = $this->get_vendor_coupon($product_details->coupon_code);

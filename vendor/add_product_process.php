@@ -28,9 +28,9 @@ if (!isset($_SESSION['admin'])) {
 		$prod_short = trim(strip_tags($_POST['prod_short']));
 		$prod_details = trim($_POST['prod_details']);
 
-		$is_usd_price = isset($_POST['is_usd_price']) ? 1 : 0;
-		$wholesale_product = isset($_POST['wholesale_product']) ? 1 : 0;
-		$affiliate_commission = trim(strip_tags($_POST['affiliate_commission'])) === '' ? 0 : trim(strip_tags($_POST['affiliate_commission']));
+		$is_usd_price = 0;
+		$wholesale_product = 0;
+		$affiliate_commission = 0.00;
 		$prod_mrp = trim(strip_tags($_POST['prod_mrp']));
 		$prod_price = trim(strip_tags($_POST['prod_price']));
 		$seller_price = trim(strip_tags($_POST['seller_price']));
@@ -50,11 +50,19 @@ if (!isset($_SESSION['admin'])) {
 		$return_policy = trim(strip_tags($_POST['return_policy']));
 		$prod_remark = trim(strip_tags($_POST['prod_remark']));
 		$prod_youtubeid = trim(strip_tags($_POST['prod_youtubeid']));
-		$is_heavy = trim(strip_tags($_POST['is_heavy']));
+		$is_heavy = 0;
 		$prod_name_ar = trim(strip_tags($_POST['prod_name_ar']));
 		$prod_short_ar = trim(strip_tags($_POST['prod_short_ar']));
 		$prod_details_ar = trim(strip_tags($_POST['prod_details_ar']));
 		$coupon_code = trim(strip_tags($_POST['coupon_code']));
+		
+		$usage_info = trim($_POST['usage_info']);
+		$is_buy = trim($_POST['is_buy']);
+		$day1_price = trim($_POST['day1_price']);
+		$day3_price = trim($_POST['day3_price']);
+		$day5_price = trim($_POST['day5_price']);
+		$day7_price = trim($_POST['day7_price']);
+		$security_deposit = trim($_POST['security_deposit']);
 
 		$product_info_set_id_arr = [];
 		$product_info_set_val_id_arr = [];
@@ -83,6 +91,11 @@ if (!isset($_SESSION['admin'])) {
 		if (array_key_exists('selectupsell', $_POST)) {
 			$selectupsell = implode(',', $_POST['selectupsell']);
 		}
+		
+		$selectcity = '';
+		if (array_key_exists('selectcity', $_POST)) {
+			$selectcity = implode(',', $_POST['selectcity']);
+		}
 
 
 		$enableproduct			=  0;
@@ -92,9 +105,6 @@ if (!isset($_SESSION['admin'])) {
 		$prod_url				=   addslashes($prod_url);
 		$prod_short				=   addslashes($prod_short);
 		$prod_details			=   addslashes($prod_details);
-		$is_usd_price			=   addslashes($is_usd_price);
-		$wholesale_product		=   addslashes($wholesale_product);
-		$affiliate_commission	=   addslashes($affiliate_commission);
 		$prod_mrp				=   addslashes($prod_mrp);
 		$prod_price				=   addslashes($prod_price);
 		$seller_price			=   addslashes($seller_price);
@@ -110,12 +120,24 @@ if (!isset($_SESSION['admin'])) {
 		$return_policy			=   addslashes($return_policy);
 		$prod_remark			=   addslashes($prod_remark);
 		$prod_youtubeid			=   addslashes($prod_youtubeid);
-		$prod_name_ar			=   addslashes($prod_name_ar);
-		$prod_short_ar			=   addslashes($prod_short_ar);
-		$prod_details_ar		=   addslashes($prod_details_ar);
+		$prod_name_ar			=   '';
+		$prod_short_ar			=   '';
+		$prod_details_ar		=   '';
 		$coupon_code			=   addslashes($coupon_code);
+		
+		$usage_info	=   addslashes($usage_info);
+		$day1_price	=   addslashes($day1_price);
+		$day3_price	=   addslashes($day3_price);
+		$day5_price	=   addslashes($day5_price);
+		$day7_price	=   addslashes($day7_price);
+		$security_deposit	=   addslashes($security_deposit);
 
 		$price_type = '';
+		
+		if($is_buy != 1)
+		{
+			$is_buy = 0;
+		}
 
 
 		$name_sub = substr($prod_name, 0, 2);
@@ -193,11 +215,11 @@ if (!isset($_SESSION['admin'])) {
 				$stmt11 = $conn->prepare("INSERT INTO `product_details`(`status`, `prod_name`, `prod_desc`, `prod_fulldetail`,
 							`prod_img_url`, `attr_set_id`, `brand_id`, `prod_type`, `price_type`, `web_url`, `product_sku`, `product_visibility`,
 							`product_manuf_country`, `product_hsn_code`, `product_video_url`, `return_policy_id`,`product_unique_id`,`featured_img`,created_at,created_by,is_heavy,
-							prod_name_ar,prod_desc_ar,prod_fulldetail_ar,prod_weight,product_unique_code) 
-							VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+							prod_name_ar,prod_desc_ar,prod_fulldetail_ar,prod_weight,product_unique_code,usage_info,is_buy,day1_price,day3_price,day5_price,day7_price,city,security_deposit) 
+							VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
 				$stmt11->bind_param(
-					"issssiiiisssississssisssss",
+					"issssiiiisssississssisssssssssssss",
 					$enableproduct,
 					$prod_name,
 					$prod_short,
@@ -223,11 +245,19 @@ if (!isset($_SESSION['admin'])) {
 					$prod_short_ar,
 					$prod_details_ar,
 					$prod_weight,
-					$product_unique_code
+					$product_unique_code,
+					$usage_info,
+					$is_buy,
+					$day1_price,
+					$day3_price,
+					$day5_price,
+					$day7_price,
+					$selectcity,
+					$security_deposit
 				);
 
 				$stmt11->execute();
-				$stmt11->store_result();
+				$stmt11->store_result(); 
 
 				$rows = $stmt11->affected_rows;
 				// code for add product main - START

@@ -15,6 +15,7 @@ class OrderController extends REST_Controller
 		$this->load->model('order_model');
 		$this->load->model('product_model');
 		$this->load->model('home_model');
+		$this->load->model('chat_model');
 	}
 	public function index_get()
 	{
@@ -29,29 +30,117 @@ class OrderController extends REST_Controller
 		$this->load->view('website/order.php', $this->data);  // ye view/website folder hai
 	}
 
+	public function insertMessage_post()
+	{
+		// Load the form validation library
+		$this->load->library('form_validation');
+
+		// Set validation rules
+		$this->form_validation->set_rules('order_id', 'Order ID', 'required');
+		$this->form_validation->set_rules('product', 'Product', 'required');
+		$this->form_validation->set_rules('user_id', 'User ID', 'required');
+		$this->form_validation->set_rules('seller_id', 'Seller ID', 'required');
+		$this->form_validation->set_rules('send_by', 'Send By', 'required');
+		$this->form_validation->set_rules('message', 'Message', 'required');
+
+		// Check if the form validation passes
+		if ($this->form_validation->run() === FALSE) {
+			// Form validation failed, handle the errors (you can redirect or show an error message)
+			$errors = validation_errors();
+			$response = array('status' => 0, 'message' => $errors);
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+			return;
+		}
+
+		// Form validation passed, proceed to insert the message
+		$data = array(
+			'order_id' => $this->input->post('order_id'),
+			'product' => $this->input->post('product'),
+			'user_id' => $this->input->post('user_id'),
+			'seller_id' => $this->input->post('seller_id'),
+			'send_by' => $this->input->post('send_by'),
+			'message' => $this->input->post('message'),
+		);
+
+		if ($this->session->userdata("user_id") === $data['user_id']) {
+			// Insert the message into the database
+			$insert_id = $this->chat_model->insertMessage($data);
+
+			// Send a success response
+			$response = array('status' => 1, 'message' => 'Message inserted successfully', 'id' => $insert_id);
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		} else {
+			$response = array('status' => 0, 'message' => 'Please login to continue chat');
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		}
+	}
+
+
+	public function getMessages_get()
+	{
+		$order_id = $this->input->get('order_id');
+		$product = $this->input->get('product');
+		$user_id = $this->input->get('user_id');
+		$seller_id = $this->input->get('seller_id');
+		$last_message_id = $this->input->get('lastMessageId');
+
+		if ($this->session->userdata("user_id") === $user_id) {
+			$messages = $this->chat_model->getMessages($order_id, $product, $user_id, $seller_id, $last_message_id);
+
+			// Update the response to include messages
+			$response = array('status' => 1, 'message' => 'Messages fetched successfully', 'data' => $messages);
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		} else {
+			$response = array('status' => 0, 'message' => 'Your session is timed out. Please login to continue chat');
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		}
+	}
+
+	public function updateSeenStatus_post()
+	{
+		// Load the form validation library
+		$this->load->library('form_validation');
+
+		// Set validation rules
+		$this->form_validation->set_rules('order_id', 'Order ID', 'required');
+		$this->form_validation->set_rules('product', 'Product', 'required');
+		$this->form_validation->set_rules('user_id', 'User ID', 'required');
+		$this->form_validation->set_rules('seller_id', 'Seller ID', 'required');
+		$this->form_validation->set_rules('lastMessageId', 'Last Message ID', 'required');
+
+		// Check if the form validation passes
+		if ($this->form_validation->run() === FALSE) {
+			// Form validation failed, handle the errors (you can redirect or show an error message)
+			$errors = validation_errors();
+			$response = array('status' => 0, 'message' => $errors);
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+			return;
+		}
+		$order_id = $this->input->post('order_id');
+		$product = $this->input->post('product');
+		$user_id = $this->input->post('user_id');
+		$seller_id = $this->input->post('seller_id');
+		$lastMessageId = $this->input->post('lastMessageId');
+
+		if ($this->session->userdata("user_id") === $user_id) {
+			// Call the updateSeenStatus function from the model
+			$result = $this->chat_model->updateSeenStatus($order_id, $product, $user_id, $seller_id, $lastMessageId);
+
+			// Send a response back to the JavaScript
+			$response = array('status' => 1, 'message' => 'Messages are updated succesfully');
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		} else {
+			$response = array('status' => 0, 'message' => 'Your session is timed out. Please login to continue chat');
+			$this->output->set_content_type('application/json')->set_output(json_encode($response));
+		}
+	}
+
 	public function order_details_get($order_id, $prod_id)
 	{
 		$user_id = $this->session->userdata("user_id");
 		$default_language = $this->session->userdata("default_language");
-		//$this->data['order_details'] = $this->order_model->get_order_full_detailsProd($user_id,$order_id);
 		$this->data['order_details'] = $this->order_model->get_order_track_details($default_language, $order_id, $prod_id);
-		$vendor_id = $this->data['order_details']['product_details'][0]['vendor_id'];
-		$this->db->select('product_related_prod');
-		$this->db->where(array('product_id' => $prod_id, 'vendor_id' => $vendor_id));
-		$query = $this->db->get('vendor_product');
 
-
-		if ($query->num_rows() > 0) {
-			$products_result = $query->result_object();
-			$product_exp = explode(',', $products_result[0]->product_related_prod);
-
-			$product_id = array();
-			foreach ($product_exp as $pids) {
-				$product_id[] = $pids;
-			}
-		}
-		$this->data['offers_product'] = $this->home_model->get_order_details_products($default_language, 'Offers');
-		$this->data['related_product'] = $this->product_model->get_popular_product_track_request($default_language, 2, $product_id);
 		$this->load->view('website/orderdetails.php', $this->data);  // ye view/website folder hai
 	}
 
@@ -485,9 +574,4 @@ class OrderController extends REST_Controller
 			echo $validation; //These are parameters are missing.
 		}
 	}
-
-	// kamal api close
-
-
-
 }

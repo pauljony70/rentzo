@@ -176,16 +176,20 @@ $(document).ready(function () {
 		event.preventDefault();
 	
 		var name = $('#name').val();
-		var selected = $("input[type='radio'][name='category']:checked").val();
-		alert(selected);
-		var category = $('input[name="category"]:radio:checked').val();
+		/*var selected = $("input[type='radio'][name='category']:checked").val();
+		var category = $('input[name="category"]:radio:checked').val();*/
+		
+		var category = $('input[name="category[]"]:checked').map(function () {
+			return this.value; 
+		}).get();
+	
 		
 		var event_image = $('#event_image').val();
 		if (!name) {
 			successmsg("Please enter Event Name");
-		} else if (!category) {
-			successmsg("Please Select Category");
-		} else if (!event_image) {
+		} else if ($('.check_category_limit:checkbox:checked').length == 0) {
+            successmsg("Please Select atleast one Category.");
+        } else if (!event_image) {
 				successmsg("Please select Event Image");
 			} else
 

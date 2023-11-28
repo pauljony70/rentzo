@@ -297,6 +297,40 @@ include("header.php");
 														</div>
 													</div>
 												</div>
+												<div class="form-group row align-items-center">
+													<label for="exampleInputFile" class="col-sm-2 control-label m-0">Category Banner</label>
+													<div class="col-sm-10">
+														<div class="input-files">
+															<div>
+																<input type="file" name="category_banner" id="category_banner" class="form-control-file" onchange="uploadFile1('category_banner')" ;>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- icon-hover-effects -->
+												<div class="form-group row align-items-center">
+													<label for="exampleInputFile" class="col-sm-2 control-label m-0"></label>
+													<?php
+													?>
+													<div class="col-sm-10">
+														<div class="tables" style="background-color: #F6EAEA;">
+															<div class="wrap">
+																<div class="bg-effect">
+																	<ul class="bt_list" id="bt_list2">
+																		<?php
+																		$img_decode1 = json_decode($Common_Function->get_system_settings($conn, 'category_banner'));
+																		$prod_url1 = MEDIAURL . $img_decode1->{$img_dimension_arr[0][0] . '-' . $img_dimension_arr[0][1]};
+
+
+																		if ($prod_url1) {
+																			echo '<img src=' . $prod_url1 . ' id="log_img2" height="150" width="250" hspace="20" vspace="20"> ';
+																		}
+																		?> </ul>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 												</br>
 												</br>
 												<div class="col-sm-offset-2">
@@ -420,6 +454,7 @@ include("header.php");
 			event.preventDefault();
 			var logo = $('#logo').prop('files')[0];
 			var loader = $('#loader').prop('files')[0];
+			var category_banner = $('#category_banner').prop('files')[0];
 			if (!logo && !loader) {
 				successmsg("Please select Logo & Loader");
 			} else {
@@ -427,6 +462,7 @@ include("header.php");
 				var form_data = new FormData();
 				form_data.append('system_logo', logo);
 				form_data.append('system_loader', loader);
+				form_data.append('category_banner', category_banner);
 				form_data.append('code', code_ajax);
 				form_data.append('type', 'default_logo');
 				$.ajax({
@@ -447,6 +483,10 @@ include("header.php");
 							if (data["system_banner"]) {
 								$("#log_img1").remove();
 								$("#bt_list1").html('<img src="' + data["system_banner"] + '" id="log_img1" height="75" width="75" hspace="20" vspace="20">');
+							}
+							if (data["system_banner"]) {
+								$("#log_img2").remove();
+								$("#bt_list2").html('<img src="' + data["category_banner"] + '" id="log_img2" height="150" width="250" hspace="20" vspace="20">');
 							}
 						} else {
 							successmsg(data["msg"]);

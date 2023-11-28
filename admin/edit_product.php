@@ -22,7 +22,7 @@ $prod_unique_id = trim($_GET['id']);
 $stmt15 = $conn->prepare("SELECT status, prod_name,prod_desc,prod_fulldetail,prod_img_url,featured_img, attr_set_id,brand_id,web_url,
    		product_sku,product_visibility,product_manuf_country,product_hsn_code,product_video_url,return_policy_id ,meta_title,meta_key,meta_value,is_heavy ,
 		prod_name_ar,prod_desc_ar,prod_fulldetail_ar,shipping,prod_weight,pm.prod_meta_ar,pm.prod_keyword_ar,pm.prod_meta_desc_ar,
-		usage_info,type,day1_price,day3_price,day5_price,day7_price,city
+		usage_info,type,day1_price,day3_price,day5_price,day7_price,city,security_deposit,is_buy
    		FROM product_details pd LEFT JOIN product_meta pm ON pd.product_unique_id = pm.prod_id WHERE pd.product_unique_id='" . $prod_unique_id . "'	");
 
 $stmt15->execute();
@@ -51,7 +51,7 @@ $data = $stmt15->bind_result(
    $prod_fulldetail_ar,
    $shipping,
    $prod_weight,$prod_meta_ar,$prod_keyword_ar,$prod_meta_desc_ar,
-   $usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city
+   $usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city,$security_deposit,$is_buy
 );
 
 while ($stmt15->fetch()) {
@@ -375,9 +375,9 @@ include("header.php");
                               </div>
 							  
 							  <div class="form-group row align-items-center">
-								<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+								<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructionss</label>
 								<div class="col-sm-8">
-									<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" required placeholder="Miximum 1000 letters"><?php echo $usage_info; ?></textarea>
+									<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" placeholder="Miximum 1000 letters"><?php echo $usage_info; ?></textarea>
 								</div>
 							</div>
 							
@@ -395,16 +395,15 @@ include("header.php");
                                  </div>
                               </div>-->
 							  
+							  
 							  <div class="form-group row align-items-center">
-								<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
-								<div class="col-sm-8">
-									<select class="form-control" id="type" name="type">
-										<option>Select Type</option>
-										<option <?php if($type == 1) { echo 'selected'; } ?> value="1">Sell</option>
-										<option <?php if($type == 2) { echo 'selected'; } ?> value="2">Rent</option>
-									</select>
-								</div>
-							</div>
+                                 <label class="col-sm-2 control-label m-0">Is this product available for buy</label>
+                                 <div class="col-sm-8">
+                                    <input type="checkbox" id="is_buy" value='1' <?php if ($is_buy == 1) {
+                                                                                       echo "checked";
+                                                                                    } ?> name="is_buy">
+                                 </div>
+                              </div>
 							<div class="form-group row align-items-center">
 								<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
 								<div class="col-sm-8">
@@ -427,6 +426,12 @@ include("header.php");
 								<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
 								<div class="col-sm-8">
 									<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" value="<?php echo $day7_price; ?>" placeholder="7/Day Price ex. 214">
+								</div>
+							</div>
+							<div class="form-group row align-items-center">
+								<label for="focusedinput" class="col-sm-2 control-label m-0">Security deposit (<?= $currency ?>)</label>
+								<div class="col-sm-8">
+									<input type="number" class="form-control" id="security_deposit" name="security_deposit" maxlength="7" value="<?php echo $security_deposit; ?>" placeholder="Security deposit ex. 214">
 								</div>
 							</div>
 							  
@@ -633,7 +638,7 @@ include("header.php");
                               <div class="form-group row align-items-center">
                                  <label for="focusedinput" class="col-sm-2 control-label m-0">Upload Video</label>
                                  <div class="col-sm-8">
-                                    <input type="file" name="prod_youtubeid" id="prod_youtubeid" class="form-control-file">
+                                    <input type="file" name="prod_youtubeid" id="prod_youtubeid" class="form-control-file"><?php echo urlencode($product_video_url); ?>
                                     <input type="hidden" name="prod_youtube_txt" value="<?php echo urlencode($product_video_url); ?>">
                                  </div>
                               </div>

@@ -16,7 +16,7 @@ $prod_unique_id = trim($_GET['id']);
 $seller_unique_id = trim($_SESSION['admin']);
 
 $stmt15 = $conn->prepare("SELECT vp.id, vp.enable_status, prod_name,prod_desc,prod_fulldetail,prod_img_url,featured_img, attr_set_id,brand_id,web_url,
-   		product_sku,product_visibility,product_manuf_country,product_hsn_code,prod_weight,product_video_url,return_policy_id,vp.is_usd_price,vp.wholesale_product,vp.affiliate_commission,vp.product_mrp,vp.product_sale_price,vp.product_tax_class,vp.product_stock,vp.stock_status,vp.product_purchase_limit,vp.product_remark,vp.product_related_prod,vp.product_upsell_prod,is_heavy, prod_name_ar,prod_desc_ar ,prod_fulldetail_ar,vp.coupon_code,vp.seller_price
+   		product_sku,product_visibility,product_manuf_country,product_hsn_code,prod_weight,product_video_url,return_policy_id,vp.is_usd_price,vp.wholesale_product,vp.affiliate_commission,vp.product_mrp,vp.product_sale_price,vp.product_tax_class,vp.product_stock,vp.stock_status,vp.product_purchase_limit,vp.product_remark,vp.product_related_prod,vp.product_upsell_prod,is_heavy, prod_name_ar,prod_desc_ar ,prod_fulldetail_ar,vp.coupon_code,vp.seller_price,usage_info,type,day1_price,day3_price,day5_price,day7_price,city,security_deposit,is_buy
 		FROM product_details pd 
 		
 		INNER JOIN vendor_product vp ON pd.product_unique_id = vp.product_id
@@ -59,7 +59,8 @@ $data = $stmt15->bind_result(
 	$prod_desc_ar,
 	$prod_fulldetail_ar,
 	$coupon_code,
-	$seller_price
+	$seller_price,
+	$usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city,$security_deposit,$is_buy
 );
 
 while ($stmt15->fetch()) {
@@ -484,12 +485,12 @@ include("header.php");
 											<input type="text" class="form-control disabled" id="prod_name" disabled value="<?= $prod_name; ?>" placeholder="Name" required>
 										</div>
 									</div>
-									<div class="form-group row align-items-center">
+									<!--<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Arabic Name <span class="text-danger">&#42;&#42;</span></label>
 										<div class="col-sm-8">
 											<input type="text" class="form-control" id="prod_name_ar" name="prod_name_ar" value="<?= $prod_name_ar; ?>" placeholder="Name" disabled required>
 										</div>
-									</div>
+									</div>-->
 									<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">SKU</label>
 										<div class="col-sm-8">
@@ -503,19 +504,27 @@ include("header.php");
 										</div>
 									</div>
 									<div class="form-group row align-items-center">
-										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details <span class="text-danger">&#42;&#42;</span></label>
 										<div class="col-sm-8">
 											<textarea rows="6" cols="65" id="prod_short" disabled placeholder="Miximum 300 letters"><?= $prod_desc; ?></textarea>
 
 										</div>
 									</div>
 									<div class="form-group row align-items-center">
-										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details (ENG) <span class="text-danger">&#42;&#42;</span></label>
+										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Full Details <span class="text-danger">&#42;&#42;</span></label>
 										<div class="col-sm-8">
 											<textarea rows="6" cols="65" id="editor" disabled placeholder="Miximum 1000 letters"><?= $prod_fulldetail; ?></textarea>
 										</div>
 									</div>
-									<div class="form-group row align-items-center">
+									
+									 <div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">Usage Instructions <span class="text-danger">&#42;&#42;</span></label>
+										<div class="col-sm-8">
+											<textarea class="form-control" rows="6" cols="65" id="usage_info" name="usage_info" required placeholder="Miximum 1000 letters"><?php echo $usage_info; ?></textarea>
+										</div>
+									</div>
+									
+									<!--<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">Product Short details (Arabic) <span class="text-danger ml-2">&#42;&#42;</span></label>
 										<div class="col-sm-8">
 											<textarea rows="6" cols="65" id="prod_short_ar" name="prod_short_ar" placeholder="Short description 300 letter" disabled maxlength="50"><?= $prod_desc_ar; ?></textarea>
@@ -526,7 +535,7 @@ include("header.php");
 										<div class="col-sm-8">
 											<textarea rows="6" cols="65" id="editor_ar" name="prod_details_ar" disabled placeholder="Miximum 1000 letters"><?= $prod_fulldetail_ar; ?></textarea>
 										</div>
-									</div>
+									</div>-->
 									<div id="product_info"></div>
 									<div class="form-group row align-items-center">
 										<label class="col-sm-2 control-label m-0">TAX Class </label>
@@ -548,7 +557,7 @@ include("header.php");
 											</select>
 										</div>
 									</div>
-									<div class="form-group row align-items-center">
+									<!--<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 										<div class="col-sm-8">
 											<div class="form-check">
@@ -569,7 +578,47 @@ include("header.php");
 												</label>
 											</div>
 										</div>
+									</div>-->
+									
+									 <div class="form-group row align-items-center">
+									 <label class="col-sm-2 control-label m-0">Is this product available for buy</label>
+									 <div class="col-sm-8">
+										<input type="checkbox" id="is_buy" value='1' <?php if ($is_buy == 1) {
+																						   echo "checked";
+																						} ?> name="is_buy">
+									 </div>
+								  </div>
+									<div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" id="day1_price" name="day1_price" maxlength="7" value="<?php echo $day1_price; ?>" placeholder="1/Day Price ex. 214">
+										</div>
 									</div>
+									<div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">3/Day Price (<?= $currency ?>)</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" id="day3_price" name="day3_price" maxlength="7" value="<?php echo $day3_price; ?>" placeholder="3/Day Price ex. 214">
+										</div>
+									</div>
+									<div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">5/Day Price (<?= $currency ?>)</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" id="day5_price" name="day5_price" maxlength="7" value="<?php echo $day5_price; ?>" placeholder="5/Day Price ex. 214">
+										</div>
+									</div>
+									<div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">7/Day Price (<?= $currency ?>)</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" id="day7_price" name="day7_price" maxlength="7" value="<?php echo $day7_price; ?>" placeholder="7/Day Price ex. 214">
+										</div>
+									</div>
+									<div class="form-group row align-items-center">
+										<label for="focusedinput" class="col-sm-2 control-label m-0">Security deposit (<?= $currency ?>)</label>
+										<div class="col-sm-8">
+											<input type="number" class="form-control" id="security_deposit" name="security_deposit" maxlength="7" value="<?php echo $security_deposit; ?>" placeholder="Security deposit ex. 214">
+										</div>
+									</div>
+									
 									<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">MRP (<?= $currency ?>) <span class="text-danger">&#42;&#42;</span></label>
 										<div class="col-sm-8">
@@ -721,7 +770,7 @@ include("header.php");
 											</select>
 										</div>
 									</div> -->
-									<div class="form-group row align-items-center">
+									<!--<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0"></label>
 										<div class="col-sm-8">
 											<div class="form-check">
@@ -731,7 +780,7 @@ include("header.php");
 												</label>
 											</div>
 										</div>
-									</div>
+									</div>-->
 									<div class="form-group row align-items-center d-none">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">Affiliate Commission (%) <span class="text-danger">&#42;&#42;</span></label>
 										<div class="col-sm-8">
@@ -951,12 +1000,12 @@ include("header.php");
 											</div>
 										</div>
 									</div>
-									<div class="form-group row align-items-center">
+									<!--<div class="form-group row align-items-center">
 										<label class="col-sm-2 control-label m-0">Heavy Product</label>
 										<div class="col-sm-8">
 											<input type="checkbox" id="is_heavy" value='1' <?= $is_heavy == 1 ? 'checked' : '' ?> disabled>
 										</div>
-									</div>
+									</div>-->
 									<div class="form-group row align-items-center">
 										<label for="focusedinput" class="col-sm-2 control-label m-0">Remarks</label>
 										<div class="col-sm-8">
@@ -1015,7 +1064,7 @@ include("header.php");
 										</div>
 									</div>
 									<div class="form-group row align-items-center">
-										<label for="focusedinput" class="col-sm-2 control-label m-0">Youtube Video ID</label>
+										<label for="focusedinput" class="col-sm-2 control-label m-0">Upload Video</label>
 										<div class="col-sm-8">
 											<input type="text" class="form-control disabled" disabled value="<?= $product_video_url; ?>">
 										</div>
@@ -1025,6 +1074,9 @@ include("header.php");
 									$related_expl = explode(',', $product_related_prod);
 
 									$upsell_expl = explode(',', $product_upsell_prod);
+									
+									
+									$city_expl = explode(',', $city);
 
 									$stmt = $conn->prepare("SELECT pd.product_unique_id, pd.prod_name FROM product_details pd INNER JOIN vendor_product vp ON pd.product_unique_id = vp.product_id WHERE vp.vendor_id ='" . $seller_unique_id . "' AND  pd.product_unique_id !='" . $prod_unique_id . "' ORDER BY pd.prod_name ASC");
 
@@ -1040,9 +1092,14 @@ include("header.php");
 											);
 										$i = $i + 1;
 									}
+									
+									
+									  
 
 									?>
 
+									
+									
 									<div class="form-group row align-items-center">
 										<label class="col-sm-2 control-label m-0">Related Product multi select</label>
 										<div id="example2" class="col-sm-8">
@@ -1157,10 +1214,7 @@ include("header.php");
 	var tds = document.getElementById('tds');
 	var totalBankSettlement = document.getElementById('total-bank-settlement');
 	var selecttaxclass = document.getElementById('selecttaxclass');
-	var is_usd_price = document.getElementById('is_usd_price');
-	var is_affiliate_product = document.getElementById('is_affiliate_product');
-	var affiliate_commission = document.getElementById('affiliate_commission');
-
+	
 	const toggleBtn = document.querySelector('.toggle-btn');
 	const toggleTableBtn = document.getElementById('toggle-table');
 	const priceBreakdowns = document.querySelectorAll('.price-table-breakdown');
@@ -1168,66 +1222,18 @@ include("header.php");
 
 	const infoBtns = document.querySelectorAll('.info-btn');
 
-	const convertPriceOMRToUSD = async (omr_price) => {
-		// let res = await fetch('https://openexchangerates.org/api/latest.json?app_id=1ef2531492d0493cba70ddbed0b3b0a0&base=USD')
-		// 	.catch(error => {
-		// 		console.log('Error fetching conversion rate:', error);
-		// 	});
-		// let json_res = await res.json();
-		// const conversionRate = 1 / json_res.rates.OMR; // USD conversion rate against OMR
-		const conversionRate = <?= $Common_Function->get_system_settings($conn, 'coversion_rate') ?>;
-		return (conversionRate * omr_price).toFixed(2);
-	}
-
-	is_affiliate_product.addEventListener('change', () => {
-		if (is_affiliate_product.checked) {
-			affiliate_commission.parentElement.parentElement.classList.remove('d-none');
-		} else {
-			affiliate_commission.parentElement.parentElement.classList.add('d-none');
-		}
-	})
-
-	is_usd_price.addEventListener('change', () => {
-		if (is_usd_price.checked) {
-			prod_mrp_usd.parentElement.parentElement.classList.remove('d-none');
-			seller_price_usd.parentElement.parentElement.classList.remove('d-none');
-			prod_price_usd.parentElement.parentElement.classList.remove('d-none');
-		} else {
-			prod_mrp_usd.parentElement.parentElement.classList.add('d-none');
-			seller_price_usd.parentElement.parentElement.classList.add('d-none');
-			prod_price_usd.parentElement.parentElement.classList.add('d-none');
-		}
-	})
-
-	prod_mrp.addEventListener('input', async () => {
-		prod_mrp_usd.value = await convertPriceOMRToUSD(prod_mrp.value);
-	});
-
 	seller_price.addEventListener('input', async () => {
-		seller_price_usd.value = await convertPriceOMRToUSD(seller_price.value);
+		seller_price_usd.value = prod_mrp.value;
 		calculatePrice();
 	});
 
+	
 	selecttaxclass.addEventListener('change', () => {
 		if (seller_price.value !== '')
 			calculatePrice();
 	});
 
-	window.addEventListener('load', async () => {
-		if (seller_price.value !== '')
-			calculatePrice();
-		prod_mrp_usd.value = await convertPriceOMRToUSD(prod_mrp.value);
-		seller_price_usd.value = await convertPriceOMRToUSD(seller_price.value);
-		if (is_usd_price.checked) {
-			prod_mrp_usd.parentElement.parentElement.classList.remove('d-none');
-			seller_price_usd.parentElement.parentElement.classList.remove('d-none');
-			prod_price_usd.parentElement.parentElement.classList.remove('d-none');
-		}
-		if (is_affiliate_product.checked) {
-			affiliate_commission.parentElement.parentElement.classList.remove('d-none');
-		}
-	});
-
+	
 	const calculatePrice = () => {
 		clearTimeout(timeout);
 
@@ -1239,8 +1245,8 @@ include("header.php");
 					seller_price: seller_price.value
 				},
 			}).done(async function(response) {
-				$('#prod_price').val(response);
-				prod_price_usd.value = await convertPriceOMRToUSD(response);
+				$('#prod_price').val(parseFloat(response.replace(/,/g, '')));
+				prod_price_usd.value = response;
 				var taxValue = document.getElementById('selecttaxclass').options[document.getElementById('selecttaxclass').selectedIndex].text.match(/\d+/)[0];
 
 				if (seller_price.value === '') {
@@ -1248,7 +1254,7 @@ include("header.php");
 					commision_fee.innerText = "";
 				} else {
 					marurang_price.innerText = String(seller_price.value) + " <?= $currency ?>";
-					var commision_fee_value = parseFloat(response) - parseFloat(seller_price.value);
+					var commision_fee_value = parseFloat(parseFloat(response.replace(/,/g, ''))) - parseFloat(seller_price.value);
 					var taxableValue = 0;
 					var gstValue = commision_fee_value * 0.5;
 					var tcsAndTcsVal = parseFloat(taxableValue) * 0.01;

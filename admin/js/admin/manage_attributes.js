@@ -36,7 +36,7 @@ function getAttribute(pagenov, rownov) {
 					btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
 				}
 
-				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td><td > ' + this.attribute_ar + '</td>';
+				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td>';
 				html += '<td><div class="d-flex"> <button type="submit" class= "btn btn-dark waves-effect waves-light btn-sm pull-left" name="delete" onclick="view_attr_value(' + this.id + ');">View</button>';
 				html += '<button style=" margin-left: 10px;" type="submit" class= "btn btn-danger waves-effect waves-light btn-sm pull-left" name="delete" onclick="deletebrand(' + this.id + ');">DELETE</button>';
 
@@ -87,7 +87,7 @@ function attribute_set_product(pagenov) {
 					btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
 				}
 
-				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td><td > ' + this.attribute_ar + '</td>';
+				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td>';
 				html += '<td><div class="d-flex"> <button type="submit" class= "btn btn-dark waves-effect waves-light btn-sm pull-left" name="delete" onclick="view_attr_value(' + this.id + ');">View</button>';
 				html += '<button style=" margin-left: 10px;" type="submit" class= "btn btn-danger waves-effect waves-light btn-sm pull-left" name="delete" onclick="deletebrand(' + this.id + ');">DELETE</button>';
 
@@ -112,12 +112,10 @@ $(document).ready(function () {
 		event.preventDefault();
 
 		var namevalue = $('#attributes').val();
-		var namevalue_ar = $('#attributes_ar').val();
+		var namevalue_ar = '';
 
 		if (!namevalue) {
 			successmsg("Please enter Attribute (ENG)");
-		} else if (!namevalue_ar) {
-			successmsg("Please enter Attribute (Arabic)");
 		}
 
 		if (namevalue) {
@@ -151,15 +149,13 @@ $(document).ready(function () {
 		event.preventDefault();
 
 		var namevalue = $('#update_attributes').val();
-		var namevalue_ar = $('#update_attributes_ar').val();
+		var namevalue_ar = '';
 		var attribute_id = $('#attribute_id').val();
 		var statuss = 1;// $('#status').val();
 
 		if (!namevalue) {
 			successmsg("Please enter Attribute (ENG)");
-		} else if (!namevalue_ar) {
-			successmsg("Please enter Attribute (Arabic)");
-		}
+		} 
 		/*	if(!statuss){
 				successmsg("Please select status");
 			}	*/
@@ -235,7 +231,7 @@ function perpage_filter() {
 					btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
 				}
 
-				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td><td > ' + this.attribute_ar + '</td>';
+				var html = '<tr id="tr' + this.id + '"> <td>' + count + '</td><td > ' + this.attribute + '</td>';
 				html += '<td><div class="d-flex"> <button type="submit" class= "btn btn-dark waves-effect waves-light btn-sm pull-left" name="delete" onclick="view_attr_value(' + this.id + ');">View</button>';
 				html += '<button style=" margin-left: 10px;" type="submit" class= "btn btn-danger waves-effect waves-light btn-sm pull-left" name="delete" onclick="deletebrand(' + this.id + ');">DELETE</button>';
 

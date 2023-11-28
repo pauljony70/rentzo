@@ -68,18 +68,19 @@ if (!isset($_SESSION['admin'])) {
 		$product_id = trim($_POST['product_id']);
 		
 		$usage_info = trim($_POST['usage_info']);
-		$type = trim($_POST['type']);
+		$is_buy = trim($_POST['is_buy']);
 		$day1_price = trim($_POST['day1_price']);
 		$day3_price = trim($_POST['day3_price']);
 		$day5_price = trim($_POST['day5_price']);
 		$day7_price = trim($_POST['day7_price']);
+		$security_deposit = trim($_POST['security_deposit']);
 		
 		$usage_info	=   addslashes($usage_info);
-		$type	=   addslashes($type);
 		$day1_price	=   addslashes($day1_price);
 		$day3_price	=   addslashes($day3_price);
 		$day5_price	=   addslashes($day5_price);
 		$day7_price	=   addslashes($day7_price);
+		$security_deposit	=   addslashes($security_deposit);
 		
 
 		$enableproduct	=   addslashes($enableproduct);
@@ -110,6 +111,11 @@ if (!isset($_SESSION['admin'])) {
 
 		if ($enableproduct != 1) {
 			$enableproduct = 3;
+		}
+		
+		if($is_buy != 1)
+		{
+			$is_buy = 0;
 		}
 
 		if (isset($prod_name)  && isset($category)) {
@@ -192,11 +198,11 @@ if (!isset($_SESSION['admin'])) {
  
 				$stmt11 = $conn->prepare("UPDATE `product_details` SET `status` = ?, `prod_name`= ?, `prod_desc` =?, `prod_fulldetail` = ?,
 							`prod_img_url` =?, `attr_set_id` =?, `brand_id` =?, `web_url` =?,  `product_sku` =?, `product_visibility` =?, `product_manuf_country` =?, `product_hsn_code` =?, `product_video_url` =?, `return_policy_id` =?,`featured_img` =?,`is_heavy`=?,
-							`prod_name_ar` =?,`prod_desc_ar` =?,`prod_fulldetail_ar` =?,`shipping`=?,`prod_weight`=?,`usage_info` = ?,`type` = ?,`day1_price`=?,`day3_price`=?,`day5_price`=?,`day7_price`=?
+							`prod_name_ar` =?,`prod_desc_ar` =?,`prod_fulldetail_ar` =?,`shipping`=?,`prod_weight`=?,`usage_info` = ?,`is_buy` = ?,`day1_price`=?,`day3_price`=?,`day5_price`=?,`day7_price`=?,`security_deposit`=?
 							 WHERE product_unique_id ='" . $prod_id . "'");
 
 				$stmt11->bind_param(
-					"issssiisssissisisssssssssss",
+					"issssiisssissisissssssssssss",
 					$enableproduct,
 					$prod_name,
 					$prod_short,
@@ -219,11 +225,12 @@ if (!isset($_SESSION['admin'])) {
 					$shipping,
 					$prod_weight,
 					$usage_info,
-					$type,
+					$is_buy,
 					$day1_price,
 					$day3_price,
 					$day5_price,
-					$day7_price
+					$day7_price,
+					$security_deposit
 				);
 
 				$stmt11->execute();

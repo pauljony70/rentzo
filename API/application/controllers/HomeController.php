@@ -240,6 +240,30 @@ class HomeController extends REST_Controller
 		}
 	}
 
+	function get_address_post()
+	{
+		$requiredparameters = array('language', 'pincode');
+		$language_code = removeSpecialCharacters($this->post('language'));
+		$address_pincode = removeSpecialCharacters($this->post('pincode'));
+		$validation = $this->parameterValidation($requiredparameters, $this->post());
+
+		if ($validation == 'valid') {
+			$data = file_get_contents('http://www.postalpincode.in/api/pincode/' . $address_pincode);
+			$data = json_decode($data);
+			if (isset($data->PostOffice['0'])) {
+
+				$citydata = array(
+					'city'  => $data->PostOffice['0']->Taluk,
+				);
+				$this->responses(1, 'Get city succesfully', $citydata);
+			} else {
+				$this->responses(0, get_phrase('no_record_found', $language_code));
+			}
+		} else {
+			echo $validation;
+		}
+	}
+
 	public function check_pincode_post()
 	{
 
@@ -258,6 +282,30 @@ class HomeController extends REST_Controller
 			} else {
 
 				$this->responses(0, get_phrase('no_record_found', $language_code), $city_array);
+			}
+		} else {
+			echo $validation;
+		}
+	}
+	
+	public function rent_product_dates_post()
+	{
+
+		$requiredparameters = array('language', 'prod_id');
+
+		$language_code = removeSpecialCharacters($this->post('language'));
+		$prod_id = removeSpecialCharacters($this->post('prod_id'));
+		$validation = $this->parameterValidation($requiredparameters, $this->post());
+
+		if ($validation == 'valid') {
+
+			$rent_array = $this->home_model->get_check_pincode_request($language_code, $prod_id);
+			if (count($rent_array) > 0) {
+
+				$this->responses(1, 'Details', $rent_array);
+			} else {
+
+				$this->responses(0, get_phrase('no_record_found', $language_code), $rent_array);
 			}
 		} else {
 			echo $validation;

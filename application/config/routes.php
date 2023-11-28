@@ -240,6 +240,11 @@ $route['search-transaction-data'] = 'WalletController/searchWalletTransaction';
 $route['bank-details'] = 'Home/bankDetails';
 $route['add-bank-details'] = 'Home/addBankDetails';
 
+//User Vendor Chat
+$route['send-chat-message'] = 'OrderController/insertMessage';
+$route['get-chat-messages'] = 'OrderController/getMessages';
+$route['update-seen-status'] = 'OrderController/updateSeenStatus';
+
 // cart
 $route['cart'] = 'Home/cart_details';
 $route['deleteProductCart'] = 'Cart/deleteProductCart';

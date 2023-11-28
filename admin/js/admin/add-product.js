@@ -242,13 +242,13 @@ $('#selectrelatedprod').multiselect({
                         var selectBoxId = ''
                         html +=
                             `<div class="form-group row align-items-center">
-                                <label for="focusedinput" class="col-sm-2 control-label m-0">${element.attribute} (${element.attribute_ar})</label>
+                                <label for="focusedinput" class="col-sm-2 control-label m-0">${element.attribute}</label>
                                 <div class="col-sm-8">
                                     <input type="hidden" id="product_info_set_id" name="product_info_set_id[]" value="${element.product_info_set_id}">
                                     <select class="form-control" id="${convertToUnderscore(element.attribute)}" name="product_info_set_val_id_${element.product_info_set_id}[]" multiple>`;
                         element.product_info_set_val_data.forEach(product_info_set_val => {
                             html +=
-                                `<option value="${product_info_set_val.product_info_set_value_id}">${product_info_set_val.product_info_set_value} (${product_info_set_val.product_info_set_value_ar})</option>`;
+                                `<option value="${product_info_set_val.product_info_set_value_id}">${product_info_set_val.product_info_set_value} </option>`;
                         });
                         html +=
                             `</select>
