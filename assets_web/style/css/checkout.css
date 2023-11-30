@@ -16,10 +16,44 @@ input[type="number"] {
     line-height: normal;
 }
 
-#formoid .form-control {
+#formoid .form-control,
+#formoid .form-select {
     height: 50px;
-    background: #F5F5F5;
+    background-color: #F5F5F5;
     border-radius: 0;
+}
+
+.invalid-feedback {
+    font-size: 0.775em;
+}
+
+.kyc-div .heading {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: capitalize;
+}
+
+.kyc-div .des {
+    color: #000;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    text-transform: capitalize;
+    opacity: 0.8;
+}
+
+.kyc-div .form-select {
+    height: 50px;
+    background-color: #F5F5F5;
+    border-radius: 18px;
+}
+
+.dropify-wrapper {
+    border-radius: 18px;
 }
 
 .payment-types .heading {

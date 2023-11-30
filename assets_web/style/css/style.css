@@ -56,7 +56,8 @@ body {
  * ---------------------------------------------------
  */
 
-.form-control:focus {
+.form-control:focus,
+.form-select:focus {
     box-shadow: none !important;
 }
 
@@ -114,6 +115,16 @@ body {
  */
 .swal2-popup .swal2-title {
     font-size: 1.5em;
+}
+
+/*
+ * --------------------------------------------------- 
+ * Dropify
+ * ---------------------------------------------------
+ */
+.dropify-wrapper .file-icon p {
+    font-size: medium;
+    color: #999;
 }
 
 /*

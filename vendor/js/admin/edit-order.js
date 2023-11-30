@@ -36,23 +36,23 @@ document.getElementById('send-message-form').addEventListener('submit', (event) 
         },
         success: function (response) {
             var data = $.parseJSON(response);
-            console.log(response);
             if (data.status) {
-                lastMessageId = data.id;
+                // lastMessageId = data.id;
 
-                var container = document.getElementById("messageContainer");
+                // var container = document.getElementById("messageContainer");
 
-                // Create a new message div
-                var newMessageDiv = document.createElement("div");
-                newMessageDiv.className = "d-flex justify-content-end user-message ms-5 mb-3";
+                // // Create a new message div
+                // var newMessageDiv = document.createElement("div");
+                // newMessageDiv.className = "d-flex justify-content-end user-message ms-5 mb-3";
 
-                var newMessageContent = document.createElement("div");
-                newMessageContent.className = "message py-1 px-2";
-                newMessageContent.textContent = messageInput.value;
+                // var newMessageContent = document.createElement("div");
+                // newMessageContent.className = "message py-1 px-2";
+                // newMessageContent.textContent = messageInput.value;
 
-                newMessageDiv.appendChild(newMessageContent);
+                // newMessageDiv.appendChild(newMessageContent);
 
-                container.insertBefore(newMessageDiv, container.firstChild);
+                // container.insertBefore(newMessageDiv, container.firstChild);
+                getMessagesOnLoad();
 
                 messageInput.value = '';
                 sendMessageBtn.innerHTML = `<img src="${site_url.concat('assets_web/images/icons/send-message.svg')}" class="pe-0" alt="Send">`;
@@ -90,6 +90,7 @@ function getMessagesOnLoad() {
                 if (data.data.messages.length > 0) {
                     lastMessageId = data.data.messages[data.data.messages.length - 1].message_id;
                     updateSeenStatusValue = 0;
+                    playNotificationSound();
                 }
                 if (isModalOpen() && updateSeenStatusValue == 0) {
                     updateSeenStatus();
@@ -156,6 +157,13 @@ function checkForNewMessages() {
     setInterval(function () {
         getMessagesOnLoad();
     }, 2000);
+}
+
+function playNotificationSound() {
+    var audio = new Audio(site_url.concat('assets_web/sounds/Notification.mp3'));
+
+    if (!isModalOpen())
+        audio.play();
 }
 
 window.onload = function () {

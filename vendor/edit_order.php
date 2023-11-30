@@ -634,7 +634,7 @@ if ($col2) {
 														<div class="modal-body px-0" id="messageContainer"></div>
 
 														<div class="modal-footer px-0 pb-0">
-															<form action="#" method="post" id="send-message-form">
+															<form action="#" method="post" id="send-message-form" class="m-0 w-100">
 																<div class="input-group">
 																	<img src="<?= BASEURL . 'assets_web/images/icons/emoji-pen.svg' ?>" class="pl-2" alt="Pen">
 																	<input type="text" class="form-control h-100" autocomplete="off" id="message" name="message" value="" placeholder="Enter Message">

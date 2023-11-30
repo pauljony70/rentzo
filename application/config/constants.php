@@ -100,3 +100,6 @@ defined('MEDIA_URL')      OR define('MEDIA_URL', 'https://www.rentzo.co.in/media
 
 // defined('SITE_URL')      OR define('SITE_URL', 'http://localhost/ebuy/'); // 
 // defined('MEDIA_URL')      OR define('MEDIA_URL', 'http://localhost/ebuy/media/'); // 
+
+defined('SUREPASS_AUTH_TOKEN') || define('SUREPASS_AUTH_TOKEN', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMDg5NzY3MywianRpIjoiZmRlYTZiMTItNWNlNC00N2YzLTgwMDEtMzlkNjUyNjFjZTVkIiwidHlwZSI6ImFjY2VzcyIsImlkZW50aXR5IjoiZGV2LmNvbnNvbGVfMnllc2tiaXc5ZXp4aXg4YWJqcGl1Mmx6ajF3QHN1cmVwYXNzLmlvIiwibmJmIjoxNzAwODk3NjczLCJleHAiOjIwMTYyNTc2NzMsInVzZXJfY2xhaW1zIjp7InNjb3BlcyI6WyJ3YWxsZXQiXX19.UKz36dsJEh2R6rmswDBeOFi4IOCX6K8JyuwsxRljHv0');
+defined('SUREPASS_PRODUCTION_URL') || define('SUREPASS_PRODUCTION_URL', 'https://kyc-api.aadhaarkyc.io/');

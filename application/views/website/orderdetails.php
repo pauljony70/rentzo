@@ -18,11 +18,12 @@
 		<input type="hidden" name="order_id" id="order_id" value="<?= $order_details['order_summery']['order_id'] ?>">
 		<input type="hidden" name="prod_id" id="prod_id" value="<?= $order_details['product_details'][0]['prod_id'] ?>">
 
-		<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
-			Button with data-bs-target
-		</button>
-
-		<div id="unseen-message-count"></div>
+		<div class="position-relative my-5" style="width: fit-content;">
+			<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
+				Button with data-bs-target
+			</button>
+			<div id="unseen-message-count"></div>
+		</div>
 
 		<div class="offcanvas offcanvas-end p-4" tabindex="-1" id="chatOffcanvas" aria-labelledby="chatOffcanvasLabel">
 			<div class="offcanvas-header">

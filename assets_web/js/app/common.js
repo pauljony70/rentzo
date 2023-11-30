@@ -181,6 +181,127 @@ function hexToRgb(hex) {
 function enforceMaxLength(input) {
   const maxLength = input.getAttribute('maxlength');
   if (input.value.length > maxLength) {
-      input.value = input.value.slice(0, maxLength);
+    input.value = input.value.slice(0, maxLength);
+  }
+}
+
+const validateAddressForm = async () => {
+  var fullname_a = document.querySelector("#fullname_a");
+  var email = document.querySelector("#email");
+  var mobile = document.querySelector("#mobile");
+  var fulladdress = document.querySelector("#fulladdress");
+  var pincode = document.querySelector("#pincode");
+  var state = document.querySelector("#state");
+  var city = document.querySelector("#city");
+
+  var flag_fullname_a = 0;
+  var flag_email = 0;
+  var flag_mobile = 0;
+  var flag_fulladdress = 0;
+  var flag_pincode = 0;
+  var flag_state = 0;
+  var flag_city = 0;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var firstErrorElement = null;
+
+  if (fullname_a.value == '') {
+    flag_fullname_a = 0;
+    setErrorMsg(fullname_a, '<i class="fa-solid fa-circle-xmark"></i> Full name is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = fullname_a;
+    }
+  } else {
+    flag_fullname_a = 1;
+    setSuccessMsg(fullname_a);
+  }
+  if (email.value == '') {
+    flag_email = 0;
+    setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = email;
+    }
+  } else if (!emailRegex.test(email.value)) {
+    flag_email = 0;
+    setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Please enter a valid email address.');
+    if (!firstErrorElement) {
+      firstErrorElement = email;
+    }
+  } else {
+    flag_email = 1;
+    setSuccessMsg(email);
+  }
+  if (mobile.value == '') {
+    flag_mobile = 0;
+    setErrorMsg(mobile, '<i class="fa-solid fa-circle-xmark"></i> Mobile is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = mobile;
+    }
+  } else {
+    flag_mobile = 1;
+    setSuccessMsg(mobile);
+  }
+  if (fulladdress.value == '') {
+    flag_fulladdress = 0;
+    setErrorMsg(fulladdress, '<i class="fa-solid fa-circle-xmark"></i> Address is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = fulladdress;
+    }
+  } else {
+    flag_fulladdress = 1;
+    setSuccessMsg(fulladdress);
+  }
+  if (pincode.value == '') {
+    flag_pincode = 0;
+    setErrorMsg(pincode, '<i class="fa-solid fa-circle-xmark"></i> Pincode is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = pincode;
+    }
+  } else {
+    flag_pincode = 1;
+    setSuccessMsg(pincode);
+  }
+
+  if (state.value == '') {
+    flag_state = 0;
+    setSelectErrorMsg(state, '<i class="fa-solid fa-circle-xmark"></i> State is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = state;
+    }
+  } else {
+    flag_state = 1;
+    setSelectSuccessMsg(state);
+  }
+
+  if (city.value == '') {
+    flag_city = 0;
+    setSelectErrorMsg(city, '<i class="fa-solid fa-circle-xmark"></i> City is required.');
+    if (!firstErrorElement) {
+      firstErrorElement = city;
+    }
+  } else {
+    flag_city = 1;
+    setSelectSuccessMsg(city);
+  }
+
+  // Set focus on the first error element
+  if (firstErrorElement) {
+    firstErrorElement.focus();
+  }
+
+  if (flag_fullname_a === 1 && flag_email === 1 && flag_mobile === 1 && flag_fulladdress === 1 && flag_pincode === 1 && flag_state === 1 && flag_city === 1) {
+    return true;
+  } else if (flag_fullname_a === 0 && flag_email === 0 && flag_mobile === 0 && flag_fulladdress === 0 && flag_pincode === 0 && flag_state === 0 && flag_city === 0) {
+    nativeToast({
+      message: 'Please select or add address!',
+      position: 'bottom',
+      type: 'error',
+      square: true,
+      edge: false,
+      debug: false
+    });
+    throw new Error('Please select or add address!'); // Throw an error if condition not met
+  } else {
+    throw new Error('Validation failed'); // Throw an error if validation fails
   }
 }

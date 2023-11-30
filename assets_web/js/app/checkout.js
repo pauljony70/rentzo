@@ -4,6 +4,8 @@ $(function () {
     window.onload = getCitydata(0);
 });
 
+$('.dropify').dropify();
+
 $('#state').on('change', function () {
     getCitydata(this.value);
 });
@@ -94,34 +96,6 @@ function getCitydata(stateid) {
 
 var timeout = null;
 
-function convertToNumber(str) {
-    // Remove all commas from the string
-    const withoutCommas = str.replace(/,/g, '');
-
-    // Extract the number from the string and convert it to a float
-    const number = parseFloat(withoutCommas.slice(1));
-
-    return number;
-}
-
-// Place order button visiblity
-const payment_options = document.paymentOptions.flexRadioDefault;
-const place_order_btn_div = document.getElementById('place-order-btn-div');
-var prev = null;
-
-function AllowOnlyNumbers(e) {
-    e = (e) ? e : window.event;
-    var clipboardData = e.clipboardData ? e.clipboardData : window.clipboardData;
-    var key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
-    var str = (e.type && e.type == "paste") ? clipboardData.getData('Text') : String.fromCharCode(key);
-    return (/^\d+$/.test(str));
-}
-
-
-var csrfName = $(".txt_csrfname").attr("name"); //
-var csrfHash = $(".txt_csrfname").val(); // CSRF hash
-var site_url = $(".site_url").val(); // CSRF hash
-
 function get_checkout_data(user_pincode) {
     //alert('ssss');
     $('#coupon_message').html('');
@@ -184,246 +158,138 @@ function get_shipping() {
     get_checkout_data(pincode);
 }
 
-function place_order_data(event) {
-    var tab = 'true';
+const verifyKycDocument = async () => {
+    var documentType = document.querySelector("#documentType");
+    var kycDocument = document.querySelector("#kyc-document");
 
+    var flag_documentType = 0;
+    var flag_kycDocument = 0;
 
-    var address_id = $('#defaultAdderess:checked').val();
-    var user_id = $('#user_id').val();
+    var firstErrorElement = null;
 
-
-    var fullname = $("#fullname_a").val();
-    var mobile = $("#mobile").val();
-    var state = $("#state").val();
-    var pincode = $("#pincode").val();
-    var city = $("#city").val();
-    var email = $("#email").val();
-    var user_id = $("#user_id").val();
-    var fulladdress = $("#fulladdress").val();
-    var city_id = $("#city option:selected").val();
-
-
-    const validateAddressForm = () => {
-        if ($('#fullname_a').val() !== '' && $('#fulladdress').val() !== '' && $('#city').val() !== '' && $('#state').val() !== '' && $('#pincode').val() !== '' && $('#mobile').val() !== '' && $('#email').val() !== '') {
-            /*Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'saved',
-                showConfirmButton: false,
-                timer: 1500
-            });*/
-            return true;
-        } else if ($('#fullname_a').val() !== '' || $('#fulladdress').val() !== '' || $('#city').val() !== '' || $('#city').val() !== 'Select' || $('#state').val() !== '' || $('#state').val() !== 'Select State' || $('#pincode').val() !== '' || $('#mobile').val() !== '' || $('#email').val() !== '') {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: "Please fill all the required field",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            return true;
-        } else {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: "Your address can't be blank",
-                showConfirmButton: false,
-                timer: 1500
-            });
-            return false;
+    if (documentType.value == '') {
+        flag_documentType = 0;
+        setSelectErrorMsg(documentType, '<i class="fa-solid fa-circle-xmark"></i> Document type is required.');
+        if (!firstErrorElement) {
+            firstErrorElement = documentType;
         }
+    } else {
+        flag_documentType = 1;
+        setSelectSuccessMsg(documentType);
     }
 
-    if (fullname == '') {
-        Swal.fire({
-            position: "center",
-            //icon: "success",
-            title: 'Please Select Address',
-            showConfirmButton: false,
-            confirmButtonColor: "#ff5400",
-            timer: 3000,
-        });
-    } else {
-
-
-        if (fulladdress == "" || fulladdress == null && fullname == "" || fullname == null && state == "" || state == null && city == "" || city == null) {
-
-            if (fullname == "" || fullname == null) {
-                $("#fullname1_error").text("Please Add Name.");
-            } else {
-                $("#fullname1_error").text("");
-            }
-            if (mobile == "" || mobile == null) {
-                $("#mobile_error").text("Please Add Mobile No.");
-            } else {
-                $("#mobile_error").text("");
-            }
-            if (state == "" || state == null) {
-                $("#state_error").text("Please Select State.");
-            } else {
-                $("#state_error").text("");
-            }
-            //else if(pincode == "" || pincode == null)
-            //{
-            //alert('please Add Pincode.');
-            //}
-            if (city == "" || city == null) {
-                $("#city_error").text("Please Select City.");
-            } else {
-                $("#city_error").text("");
-            }
-
-            if (email == "" || email == null) {
-                $("#emails_error").text("Please Add Emails.");
-            } else {
-                $("#emails_error").text("");
-            }
-
-            if (fulladdress == "" || fulladdress == null) {
-                $("#fulladdress_error").text("Please Add Full Address.");
-            } else {
-                $("#fulladdress_error").text("");
-            }
-
-            /*if( ){
-              /// write address filed validation code
-            }else if(){ */
-
-        } else {
-
-            $("#fullname1_error").text("");
-            $("#emails_error").text("");
-            $("#mobile_error").text("");
-            $("#state_error").text("");
-            $("#city_error").text("");
-            $("#fulladdress_error").text("");
-
-            if (tab == 'true') {
-
-                // alert("call true");
-
-                var spinner = '<div class="spinner-border" role="status"><span class="se-only"></span></div> Please Wait..';
-                $('.paymentMethodBtn').html(spinner);
-                // $(".paymentMethodBtn").prop('disabled', true);
-                $('.paymentMethodBtn').addClass('disabled-link');
-                // alert(" place order req send ");
-                var coupon_code = $('#coupon_code').val();
-                var coupon_value = $('#coupo_discount_value').text();
-
-                $.ajax({
-                    method: "post",
-                    url: site_url + "placeOrder",
-                    data: {
-                        language: default_language,
-                        fullname: fullname,
-                        mobile: mobile,
-                        locality: '',
-                        fulladdress: fulladdress,
-                        city: $('#city').find(":selected").text(),
-                        state: state,
-                        pincode: pincode,
-                        addresstype: 'Home',
-                        email: email,
-                        payment_id: 'Pay12345',
-                        payment_mode: 'COD',
-                        city_id: city_id,
-                        coupon_code: coupon_code,
-                        coupon_value: coupon_value,
-                        [csrfName]: csrfHash,
-                    },
-                    success: function (response) {
-                        // $(".paymentMethodBtn").prop('disabled', false);
-                        $('.paymentMethodBtn').removeClass('disabled-link');
-                        $('.paymentMethodBtn').text('Place Order');
-                        //hideloader();
-
-                        if (response.status == 1) {
-                            // alert(response.status);
-                            //location.href = site_url + "thankyou/" + order_id;
-
-                            var imgurl = $("#imgurl").val();
-
-                            var order_id = response.Information.order_id;
-                            var message = 'Dear *' + fullname + '* ,';
-                            message += ' Your Order has been placed Successfully.';
-                            $.ajax({
-                                method: 'get',
-                                url: site_url + 'send_whatsapp_msg',
-                                data: {
-                                    number: '91'.concat(mobile),
-                                    type: 'media',
-                                    message: message.replace(/ /g, "%20"),
-                                    media_url: site_url + 'media/' + imgurl,
-                                    // filename: '',
-                                    instance_id: '64258107A62A7',
-                                    access_token: '14e3c33fbe98cd4ac95bb8f15c2d9023'
-                                },
-                                success: function (response) {
-                                    // alert(JSON.stringify(JSON.parse(response), null, 2));
-                                }
-                            });
-
-
-                            setTimeout(function () {
-
-
-                                location.href = site_url + "thankyou/" + order_id;
-                            }, 100);
-
-                        } else {
-                            /*Swal.fire({
-                                position: "center",
-                                //icon: "success",
-                                title: response.Information.order_msg,
-                                showConfirmButton: false,
-                                confirmButtonColor: "#ff5400",
-                                timer: 3000,
-                            });*/
-                        }
-                        //alert(response.Information.order_msg);
-                        //var order_id = response.Information.order_id
-                        //location.href=site_url+'thankyou/'+ order_id;
-
-                        //var parsedJSON = JSON.parse(response);
-                        //$(parsedJSON.Information).each(function() {
-                        //	 alert(this.order_id);
-                        //});
-                        //location.href=site_url+'thankyou';
-                    },
-                });
-
-
-            } else {
-                //alert ("call else ");
-                ///$('#payment-tab').
-                $('#address-tab').attr('aria-selected', false);
-                $("#address-tab").removeClass('active');
-                $("#address").removeClass('active');
-                $("#address").removeClass('show');
-
-                $("#payment-tab").addClass('active');
-                $("#payment").addClass('active');
-                $("#payment").addClass('show');
-                $('#payment-tab').attr('aria-selected', true);
-            }
-
+    if (kycDocument.value == '') {
+        flag_kycDocument = 0;
+        setDropifyErrorMsg(kycDocument, kycDocument.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Choose a document.');
+        if (!firstErrorElement) {
+            firstErrorElement = kycDocument;
         }
+    } else {
+        flag_kycDocument = 1;
+        setDropifySuccessMsg(kycDocument, kycDocument.parentElement.parentElement.querySelector('#error'));
+    }
+
+    if (firstErrorElement) {
+        firstErrorElement.focus();
+    }
+
+    if (flag_documentType === 1 && flag_kycDocument === 1) {
+        try {
+            var kycDocumentvalue = $('#kyc-document').prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('kyc_document', kycDocumentvalue);
+            form_data.append([csrfName], csrfHash);
+
+            await new Promise((resolve, reject) => {
+                $.ajax({
+                    method: 'post',
+                    url: site_url + '/verify-document/ocr/' + documentType.value,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    success: function (response) {
+                        if (response.success) {
+                            setDropifySuccessMsg(kycDocument, kycDocument.parentElement.parentElement.querySelector('#error'));
+                            resolve(); // Resolve the promise if successful
+                        } else {
+                            setDropifyErrorMsg(kycDocument, kycDocument.parentElement.parentElement.querySelector('#error'), `<i class="fa-solid fa-circle-xmark"></i> ${response.message}`);
+                            documentType.focus();
+                            reject(response.message); // Reject the promise with an error
+                        }
+                    }
+                });
+            });
+        } catch (error) {
+            throw new Error(error); // Propagate the error up the call stack
+        }
+    } else {
+        throw new Error('Validation failed'); // Throw an error if validation fails
+    }
+}
+
+async function place_order_data(ele) {
+    ele.disabled = true;
+    buttonLoader(ele);
+
+    try {
+        // Wait for both functions to complete
+        await validateAddressForm();
+        await verifyKycDocument();
+
+        // alert("call true");
 
 
-        /*
-          event.preventDefault();
-          var fullname = $("#name").val();
-          var mobile = $("#mobile").val();
-          var state = $("#state").val();
-          var pincode = $("#pincode").val();
-          var city = $("#city").val();
-          var email = $("#email").val();
-          var user_id = $("#user_id").val();
-          var fulladdress = $("textarea#address").val();
-          
-          
+        // alert(" place order req send ");
+        var coupon_code = $('#coupon_code').val();
+        var coupon_value = $('#coupo_discount_value').text();
 
-         */
+        $.ajax({
+            method: "post",
+            url: site_url + "placeOrder",
+            data: {
+                language: default_language,
+                fullname: $("#fullname_a").val(),
+                mobile: $("#mobile").val(),
+                locality: '',
+                fulladdress: $("#fulladdress").val(),
+                city: $('#city').find(":selected").text(),
+                state: $('#state').find(":selected").text(),
+                pincode: $("#pincode").val(),
+                addresstype: 'Home',
+                email: $("#email").val(),
+                payment_id: 'Pay12345',
+                payment_mode: 'COD',
+                city_id: $("#city option:selected").val(),
+                coupon_code: coupon_code,
+                coupon_value: coupon_value,
+                [csrfName]: csrfHash,
+            },
+            success: function (response) {
+
+                if (response.status == 1) {
+                    var order_id = response.Information.order_id;
+                    location.href = site_url + "thankyou/" + order_id;
+
+                } else {
+                    /*Swal.fire({
+                        position: "center",
+                        //icon: "success",
+                        title: response.Information.order_msg,
+                        showConfirmButton: false,
+                        confirmButtonColor: "#ff5400",
+                        timer: 3000,
+                    });*/
+                }
+            },
+        });
+
+    } catch (error) {
+        // At least one of the functions failed
+        // console.error('Error:', error);
+
+        ele.disabled = false;
+        ele.innerHTML = "Place Order"
     }
 }
 
@@ -510,95 +376,6 @@ $(document).on('change', '.defaultAdderess', function () {
     });
 });
 
-function place_order_data_old(event) {
-    var tab = 'true';
-
-    var address_id = $('.defaultAdderess:checked').val();
-    var user_id = $('#user_id').val()
-    var fullname = $("#fullname_a").val();
-    var email = $("#email").val();
-    var mobile = $("#mobile").val();
-    var area = $("#area").val();
-    var fulladdress = $("#fulladdress").val();
-    var lat = $('#lat').val();
-    var lng = $('#lng').val();
-    var country = $("#country option:selected").text();
-    var region = $('#region').is('input') ? $('#region').val() : $('#region option:selected').text();
-    var governorate = $('#governorates').is('input') ? $('#governorates').val() : $('#governorates option:selected').text();
-    var area = $('#area').is('input') ? $('#area').val() : $('#area option:selected').text();
-
-    if (user_id !== '') {
-        if (validateAddressForm()) {
-
-            addUserAddress();
-
-            var spinner = '<div class="spinner-border" role="status"><span class="se-only"></span></div> Please Wait..';
-            $('.paymentMethodBtn').html(spinner);
-            $(".paymentMethodBtn").prop('disabled', true);
-            // alert(" place order req send ");
-            var coupon_code = $('#coupon_code').val();
-            var coupon_value = $('#coupo_discount_value').text();
-
-            $.ajax({
-                method: "post",
-                url: site_url + "placeOrder",
-                data: {
-                    language: default_language,
-                    fullname: fullname,
-                    mobile: mobile,
-                    email: email,
-                    area: area,
-                    fulladdress: fulladdress,
-                    country: country,
-                    region: region,
-                    governorate: governorate,
-                    area: area,
-                    lat: lat,
-                    lng: lng,
-                    addresstype: 'Home',
-                    payment_id: 'Pay12345',
-                    payment_mode: 'COD',
-                    coupon_code: coupon_code,
-                    coupon_value: coupon_value,
-                    [csrfName]: csrfHash,
-                },
-                success: function (response) {
-                    $(".paymentMethodBtn").prop('disabled', true);
-                    $('.paymentMethodBtn').text('Place Order');
-                    //hideloader();
-
-                    if (response.status == 1) {
-                        // alert(response.status);
-                        //location.href = site_url + "thankyou/" + order_id;
-
-                        var imgurl = $("#imgurl").val();
-
-                        var order_id = response.Information.order_id;
-                        var message = 'Dear *' + fullname + '* ,';
-                        message += ' Your Order has been placed Successfully.';
-
-                        setTimeout(function () {
-                            location.href = site_url + "thankyou/" + order_id;
-                        }, 100);
-
-                    } else {
-                        Swal.fire({
-                            position: "center",
-                            //icon: "success",
-                            title: response.Information.order_msg,
-                            showConfirmButton: false,
-                            confirmButtonColor: "#ff5400",
-                            timer: 3000,
-                        });
-                    }
-
-                },
-            });
-        }
-    }
-
-}
-
 function apply_coupon(event) {
     var total_value = $("#total_value").val();
     var coupon_code = $("#coupon_code").val();
@@ -629,62 +406,12 @@ function apply_coupon(event) {
     });
 }
 
-/*const addUserAddress = () => {
-    $.ajax({
-        method: "post",
-        url: site_url + "addUserAddress",
-        data: {
-            language: default_language,
-            username: $('#fullname_a').val(),
-            email: $('#email').val(),
-            country_code: '1',
-            mobile: $('#mobile').val(),
-            fulladdress: $('#fulladdress').val(),
-            lat: $('#lat').val(),
-            lng: $('#lng').val(),
-            country_id: $('#country').val(),
-            country: $('#country option:selected').text(),
-            region_id: $('#region').is('input') ? '' : $('#region').val(),
-            region: $('#region').is('input') ? $('#region').val() : $('#region option:selected').text(),
-            governorate_id: $('#governorates').is('input') ? '' : $('#governorates').val(),
-            governorate: $('#governorates').is('input') ? $('#governorates').val() : $('#governorates option:selected').text(),
-            area_id: $('#area').is('input') ? '' : $('#area').val(),
-            area: $('#area').is('input') ? $('#area').val() : $('#area option:selected').text(),
-            addresstype: "home",
-            [csrfName]: csrfHash,
-        },
-        success: function(response) {
-            console.log(response);
-        },
-        error: function(xhr, status, error) {
-            submitButton.prop("disabled", false);
-            var errorMessage = "An error occurred: " + xhr.responseText;
-            console.log(errorMessage);
-        }
-    });
-};
-
-const getUserAddress = (user_id) => {
-
-    var response = $.ajax({
-        method: "post",
-        url: site_url + "getUserAddress",
-
-        data: {
-            language: default_language,
-            user_id: user_id,
-            [csrfName]: csrfHash
-        },
-        success: function(response) {
-            // alert(response);
-        }
-    });
-    return response;
-
-}*/
 
 $(document).ready(function () {
-    $("#address_div_id").click(function () {
+    $('#placeOrderBtn').click((event) => {
+        place_order_data(event.target);
+    })
+    /* $("#address_div_id").click(function () {
         event.preventDefault();
         var user_id = $('#user_id').val();
         if (user_id == '') {
@@ -694,5 +421,5 @@ $(document).ready(function () {
             // location.href = site_url + 'myaddress';
             $("#address_div").toggle();
         }
-    });
+    }); */
 });

@@ -245,6 +245,10 @@ $route['send-chat-message'] = 'OrderController/insertMessage';
 $route['get-chat-messages'] = 'OrderController/getMessages';
 $route['update-seen-status'] = 'OrderController/updateSeenStatus';
 
+// Surepass Document Verfication
+$route['verify-document/ocr/aadhaar'] = 'SurepassController/aadhaarVerification';
+
+
 // cart
 $route['cart'] = 'Home/cart_details';
 $route['deleteProductCart'] = 'Cart/deleteProductCart';
