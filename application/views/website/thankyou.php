@@ -4,30 +4,49 @@
 <head>
 	<?php $title = "Thanks You";
 	include("include/headTag.php") ?>
+	<style>
+		.thank-you-heading {
+			color: #000;
+			font-size: 26px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: 152.2%;
+		}
+
+		.thank-you-des {
+			color: #000;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 24px;
+			margin-bottom: 76px;
+		}
+
+		.shop-more-btn {
+			padding: 16px 48px;
+			border-radius: 40px;
+			color: #FFF;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: normal;
+		}
+	</style>
 </head>
 
 <body>
-	<?php
-	include("include/loader.php")
-	?>
-
-	<?php
-	include("include/topbar.php")
-	?>
-	<?php
-	include("include/navbar.php")
-	?>
-	<?php
-	// include("include/navForMobile.php")
-	?>
+	<?php include("include/navbar-brand.php") ?>
 
 	<main class="thanks-page">
-		<input type="hidden" value="<?php echo $order_id; ?>" id="order_id">
-		<!--Start: Thanks Section -->
-		<br><br>
-		<section>
-			<div class="container">
-				<div class="block d-md-none">
+		<input type="hidden" value="<?= $order_id; ?>" id="order_id">
+		<section class="my-5">
+			<div class="container text-center pb-5">
+				<img src="<?= base_url('assets_web/images/icons/check-circle.svg') ?>" alt="Thank you" srcset="" class="mb-4">
+				<div class="thank-you-heading">Thank you</div>
+				<div class="thank-you-heading mb-2">Your Order has been received</div>
+				<div class="thank-you-des">Your Order id <?= $order_id; ?></div>
+				<a href="<?= base_url() ?>" class="btn btn-primary shop-more-btn">Shop more</a>
+				<!-- <div class="block d-md-none">
 					<img src="<?php echo base_url; ?>assets_web/images/icons/thanks-icon.png" alt="" class="thanks-img" />
 					<h5>Your Order has been placed Successfully.</h5>
 				</div>
@@ -41,53 +60,17 @@
 					<h4>YOUR ORDER ID IS <?php echo $order_id; ?></h4>
 					<p>You will get update about your order, on your registered email and phone number.</p>
 					<br>
-				<!--	<a style="width:200px;float:none" href="<?php echo base_url; ?>" class="btn btn-info d-none d-md-block text-center">CONTINUE SHOPPING</a>-->
-				</div>
-				<!--<div class="btn-wrap text-center"><a href="<?php echo base_url; ?>" class="btn btn-info d-md-none">CONTINUE SHOPPING</a></div>-->
+				</div> -->
 			</div>
 		</section>
 		<!--End: Thanks Section -->
-		<br><br>
-		
 	</main>
 
-	<?php
-	include("include/footer.php")
-	?>
+	<?php include("include/footer.php") ?>
 
-	<?php
-	include("include/script.php")
-	?>
+	<?php include("include/script.php") ?>
 
 	<script type="text/javascript">
-		var swiper = new Swiper('.mySwiper', {
-			slidesPerView: 2,
-			freeMode: true,
-			grabCursor: true,
-			mousewheel: {
-				forceToAxis: true,
-			},
-			forceToAxis: false,
-			navigation: {
-				nextEl: ".swiper-button-next",
-				prevEl: ".swiper-button-prev",
-			},
-			breakpoints: {
-				576: {
-					slidesPerView: 3
-				},
-				768: {
-					slidesPerView: 4
-				},
-				1024: {
-					slidesPerView: 5
-				},
-				1200: {
-					slidesPerView: 6
-				},
-			}
-		});
-
 		$(document).ready(function() {
 			var order_id = $('#order_id').val();
 			$.ajax({

@@ -45,7 +45,7 @@ class Product extends REST_Controller
 			if ($product_array) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 1,
-					$this->config->item('rest_message_field_name') => '',
+					$this->config->item('rest_message_field_name') => 'Get Details',
 					$this->config->item('rest_data_field_name') => $product_array,
 					'product_custom_cloth' => $product_custom_cloth
 

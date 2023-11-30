@@ -64,7 +64,72 @@ class Cart_model extends CI_Model {
 		$status['quote_id'] = $quote_id;
 		return $status;
     }
-		function delete_product_buynow_cart($user_id,$quote_id){				if($user_id){			$this->db->where(array('user_id'=>$user_id));		}else if($quote_id){			$this->db->where(array('qoute_id'=>$quote_id));		}				$query = $this->db->delete('cartdetails');				if($query){			return 'delete';		}	}
+	
+	function add_product_cart_rent($prod_id,$sku,$sid,$user_id,$qty,$referid,$qouteid,$rent_price,$rent_from_date,$rent_to_date,$cart_type){
+		if($qouteid ==0 || $qouteid ==""){
+			$quote_id =  date("dm").date("hi").rand(1,99);
+		}else{
+			$quote_id =  $qouteid;
+		}
+		
+		$this->db->select("id");
+		
+		if($user_id){
+			$this->db->where(array('prod_id' => $prod_id,'user_id'=>$user_id));
+		}else if($quote_id){
+			$this->db->where(array('prod_id' => $prod_id,'qoute_id'=>$quote_id));
+		}
+		$query = $this->db->get('cartdetails');
+		
+		$cart = $status = array();
+		
+		if($query->num_rows() >0){
+			$cart['prod_id'] = $prod_id;
+			$cart['attr_sku'] = $sku;
+			$cart['vendor_id'] = $sid;
+			$cart['user_id'] = $user_id;
+			$cart['qty'] = $qty;
+			$cart['refer_id'] = $referid;
+			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = $rent_price;
+			$cart['rent_from_date'] = $rent_from_date;
+			$cart['rent_to_date'] = $rent_to_date;
+			$cart['cart_type'] = $cart_type;
+			
+			if($user_id){
+				$this->db->where(array('prod_id' => $prod_id,'user_id'=>$user_id));
+			}else if($quote_id){
+				$this->db->where(array('prod_id' => $prod_id,'qoute_id'=>$quote_id));
+			}
+			
+			$query = $this->db->update('cartdetails', $cart);
+			if($query){
+				$status['status'] = 'update';
+			}
+		}else{
+			
+			$cart['prod_id'] = $prod_id;
+			$cart['attr_sku'] = $sku;
+			$cart['vendor_id'] = $sid;
+			$cart['user_id'] = $user_id;
+			$cart['qty'] = $qty;
+			$cart['refer_id'] = $referid;
+			$cart['qoute_id'] = $quote_id;
+			$cart['rent_price'] = $rent_price;
+			$cart['rent_from_date'] = $rent_from_date;
+			$cart['rent_to_date'] = $rent_to_date;
+			$cart['cart_type'] = $cart_type;
+			
+			$query = $this->db->insert('cartdetails', $cart);
+			if($query){
+				$status['status'] = 'add';
+			}
+		}
+		$status['quote_id'] = $quote_id;
+		return $status;
+    }
+		
+	function delete_product_buynow_cart($user_id,$quote_id){				if($user_id){			$this->db->where(array('user_id'=>$user_id));		}else if($quote_id){			$this->db->where(array('qoute_id'=>$quote_id));		}				$query = $this->db->delete('cartdetails');				if($query){			return 'delete';		}	}
 	
 	//Functiofor for delete product from cart
 	function delete_product_cart($pid,$user_id,$quote_id){

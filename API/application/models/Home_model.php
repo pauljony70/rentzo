@@ -21,6 +21,31 @@ class Home_model extends CI_Model
 		}
 	}
 
+	function get_rents_data_request($pid)
+	{
+		$return = array();
+		$i =0;
+		$this->db->select('rent_from_date, rent_to_date');
+		$this->db->where_in('prod_id', $pid);
+		
+		$query = $this->db->get('order_product');
+		$state_array = $query->result_object();
+		foreach($state_array as $state_details){
+			$return[$i] = 
+        					array(	
+        					    'rent_from_date' => $state_details->rent_from_date,
+        						'rent_to_date' => $state_details->rent_to_date);
+              		   $i = $i+1;  			  
+                $status = 1;
+                $msg = "Details here";
+		}
+		$information =array( 'status' => $status,
+                              'msg' =>   $msg,
+                              'prod_id' =>   $pid,
+                              'daterange' => $return);
+		return $return;
+	}
+
 	function get_check_pincode_request($language, $pincode)
 	{
 		$data_response = 'Item is not deliverable for selected Pincode';

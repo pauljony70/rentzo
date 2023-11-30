@@ -169,6 +169,160 @@ class Cart extends REST_Controller {
 		
 	}
 	
+	
+	public function addProductCart_post(){
+		$requiredparameters = array('language','pid','sku','sid','user_id','qty','referid','devicetype','qouteid');
+		
+		$language_code = removeSpecialCharacters($this->post('language'));
+		$pid = removeSpecialCharacters($this->post('pid'));
+		$sku = removeSpecialCharacters($this->post('sku'));
+		$sid = removeSpecialCharacters($this->post('sid'));
+		$user_id = removeSpecialCharacters($this->post('user_id'));
+		$qty = removeSpecialCharacters($this->post('qty'));
+		$referid = removeSpecialCharacters($this->post('referid'));
+		$devicetype = removeSpecialCharacters($this->post('devicetype'));
+		$qouteid = removeSpecialCharacters($this->post('qouteid'));
+		
+		$rent_price = removeSpecialCharacters($this->post('rent_price'));
+		$rent_from_date = removeSpecialCharacters($this->post('rent_from_date'));
+		$rent_to_date = removeSpecialCharacters($this->post('rent_to_date'));
+		$cart_type = removeSpecialCharacters($this->post('cart_type'));
+		
+		
+		
+		$validation = $this->parameterValidation($requiredparameters,$this->post()); //$this->post() holds post values
+		
+    	if($validation=='valid') {
+							// $cart = $this->cart_model->delete_product_buynow_cart($user_id, $qouteid);
+				if( $pid && $sku && $sid && $qty){					
+				 	$conf = $this->cart_model->check_product_conf($pid,$sku,$sid,$user_id,$qty,$referid,$qouteid);
+				 	$validate_product_cart = $this->cart_model->validate_product_cart($pid,$sku,$sid);
+					
+					if($validate_product_cart['stock_status'] =='Out of Stock'){
+						$this->response([
+							$this->config->item('rest_status_field_name') => 0,
+							$this->config->item('rest_message_field_name') => get_phrase('product_out_of_stock',$language_code),
+							$this->config->item('rest_data_field_name') => array(),
+							'total_mrp' => 0,
+							'total_discount' => 0,
+							'total_price' => 0,
+							'total_item' => 0,
+							'qouteid' => $qouteid
+							
+						], self::HTTP_OK);
+					}else if($qty > $validate_product_cart['product_stock']){
+						$this->response([
+							$this->config->item('rest_status_field_name') => 0,
+							$this->config->item('rest_message_field_name') => get_phrase('product_stock_limit',$language_code),
+							$this->config->item('rest_data_field_name') => array(),
+							'total_mrp' => 0,
+							'total_discount' => 0,
+							'total_price' => 0,
+							'total_item' => 0,
+							'qouteid' => $qouteid
+							
+						], self::HTTP_OK);
+					}else if($qty > $validate_product_cart['product_purchase_limit'] && $validate_product_cart['product_purchase_limit'] >0 ){
+						
+						$cart_detail = $this->cart_model->get_cart_full_details($language_code,$user_id,$devicetype,$qouteid);
+						$this->response([
+							$this->config->item('rest_status_field_name') => 0,
+							$this->config->item('rest_message_field_name') => "You can purchase only ".$validate_product_cart['product_purchase_limit']." qty of this item",
+							$this->config->item('rest_data_field_name') => $cart_detail['cart_full'],
+							'total_mrp' => $cart_detail['total_mrp'],
+							'total_discount' => $cart_detail['total_discount'],
+							'total_price' => $cart_detail['total_price'],
+							'total_item' => $cart_detail['total_item'],	
+							'qouteid' => $qouteid
+							
+						], self::HTTP_OK);
+					}else if($conf =='yes'){
+						$this->response([
+							$this->config->item('rest_status_field_name') => 0,
+							$this->config->item('rest_message_field_name') => get_phrase('product_attribute_mandotary',$language_code),
+							$this->config->item('rest_data_field_name') => array(),
+							'total_mrp' => 0,
+							'total_discount' => 0,
+							'total_price' => 0,
+							'total_item' => 0,
+							'qouteid' => $qouteid
+							
+						], self::HTTP_OK);
+					}else{
+						$cart = $this->cart_model->add_product_cart_rent($pid,$sku,$sid,$user_id,$qty,$referid,$qouteid,$rent_price,$rent_from_date,$rent_to_date,$cart_type);
+						if(count($cart)>0){
+							if($qouteid ==0){
+								$qoute_id = $cart['quote_id'];
+							}else{
+								$qoute_id = $qouteid;
+							}
+							
+							if($cart['status'] =='add'){
+								$cart_detail = $this->cart_model->get_cart_full_details($language_code,$user_id,$devicetype,$qoute_id);
+								
+								$this->response([
+									$this->config->item('rest_status_field_name') => 1,
+									$this->config->item('rest_message_field_name') => get_phrase('cart_added',$language_code),
+									$this->config->item('rest_data_field_name') => $cart_detail['cart_full'],
+									'total_mrp' => $cart_detail['total_mrp'],
+									'total_discount' => $cart_detail['total_discount'],
+									'total_price' => $cart_detail['total_price'],
+									'total_item' => $cart_detail['total_item'],	
+									'qouteid' => $qoute_id	
+									
+								], self::HTTP_OK);
+								
+							}else if($cart['status'] =='update'){
+								$cart_detail = $this->cart_model->get_cart_full_details($language_code,$user_id,$devicetype,$qoute_id);
+										
+								$this->response([
+									$this->config->item('rest_status_field_name') => 1,
+									$this->config->item('rest_message_field_name') => get_phrase('cart_updated',$language_code),
+									$this->config->item('rest_data_field_name') => $cart_detail['cart_full'],
+									'total_mrp' => $cart_detail['total_mrp'],
+									'total_discount' => $cart_detail['total_discount'],
+									'total_price' => $cart_detail['total_price'],
+									'total_item' => $cart_detail['total_item'],							
+									'qouteid' => $qoute_id							
+								], self::HTTP_OK);
+							}
+						
+						}else{
+							$this->response([
+								$this->config->item('rest_status_field_name') => 0,
+								$this->config->item('rest_message_field_name') => get_phrase('please_try_again',$language_code),
+								$this->config->item('rest_data_field_name') => array(),
+								'total_mrp' => 0,
+								'total_discount' => 0,
+								'total_price' => 0,
+								'total_item' => 0,
+								'qouteid' => $qouteid
+								
+							], self::HTTP_OK);
+						}
+					}
+				}else{
+					$this->response([
+							$this->config->item('rest_status_field_name') => 0,
+							$this->config->item('rest_message_field_name') => get_phrase('cart_invalid_request',$language_code),
+							$this->config->item('rest_data_field_name') => array(),
+							'total_mrp' => 0,
+							'total_discount' => 0,
+							'total_price' => 0,
+							'total_item' => 0,
+							'qouteid' => $qouteid
+							
+						], self::HTTP_OK);
+				}
+			
+			
+    	}
+    	else {
+      		echo $validation; //These are parameters are missing.
+    	}
+		
+	}
+	
 	// function for delete cart product
 	public function deleteProductCart_post(){
 		$requiredparameters = array('language','pid','user_id','devicetype','qouteid');

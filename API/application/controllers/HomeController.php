@@ -299,7 +299,7 @@ class HomeController extends REST_Controller
 
 		if ($validation == 'valid') {
 
-			$rent_array = $this->home_model->get_check_pincode_request($language_code, $prod_id);
+			$rent_array = $this->home_model->get_rents_data_request($prod_id);
 			if (count($rent_array) > 0) {
 
 				$this->responses(1, 'Details', $rent_array);

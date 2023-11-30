@@ -130,6 +130,7 @@ $route['app/getProductFilter'] = 'Product/getProductFilter';
 
 //cart product
 $route['app/addProductCart'] = 'Cart/addProductCart';
+$route['app/addProductCartRent'] = 'Cart/addProductCartRent';
 $route['app/deleteProductCart'] = 'Cart/deleteProductCart';
 $route['app/getProductCart'] = 'Cart/getProductCart';
 $route['app/getCartCount'] = 'Cart/getCartCount';
