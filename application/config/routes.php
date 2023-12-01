@@ -117,6 +117,8 @@ $route['thankyou/(:any)'] = 'Checkout/thankyou/$1';
 $route['deleteUserAddress'] = 'UserAddress/deleteUserAddress';
 
 
+$route['video'] = 'Home/video';
+$route['email_videocall'] = 'Home/email_videocall';
 $route['track'] = 'Home/track_order';
 $route['order'] = 'OrderController/get_order';
 $route['orderDetails/(:any)/(:any)'] = 'OrderController/order_details/$1/$2';

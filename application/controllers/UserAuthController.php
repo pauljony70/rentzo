@@ -3,8 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require APPPATH . '/libraries/REST_Controller.php';
 require APPPATH . '/third_party/encryptfun.php';
-require APPPATH . 'libraries/google-api-php-client/vendor/autoload.php';
-require APPPATH . 'libraries/php-graph-sdk/src/Facebook/autoload.php';
 
 
 class UserAuthController extends REST_Controller
@@ -22,12 +20,6 @@ class UserAuthController extends REST_Controller
 		$this->load->model('user_model');
 		$this->load->model('email_model');
 
-		// // Load Facebook configuration
-		// $this->config->load('facebook', true);
-		// $this->facebook_config = $this->config->item('facebook');
-
-		// // Load Facebook library
-		// $this->load->library('php-graph-sdk/src/Facebook/Facebook', $this->facebook_config);
 	}
 
 	/* Login View */

@@ -15,82 +15,151 @@ class Checkout_model extends CI_Model
 		$this->date = date('Y-m-d');
 	}
 
+	///check copuon code
+	function Validate_coupon_code($user_id, $coupon_code, $type = '')
+	{
 
+		$date = date('Y-m-d');
+		$this->db->select("*");
+		$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
+		$query_coupon = $this->db->get('coupancode');
+
+		$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
+		$query_coupon_vendor = $this->db->get('coupancode_vendor');
+
+		$status = '';
+		if ($query_coupon->num_rows() > 0) {
+			$coupon_result = $query_coupon->row();
+
+			$user_apply = $coupon_result->user_apply;
+
+			if ($type != 'product') {
+				if ($user_id) {
+					$this->db->select("user_id");
+					$this->db->where(array('user_id' => $user_id, 'coupon_code' => $coupon_code));
+					$query_order = $this->db->get('orders');
+					$total_applied = $query_order->num_rows();
+
+					if ($total_applied >= $user_apply) {
+						return 'applied_exceed';
+					}
+				} else {
+					return $status = 'login_required';
+				}
+			}
+
+			$fromdate = $coupon_result->fromdate;
+			$todate = $coupon_result->todate;
+			if ($fromdate != '0000-00-00' && $todate != '0000-00-00') {
+				if ($date >= $fromdate && $date <= $todate) {
+					return $coupon_result;
+				} else {
+					$status = 'expired';
+				}
+			} else {
+				$status = 'invalid';
+			}
+		} else if ($query_coupon_vendor->num_rows() > 0) {
+			$coupon_result = $query_coupon_vendor->row();
+			$user_apply = $coupon_result->user_apply;
+			if ($type != 'product') {
+				if ($user_id) {
+					$this->db->select("user_id");
+					$this->db->where(array('user_id' => $user_id, 'coupon_code' => $coupon_code));
+					$query_order = $this->db->get('orders');
+					$total_applied = $query_order->num_rows();
+					if ($total_applied > $user_apply) {
+						return 'applied_exceed';
+					}
+				} else {
+					return $status = 'login_required';
+				}
+			}
+			$fromdate = $coupon_result->fromdate;
+			$todate = $coupon_result->todate;
+			if ($fromdate != '0000-00-00' && $todate != '0000-00-00') {
+				if ($date >= $fromdate && $date <= $todate) {
+					return $coupon_result;
+				} else {
+					$status = 'expired';
+				}
+			} else {
+				$status = 'invalid';
+			}
+		} else {
+			$status = 'invalid';
+		}
+		return $status;
+	}
 
 	function get_checkout_full_details($user_id, $coupon_code = '')
 	{
-
-		$validate_coupon = $this->Validate_coupon_code($user_id, $coupon_code, '');
+		$validate_coupon = '';
 		if ($coupon_code  != '') {
+			$validate_coupon = $this->Validate_coupon_code($user_id, $coupon_code, '');
 			if ($validate_coupon == 'invalid') {
 				return $validate_coupon;
 			}
 		}
-		
 
-		$shiping_detail = 0;
-		$shipping_fee1 = 0;
 		// get delivery details
 		$delivery_array = array();
 
-		$this->db->select("prod_id, attr_sku, vendor_id, qty,rent_price,rent_from_date,cart_type");
-
+		$this->db->select("prod_id, attr_sku, vendor_id, qty, rent_price, rent_from_date, cart_type");
 		$this->db->where(array('user_id' => $user_id));
-
-		$coupon_discount = 0;
 		$query = $this->db->get('cartdetails');
 
+		$coupon_discount = 0;
+
 		$product_detail_array = array();
+
 		$total_mrp = $total_discount = $total_price = $total_item = $total_tax = 0;
 		$total_shipping_fee = 0;
-		$seller_pincode = 0;
-		$imgurl = 0;
+		$total_security_deposit = 0;
+		$seller_pincode = array();
+		$imgurl = '';
+
 		if ($query->num_rows() > 0) {
-			$cart_result = $query->result_object();
+			$cart_result = $query->result_array();
 			foreach ($cart_result as $cart_detail) {
-				$prod_id = $cart_detail->prod_id;
-				$sku = $cart_detail->attr_sku;
-				$vendor_id = $cart_detail->vendor_id;
-				$qty = $cart_detail->qty;
-				$rent_price = $cart_detail->rent_price;
-				$rent_from_date = $cart_detail->rent_from_date;
-				$rent_to_date = $cart_detail->rent_to_date;
-				$cart_type = $cart_detail->cart_type;
+				$prod_id = $cart_detail['prod_id'];
+				$sku = $cart_detail['attr_sku'];
+				$vendor_id = $cart_detail['vendor_id'];
+				$qty = $cart_detail['qty'];
+				$rent_price = $cart_detail['rent_price'];
+				$rent_from_date = $cart_detail['rent_from_date'];
+				$rent_to_date = $cart_detail['rent_to_date'];
+				$cart_type = $cart_detail['cart_type'];
 
 				//check product details
-				$this->db->select("product_sku, prod_name,featured_img,web_url,is_heavy,sellerlogin.companyname as seller,sellerlogin.pincode as seller_pincode, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id,shipping,featured_img,vp.coupon_code,vp.product_tax_class,security_deposit");
-				//join for get vendor product
+				$this->db->select("product_sku, prod_name, featured_img, web_url, is_heavy, sellerlogin.companyname as seller, sellerlogin.pincode as seller_pincode, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id, shipping, featured_img, vp.coupon_code, vp.product_tax_class, security_deposit");
 				$this->db->join('vendor_product vp', 'vp.product_id = product_details.product_unique_id', 'INNER');
 				$this->db->join('sellerlogin', 'sellerlogin.seller_unique_id = vp.vendor_id', 'INNER');
-
 				$this->db->where(array('product_details.status' => 1, 'vp.enable_status' => 1, 'sellerlogin.status' => 1, 'product_unique_id' => $prod_id, 'vendor_id' => $vendor_id));
-
 				$query_prod = $this->db->get('product_details');
 
 				$product_detail = array();
-				$product_detail['mrp1'] = 0;
-				$product_detail['price1'] = 0;
+				$product_detail['mrp'] = 0;
+				$product_detail['price'] = 0;
 				$product_detail['qty'] = 0;
+
 				if ($query_prod->num_rows() > 0) {
-					$prod_result = $query_prod->result_object();
+					$prod_result = $query_prod->row_array();
 
 					$product_detail['prodid'] = $prod_id;
 					$product_detail['qty'] = $qty;
-					$product_detail['mrp'] = price_format(0);
-					$product_detail['price'] = price_format(0);
-					$product_detail['totaloff'] = price_format(0);
 					$product_detail['offpercent'] = 0;
-					$product_detail['shipping_fee'] = $prod_result[0]->shipping;;
-					$product_detail['seller_pincode'] = $prod_result[0]->seller_pincode;
-					$product_detail['coupon_code_vendor'] = $prod_result[0]->coupon_code;
-					$product_detail['security_deposit'] = $prod_result[0]->security_deposit;
+					$product_detail['shipping_fee'] = $prod_result['shipping'];
+					$product_detail['seller_pincode'] = $prod_result['seller_pincode'];
+					$product_detail['coupon_code_vendor'] = $prod_result['coupon_code'];
+					$product_detail['security_deposit'] = $prod_result['security_deposit'];
 
-					$tax_details = $this->get_tax_data($prod_result[0]->product_tax_class);
+					$tax_details = $this->get_tax_data($prod_result['product_tax_class']);
 					$product_detail['product_tax'] =  $tax_details['percent'];
 
 					$ger_vendor_coupon_name = '';
-					if ($prod_result[0]->coupon_code != '') {
-						$this->db->where(array('sno' => $prod_result[0]->coupon_code, 'activate' => 'active'));
+					if ($prod_result['coupon_code'] != '') {
+						$this->db->where(array('sno' => $prod_result['coupon_code'], 'activate' => 'active'));
 						$query_coupon = $this->db->get('coupancode_vendor');
 						$status = '';
 						if ($query_coupon->num_rows() > 0) {
@@ -99,21 +168,21 @@ class Checkout_model extends CI_Model
 						}
 					}
 
-					$img_decode = json_decode($prod_result[0]->featured_img);
+					$img_decode = json_decode($prod_result['featured_img']);
 					$img = $img_decode->{DESKTOP};
 					$product_detail['imgurl'] = $img;
 
-					if ($prod_result[0]->product_sku == $sku) {
+					if ($prod_result['product_sku'] == $sku) {
 						//check vendor product details
 
-						$tot_mrp = ($prod_result[0]->product_mrp * $qty);
-						$tot_price = ($prod_result[0]->product_sale_price * $qty);
+						$tot_mrp = ($prod_result['product_mrp'] * $qty);
+						$tot_price = ($prod_result['product_sale_price'] * $qty);
 
 						$product_detail['mrp'] = price_format($tot_mrp);
 						$product_detail['price'] = price_format($tot_price);
 
-						$product_detail['mrp1'] = $tot_mrp;
-						$product_detail['price1'] = $tot_price;
+						$product_detail['mrp_value'] = $tot_mrp;
+						$product_detail['price_value'] = $tot_price;
 
 						$discount_price = 0;
 						if ($tot_price > 0) {
@@ -124,37 +193,38 @@ class Checkout_model extends CI_Model
 						$product_detail['totaloff'] = price_format($discount_price);
 						$product_detail['offpercent'] = round($discount_per) . '% off';
 					} else {
-						$vendor_prod_id = $prod_result[0]->vendor_prod_id;
+						$vendor_prod_id = $prod_result['vendor_prod_id'];
 
 						$this->db->select("prod_attr_value, price, mrp, stock");
 						$this->db->where(array('product_id' => $prod_id, 'vendor_prod_id' => $vendor_prod_id, 'product_sku' => $sku));
-
 						$query_prod_attr = $this->db->get('product_attribute_value');
 
 						if ($query_prod_attr->num_rows() > 0) {
-							$prod_attr_result = $query_prod_attr->result_object();
+							$prod_attr_result = $query_prod_attr->result_array();
 
-							$tot_mrp1 = ($prod_attr_result[0]->mrp * $qty);
-							$tot_price1 = ($prod_attr_result[0]->price * $qty);
+							$tot_mrp = ($prod_attr_result['mrp'] * $qty);
+							$tot_price = ($prod_attr_result['price'] * $qty);
 
-							$product_detail['mrp'] = price_format($tot_mrp1);
-							$product_detail['price'] = price_format($tot_price1);
+							$product_detail['mrp'] = price_format($tot_mrp);
+							$product_detail['price'] = price_format($tot_price);
 
-							$product_detail['mrp1'] = $tot_mrp1;
-							$product_detail['price1'] = $tot_price1;
+							$product_detail['mrp_value'] = $tot_mrp;
+							$product_detail['price_value'] = $tot_price;
 
 							$discount_price = 0;
-							if ($tot_price1 > 0) {
-								$discount_price = ($tot_mrp1 - $tot_price1);
+							if ($tot_price > 0) {
+								$discount_price = ($tot_mrp - $tot_price);
 
-								$discount_per = ($discount_price / $tot_mrp1) * 100;
+								$discount_per = ($discount_price / $tot_mrp) * 100;
 							}
 							$product_detail['totaloff'] = price_format($discount_price);
 							$product_detail['offpercent'] = round($discount_per) . '% off';
 						}
 					}
-					$is_heavy = $prod_result[0]->is_heavy;
-					$shipping_fee1 = 0;
+
+					$is_heavy = $prod_result['is_heavy'];
+					$shipping_fee = 0;
+
 					if ($delivery_array) {
 						$total_price_value = preg_replace('/\D/', "", $product_detail['price'], -1);
 						if ($is_heavy == 1 &&  $total_price_value < $delivery_array['order_value']) {
@@ -164,105 +234,52 @@ class Checkout_model extends CI_Model
 							$shipping_fee1 = $delivery_array['basic_fee'];
 							$product_detail['shipping_fee'] = price_format($delivery_array['basic_fee']);
 						}
-					} 
-					
-					if($rent_price != '')
-					{
-						$product_detail['mrp'] = ($product_detail['security_deposit']+$rent_price);
-						$product_detail['mrp1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
-						$product_detail['price1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
-						$product_detail['price'] = ($product_detail['security_deposit']+$rent_price);
-						$product_detail['totaloff'] = '';
 					}
-					
-					
-					
+
+					$security_deposit = 0;
+					if ($cart_type == 'Rent' && $rent_price != '') {
+						$security_deposit = $product_detail['security_deposit'] * $qty;
+						$product_detail['mrp'] = price_format($rent_price * $qty);
+						$product_detail['price'] = price_format($rent_price * $qty);
+						$product_detail['mrp_value'] = $rent_price * $qty;
+						$product_detail['price_value'] = $rent_price * $qty;
+						$product_detail['totaloff'] = price_format(0);
+					}
 				}
 
-				$net_tax_amount = ($product_detail['price1'] * 100) / ($product_detail['product_tax'] + 100);
+				$net_tax_amount = ($product_detail['price_value'] * 100) / ($product_detail['product_tax'] + 100);
 				$tax_get = round($net_tax_amount * $product_detail['product_tax'] / 100, 2);
 
 
-				$total_mrp += $product_detail['mrp1'];
+				$total_mrp += $product_detail['mrp_value'];
 				$total_tax += $tax_get;
 
-				$total_price += $product_detail['price1'];
+				$total_price += $product_detail['price_value'];
 				$total_item += $product_detail['qty'];
-				/*$total_shipping_fee += $shipping_fee1;*/
-				$seller_pincode = $product_detail['seller_pincode'];
-				$imgurl = $product_detail['imgurl'];
 
+				$total_security_deposit += $security_deposit;
 
+				$seller_pincode[] = array('prodid' => $product_detail['prodid'], 'seller_pincode' => $product_detail['seller_pincode']);
 
-				if ($validate_coupon != 'invalid') {
-
-					$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-					$query_coupon = $this->db->get('coupancode');
-
-					$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-					$query_coupon_vendor = $this->db->get('coupancode_vendor');
-
-					$status = '';
-					if ($query_coupon->num_rows() > 0) {
-						$coupon_result = $query_coupon->result_object()[0];
-						$product_detail['coupon_type'] = $coupon_result->coupon_type;
-						$product_detail['user_apply'] = $coupon_result->user_apply;
-						$product_detail['coupon_value'] = $coupon_result->value;
-						$product_detail['cap_value'] = $coupon_result->cap_value;
-						if ($product_detail['coupon_type'] == 1) {
-							$coupon_discount0 =  ($product_detail['price1'] / 100) * $coupon_result->value;
-						} else if ($product_detail['coupon_type'] == 2) {
-							$coupon_discount0 =  $product_detail['price1'] - $coupon_result->value;
-						}
-						$payable_amount = ($product_detail['price1'] - $coupon_result->value);
-						$product_detail['coupon_discount_text'] = price_format($coupon_result->value);
-						$product_detail['coupon_discount'] = $coupon_result->value;
-						$product_detail['payable_amount'] = price_format($payable_amount);
-						$product_detail['payable_amount_value'] = $payable_amount;
-						$product_detail['total_price_value'] = $payable_amount;
-						$product_detail['price1'] = $product_detail['payable_amount'];
-						$coupon_discount += $coupon_discount0;
-					} else if ($query_coupon_vendor->num_rows() > 0 && $coupon_code == $ger_vendor_coupon_name) {
-						$coupon_result = $query_coupon_vendor->result_object()[0];
-						$product_detail['coupon_type'] = $coupon_result->coupon_type;
-						$product_detail['user_apply'] = $coupon_result->user_apply;
-						$product_detail['coupon_value'] = $coupon_result->value;
-						$product_detail['cap_value'] = $coupon_result->cap_value;
-						if ($product_detail['coupon_type'] == 1) {
-							$coupon_discount0 =  ($product_detail['price1'] / 100) * $coupon_result->value;
-						} else if ($product_detail['coupon_type'] == 2) {
-							$coupon_discount0 =  $product_detail['price1'] - $coupon_result->value;
-						}
-						$payable_amount = ($product_detail['price1'] - $coupon_result->value);
-						$product_detail['coupon_discount_text'] = price_format($coupon_result->value);
-						$product_detail['coupon_discount'] = $coupon_result->value;
-						$product_detail['payable_amount'] = price_format($payable_amount);
-						$product_detail['payable_amount_value'] = $payable_amount;
-						$product_detail['total_price_value'] = $payable_amount;
-						$product_detail['price1'] = $product_detail['payable_amount'];
-						$coupon_discount += $coupon_discount0;
-					} else {
-						$product_detail['coupon_type'] = "";
-						$product_detail['user_apply'] = "";
-						$product_detail['coupon_value'] = "";
-						$product_detail['cap_value'] = "";
-						$product_detail['coupon_discount_text'] = "";
-						$product_detail['coupon_discount'] = "";
-						$product_detail['payable_amount'] = "";
-						$product_detail['payable_amount_value'] = "";
-						$product_detail['total_price_value'] = "";
+				if ($coupon_code  != '' && is_object($validate_coupon)) {
+					$product_detail['coupon_type'] = $validate_coupon->coupon_type;
+					$product_detail['user_apply'] = $validate_coupon->user_apply;
+					$product_detail['coupon_value'] = $validate_coupon->value;
+					$product_detail['cap_value'] = $validate_coupon->cap_value;
+					if ($product_detail['coupon_type'] == 1) {
+						$coupon_discount =  ($product_detail['price_value'] / 100) * $validate_coupon->value;
+					} else if ($product_detail['coupon_type'] == 2) {
+						$coupon_discount =  $product_detail['price_value'] - $validate_coupon->value;
 					}
+					$payable_amount = $product_detail['price_value'] - $coupon_discount;
+					$product_detail['coupon_discount_text'] = price_format($coupon_discount);
+					$product_detail['coupon_discount'] = $coupon_discount;
+					$product_detail['payable_amount'] = price_format($payable_amount);
+					$product_detail['payable_amount_value'] = $payable_amount;
+					$product_detail['total_price_value'] = $payable_amount;
 				}
 
-				/*if($shipping_pincode != 0 && $shipping_pincode != ''){
-					$shiping_detail = $this->address_model->get_shippinf_details_full($seller_pincode,$shipping_pincode,$total_price);		
-				}
-				
-				$total_shipping_fee += $shiping_detail;*/
 				$total_shipping_fee += $product_detail['shipping_fee'];
-				unset($product_detail['mrp1']);
-				unset($product_detail['price1']);
-				$product_detail_array[] = $product_detail;
 			}
 		}
 
@@ -282,7 +299,6 @@ class Checkout_model extends CI_Model
 				$defaultaddress = $address_result[0]->defaultaddress;
 
 				$address_arr = json_decode($addressarray, true);
-				//print_r($address_arr);
 
 				foreach ($address_arr as $address) {
 					if ($address['address_id'] == $defaultaddress) {
@@ -292,20 +308,30 @@ class Checkout_model extends CI_Model
 			}
 		}
 
-		/*$tax_payable = 0;*/
 		$shipping_fee = $total_shipping_fee;
-		//$coupon_code = '';
-		//$coupon_discount = 0;
 
 		return array(
-			'user_address' => $user_address, 'total_mrp' => price_format($total_mrp), 'total_discount' => price_format($total_mrp - $total_price), 'total_price' => price_format($total_price),
-			'total_item' => $total_item, 'tax_payable' => round($total_tax, 0), 'coupon_code' => $coupon_code, 'coupon_discount' => round($coupon_discount, 0), 'shipping_fee' => $shipping_fee, 'payable_amount' => price_format($total_price + $shipping_fee - round($coupon_discount, 0)), 'payable_amount_value' => $total_price + $shipping_fee - round($coupon_discount, 0), 'total_price_value' => $total_price + $shipping_fee - round($coupon_discount, 0), 'seller_pincode' => $seller_pincode, 'imgurl' => $imgurl
+			'user_address' => $user_address,
+			'security_deposit' => price_format($total_security_deposit),
+			'total_mrp' => price_format($total_mrp),
+			'total_discount' => price_format($total_mrp - $total_price),
+			'total_price' => price_format($total_price),
+			'total_item' => $total_item,
+			'tax_payable' => price_format($total_tax),
+			'coupon_code' => $coupon_code,
+			'coupon_discount' => $coupon_discount,
+			'shipping_fee' => $shipping_fee,
+			'payable_amount' => price_format($total_price + $shipping_fee + $total_security_deposit - $coupon_discount),
+			'payable_amount_value' => $total_price + $shipping_fee + $total_security_deposit - $coupon_discount,
+			'total_price_value' => $total_price + $shipping_fee - $coupon_discount,
+			'seller_pincode' => $seller_pincode,
+			'imgurl' => $imgurl
 		);
 	}
 
 	//function for place order
 
-	function place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id)
+	function place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id)
 	{
 		$status = array('status' => '');
 		$delivery_array = $order = array();
@@ -329,7 +355,7 @@ class Checkout_model extends CI_Model
 		if ($query->num_rows() > 0) {
 			$order_id = strtoupper('ODR' . $this->random_strings(6) . date("hi") . rand(1, 99));
 
-			$add_order = $this->create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress,  $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id);
+			$add_order = $this->create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress,  $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id);
 
 			if ($add_order != 'add') {
 				return false;
@@ -366,7 +392,7 @@ class Checkout_model extends CI_Model
 				$product_detail['qty'] = 0;
 				$product_detail['mrp'] = 0;
 				$product_detail['price'] = 0;
-				$product_detail['price1'] = 0; 
+				$product_detail['price1'] = 0;
 				$product_detail['totaloff'] = 0;
 				$product_detail['totaloff1'] = 0;
 				if ($query_prod->num_rows() > 0) {
@@ -489,13 +515,12 @@ class Checkout_model extends CI_Model
 					}
 
 					$invoice_number = $this->generate_invoice_number($product_detail['vendor_id']);
-					
-					if($rent_price != '')
-					{
-						$product_detail['mrp'] = ($product_detail['security_deposit']+$rent_price);
-						$product_detail['mrp1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
-						$product_detail['price1'] = ($product_detail['security_deposit']+$rent_price) * $qty;
-						$product_detail['price'] = ($product_detail['security_deposit']+$rent_price);
+
+					if ($rent_price != '') {
+						$product_detail['mrp'] = ($product_detail['security_deposit'] + $rent_price);
+						$product_detail['mrp1'] = ($product_detail['security_deposit'] + $rent_price) * $qty;
+						$product_detail['price1'] = ($product_detail['security_deposit'] + $rent_price) * $qty;
+						$product_detail['price'] = ($product_detail['security_deposit'] + $rent_price);
 						$product_detail['totaloff'] = '';
 					}
 
@@ -1177,7 +1202,7 @@ class Checkout_model extends CI_Model
 		return $seller_inv;
 	}
 
-	function create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$state,$city,$city_id)
+	function create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id)
 	{
 		$status = '';
 		$order = array();
@@ -1208,7 +1233,7 @@ class Checkout_model extends CI_Model
 		$order['state'] = $state;
 		$order['city'] = $city;
 		$order['cityid'] = $city_id;
-		
+
 		$query = $this->db->insert('orders', $order);
 		if ($query) {
 			$status = 'add';
@@ -1290,84 +1315,6 @@ class Checkout_model extends CI_Model
 
 	function update_vendor_payment($prodid, $vendor_id, $qty, $price, $shipping)
 	{
-	}
-
-	///check copuon code
-
-	function Validate_coupon_code($user_id, $coupon_code, $type = '')
-	{
-
-		$this->db->select("*");
-		$date = date('Y-m-d');
-		$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-
-		$query_coupon = $this->db->get('coupancode');
-		$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-		$query_coupon_vendor = $this->db->get('coupancode_vendor');
-		$status = '';
-		if ($query_coupon->num_rows() > 0) {
-			$coupon_result = $query_coupon->result_object()[0];
-
-			$user_apply = $coupon_result->user_apply;
-
-			if ($type != 'product') {
-				if ($user_id) {
-					$this->db->select("user_id");
-					$this->db->where(array('user_id' => $user_id));
-
-					$query_order = $this->db->get('orders');
-					$total_applied = $query_order->num_rows();
-
-					if ($total_applied > $user_apply) {
-						return 'applied_exced';
-					}
-				} else {
-					return $status = 'login_required';
-				}
-			}
-
-			$fromdate = $coupon_result->fromdate;
-			$todate = $coupon_result->todate;
-			if ($fromdate != '0000-00-00' && $todate != '0000-00-00') {
-				if ($date >= $fromdate && $date <= $todate) {
-					return $coupon_result;
-				} else {
-					$status = 'expired';
-				}
-			} else {
-				$status = 'invalid';
-			}
-		} else if ($query_coupon_vendor->num_rows() > 0) {
-			$coupon_result = $query_coupon_vendor->result_object()[0];
-			$user_apply = $coupon_result->user_apply;
-			if ($type != 'product') {
-				if ($user_id) {
-					$this->db->select("user_id");
-					$this->db->where(array('user_id' => $user_id));
-					$query_order = $this->db->get('orders');
-					$total_applied = $query_order->num_rows();
-					if ($total_applied > $user_apply) {
-						return 'applied_exced';
-					}
-				} else {
-					return $status = 'login_required';
-				}
-			}
-			$fromdate = $coupon_result->fromdate;
-			$todate = $coupon_result->todate;
-			if ($fromdate != '0000-00-00' && $todate != '0000-00-00') {
-				if ($date >= $fromdate && $date <= $todate) {
-					return $coupon_result;
-				} else {
-					$status = 'expired';
-				}
-			} else {
-				$status = 'invalid';
-			}
-		} else {
-			$status = 'invalid';
-		}
-		return $status;
 	}
 
 

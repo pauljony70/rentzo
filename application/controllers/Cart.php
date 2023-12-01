@@ -194,7 +194,7 @@ class Cart extends REST_Controller
 		$rent_price = removeSpecialCharacters($this->post('rent_price'));
 		$rent_from_date = removeSpecialCharacters($this->post('rent_from_date'));
 		$rent_to_date = removeSpecialCharacters($this->post('rent_to_date'));
-		$cart_type = removeSpecialCharacters($this->post('cart_type'));
+		$cart_type = 'Rent';
 
 		if (empty($this->session->userdata('qoute_id'))) {
 			$newdata = array(

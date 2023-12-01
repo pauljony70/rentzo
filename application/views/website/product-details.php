@@ -573,9 +573,10 @@
 							-->
 							<div class="badges mb-4">
 								<div class="d-flex flex-wrap">
-									<img src="<?= base_url('assets_web/images/badges/badge1.png') ?>" alt="Badge">
-									<img src="<?= base_url('assets_web/images/badges/badge2.png') ?>" alt="Badge">
-									<img src="<?= base_url('assets_web/images/badges/badge3.png') ?>" alt="Badge">
+									<?php if($productdetails['seller_badge'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge']) ?>" alt="Badge 1"><?php } ?>
+									<?php if($productdetails['seller_badge1'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge1']) ?>" alt="Badge 2"><?php } ?>
+									<?php if($productdetails['seller_badge2'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge2']) ?>" alt="Badge 3"><?php } ?>
+									
 								</div>
 							</div>
 

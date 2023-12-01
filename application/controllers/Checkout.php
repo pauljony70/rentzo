@@ -17,13 +17,13 @@ class Checkout extends REST_Controller
 		$this->load->model('delivery_model');
 		$this->load->model('home_model');
 	}
-	
+
 	public function send_email_get()
 	{
 		echo "hi";
 		send_email_smtp('chiragsavaliya67@gmail.com', "hello", "fleek subject");
 	}
-	
+
 	public function index_get()
 	{
 		$default_language = $this->session->userdata("default_language");
@@ -133,11 +133,9 @@ class Checkout extends REST_Controller
 
 					], self::HTTP_OK);
 				}
-				if ($cart_detail > 0) {
-					$validate_coupon = '';
-					$coupon_discount = '';
-					/*if(trim($coupon_code)){*/
-					if (($cart_detail['coupon_discount1'])) {
+				if (!empty($cart_detail)) {
+
+					if ($coupon_code != '') {
 						$validate_coupon = $this->checkout_model->Validate_coupon_code($user_id, $coupon_code, '');
 
 						if ($validate_coupon == 'invalid') {
@@ -154,10 +152,10 @@ class Checkout extends REST_Controller
 								$this->config->item('rest_data_field_name') => $cart_detail,
 
 							], self::HTTP_OK);
-						} else if ($validate_coupon == 'applied_exced') {
+						} else if ($validate_coupon == 'applied_exceed') {
 							$this->response([
 								$this->config->item('rest_status_field_name') => 2,
-								$this->config->item('rest_message_field_name') => get_phrase('applied_exced', $language_code),
+								$this->config->item('rest_message_field_name') => get_phrase('applied_exceed', $language_code),
 								$this->config->item('rest_data_field_name') => $cart_detail,
 
 							], self::HTTP_OK);
@@ -169,7 +167,12 @@ class Checkout extends REST_Controller
 
 							], self::HTTP_OK);
 						} else	if ($validate_coupon->min_order > 0 && $cart_detail['total_price_value'] < $validate_coupon->min_order) {
-							$validate_coupon = 'less_amount';
+							$this->response([
+								$this->config->item('rest_status_field_name') => 2,
+								$this->config->item('rest_message_field_name') => get_phrase('less_cart_value', $language_code),
+								$this->config->item('rest_data_field_name') => $cart_detail,
+
+							], self::HTTP_OK);
 						} else {
 							$coupon_type = $validate_coupon->coupon_type;
 							$value = $validate_coupon->value;
@@ -188,57 +191,23 @@ class Checkout extends REST_Controller
 							$cart_detail['total_price_value'] = $payable_amount;
 						}
 						$cart_detail['coupon_code'] = $coupon_code;
-					} else {
-						if ($coupon_discount > 0) {
-							$msgs = get_phrase('coupon_applied_successfully', $language_code);
-						} else {
-							$msgs = get_phrase('checkout_details', $language_code);
-						}
-						$this->response([
-							$this->config->item('rest_status_field_name') => 1,
-							$this->config->item('rest_message_field_name') => $msgs,
-							$this->config->item('rest_data_field_name') => $cart_detail,
-							'qouteid' => $qouteid
-						], self::HTTP_OK);
 					}
-
-
-					if ($validate_coupon == 'invalid') {
-						$this->response([
-							$this->config->item('rest_status_field_name') => 2,
-							$this->config->item('rest_message_field_name') => get_phrase('invalid_coupon', $language_code),
-							$this->config->item('rest_data_field_name') => $cart_detail,
-							'qouteid' => $qouteid
-
-						], self::HTTP_OK);
-					} else if ($validate_coupon == 'less_amount') {
-						$this->response([
-							$this->config->item('rest_status_field_name') => 2,
-							$this->config->item('rest_message_field_name') => get_phrase('amount_less_coupon_limit', $language_code),
-							$this->config->item('rest_data_field_name') => $cart_detail,
-							'qouteid' => $qouteid
-
-						], self::HTTP_OK);
+					
+					if ($cart_detail['coupon_discount'] > 0) {
+						$msgs = get_phrase('coupon_applied_successfully', $language_code);
 					} else {
-						if ($coupon_discount > 0) {
-							$msgs = get_phrase('coupon_applied_successfully', $language_code);
-						} else {
-							$msgs = get_phrase('checkout_details', $language_code);
-						}
-						$this->response([
-							$this->config->item('rest_status_field_name') => 1,
-							$this->config->item('rest_message_field_name') => $msgs,
-							$this->config->item('rest_data_field_name') => $cart_detail,
-							'qouteid' => $qouteid
-
-						], self::HTTP_OK);
+						$msgs = get_phrase('checkout_details', $language_code);
 					}
+					$this->response([
+						$this->config->item('rest_status_field_name') => 1,
+						$this->config->item('rest_message_field_name') => $msgs,
+						$this->config->item('rest_data_field_name') => $cart_detail,
+					], self::HTTP_OK);
 				} else {
 					$this->response([
 						$this->config->item('rest_status_field_name') => 0,
 						$this->config->item('rest_message_field_name') => get_phrase('cart_empty', $language_code),
 						$this->config->item('rest_data_field_name') => $cart_detail,
-						'qouteid' => $qouteid
 
 					], self::HTTP_OK);
 				}
@@ -253,7 +222,6 @@ class Checkout extends REST_Controller
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('checkout_details', $language_code),
 					$this->config->item('rest_data_field_name') => $res,
-					'qouteid' => $qouteid
 
 				], self::HTTP_OK);
 			}
@@ -289,10 +257,10 @@ class Checkout extends REST_Controller
 						$this->config->item('rest_data_field_name') => $cart_detail
 
 					], self::HTTP_OK);
-				} else if ($validate_coupon == 'applied_exced') {
+				} else if ($validate_coupon == 'applied_exceed') {
 					$this->response([
 						$this->config->item('rest_status_field_name') => 2,
-						$this->config->item('rest_message_field_name') => get_phrase('applied_exced', $language_code),
+						$this->config->item('rest_message_field_name') => get_phrase('applied_exceed', $language_code),
 						$this->config->item('rest_data_field_name') => $cart_detail
 
 					], self::HTTP_OK);

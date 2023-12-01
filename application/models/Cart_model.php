@@ -283,9 +283,7 @@ class Cart_model extends CI_Model
 			$delivery_array = $this->delivery_model->get_delivery_city_details_request($shipping_city);
 		}
 		$this->db->select("prod_id, attr_sku, vendor_id, qty,qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
-
 		$this->db->where(array('user_id' => $user_id));
-
 		$query = $this->db->get('cartdetails');
 
 		$product_detail_array = array();
@@ -305,7 +303,7 @@ class Cart_model extends CI_Model
 				$rent_from_date = $cart_detail->rent_from_date;
 				$rent_to_date = $cart_detail->rent_to_date;
 				$cart_type = $cart_detail->cart_type;
-				if($cart_type == '')
+				if($cart_type !== 'Rent')
 				{
 					$cart_type = 'Purchase';
 				}

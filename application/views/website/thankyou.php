@@ -46,21 +46,6 @@
 				<div class="thank-you-heading mb-2">Your Order has been received</div>
 				<div class="thank-you-des">Your Order id <?= $order_id; ?></div>
 				<a href="<?= base_url() ?>" class="btn btn-primary shop-more-btn">Shop more</a>
-				<!-- <div class="block d-md-none">
-					<img src="<?php echo base_url; ?>assets_web/images/icons/thanks-icon.png" alt="" class="thanks-img" />
-					<h5>Your Order has been placed Successfully.</h5>
-				</div>
-				<div class="wrap box-shadow text-center">
-					<div class="block d-none d-md-block">
-						<img src="<?php echo base_url; ?>assets_web/images/icons/thanks-icon.png" alt="" class="thanks-img" />
-						<h5>Your Order has been placed Successfully.</h5>
-					</div>
-					<h6>Thank you for Purchasing.</h6>
-					<h6>Your Order is confirmed.</h6>
-					<h4>YOUR ORDER ID IS <?php echo $order_id; ?></h4>
-					<p>You will get update about your order, on your registered email and phone number.</p>
-					<br>
-				</div> -->
 			</div>
 		</section>
 		<!--End: Thanks Section -->
@@ -71,7 +56,7 @@
 	<?php include("include/script.php") ?>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
+		/* $(document).ready(function() {
 			var order_id = $('#order_id').val();
 			$.ajax({
 				method: 'get',
@@ -85,7 +70,7 @@
 
 				}
 			});
-		});
+		}); */
 	</script>
 
 </body>

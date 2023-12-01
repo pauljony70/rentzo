@@ -88,11 +88,11 @@
 												<div class="d-flex justify-content-between mb-2">
 													<div class="quantity mb-4">
 														<div class="input-group mb-3">
-															<button type="button" class="btn minus" type="button" id="" onclick="add_product_qty('<?= $cart_product['prodid']; ?>','<?= $cart_product['sku']; ?>','<?= $cart_product['vendor_id']; ?>','<?= $this->session->userdata('user_id'); ?>',<?= $cart_product['qty']; ?>-1,'',2,'<?= $cart['qoute_id']; ?>')">
+															<button type="button" class="btn minus" data-prodid="<?= $cart_product['prodid']; ?>" data-sku="<?= $cart_product['sku']; ?>" data-vendor="<?= $cart_product['vendor_id']; ?>" data-userid="<?= $this->session->userdata('user_id'); ?>" data-qty="<?= $cart_product['qty'] - 1; ?>" data-qouteid="<?= $cart['qoute_id']; ?>" data-rentprice="<?= $cart_product['rent_price'] ?>" data-rentfrom="<?= $cart_product['rent_from_date'] ?>" data-rentto="<?= $cart_product['rent_to_date'] ?>" data-carttype="<?= $cart_product['cart_type'] ?>">
 																<i class="fa-solid fa-minus"></i>
 															</button>
 															<input type="text" class="form-control text-center" id="floatingInputGroup1" placeholder="" value="<?= $cart_product['qty'] ?>" readonly>
-															<button type="button" class="btn plus" type="button" id="" onclick="add_product_qty('<?= $cart_product['prodid']; ?>','<?= $cart_product['sku']; ?>','<?= $cart_product['vendor_id']; ?>','<?= $this->session->userdata('user_id'); ?>',<?= $cart_product['qty'] + 1; ?>,'',2,'<?= $cart['qoute_id']; ?>')">
+															<button type="button" class="btn plus" data-prodid="<?= $cart_product['prodid']; ?>" data-sku="<?= $cart_product['sku']; ?>" data-vendor="<?= $cart_product['vendor_id']; ?>" data-userid="<?= $this->session->userdata('user_id'); ?>" data-qty="<?= $cart_product['qty'] + 1; ?>" data-qouteid="<?= $cart['qoute_id']; ?>" data-rentprice="<?= $cart_product['rent_price'] ?>" data-rentfrom="<?= $cart_product['rent_from_date'] ?>" data-rentto="<?= $cart_product['rent_to_date'] ?>" data-carttype="<?= $cart_product['cart_type'] ?>">
 																<i class="fa-solid fa-plus"></i>
 															</button>
 														</div>
@@ -125,18 +125,18 @@
 								<div class="cart-sammary">
 									<div class="d-flex justify-content-between mb-4">
 										<div class="heading">Price</div>
-										<div class="price text-end"><?= $cart['total_mrp']; ?></div>
+										<div class="price text-end" id="total_mrp"><?= $cart['total_mrp']; ?></div>
 									</div>
 									<div class="d-flex justify-content-between">
 										<div class="heading">Discount</div>
-										<div class="price text-end"><?= $cart['total_discount']; ?></div>
+										<div class="price text-end" id="total_discount"><?= $cart['total_discount']; ?></div>
 									</div>
 								</div>
 								<hr>
 								<div class="cart-sammary cart-total">
 									<div class="d-flex justify-content-between mb-4">
 										<div class="heading">TOTAL</div>
-										<div class="price text-end fw-bolder"><?= $cart['payable_amount']; ?></div>
+										<div class="price text-end fw-bolder" id="total_price"><?= $cart['payable_amount']; ?></div>
 									</div>
 								</div>
 								<a href="<?= base_url('checkout') ?>" id="cart-continue-btn" class="btn btn-primary w-100">Proceed to Checkout</a>
@@ -181,51 +181,36 @@
 			});
 		}
 
-		function add_product_qty(
-			prod_id,
-			sku,
-			vendor_id,
-			user_id,
-			qty,
-			referid,
-			devicetype,
-			qouteid
-		) {
-			$.ajax({
-				method: "post",
-				url: site_url + "addProductCart",
-				data: {
-					language: default_language,
-					pid: prod_id,
-					sku: sku,
-					sid: vendor_id,
-					user_id: user_id,
-					qty: qty,
-					referid: referid,
-					devicetype: 2,
-					qouteid: qouteid,
-					[csrfName]: csrfHash,
-				},
-				success: function(response) {
-					//hideloader();
-					//$(".table").load(location.href + " .table");
-					//alert(response.msg);
-					// alert(response.status);
-					//location.reload();
-					if (response.status == 1) {
-						location.reload();
-						/*Swal.fire({
-							position: "center",
-							title: response.msg,
-							showConfirmButton: false,
-							confirmButtonColor: '#ff5400',
-							timer: 3000
-						})
-						setTimeout(function() {
-							location.reload();
-						}, 2000);*/
-					} else {
-						if (response.msg !== 'Cart invalid request') {
+		function add_product_qty(ele) {
+			var qty = ele.dataset.qty;
+			if (qty > 0) {
+				$.ajax({
+					method: "post",
+					url: site_url + (ele.dataset.carttype === 'Rent' ? "addProductCartRent" : 'addProductCart'),
+					data: {
+						language: default_language,
+						pid: ele.dataset.prodid,
+						sku: ele.dataset.sku,
+						sid: ele.dataset.vendor,
+						user_id: ele.dataset.userid,
+						qty: qty,
+						referid: '',
+						devicetype: 2,
+						qouteid: ele.dataset.qouteid,
+						rent_price: ele.dataset.rentprice,
+						rent_from_date: ele.dataset.rentfrom,
+						rent_to_date: ele.dataset.rentto,
+						[csrfName]: csrfHash,
+					},
+					success: function(response) {
+						if (response.status == 1) {
+							ele.parentElement.querySelector('#floatingInputGroup1').value = qty;
+							ele.parentElement.querySelector('.btn.minus').dataset.qty = parseInt(qty) - 1;
+							ele.parentElement.querySelector('.btn.plus').dataset.qty = parseInt(qty) + 1;
+							document.getElementById('total_mrp').innerText = response.total_mrp;
+							document.getElementById('total_discount').innerText = response.total_discount;
+							document.getElementById('total_price').innerText = response.total_price;
+						} else {
 							Swal.fire({
 								title: response.msg,
 								type: 'error',
@@ -234,11 +219,23 @@
 								timer: 1000
 							});
 						}
-					}
 
-				},
-			});
+					},
+				});
+			}
 		}
+
+		document.querySelectorAll('.btn.plus').forEach(plusBtn => {
+			plusBtn.addEventListener('click', function() {
+				add_product_qty(this);
+			});
+		});
+
+		document.querySelectorAll('.btn.minus').forEach(minusBtn => {
+			minusBtn.addEventListener('click', function() {
+				add_product_qty(this);
+			});
+		});
 	</script>
 
 </body>

@@ -823,8 +823,8 @@ class HomeController extends REST_Controller
 
 
 		if ($validation == 'valid') {
-
-			$city_array = $this->home_model->city_list_request();
+			$state_code = $this->post('state_code');
+			$city_array = $this->home_model->city_list_request($state_code);
 			if (count($city_array) > 0) {
 
 				$this->responses(1, 'City List', $city_array);

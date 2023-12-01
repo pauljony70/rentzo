@@ -14,7 +14,7 @@
 				<div class="icon">
 					<img src="<?= base_url('assets_web/images/icons/cart-blue.svg') ?>" alt="Orders">
 				</div>
-				<div class="text">Order And Returns</div>
+				<div class="text">Orders</div>
 			</a>
 			<a href="<?= base_url('myaddress') ?>" class="d-flex align-items-center mb-4">
 				<div class="icon">

@@ -170,7 +170,7 @@ class Cart extends REST_Controller {
 	}
 	
 	
-	public function addProductCart_post(){
+	public function addProductCartRent_post(){
 		$requiredparameters = array('language','pid','sku','sid','user_id','qty','referid','devicetype','qouteid');
 		
 		$language_code = removeSpecialCharacters($this->post('language'));

@@ -15,11 +15,23 @@ class Home extends REST_Controller
 		$this->load->model('address_model');
 		$this->load->model('delivery_model');
 		$this->load->model('Brand_model');
+		$this->load->model('email_model');
 	}
 
 	public function thankyou_seller_get()
 	{
 		$this->load->view('website/thankyou_seller.php', $this->data);
+	}
+	
+	public function video_get()
+	{
+		$this->load->view('website/video_call.php', $this->data);
+	}
+	
+	public function email_videocall_get()
+	{
+		$email = $this->input->get('email');
+		$this->email_model->sendEmail_videocall($email);
 	}
 
 	public function logout_data_get()

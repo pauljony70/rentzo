@@ -96,66 +96,36 @@ function getCitydata(stateid) {
 
 var timeout = null;
 
-function get_checkout_data(user_pincode) {
-    //alert('ssss');
-    $('#coupon_message').html('');
-    var input_code = $('#coupon_code').val();
-    var city = $("#city option:selected").val();
-    $(".paymentMethodBtn").prop('disabled', true);
+function get_checkout_data() {
+    var user_pincode = $('#pincode').val();
+    document.getElementById('placeOrderBtn').disabled = true;
     $.ajax({
         method: "post",
         url: site_url + "checkout",
         data: {
             language: default_language,
-            coupon_code: input_code,
-            shipping_city: city,
+            coupon_code: '',
             shipping_pincode: user_pincode,
             [csrfName]: csrfHash
         },
         success: function (response) {
-
             var parsedJSON = response.Information;
-            var product_html = "";
-            $(".paymentMethod").empty();
-            $('#total_discount_data').text();
-            if (response.status == 2) {
-                $('#coupon_message').html(response.msg);
-                /*Swal.fire({
-                    position: "center",
-                    //icon: "success",
-                    title: response.msg,
-                    showConfirmButton: false,
-                    confirmButtonColor: "#ff5400",
-                    timer: 3000,
-                });*/
-            }
-            $(parsedJSON).each(function () {
-                $('#payable_value').text(this.total_mrp);
-                $('#discount_value').text(this.total_discount);
-                $('#tex_value').text(this.tax_payable);
-                $('#shipping_fee').text(this.shipping_fee === 0 ? 'FREE' : this.shipping_fee);
-                $('#total_val').text(this.payable_amount);
-                $('#coupon_message').html();
-                //alert(this.shipping_fee);
-                if (this.coupon_code != '') {
-                    $('#total_discount_data').text('Total Savings :' + this.coupon_discount_text);
-                    $('#coupo_discount_value').text(this.coupon_discount);
-                    $('#coupon_message').html('Coupon applied successfully.');
-                }
-                $(".paymentMethodBtn").prop('disabled', false);
 
-                /*product_html += '<a onclick="place_order_data(event)" href="javascript:void(0);" class="btn btn-default paymentMethodBtn">Place Order</a>';
-                $(".paymentMethod").html(product_html);
-                alert(this.payable_amount);*/
+            $(parsedJSON).each(function () {
+                $('#total_mrp').text(this.total_mrp);
+                $('#total_mrp1').text(this.total_mrp);
+                $('#discount_value').text(this.total_discount);
+                $('#discount_value1').text(this.total_discount);
+                $('#tex_value').text(this.tax_payable);
+                $('#tex_value1').text(this.tax_payable);
+                $('#shipping_fee').text(this.shipping_fee === 0 ? 'FREE' : this.shipping_fee);
+                $('#shipping_fee1').text(this.shipping_fee === 0 ? 'FREE' : this.shipping_fee);
+                $('#total_val').text(this.payable_amount);
+                $('#total_val1').text(this.payable_amount);
+                document.getElementById('placeOrderBtn').disabled = false;
             });
-            //alert(response);
         }
     });
-}
-
-function get_shipping() {
-    var pincode = $('#pincode').val();
-    get_checkout_data(pincode);
 }
 
 const verifyKycDocument = async () => {

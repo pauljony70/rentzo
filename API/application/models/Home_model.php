@@ -24,25 +24,28 @@ class Home_model extends CI_Model
 	function get_rents_data_request($pid)
 	{
 		$return = array();
-		$i =0;
+		$i = 0;
 		$this->db->select('rent_from_date, rent_to_date');
 		$this->db->where_in('prod_id', $pid);
-		
+
 		$query = $this->db->get('order_product');
 		$state_array = $query->result_object();
-		foreach($state_array as $state_details){
-			$return[$i] = 
-        					array(	
-        					    'rent_from_date' => $state_details->rent_from_date,
-        						'rent_to_date' => $state_details->rent_to_date);
-              		   $i = $i+1;  			  
-                $status = 1;
-                $msg = "Details here";
+		foreach ($state_array as $state_details) {
+			$return[$i] =
+				array(
+					'rent_from_date' => $state_details->rent_from_date,
+					'rent_to_date' => $state_details->rent_to_date
+				);
+			$i = $i + 1;
+			$status = 1;
+			$msg = "Details here";
 		}
-		$information =array( 'status' => $status,
-                              'msg' =>   $msg,
-                              'prod_id' =>   $pid,
-                              'daterange' => $return);
+		$information = array(
+			'status' => $status,
+			'msg' =>   $msg,
+			'prod_id' =>   $pid,
+			'daterange' => $return
+		);
 		return $return;
 	}
 
@@ -838,7 +841,7 @@ class Home_model extends CI_Model
 		return $product_array;
 	}
 
-	function city_list_request()
+	function city_list_request($state_code = "")
 	{
 
 		$city_result = array();
@@ -846,8 +849,10 @@ class Home_model extends CI_Model
 
 
 		$this->db->select('city_id,city_name,state_code');
-
+		if ($state_code !== '')
+			$this->db->where('state_code', $state_code);
 		$query = $this->db->get('city');
+
 
 		if ($query->num_rows() > 0) {
 

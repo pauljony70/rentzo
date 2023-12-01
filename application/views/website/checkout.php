@@ -46,7 +46,7 @@
 										<img src="<?= base_url('media/' . $cart['imgurl']) ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
 									</div>
 									<div class="col-8">
-										<div class="product-name mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
+										<div class="product-name pe-4 mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
 										<div class="prod-details">
 											<table class="w-100">
 												<tr>
@@ -162,7 +162,7 @@
 						</form>
 
 						<div class="price-details d-lg-none mb-4 mb-sm-5">
-							<form>
+							<!-- <form>
 								<div class="input-group mb-4">
 									<div class="form-floating">
 										<input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="Coupon Code">
@@ -171,15 +171,15 @@
 									<img src="<?= base_url('assets_web/images/icons/coupon-icon.svg') ?>" alt="Icon" srcset="">
 								</div>
 								<span id="coupon_message"></span>
-								<button type="button" class="btn btn-primary" onclick="get_checkout_data()">APPLY</button>
-							</form>
+								<button type="button" class="btn btn-primary" onclick="get_checkout_data(this)">APPLY</button>
+							</form> -->
 							<div class="section-heading">Order Summary</div>
 							<div class="d-flex justify-content-between mb-4">
 								<div>
 									<h6>Cart value (<?= $checkout['total_item']; ?> items)</h6>
 								</div>
 								<div>
-									<h6><span id="payable_value"><?= $checkout['total_mrp']; ?></span></h6>
+									<h6><span id="total_mrp"><?= $checkout['total_mrp']; ?></span></h6>
 								</div>
 							</div>
 							<div class="d-flex justify-content-between mb-4">
@@ -200,27 +200,35 @@
 							</div>
 							<div class="d-flex justify-content-between mb-4">
 								<div>
+									<h6>Security deposit</h6>
+								</div>
+								<div>
+									<h6><span id="security_deposit"><?= $checkout['security_deposit']; ?></span></h6>
+								</div>
+							</div>
+							<div class="d-flex justify-content-between mb-4">
+								<div>
 									<h6>Shipping</h6>
 								</div>
 								<div>
 									<h6><span id="shipping_fee" class="<?= $checkout['shipping_fee'] == 0 ? 'text-primary' : '' ?>"><?= $checkout['shipping_fee'] == 0 ? 'FREE' : $checkout['shipping_fee'] ?></span></h6>
 								</div>
 							</div>
-							<div class="d-flex justify-content-between mb-4">
+							<!-- <div class="d-flex justify-content-between mb-4">
 								<div>
 									<h6>Coupon discount</h6>
 								</div>
 								<div>
 									<h6>-<span id="coupo_discount_value"><?= $checkout['coupon_discount']; ?></span></h6>
 								</div>
-							</div>
+							</div> -->
 							<hr class="my-4">
 							<div class="d-flex justify-content-between">
 								<div>
 									<h6>TOTAL</h6>
 								</div>
 								<div>
-									<h6 class="fw-semibold"><?= $checkout['total_price']; ?></h6>
+									<h6 class="fw-semibold" id="total_val"><?= $checkout['payable_amount']; ?></h6>
 								</div>
 							</div>
 						</div>
@@ -275,7 +283,7 @@
 											<img src="<?= base_url('media/' . $cart['imgurl']) ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
 										</div>
 										<div class="col-8">
-											<div class="product-name mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
+											<div class="product-name pe-4 mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
 											<div class="prod-details">
 												<table class="w-100">
 													<tr>
@@ -295,7 +303,7 @@
 							</div>
 
 							<div class="price-details">
-								<form>
+								<!-- <form>
 									<div class="input-group mb-4">
 										<div class="form-floating">
 											<input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="Coupon Code">
@@ -304,15 +312,15 @@
 										<img src="<?= base_url('assets_web/images/icons/coupon-icon.svg') ?>" alt="Icon" srcset="">
 									</div>
 									<span id="coupon_message"></span>
-									<button type="button" class="btn btn-primary" onclick="get_checkout_data()">APPLY</button>
-								</form>
+									<button type="button" class="btn btn-primary" onclick="get_checkout_data(this)">APPLY</button>
+								</form> -->
 								<div class="section-heading">Order Summary</div>
 								<div class="d-flex justify-content-between mb-4">
 									<div>
 										<h6>Cart value (<?= $checkout['total_item']; ?> items)</h6>
 									</div>
 									<div>
-										<h6><span id="payable_value"><?= $checkout['total_mrp']; ?></span></h6>
+										<h6><span id="total_mrp1"><?= $checkout['total_mrp']; ?></span></h6>
 									</div>
 								</div>
 								<div class="d-flex justify-content-between mb-4">
@@ -320,7 +328,7 @@
 										<h6>Discount</h6>
 									</div>
 									<div>
-										<h6>-<span id="discount_value"><?= $checkout['total_discount']; ?></span></h6>
+										<h6>-<span id="discount_value1"><?= $checkout['total_discount']; ?></span></h6>
 									</div>
 								</div>
 								<div class="d-flex justify-content-between mb-4">
@@ -328,7 +336,15 @@
 										<h6>GST(Included)</h6>
 									</div>
 									<div>
-										<h6><span id="tex_value" class="text-dark"><?= $checkout['tax_payable']; ?></span></h6>
+										<h6><span id="tex_value1" class="text-dark"><?= $checkout['tax_payable']; ?></span></h6>
+									</div>
+								</div>
+								<div class="d-flex justify-content-between mb-4">
+									<div>
+										<h6>Security deposit</h6>
+									</div>
+									<div>
+										<h6><span id="security_deposit1"><?= $checkout['security_deposit']; ?></span></h6>
 									</div>
 								</div>
 								<div class="d-flex justify-content-between mb-4">
@@ -336,24 +352,24 @@
 										<h6>Shipping</h6>
 									</div>
 									<div>
-										<h6><span id="shipping_fee" class="<?= $checkout['shipping_fee'] == 0 ? 'text-primary' : '' ?>"><?= $checkout['shipping_fee'] == 0 ? 'FREE' : $checkout['shipping_fee'] ?></span></h6>
+										<h6><span id="shipping_fee1" class="<?= $checkout['shipping_fee'] == 0 ? 'text-primary' : '' ?>"><?= $checkout['shipping_fee'] == 0 ? 'FREE' : $checkout['shipping_fee'] ?></span></h6>
 									</div>
 								</div>
-								<div class="d-flex justify-content-between mb-4">
+								<!-- <div class="d-flex justify-content-between mb-4">
 									<div>
 										<h6>Coupon discount</h6>
 									</div>
 									<div>
-										<h6>-<span id="coupo_discount_value"><?= $checkout['coupon_discount']; ?></span></h6>
+										<h6>-<span id="coupo_discount_value1"><?= $checkout['coupon_discount']; ?></span></h6>
 									</div>
-								</div>
+								</div> -->
 								<hr class="my-4">
 								<div class="d-flex justify-content-between">
 									<div>
 										<h6>TOTAL</h6>
 									</div>
 									<div>
-										<h6 class="fw-semibold"><?= $checkout['total_price']; ?></h6>
+										<h6 class="fw-semibold" id="total_val1"><?= $checkout['payable_amount']; ?></h6>
 									</div>
 								</div>
 							</div>

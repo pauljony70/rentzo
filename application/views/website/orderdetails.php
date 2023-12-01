@@ -33,7 +33,10 @@
 					</div>
 					<div class="seller-name text-light ms-2 line-clamp-1">Seller Name</div>
 				</div>
-				<a href="#">
+				 
+				
+				
+				<a target="_blank" onclick="video_call('<?= $order_details['shipping_address']['email']; ?>')" href="<?php echo base_url(); ?>video?appid=2c35bc66b7364b47aefe72415b2f8cd3&channel=rentzo&token=">
 					<img src="<?= base_url('assets_web/images/icons/add-call.svg') ?>" alt="Call" srcset="">
 				</a>
 			</div>
@@ -52,6 +55,7 @@
 		</div>
 		<!--Start: Track Order Section -->
 		<section>
+		
 			<div class="container px-1">
 				<div class="row mt-4">
 
@@ -224,18 +228,35 @@
 				</div>
 			</div>
 		</section>
-		<!--End: Track Order Section -->
+		<!--End: Track Order Section --> 
 
 	</main>
 
 	<?php include("include/footer.php") ?>
 	<?php include("include/script.php") ?>
 	<script src="<?= base_url('assets_web/js/app/order-details.js') ?>"></script>
+	  
+	 
 
 	<script>
 		var csrfName = $('.txt_csrfname').attr('name');
 		var csrfHash = $('.txt_csrfname').val();
 		var site_url = $('.site_url').val();
+		
+		function video_call(email)
+		{
+			$.ajax({
+				method: 'get',
+				url: site_url + 'email_videocall',
+				data: {
+					language: 1,
+					email: email,
+					[csrfName]: csrfHash
+				},
+				success: function(response) {
+				}
+			});
+		}
 
 
 		function cancel_order(pid, order_id) {

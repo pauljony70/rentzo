@@ -172,7 +172,7 @@
                         <li class="menu-li">
                             <a href="<?= base_url('shop/' . $maincat['cat_slug']) ?>" class="menu-item py-3"><?= $maincat['cat_name'] ?></a>
                             <?php if (count($maincat['subcat_1']) > 0) : ?>
-                                <div class="mega-menu">
+                                <div class="container mega-menu">
                                     <div class="content box-shadow-0">
                                         <?php for ($i = 0; $i < 4; $i++) : ?>
                                             <div class="col px-2 py-4">
@@ -226,7 +226,7 @@
                                     </div>
                                 </div>
                             <?php else : ?>
-                                <div class="mega-menu">
+                                <div class="container mega-menu">
                                     <div class="content box-shadow-0">
                                         <?php for ($i = 0; $i < 4; $i++) : ?>
                                             <div class="col px-2 pb-4">
