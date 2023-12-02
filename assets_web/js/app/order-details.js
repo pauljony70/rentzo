@@ -93,7 +93,9 @@ function getMessagesOnLoad() {
                 if (response.data.messages.length > 0) {
                     lastMessageId = response.data.messages[response.data.messages.length - 1].message_id;
                     updateSeenStatusValue = 0;
-                    playNotificationSound();
+                    if (response.data.unseen_message_count) {
+                        playNotificationSound();
+                    }
                 }
                 if (isOffcanvasOpen() && updateSeenStatusValue == 0) {
                     updateSeenStatus();
@@ -169,7 +171,7 @@ function playNotificationSound() {
 
     if (isOffcanvasOpen() == false) {
         audio.play();
-    } else if(isTabActive() == false) {
+    } else if (isTabActive() == false) {
         audio.play();
     }
 }

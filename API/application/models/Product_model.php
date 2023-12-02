@@ -263,43 +263,8 @@ class Product_model extends CI_Model
 				$product_response['offers'] = $this->db->get_where('settings', array('type' => 'offers'))->row()->description;
 
 				$shareUrl = base_url($product_details->web_url . '?pid=' . $pid . '&sku=' . $product_details->sku . '&sid=' . $sid);
-				$web_api_key = 'AIzaSyB9eFHfVk4fNStaBYAcLE_DzLZXWDJ4CMY';
 
-				if ($product_details->affiliate_commission > 0 && $user_id) {
-					// Construct the long URL with query parameters
-					$shareUrl = add_query_params($shareUrl, array('affiliated_by' => $user_id));
-				}
-
-				// Firebase Dynamic Links API endpoint
-				$api_url = "https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=" . $web_api_key;
-
-				$data = array(
-					'dynamicLinkInfo' => array(
-						'domainUriPrefix' => 'ebuyoman.page.link',
-						'link' => $shareUrl,
-					),
-				);
-
-				$options = array(
-					CURLOPT_URL => $api_url,
-					CURLOPT_RETURNTRANSFER => true,
-					CURLOPT_POST => true,
-					CURLOPT_POSTFIELDS => json_encode($data),
-					CURLOPT_HTTPHEADER => array(
-						'Content-Type: application/json',
-					),
-				);
-
-				$ch = curl_init();
-				curl_setopt_array($ch, $options);
-
-				$response = curl_exec($ch);
-
-				curl_close($ch);
-
-				$response_data = json_decode($response, true);
-
-				$product_response['share_url'] = $response_data['shortLink'];
+				$product_response['share_url'] = $shareUrl;
 			}
 		}
 

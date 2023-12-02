@@ -75,7 +75,6 @@ class OrderController extends REST_Controller
 		}
 	}
 
-
 	public function getMessages_get()
 	{
 		$order_id = $this->input->get('order_id');

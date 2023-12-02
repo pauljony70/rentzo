@@ -357,18 +357,12 @@ class Address_model extends CI_Model
 	{
 		$this->db->select("user_id, addressarray, defaultaddress");
 		$this->db->where(array('user_id' => $user_id));
-
 		$data = $this->db->get('address')->row_array();
-
 		$address = array();
 		if (!empty($data)) {
 			$address['defaultaddress'] = $data['defaultaddress'];
 			$address['address_details'] = array_map('get_object_vars', json_decode($data['addressarray']));
 		}
-		// echo "<pre>";
-		// print_r($address);
-		// exit;
-
 		return $address;
 	}
 

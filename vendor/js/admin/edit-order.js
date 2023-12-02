@@ -12,6 +12,10 @@ function isModalOpen() {
     return $('#chatModal').hasClass('show');
 }
 
+function isTabActive() {
+    return document.visibilityState === 'visible';
+}
+
 messageInput.addEventListener('input', () => {
     sendMessageBtn.disabled = !messageInput.value.trim();
 });
@@ -90,7 +94,9 @@ function getMessagesOnLoad() {
                 if (data.data.messages.length > 0) {
                     lastMessageId = data.data.messages[data.data.messages.length - 1].message_id;
                     updateSeenStatusValue = 0;
-                    playNotificationSound();
+                    if (data.data.unseen_message_count) {
+                        playNotificationSound();
+                    }
                 }
                 if (isModalOpen() && updateSeenStatusValue == 0) {
                     updateSeenStatus();
@@ -163,6 +169,8 @@ function playNotificationSound() {
     var audio = new Audio(site_url.concat('assets_web/sounds/Notification.mp3'));
 
     if (!isModalOpen())
+        audio.play();
+    else if (!isTabActive())
         audio.play();
 }
 

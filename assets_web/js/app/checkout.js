@@ -283,10 +283,9 @@ $(document).on('change', '.defaultAdderess', function () {
 
             $(parsedJSON).each(function () {
                 if (address_id == this.address_id) {
-                    console.log(this);
+
                     $('#lat').val(this.lat);
                     $('#lng').val(this.lng);
-                    initMap();
                     $("#fullname_a").val(this.fullname);
                     $("#email").val(this.email);
                     iti.setNumber(`+${this.country_code}${this.mobile}`)

@@ -173,6 +173,11 @@ $route['app/returnOrder'] = 'OrderController/returnOrder';
 $route['app/getOrderProd'] = 'OrderController/getOrderProd';
 $route['app/getOrderDetailsProd'] = 'OrderController/getOrderDetailsProd';
 
+//User Vendor Chat
+$route['app/send-chat-message'] = 'ChatMessagesController/insertMessage';
+$route['app/receive-chat-messages'] = 'ChatMessagesController/getMessages';
+$route['app/update-seen-status'] = 'ChatMessagesController/updateSeenStatus';
+
 $route['sellerapp/updateOrder'] = 'OrderController/updateOrder';
 $route['sellerapp/getOrder_seller'] = 'OrderController/getOrder_seller';
 $route['sellerapp/order_full_details'] = 'OrderController/order_full_details';

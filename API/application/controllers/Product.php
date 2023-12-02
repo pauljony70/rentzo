@@ -39,15 +39,13 @@ class Product extends REST_Controller
 		$validation = $this->parameterValidation($requiredparameters, $this->post()); //$this->post() holds post values
 
 		if ($validation == 'valid') {
-			$product_custom_cloth = $this->product_model->get_product_custom_cloth($pid);
 			$product_array = $this->product_model->get_product_request($language_code, $pid, $sku, $sid, $devicetype, $user_id);
 
 			if ($product_array) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 1,
 					$this->config->item('rest_message_field_name') => 'Get Details',
-					$this->config->item('rest_data_field_name') => $product_array,
-					'product_custom_cloth' => $product_custom_cloth
+					$this->config->item('rest_data_field_name') => $product_array
 
 				], self::HTTP_OK);
 			} else {

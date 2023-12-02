@@ -64,14 +64,10 @@
 								<?= $key !== count($cart_items['cart_full']) - 1 ? '<hr class="my-2">' : '' ?>
 							<?php endforeach; ?>
 						</div>
-						<!-- <div class="row">
-							<?php
-							if (!empty($address['address_details'])) {
-								$last_element = array_pop($address['address_details']);
-								array_unshift($address['address_details'], $last_element);
-								foreach ($address['address_details'] as $key => $add_data) {
-							?>
-									<label for="radio-card-<?= $key ?>" class="radio-card">
+						<div class="adress-container">
+							<?php if (!empty($address['address_details'])) :
+								foreach ($address['address_details'] as $key => $add_data) : ?>
+									<label for="radio-card-<?= $key ?>" class="radio-card w-100">
 										<input type="radio" class="defaultAdderess" name="radio-card" id="radio-card-<?= $key ?>" value="<?= $add_data['address_id']; ?>" />
 										<div class="card-content-wrapper">
 											<span class="check-icon"></span>
@@ -88,11 +84,10 @@
 											</div>
 										</div>
 									</label>
-							<?php
-								}
-							}  ?>
-							<a href="" class="btn btn-light my-4" id="address_div_id"><?= $this->lang->line('add-new-add'); ?></a>
-						</div> -->
+							<?php endforeach;
+							endif;  ?>
+						</div>
+						<a href="" class="btn btn-light my-4" id="address_div_id"><?= $this->lang->line('add-new-add'); ?></a>
 
 						<form id="formoid" action="#" class="form row mb-4 mb-md-5" method="post">
 							<div class="col-md-12">
