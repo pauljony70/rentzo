@@ -1,0 +1,110 @@
+.page-heading {
+    color: #17183B;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+}
+
+.address .name {
+    color: #17183B;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: 0.15px;
+}
+
+.address .fulladdress,
+.address .email .des,
+.address .mobile .des {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.address .email .heading,
+.address .mobile .heading {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.edit-address-btn {
+    color: var(--bs-warning) !important;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.delete-address-btn {
+    color: var(--bs-primary) !important;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+#address_div_id {
+    color: var(--bs-primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+#formoid .form-label {
+    color: #000;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+#formoid .form-control,
+#formoid .form-select {
+    height: 50px;
+    background-color: #F5F5F5;
+    border-radius: 0;
+}
+
+#formoid button[type="submit"] {
+    padding: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 18px;
+    width: 234px;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+#formoid button[type="submit"] .spinner-border {
+    --bs-spinner-width: 1.4rem;
+    --bs-spinner-height: 1.4rem;
+    --bs-spinner-border-width: 0.15em;
+}
+
+.invalid-feedback {
+    font-size: 0.775em;
+}

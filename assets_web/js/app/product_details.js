@@ -890,55 +890,58 @@ const {
 
 function add_to_wishlist(event, pid, sku, vendor_id, user_id, qty, referid, devicetype) {
 	event.preventDefault();
-	document.querySelector('.heart-container .d-flex').innerHTML = '<div class="spinner-grow spinner-grow-sm text-warning" role="status"><span class="visually-hidden">Loading...</span></div>'
+	document.querySelector('.heart-container .d-flex').innerHTML = '<div class="spinner-grow spinner-grow-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
 	if (user_id == '') {
 		Swal.fire({
-			position: "center",
-			type: "error",
 			text: 'Please login to add product into wishlist',
-			timer: 1500
-		})
-	}
-
-	var csrfName = $('.txt_csrfname').attr('name'); //
-	var csrfHash = $('.txt_csrfname').val(); // CSRF hash
-	var site_url = $('.site_url').val(); // CSRF hash
-	$.ajax({
-		method: 'post',
-		url: site_url + 'addProductWishlist',
-		data: {
-			language: 1,
-			pid: pid,
-			sku: sku,
-			sid: vendor_id,
-			user_id: user_id,
-			qty: qty,
-			referid: referid,
-			devicetype: 2,
-			[csrfName]: csrfHash
-		},
-		success: function (response) {
-			if (response.status) {
-				document.querySelector('.heart-container .d-flex').innerHTML = '<i class="fa-solid fa-heart add-to-wishlist"></i>';
-				for (let i = 1; i < numberOfHearts(); i++) {
-					heartContainer().insertAdjacentHTML('beforeend', heart(heartsDirection, i))
-					document.head.insertAdjacentHTML("beforeend", keyframesMove(i))
-				}
-				nativeToast({
-					message: default_language == 1 ? 'أضيف لقائمة الأماني' : 'Added to wishlist',
-					position: 'bottom',
-					type: 'success',
-					square: true,
-					edge: false,
-					debug: false,
-					// timeout: 1000000
-				});
-			} else {
-				document.querySelector('.heart-container .d-flex').innerHTML = '<i class="fa-regular fa-heart add-to-wishlist"></i>';
+			type: "warning",
+			showCancelButton: true,
+			showCloseButton: true,
+		}).then(function (res) {
+			if (res.value) {
+				redirect_to_link(site_url + 'login');
 			}
-			wishlist_count();
-		}
-	});
+		});
+		document.querySelector('.heart-container .d-flex').innerHTML = '<i class="fa-regular fa-heart add-to-wishlist"></i>';
+	} else {
+
+		$.ajax({
+			method: 'post',
+			url: site_url + 'addProductWishlist',
+			data: {
+				language: 1,
+				pid: pid,
+				sku: sku,
+				sid: vendor_id,
+				user_id: user_id,
+				qty: qty,
+				referid: referid,
+				devicetype: 2,
+				[csrfName]: csrfHash
+			},
+			success: function (response) {
+				if (response.status) {
+					document.querySelector('.heart-container .d-flex').innerHTML = '<i class="fa-solid fa-heart add-to-wishlist"></i>';
+					for (let i = 1; i < numberOfHearts(); i++) {
+						heartContainer().insertAdjacentHTML('beforeend', heart(heartsDirection, i))
+						document.head.insertAdjacentHTML("beforeend", keyframesMove(i))
+					}
+					nativeToast({
+						message: default_language == 1 ? 'أضيف لقائمة الأماني' : 'Added to wishlist',
+						position: 'bottom',
+						type: 'success',
+						square: true,
+						edge: false,
+						debug: false,
+						// timeout: 1000000
+					});
+				} else {
+					document.querySelector('.heart-container .d-flex').innerHTML = '<i class="fa-regular fa-heart add-to-wishlist"></i>';
+				}
+				wishlist_count();
+			}
+		});
+	}
 }
 
 function get_product_attributes(tag) {
