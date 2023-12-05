@@ -73,7 +73,6 @@
 						<div class="text">Address</div>
 					</a>
 					<hr>
-					<hr>
 					<a href="<?= base_url('notification') ?>" class="d-flex align-items-center">
 						<div class="icon">
 							<img src="<?= base_url('assets_web/images/icons/notification-bell.png') ?>" alt="Notifications">

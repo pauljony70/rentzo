@@ -1,6 +1,32 @@
 var code_ajax = $("#code_ajax").val();
 var parentvalue = 0;
 
+$('#top-notification-form').parsley();
+
+$("#top-notification-form").submit(function (event) {
+	event.preventDefault();
+	$.busyLoadFull("show");
+
+	// Add the code_ajax value to the serialized form data
+	var formData = $("#top-notification-form").serialize() + "&code_ajax=" + code_ajax;
+
+	$.ajax({
+		type: "POST",
+		url: "top-notification-process.php",
+		data: formData,
+		success: function (response) {
+			$.busyLoadFull("hide");
+			successmsg(response);
+			console.log(response); // Log the server response
+			// You can handle the response as needed (e.g., show a success message)
+		},
+		error: function (error) {
+			$.busyLoadFull("hide");
+			console.log(error); // Log any errors
+		}
+	});
+});
+
 function add_banner_full_width(section1_image, section1_link, section1_type) {
 	$("#myModalsection1").modal('show');
 	$("#banner_link").val(section1_link);
@@ -230,8 +256,8 @@ $(document).ready(function () {
 		}
 
 	});
-	
-	
+
+
 	$("#add_title_btn").click(function (event) {
 		event.preventDefault();
 
@@ -264,7 +290,7 @@ $(document).ready(function () {
 		}
 
 	});
-	
+
 });
 
 

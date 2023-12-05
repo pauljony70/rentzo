@@ -56,8 +56,8 @@
 .cart-details-row .cart-type-purchase {
     background-color: var(--bs-primary);
     width: 140px;
-    height: 60px;
-    clip-path: inset(0 0 50% 0);
+    height: 100px;
+    clip-path: inset(0 0 67% 0);
 }
 
 .cart-details-row .cart-type-purchase .text {

@@ -14,14 +14,14 @@
 		<!--Start: My Orders Section -->
 		<section class="my-5">
 			<div class="container px-1">
-				<div class="orders-container">
-					<?php if (!empty($order)) { ?>
+				<?php if (!empty($order)) { ?>
+					<div class="orders-container">
 						<div class="order-details">
 							<?php foreach ($order as $key => $order_history) { ?>
 								<div class="row mb-3">
 									<div class="col-2">
-										<div class="order-type-rent">
-											<div class="text">Rent</div>
+										<div class="order-type order-type-<?= $order_history['type'] === 'Rent' ? 'rent' : 'purchase' ?>">
+											<div class="text"><?= !empty($order_history['type']) ? $order_history['type'] : 'Purchase' ?></div>
 										</div>
 									</div>
 									<div class="col-10">
@@ -37,25 +37,75 @@
 										</a>
 									</div>
 									<div class="col-9">
-										<div class="d-flex justify-content-between">
-											<div>
-												<div class="prod-name"><?= $order_history['prod_name']; ?></div>
+										<div class="row h-100 pe-4">
+											<div class="col-md-5">
+												<div class="d-flex flex-column h-100">
+													<div class="prod-name line-clamp-2 mb-3"><?= $order_history['prod_name']; ?></div>
+													<?php if (!empty($order_history['prod_attr'])) : ?>
+														<table class="attributes mb-3">
+															<tbody>
+																<?php foreach (json_decode($order_history['prod_attr']) as $prod_attr) : ?>
+																	<tr>
+																		<td class="attr-name"><?= $prod_attr->attr_name ?></td>
+																		<?php if ($prod_attr->attr_name == 'Color') :
+																			$rgb = hexToRgb($prod_attr->item);
+																			$dark_color = "rgb(" . $rgb['r'] * 0.8 . "," . $rgb['g'] * 0.8 . ',' . $rgb['b'] * 0.8 . ")";
+																		endif; ?>
+																		<td>
+																			<div class="d-flex align-items-center">
+																				<label for="" <?= $prod_attr->attr_name == 'Color' ? 'style="background-color:' . $prod_attr->item . '; border: 1px solid ' . $dark_color . '"' : '' ?> class="attr-des ms-3 ms-md-5" id="<?= $prod_attr->attr_name ?>">
+																					<?= $prod_attr->attr_name != 'Color' ? $prod_attr->item : '' ?>
+																				</label>
+																			</div>
+																		</td>
+																	</tr>
+																<?php endforeach; ?>
+															</tbody>
+														</table>
+													<?php endif; ?>
+													<div class="mt-auto">
+														<div class=" order-status-div mb-4">Status: <span class="ms-3"><?= $order_history['prod_status'] ?></span></div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-3 dates-div">
+												<div class="text-end mt-4">
+													<?php if ($order_history['type'] === 'Rent') : ?>
+														<div class="text mb-2">Rent for <?= $order_history['duration_in_days'] ?> Days</div>
+														<div class="text"><?= date('d M Y', strtotime($order_history['rent_from_date'])) . ' to ' . date('d M Y', strtotime($order_history['rent_to_date'])) ?></div>
+													<?php else : ?>
+														<div class="text">Ordered on <?= date('d M Y', strtotime($order_history['create_date'])) ?></div>
+													<?php endif; ?>
+												</div>
+											</div>
+											<div class="col-md-4 ps-md-5 review-div text-center">
+												<div class="d-flex flex-column h-100">
+													<div class="text ps-md-4 mb-3">Experience with the product</div>
+													<div class="d-flex justify-content-center ps-md-4 stars">
+														<?php for ($i = 0; $i < 5; $i++) : ?>
+															<img src="<?= base_url('assets_web/images/icons/half-star-big.svg') ?>" alt="Star" srcset="">
+														<?php endfor; ?>
+													</div>
+													<div class="mt-auto ps-md-4">
+														<a href="#" class="btn review-btn">Write Review</a>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<?= $key !== count($order) - 1 ? '<hr class="my-0">' : '' ?>
+								<?= $key !== count($order) - 1 ? '<hr class="my-0 underline">' : '' ?>
 							<?php } ?>
 						</div>
-					<?php } else { ?>
-						<div class="cart-details card my-3 py-2">
-							<div class="h-50 w-50 mx-auto">
-								<img src="<?php base_url ?>assets_web/images/empty-cart.png" alt="">
-								<h5 class="text-center"><?= $this->lang->line('filter-page-record'); ?></h5>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
+					</div>
+				<?php } else { ?>
+					<div class="d-flex flex-column align-items-center empty-order-image">
+						<img src="<?= base_url('assets_web/images/empty-cart.png') ?>" class="mb-5" alt="Empty Order">
+						<div class="heading mb-2">Your orders section is Empty</div>
+						<div class="des mb-4">Looks like you haven’t ordered anything yet</div>
+						<a href="<?= base_url() ?>" class="btn btn-primary">Go Shop</a>
+					</div>
+				<?php } ?>
 			</div>
 		</section>
 		<!--End: My Orders Section -->

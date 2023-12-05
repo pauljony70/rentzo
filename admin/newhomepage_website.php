@@ -1,5 +1,7 @@
 <?php
 include('session.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!$Common_Function->user_module_premission($_SESSION, $HomepageSettings)) {
 	echo "<script>location.href='no-premission.php'</script>";
 	die();
@@ -38,9 +40,9 @@ if (isset($_POST['code'])) {
 		}
 		die();
 	}
-	
+
 	if ($_POST['code'] == $_SESSION['_token'] && $_POST['bannersection_type'] && $_POST['section_title']) {
-		
+
 		$stmt = $conn->prepare("SELECT id FROM homepage_banner WHERE type =?");
 		$stmt->bind_param("s", $_POST['bannersection_type']);
 		$stmt->execute();
@@ -51,12 +53,12 @@ if (isset($_POST['code'])) {
 		while ($stmt->fetch()) {
 			$exist = 'yes';
 		}
-		
+
 		if ($exist != 'yes') {
 
 
 			$stmt11 = $conn->prepare("INSERT INTO `homepage_banner`(type,image,section)  VALUES (?,?,?)");
-			$stmt11->bind_param('sss', $_POST['bannersection_type'],$_POST['section_title'],$_POST['bannersection_type']);
+			$stmt11->bind_param('sss', $_POST['bannersection_type'], $_POST['section_title'], $_POST['bannersection_type']);
 
 			$stmt11->execute();
 			$stmt11->store_result();
@@ -67,11 +69,22 @@ if (isset($_POST['code'])) {
 				echo "Failed to add " . $_POST['bannersection_type'] . " Title.";
 			}
 		} else {
-			$query1 = $conn->query("UPDATE `homepage_banner`  SET image='" . $_POST['section_title'] . "'' WHERE type ='" . $_POST['bannersection_type'] . "'");
+			$sql = "UPDATE `homepage_banner` SET image = ? WHERE type = ?";
 
-			$query1->execute();
-			$query1->store_result();
-			$rows1 = $query1->affected_rows;
+			// Create a prepared statement
+			$stmt = $conn->prepare($sql);
+
+			// Bind parameters to the placeholders
+			$stmt->bind_param("ss", $_POST['section_title'], $_POST['bannersection_type']);
+
+			// Execute the statement
+			$stmt->execute();
+
+			// Get the number of affected rows
+			$rows1 = $stmt->affected_rows;
+
+			// Close the statement
+			$stmt->close();
 			if ($rows1 > 0) {
 				echo $_POST['bannersection_type'] . " Section Title Update Successfully.";
 			} else {
@@ -135,15 +148,53 @@ if (isset($_POST['code'])) {
 				</div>
 			</div>
 			<!-- end page title -->
-			
-			
-			
-			
+
+
+
+
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
 						<div class="card-body">
-							
+							<section class="container top-notification">
+								<?php
+								$query = "SELECT * FROM homepage_banner WHERE type='top_notification' AND section='top_notification'";
+								$result = $conn->query($query);
+
+								// Step 3: Fetch data and populate the form
+								if ($row = $result->fetch_assoc()) {
+									$notification_title = $row['image'];
+									$notification_link = $row['link'];
+								} else {
+									// If no data found, initialize variables
+									$notification_title = "";
+									$notification_link = "";
+								}
+								?>
+								<form class="row form" id="top-notification-form" method="post" action="#">
+									<div class="col-12">
+										<h3 class="text-center"> Topbar Notification</h3><br>
+									</div>
+									<div class="col-md-5">
+										<div class="form-group">
+											<label for="topbar_notification_title">Topbar notification title <span class="text-danger">&#42;</span></label>
+											<input type="text" class="form-control" name="topbar_notification_title" id="topbar_notification_title" placeholder="Topbar notification title" value="<?= $notification_title ?>" data-parsley-required-message="Topbar notification title is required." required>
+										</div>
+									</div>
+									<div class="col-md-5">
+										<div class="form-group">
+											<label for="topbar_notification_link">Topbar notification link </label>
+											<input type="text" class="form-control" name="topbar_notification_link" id="topbar_notification_link" placeholder="Topbar notification link" value="<?= $notification_link ?>">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<button type="submit" class="btn btn-dark btn-block waves-effect waves-light" style="margin-top:29px">SAVE</button>
+										</div>
+									</div>
+								</form>
+							</section>
+
 							<?php
 							$section5_image1 = $section5_link1 = $section5_cat_id = '';
 							$section5_cat1 = $section5_cat2 = $section5_cat3 = $section5_cat4 = $section5_cat5 = $section5_cat6 = $section5_cat7 = $section5_cat8 = $section5_cat9 = $section5_cat10 = $section5_cat11 = $section5_cat12 =  "Select";
@@ -766,8 +817,8 @@ if (isset($_POST['code'])) {
 									</div>
 								</div>
 							</section>
-						
-						
+
+
 							<section id="featured" class="featured homehero">
 								<div class="container">
 									<div class="row">
@@ -834,8 +885,8 @@ if (isset($_POST['code'])) {
 									</div>
 								</div>
 							</section>
-							
-							
+
+
 							<section>
 								<div class="container">
 									<div class="row">
@@ -880,8 +931,8 @@ if (isset($_POST['code'])) {
 									</div>
 								</div>
 							</section>
-							
-							
+
+
 							<section id="featured" class="featured homehero">
 								<div class="container">
 									<div class="row">
@@ -1014,10 +1065,10 @@ if (isset($_POST['code'])) {
 									</div>
 								</div>
 							</section>
-							
-							
-							
-							
+
+
+
+
 							<?php
 							$section8_image1 = $section8_link1 =  $section8_image2 = $section8_link2 = $section8_type2 = $section8_image3 = $section8_link3 = $section8_type3 =  $section8_link4 = $section8_type4 = '';
 							//sql for top banner
@@ -1086,39 +1137,39 @@ if (isset($_POST['code'])) {
 												</div>
 
 											</div>
-												<div class="col-lg-6 text-light mb-2">
-													<div class="icon-boxx" style="background-image: url('<?= $section8_image3; ?>');">
-														<div class="icon-text">
+											<div class="col-lg-6 text-light mb-2">
+												<div class="icon-boxx" style="background-image: url('<?= $section8_image3; ?>');">
+													<div class="icon-text">
 
 
-															<h4><b>Banner 3</b></h4>
-															<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
-																																								?>', '<?= $section8_link3; ?>', '<?= $section8_type3; ?>');">Upload</button>
-														</div>
-
+														<h4><b>Banner 3</b></h4>
+														<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																							?>', '<?= $section8_link3; ?>', '<?= $section8_type3; ?>');">Upload</button>
 													</div>
 
 												</div>
-												<div class="col-lg-6 text-light mb-2">
-													<div class="icon-boxx" style="background-image: url('<?= $section8_image4; ?>');">
-														<div class="icon-text">
+
+											</div>
+											<div class="col-lg-6 text-light mb-2">
+												<div class="icon-boxx" style="background-image: url('<?= $section8_image4; ?>');">
+													<div class="icon-text">
 
 
-															<h4><b>Banner 4</b></h4>
-															<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
-																																								?>', '<?= $section8_link4; ?>', '<?= $section8_type4; ?>');">Upload</button>
-														</div>
-
+														<h4><b>Banner 4</b></h4>
+														<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section8('<?php  //echo $section1_image2; 
+																																							?>', '<?= $section8_link4; ?>', '<?= $section8_type4; ?>');">Upload</button>
 													</div>
 
 												</div>
+
+											</div>
 										</div>
 									</div>
 								</div>
 							</section>
 
-							
-							
+
+
 							<section>
 								<div class="container">
 									<div class="row">
@@ -1163,8 +1214,8 @@ if (isset($_POST['code'])) {
 									</div>
 								</div>
 							</section>
-							
-							
+
+
 							<?php
 							/*
 							
@@ -1754,178 +1805,178 @@ if (isset($_POST['code'])) {
 				
 				<?php */ ?>
 
-				<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+							<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-				<!-- Modal -->
-				<div class="modal fade" id="myModalsection1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-					<div class="modal-dialog  modal-dialog-centered">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Add Banner</h5>
-								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div class="modal-body">
-								<form class="form" id="add_brand_form" enctype="multipart/form-data">
+							<!-- Modal -->
+							<div class="modal fade" id="myModalsection1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+								<div class="modal-dialog  modal-dialog-centered">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Banner</h5>
+											<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+											<form class="form" id="add_brand_form" enctype="multipart/form-data">
 
-									<div class="form-group">
-										<label for="name">Banner Link (Category, Product or any landing page)</label>
-										<input type="text" class="form-control" id="banner_link" placeholder="Banner Link">
+												<div class="form-group">
+													<label for="name">Banner Link (Category, Product or any landing page)</label>
+													<input type="text" class="form-control" id="banner_link" placeholder="Banner Link">
+												</div>
+												<div class="form-group">
+													<label for="image">Image</label>
+													<input type="file" name="banner_image" id="banner_image" class="form-control-file" onchange="uploadFile1('banner_image')" required accept="image/png, image/jpeg,image/jpg,image/gif">
+												</div>
+												<input type="hidden" id="banner_type">
+												<input type="hidden" id="banner_section">
+												<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_banner_btn">Add</button>
+											</form>
+										</div>
+
 									</div>
-									<div class="form-group">
-										<label for="image">Image</label>
-										<input type="file" name="banner_image" id="banner_image" class="form-control-file" onchange="uploadFile1('banner_image')" required accept="image/png, image/jpeg,image/jpg,image/gif">
-									</div>
-									<input type="hidden" id="banner_type">
-									<input type="hidden" id="banner_section">
-									<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_banner_btn">Add</button>
-								</form>
+
+								</div>
 							</div>
 
-						</div>
+							<div class="modal fade" id="myModalcat" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+								<div class="modal-dialog  modal-dialog-centered">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Banner</h5>
+											<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+											<div id="new_cat_div">
+												<div class="form-group" id="parent_cat_div">
+													<label for="name">Select Category</label>
+													<div class="dropdownss">
+														<div id="treeSelect">
+															<div class="pt-2 pl-2">
+																<?php
 
-					</div>
-				</div>
+																$query = $conn->query("SELECT * FROM category WHERE parent_id = '0' AND status ='1' ORDER BY cat_name ASC");
 
-				<div class="modal fade" id="myModalcat" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-					<div class="modal-dialog  modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Add Banner</h5>
-								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div class="modal-body">
-								<div id="new_cat_div">
-									<div class="form-group" id="parent_cat_div">
-										<label for="name">Select Category</label>
-										<div class="dropdownss">
-											<div id="treeSelect">
-												<div class="pt-2 pl-2">
-													<?php
-
-													$query = $conn->query("SELECT * FROM category WHERE parent_id = '0' AND status ='1' ORDER BY cat_name ASC");
-
-													if ($query->num_rows > 0) {
-														while ($row = $query->fetch_assoc()) {
-															$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "' AND status ='1'");
-															if ($query1->num_rows > 0) {
-																echo '<span class="expand" ><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
+																if ($query->num_rows > 0) {
+																	while ($row = $query->fetch_assoc()) {
+																		$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "' AND status ='1'");
+																		if ($query1->num_rows > 0) {
+																			echo '<span class="expand" ><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
 															<br />    
 															<ul id="' . $row['cat_name'] . '" class="subList" style="display:block;">';
-																echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
-																echo	'</ul>';
-															} else {
-																echo '<span class="expand"><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
+																			echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
+																			echo	'</ul>';
+																		} else {
+																			echo '<span class="expand"><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
 															<br />';
-															}
-														}
-													}
+																		}
+																	}
+																}
 
-													?>
+																?>
+															</div>
+														</div>
+
+													</div>
+
 												</div>
 											</div>
-
+											<div class="form-group" style="display:none;">
+												<label for="name">Banner Link (Category, Product or any landing page)</label>
+												<input type="text" class="form-control" id="banner_linkcat" placeholder="Banner Link">
+											</div>
+											<div class="form-group">
+												<label for="image">Image</label>
+												<input type="file" name="banner_imagecat" id="banner_imagecat" class="form-control-file" onchange="uploadFile1('banner_imagecat')" required accept="image/png, image/jpeg,image/jpg,image/gif">
+											</div>
+											<input type="hidden" id="banner_typecat">
+											<input type="hidden" id="banner_sectioncat">
+											<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_catbanner_btn">Add</button>
 										</div>
-
 									</div>
 								</div>
-								<div class="form-group" style="display:none;">
-									<label for="name">Banner Link (Category, Product or any landing page)</label>
-									<input type="text" class="form-control" id="banner_linkcat" placeholder="Banner Link">
-								</div>
-								<div class="form-group">
-									<label for="image">Image</label>
-									<input type="file" name="banner_imagecat" id="banner_imagecat" class="form-control-file" onchange="uploadFile1('banner_imagecat')" required accept="image/png, image/jpeg,image/jpg,image/gif">
-								</div>
-								<input type="hidden" id="banner_typecat">
-								<input type="hidden" id="banner_sectioncat">
-								<button type="submit" class="btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_catbanner_btn">Add</button>
 							</div>
-						</div>
-					</div>
-				</div>
-				
-				<div class="modal fade" id="myModaltitle" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-					<div class="modal-dialog  modal-dialog-centered">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Add Section Title</h5>
-								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div class="modal-body">
-								<form class="form" id="add_brand_form" enctype="multipart/form-data">
-									<input type="hidden" id="bannersection_type">
 
-									<label for="name">Add title</label>
-									<div class="form-group d-flex" id="product_div">
-										<div class="frmSearch">
-											<input type="text" class="form-control" id="section_title" placeholder="Section Title" />
-											
+							<div class="modal fade" id="myModaltitle" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+								<div class="modal-dialog  modal-dialog-centered">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Section Title</h5>
+											<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 										</div>
+										<div class="modal-body">
+											<form class="form" id="add_brand_form" enctype="multipart/form-data">
+												<input type="hidden" id="bannersection_type">
 
-										<button type="submit" class="ml-2 btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_title_btn">Add</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
+												<label for="name">Add title</label>
+												<div class="form-group d-flex" id="product_div">
+													<div class="frmSearch">
+														<input type="text" class="form-control" id="section_title" placeholder="Section Title" />
 
-				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-					<div class="modal-dialog  modal-dialog-centered">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Add Product</h5>
-								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div class="modal-body">
-								<form class="form" id="add_brand_form" enctype="multipart/form-data">
-									<input type="hidden" id="bannerprod_type">
+													</div>
 
-									<label for="name">Select Product</label>
-									<div class="form-group d-flex" id="product_div">
-										<div class="frmSearch">
-											<input type="text" class="form-control1" id="search-box" placeholder="Product Name" />
-											<input type="hidden" id="product-id" />
-											<div id="suggesstion-box"></div>
+													<button type="submit" class="ml-2 btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_title_btn">Add</button>
+												</div>
+											</form>
 										</div>
-
-										<button type="submit" class="ml-2 btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_product_btn">Add</button>
 									</div>
-								</form>
+								</div>
+							</div>
+
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+								<div class="modal-dialog  modal-dialog-centered">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Add Product</h5>
+											<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div class="modal-body">
+											<form class="form" id="add_brand_form" enctype="multipart/form-data">
+												<input type="hidden" id="bannerprod_type">
+
+												<label for="name">Select Product</label>
+												<div class="form-group d-flex" id="product_div">
+													<div class="frmSearch">
+														<input type="text" class="form-control1" id="search-box" placeholder="Product Name" />
+														<input type="hidden" id="product-id" />
+														<div id="suggesstion-box"></div>
+													</div>
+
+													<button type="submit" class="ml-2 btn btn-dark waves-effect waves-light" value="Upload" href="javascript:void(0)" id="add_product_btn">Add</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-</div>
 
-<?php
-function categoryTree($parent_id, $sub_mark = '')
-{
-	global $conn;
-	$query = $conn->query("SELECT * FROM category WHERE parent_id = $parent_id AND status = '1' ORDER BY cat_name ASC");
+			<?php
+			function categoryTree($parent_id, $sub_mark = '')
+			{
+				global $conn;
+				$query = $conn->query("SELECT * FROM category WHERE parent_id = $parent_id AND status = '1' ORDER BY cat_name ASC");
 
-	if ($query->num_rows > 0) {
-		while ($row = $query->fetch_assoc()) {
-			$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "' AND status ='1'");
-			if ($query1->num_rows > 0) {
-				echo '<span class="expand"><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
+				if ($query->num_rows > 0) {
+					while ($row = $query->fetch_assoc()) {
+						$query1 = $conn->query("SELECT cat_id FROM category WHERE parent_id = '" . $row['cat_id'] . "' AND status ='1'");
+						if ($query1->num_rows > 0) {
+							echo '<span class="expand"><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"></span><span class="mainList"> ' . $row['cat_name'] . '</span>
 						<br />    
 						<ul id="' . $row['cat_name'] . '" class="subList" style="display:block;">';
-				echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
-				echo '</ul>';
-			} else {
-				echo '<li><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"> ' . $row['cat_name'] . '</li>';
+							echo categoryTree($row['cat_id'], $sub_mark . "&nbsp;&nbsp;&nbsp;");
+							echo '</ul>';
+						} else {
+							echo '<li><input type="radio" name="parent_cat" value="' . $row['cat_id'] . '" id="cat' . $row['cat_id'] . '" class="check_category_limit"> ' . $row['cat_name'] . '</li>';
+						}
+					}
+				}
 			}
-		}
-	}
-}
 
-?>
-<?php include('footernew.php'); ?>
-<script src="js/admin/newhomepage_web.js"></script>
+			?>
+			<?php include('footernew.php'); ?>
+			<script src="js/admin/newhomepage_web.js"></script>

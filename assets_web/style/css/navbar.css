@@ -238,6 +238,8 @@
     font-weight: 700;
     padding: 0 1rem;
     transition: background 0.3s ease-in-out;
+    min-width: 150px;
+    text-align: center;
 }
 
 .menu-items .menu-item {
@@ -311,6 +313,7 @@
     justify-content: space-between;
     height: 350px;
     border-radius: 0 0 6px 6px;
+    text-align: left;
 }
 
 .content .col {
@@ -346,6 +349,7 @@
     font-weight: 400;
     font-size: 14px;
     font-weight: 400;
+    text-align: left;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;

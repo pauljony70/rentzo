@@ -646,11 +646,11 @@
 						<div class="d-flex align-items-center mb-3 mb-md-4">
 							<label class="product_detail_headings" for="">Reviews</label>
 							<div class="review-count ms-2"><?= $product_review_total['total_rows'] ?></div>
-							<?php if ($productdetails['order_count'] > 0) : ?>
+							<!-- <?php if ($productdetails['order_count'] > 0) : ?>
 								<div class="add-reviews btn-wrap d-block ms-4">
 									<a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#reviewsModal">Add Review</a>
 								</div>
-							<?php endif; ?>
+							<?php endif; ?> -->
 						</div>
 						<?php foreach ($product_review as $review) : ?>
 							<div class="col-md-9 d-flex mb-3">

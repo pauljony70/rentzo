@@ -16,13 +16,14 @@ $product_id = $_REQUEST['product_id'];
 <?php include("header.php"); ?>
 
 <!-- main content start-->
-<?php
+<?php 
+
 $col1 = $col2 = $col3 = $col4 = $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = $col12 = $col13 = $col14 = $col15 = $col16 = $col17 = $col18 = $col19 = $col20  = '';
-$stmt = $conn->prepare("SELECT o.order_id,o.user_id,op.status, op.prod_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,o.create_date, op.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress, o.country, o.region, o.governorate, o.addresstype, o.email, op.coupon_value, op.coupon_code, o.lat, o.lng FROM orders o, order_product op WHERE op.order_id = o.order_id and op.prod_id = '" . $product_id . "' and o.order_id = '" . $ordersno . "' ");
+$stmt = $conn->prepare("SELECT o.order_id,o.user_id,op.status, op.prod_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,o.create_date, op.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress, o.country, o.region, o.governorate, o.addresstype, o.email, op.coupon_value, op.coupon_code, o.lat, o.lng,op.security_deposit FROM orders o, order_product op WHERE op.order_id = o.order_id and op.prod_id = '" . $product_id . "' and o.order_id = '" . $ordersno . "' ");
 
 
 $stmt->execute();
-$data = $stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11, $col12, $col13, $col14, $col15, $col16, $col17, $col18, $col19, $col20, $col21, $col22, $col23, $col24);
+$data = $stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11, $col12, $col13, $col14, $col15, $col16, $col17, $col18, $col19, $col20, $col21, $col22, $col23, $col24, $col25);
 
 while ($stmt->fetch()) {
 
@@ -49,6 +50,7 @@ while ($stmt->fetch()) {
 	$email =  $col20;
 	$coupon_value =  $col21;
 	$coupon_code =  $col22;
+	$security_deposit =  $col25;
 	$lat =  $lat;
 	$lng =  $lng;
 }
@@ -111,6 +113,27 @@ if ($col2) {
 } else {
 	$user_type = 'Guest';
 }
+
+if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
+
+	
+	$security_deposit = $_POST['security_deposit'];
+	
+	$sql_status = $conn->prepare("INSERT INTO `security_payment`(`order_id`,`user_id`, `product_id`, `payment_status`, `amount`, `create_date`) VALUES (
+					'" . $ordersno . "','" . $user_id . "','" . $product_id . "','pending','" . $security_deposit . "','" . $datetime . "')");
+	$sql_status->execute();
+	$sql_status->store_result();
+	$rows = $sql_status->affected_rows;
+
+
+	$orderstatus = 'Completed';
+	
+	$sql1 = $conn->prepare("UPDATE order_product SET status = '" . $orderstatus . "', status_date = '" . $datetime . "', update_date = '" . $datetime . "' WHERE order_id = '" . $ordersno . "' AND prod_id = '" . $product_id . "'");
+	$sql1->execute();
+	$sql1->store_result();
+
+}
+
 
 ?>
 <div class="content-page">
@@ -275,6 +298,25 @@ if ($col2) {
 											</table>
 										</div>
 									</div>
+									
+									<?php if ($order_status !== '' || $order_status !== NULL || $order_status == 'Return Completed' || $order_status == 'Return Request' || $order_status == 'Cancelled') : ?> 
+												<div class="col-md-6 form-three widget-shadow mt-2 dontprint">
+													<strong>Return Request :</strong><br>
+													<form class="form-horizontal" method="post" id="myform">
+
+
+														<div class="form-group row align-items-center">
+															<label for="focusedinput" class="col-4 control-label m-0">Deposit</label>
+															<div class="col-8">
+																<input type="text" value="<?php echo $security_deposit; ?>" class="form-control" id="security_deposit" name="security_deposit" placeholder="">
+															</div>
+														</div>
+														<div class="col-sm-offset-2">
+															<button type="submit" class="btn btn-dark" href="javascript:void(0)" id="updatestatus">Update</button>
+														</div>
+													</form>
+												</div>
+											<?php endif; ?>
 									<!-- /.col -->
 									<span id="qty_save"></span>
 
@@ -323,19 +365,19 @@ if ($col2) {
 													<br>!-->
 											<br>
 											<strong>Payment Methods:</strong>
-											<br>
+											<br> 
 											<a style="color:black;"><span id="deliverymode"><?= $payment_mode; ?></span></a>
 											<br>
-											<br> <strong>Payment TXN ID: </strong>
+											<br> <strong>Payment TXN ID: </strong> 
 											<br> <a style="color:black;"><span id="paymentid"><?= $payment_id; ?></span></a>
 											<br>
 											<?php if ($pickup_type != '') { ?>
 												<br><br><br>
 												<strong>Shipping Type: </strong><br>
-												<a style="color:black;"><span id="paymentid"><?php if ($pickup_type == 1) {
+												<a style="color:black;"><span id="paymentid"><?php if ($pickup_type == 'self') {
 																									echo 'Self Ship';
-																								} else if ($pickup_type == 2) {
-																									echo 'Ship By Marurang';
+																								} else if ($pickup_type == 'rentzo') {
+																									echo 'Ship By Rentzo';
 																								}; ?></span></a>
 												<?php if ($pickup_type != '') { ?>
 													<br><br>
@@ -383,109 +425,7 @@ if ($col2) {
 												$p_height_data = $p_height;
 												$prod_price_f_data = $prod_price_f;
 											}
-											if ($print_label_data == '' && $accept_status_data == 'Accepted' && $pickup_type_data != '1') {
 											?>
-												<div class="form-three widget-shadow dontprint mb-3">
-													<strong>Pickup Details</strong> <br><br>
-													<form class="form-horizontal" method="post" id="pickup_form">
-														<div class="form-group row align-items-center">
-															<label class="col-4 control-label"> Pickup Date*</label>
-															<div class="col-8">
-																<input type="text" class="form-control" value="<?= date('d-m-Y', strtotime($pickup_date)); ?>" id="pickup_curier_date" name="pickup_curier_date" readonly required placeholder="">
-															</div>
-														</div>
-														<?php
-														$curl1 = curl_init();
-														curl_setopt_array($curl1, array(
-															CURLOPT_URL => 'https://api.nimbuspost.com/v1/users/login',
-															CURLOPT_RETURNTRANSFER => true,
-															CURLOPT_ENCODING => '',
-															CURLOPT_MAXREDIRS => 10,
-															CURLOPT_TIMEOUT => 0,
-															CURLOPT_FOLLOWLOCATION => true,
-															CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-															CURLOPT_CUSTOMREQUEST => 'POST',
-															CURLOPT_POSTFIELDS => '{
-																		"email" : "marurangecommerce@gmail.com",
-																		"password" : "Borawar@739"				
-																	}',
-															CURLOPT_HTTPHEADER => array(
-																'content-type: application/json'
-															),
-														));
-														$response1 = curl_exec($curl1);
-														curl_close($curl1);
-														$token_data = json_decode($response1);
-														$token = $token_data->data;
-														$curl = curl_init();
-														curl_setopt_array($curl, array(
-															CURLOPT_URL => 'https://api.nimbuspost.com/v1/courier/serviceability',
-															CURLOPT_RETURNTRANSFER => true,
-															CURLOPT_ENCODING => '',
-															CURLOPT_MAXREDIRS => 10,
-															CURLOPT_TIMEOUT => 0,
-															CURLOPT_FOLLOWLOCATION => true,
-															CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-															CURLOPT_CUSTOMREQUEST => 'POST',
-															CURLOPT_POSTFIELDS => '{
-																		"origin" : ' . $seller_pincode . ',
-																		"destination" : ' . $pincode . ',
-																		"payment_type" : "cod",
-																		"order_amount" : ' . $prod_price_f_data . ',
-																		"weight" : ' . $p_weight_data . ',	
-																		"length" : ' . $p_length_data . ',
-																		"breadth" : ' . $p_width_data . ',
-																		"height" : ' . $p_height_data . '
-																	}',
-															CURLOPT_HTTPHEADER => array(
-																'Content-Type: application/json',
-																'Authorization: token ' . $token . ''
-															),
-														));
-														$response_rate = curl_exec($curl);
-														curl_close($curl);
-														$response_rate = json_decode($response_rate);
-														/*print_r($response_rate);*/
-														?>
-														<div class="form-group row align-items-center">
-															<label for="focusedinput" class="col-4 control-label">Courier Name</label>
-															<div class="col-8">
-																<select class="form-control" id="curier_name" name="curier_name">
-																	<option>select Courier</option>
-																	<?php
-																	foreach ($response_rate->data as $ship_data) {
-																		if ($ship_data->id != '' && $ship_data->id == 179) /*Blue dark */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 67) /* Smartr */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 17) /* Kerry Indev */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 3) /* Xpressbees Air */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 79) /* DTDC Air */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 10) /* Ecom EXP */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 15) /* Ekart */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 92) /* Delhivery Air Reverse */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																		<?php } else if ($ship_data->id != '' && $ship_data->id == 66) /* Amazon Shipping */ { ?>
-																			<option value="<?= $ship_data->id; ?>"><?= $ship_data->name . ' (Rs.' . $ship_data->freight_charges . ')'; ?></option>
-																	<?php }
-																	}
-																	?>
-																</select>
-															</div>
-														</div>
-														<div class="col-sm-offset-2">
-															<button type="submit" class="btn btn-dark waves-effect waves-light" href="javascript:void(0)" id="pickup_form">Update</button>
-														</div>
-													</form>
-												</div>
-											<?php } else if ($print_label_data != '') { ?>
-												<br><br><a class="btn btn-dark waves-effect waves-light" href="<?= $print_label_data; ?>"><i class="fa fa-download"></i> Label</a>
-											<?php } ?>
 										</div>
 										<!-- /.col -->
 										<div class="col-md-6">
@@ -495,6 +435,10 @@ if ($col2) {
 														<tr>
 															<th style="width:50%">Total:</th>
 															<td><span id="subtotal"><?= $total_price + $discount; ?></span></td>
+														</tr>
+														<tr>
+															<th style="width:50%">Security Deposit:</th>
+															<td><span id="subtotal"><?= $security_deposit; ?></span></td>
 														</tr>
 														<tr>
 															<th style="width:50%">Discount:</th>
@@ -511,6 +455,7 @@ if ($col2) {
 															<th style="width:50%">Shipping:</th>
 															<td><span id="subtotal"><?= $shipping; ?></span></td>
 														</tr>
+														
 														<!-- <tr>
 															<th style="width:50%">CGST:</th>
 															<td><span id="subtotal"><?= $cgst; ?></span></td>
@@ -518,11 +463,12 @@ if ($col2) {
 														<tr>
 															<th style="width:50%">SGST:</th>
 															<td><span id="subtotal"><?= $sgst; ?></span></td>
-														</tr> -->
+														</tr>
 														<tr>
 															<th style="width:50%">VAT:</th>
 															<td><span id="subtotal"><?= $igst; ?></span></td>
-														</tr>
+														</tr> -->
+														
 														<tr>
 															<th style="width:50%">Subtotal:</th>
 															<td><span id="subtotal"><?= $Common_Function->price_format($total_price + $shipping, $conn); ?></span></td>

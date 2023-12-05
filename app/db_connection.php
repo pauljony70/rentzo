@@ -1,13 +1,13 @@
 <?php
 //also change DB connection in cron folder 
-// define('HOST', 'localhost');
-// define('DB1', 'sql_ebuy_om');
-// define('USER', 'root');
-// define('PASS', '');
 define('HOST', 'localhost');
 define('DB1', 'rentzo');
 define('USER', 'root');
 define('PASS', '');
+// define('HOST', 'localhost');
+// define('DB1', 'mydatabase');
+// define('USER', 'mydatabase');
+// define('PASS', 'AtX66WHjncxb8RDc');
 
 $conn = new mysqli(HOST, USER, PASS, DB1);
 

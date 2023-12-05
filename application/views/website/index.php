@@ -45,7 +45,7 @@
 						<span style="color: var(--bs-primary);"> Categories</span>
 					</div>
 					<div class="d-flex align-items-center">
-						<a href="<?= base_url . 'all_category'; ?>">
+						<a href="<?= base_url('all-category') ?>">
 							<span class="view-all">View All</span>
 							<i class="fa-solid fa-chevron-right ms-2"></i>
 						</a>

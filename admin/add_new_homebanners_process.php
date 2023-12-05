@@ -23,8 +23,7 @@ $parent_cat = 0;
 if (!isset($_SESSION['admin'])) {
 	header("Location: index.php");
 	// echo " dashboard redirect to index";
-} else
-if ($code == $_SESSION['_token'] && isset($banner_link) && isset($banner_section) && isset($banner_type)) {
+} else if ($code == $_SESSION['_token'] && isset($banner_link) && isset($banner_section) && isset($banner_type)) {
 	//code for Check Brand Exist - START
 	$query1 = $conn->query("SELECT * FROM `homepage_banner` WHERE type ='" . $banner_type . "'");
 	$banner_image = '';
@@ -87,9 +86,8 @@ if ($code == $_SESSION['_token'] && isset($banner_link) && isset($banner_section
 				unlink($image);
 			}
 		}
-		
-		$query1 = $conn->query("UPDATE `homepage_banner`  SET link='" . $banner_link . "',image='" . $banner_image . "',cat_id='" . $parent_cat . "' WHERE type ='" . $banner_type . "'");
 
+		$query1 = $conn->query("UPDATE `homepage_banner`  SET link='" . $banner_link . "',image='" . $banner_image . "',cat_id='" . $parent_cat . "' WHERE type ='" . $banner_type . "'");
 	} else {
 		$query1 = $conn->query("INSERT INTO `homepage_banner`(type,image,link,section,cat_id) VALUES('" . $banner_type . "','" . $banner_image . "','" . $banner_link . "','" . $banner_section . "','" . $parent_cat . "') ");
 	}

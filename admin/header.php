@@ -442,12 +442,12 @@
 
                         <?php  } ?>
 
-                        <!--<li class="<?= strpos($_SERVER['PHP_SELF'], 'buy-from-turkey-orders.php') !== false ? "menuitem-active" : "" ?>">
-                            <a href="buy-from-turkey-orders.php">
+                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'security_payment.php') !== false ? "menuitem-active" : "" ?>">
+                            <a href="security_payment.php">
                                 <i class="fa fa-cube"></i>
-                                <span> Buy From Turkey Orders </span>
+                                <span>Security Payment</span>
                             </a>
-                        </li>-->
+                        </li>
 
                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'wallet-transactions') !== false || strpos($_SERVER['PHP_SELF'], 'wallet-withdraw-requests') !== false ? "menuitem-active" : ''; ?>">
                             <a href="#wallet" data-toggle="collapse">
@@ -555,12 +555,12 @@
                             </li>
 
                         <?php  } ?>
-                        <li class=" <?= strpos($_SERVER['PHP_SELF'], 'home-notifications.php') !== false ? "menuitem-active" : "" ?>">
+                       <!--  <li class=" <?= strpos($_SERVER['PHP_SELF'], 'home-notifications.php') !== false ? "menuitem-active" : "" ?>">
                             <a href="home-notifications.php">
                                 <i class="fa fa-laptop"></i>
                                 <span> Home Notifications </span>
                             </a>
-                        </li>
+                        </li> -->
                         <?php
                         /* if ($Common_Function->user_module_premission($_SESSION, $Shipping)) { ?>
                             <li class="<?php if (strpos($_SERVER['PHP_SELF'], 'manage_shipping.php') !== false) {

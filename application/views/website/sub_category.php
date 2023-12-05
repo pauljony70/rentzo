@@ -4,27 +4,8 @@
 <head>
     <?php $title = "Top Category";
     include("include/headTag.php") ?>
+    <link rel="stylesheet" href="<?= base_url('assets_web/style/css/category.css') ?>">
 </head>
-<style>
-	.top-category .card img, .trending-category .card img {
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-		padding : 5px;
-		border-radius : 10px;
-	}
-	.top-category .card, .trending-category .card {
-		height: 300px;
-		overflow: hidden;
-		border-radius: 10px;
-		margin : 15px 15px 0px 15px;
-	}
-    @media (max-width: 767.98px) {
-        .top-category .card {
-            height: 200px;
-        }
-    }
-</style>
 
 <body>
     <?php
@@ -40,40 +21,30 @@
     <main>
 
         <!-- Top Category section starts here  -->
-        <section class="top-category" style="min-height:700px">
-            <div class="container px-0">
+        <section class="category my-5">
+            <div class="container">
                 <nav aria-label="breadcrumb" class="px-1">
-                    <ol class="breadcrumb my-3 mt-4">
+                    <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item">Category</li>
-                        <li class="breadcrumb-item active fw-bolder" aria-current="page"><?php echo $sub_cat[0]['cat_name']; ?></li>
+                        <li class="breadcrumb-item active" aria-current="page"><?= $sub_cat[0]['cat_name']; ?></li>
                     </ol>
                 </nav>
-                <div class="row">
+                <div class="row category-cards">
                     <?php foreach ($sub_cat as $maincat) {  ?>
-                        <?php
-                        if (!empty($maincat['subcat_1'])) {
-
-                            foreach ($maincat['subcat_1'] as $subcat_1) {
-
-                        ?>
-                                <div class="col-md-6 col-lg-3 mb-2 px-1">
-                                    <a href="<?php echo base_url() . 'shop/' . $subcat_1['cat_slug']; ?>">
-                                        <div class="card position-relative" style="border: 0.5px solid #ccc;">
-                                            <img src="<?php echo MEDIA_URL . $subcat_1['imgurl']; ?>" alt="" class="img-fluid">
-                                            <div class="card-overlay position-absolute top-0 start-0 p-4 p-4 py-lg-5 px-lg-5">
-                                                <!--<p class="fw-bold text-primary mb-0">Min. 40% Off</p>-->
-                                            </div>
-                                        </div>
+                        <?php if (!empty($maincat['subcat_1'])) {
+                            foreach ($maincat['subcat_1'] as $subcat_1) { ?>
+                                <div class="col-6 col-sm-4 col-lg-3 mb-3 mb-md-5">
+                                    <a href="<?= base_url() . 'shop/' . $subcat_1['cat_slug']; ?>" class="card position-relative">
+                                        <img src="<?= MEDIA_URL . $subcat_1['imgurl']; ?>" alt="<?= $subcat_1['cat_name']; ?>" class="img-fluid">
+                                        <div class="card-overlay position-absolute top-0 start-0 p-4 p-4 py-lg-5 px-lg-5"></div>
                                     </a>
-                                    <h6 class="fw-bolder text-center text-dark mt-2"><?php echo $subcat_1['cat_name']; ?></h6>
+                                    <div class="category-title text-center mt-2"><?= $subcat_1['cat_name']; ?></div>
                                 </div>
-                        <?php }
+                    <?php   }
                         } else {
                             redirect(base_url . $maincat['cat_slug']);
                         }
-
-                        ?>
-                    <?php } ?>
+                    } ?>
 
 
                 </div>

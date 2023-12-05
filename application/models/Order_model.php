@@ -162,7 +162,7 @@ class Order_model extends CI_Model
 			$orders['payment_mode'] = $order_detail->payment_mode;
 			$orders['create_date'] = $order_detail->create_date;
 			$orders['total_qty'] = $order_detail->total_qty;
-			$orders['total_price'] = price_format($order_detail->total_price - $order_detail->coupon_value);
+			$orders['total_price'] = price_format(floatval($order_detail->total_price) - floatval($order_detail->coupon_value));
 			$orders['discount'] = price_format($order_detail->discount);
 			$orders['total_mrp'] = price_format($order_detail->discount + $order_detail->total_price);
 			$orders['coupon_value'] = $order_detail->coupon_value;
@@ -301,18 +301,20 @@ class Order_model extends CI_Model
 	// kamal order api
 	function get_order_list_detailsProd($langauge, $user_id, $order_id = '')
 	{
-		$add_data = '';
+		$this->db->select('o.order_id, o.status, op.prod_id, op.vendor_id, op.prod_name, op.prod_name_ar, op.prod_img, op.prod_attr, o.total_price, op.qty, op.prod_price, op.shipping, op.status, op.discount, op.type, o.payment_mode, o.create_date, o.discount, o.total_qty, op.rent_from_date, op.rent_to_date');
+		$this->db->from('orders o');
+		$this->db->join('order_product op', 'o.order_id = op.order_id');
+		$this->db->where('o.buy_from IS NULL');
+		$this->db->where('o.user_id', $user_id);
+
 		if (!empty($order_id)) {
-			$add_data = ' and op.order_id = "' . $order_id . '"';
+			$this->db->where('op.order_id', $order_id);
 		}
 
-		$user_id_data = '';
-		if (!empty($user_id)) {
-			$user_id_data = ' and o.user_id = "' . $user_id . '"';
-		}
+		$this->db->order_by('o.sno', 'DESC');
 
-		$sql = "SELECT o.order_id, o.status, op.prod_id, op.vendor_id, op.prod_name ,  op.prod_name_ar , op.prod_img, op.prod_attr, o.total_price, op.qty, op.prod_price,op.shipping, op.status, op.discount, o.payment_mode,o.create_date, o.discount,o.total_qty FROM orders o, order_product op WHERE o.order_id= op.order_id AND o.buy_from IS NULL AND o.user_id = '$user_id' $add_data ORDER BY  o.sno DESC";
-		$query = $this->db->query($sql); // $query = $this->db->$sql;
+		$query = $this->db->get();
+
 		$product_detail_array = array();
 		$orders = array();
 
@@ -337,6 +339,21 @@ class Order_model extends CI_Model
 				$orders['payment_mode'] = $order_detail->payment_mode;
 				$orders['create_date'] = $order_detail->create_date;
 				$orders['deliverd_date'] = date('d-m-Y');
+				$orders['type'] = $order_detail->type;
+
+				$rentFromDate = DateTime::createFromFormat('Y-m-d H:i:s', $order_detail->rent_from_date);
+				$rentToDate = DateTime::createFromFormat('Y-m-d H:i:s', $order_detail->rent_to_date);
+
+				$validDates = $rentFromDate && $rentFromDate->format('Y-m-d H:i:s') === $order_detail->rent_from_date &&
+					$rentToDate && $rentToDate->format('Y-m-d H:i:s') === $order_detail->rent_to_date;
+
+
+				$orders['rent_from_date'] = $order_detail->rent_from_date;
+				$orders['rent_to_date'] = $order_detail->rent_to_date;
+				$orders['duration_in_days'] = $validDates
+					? $rentFromDate->diff($rentToDate)->days + 1
+					: 0;
+
 
 				$product_detail_array[] = $orders;
 			}
