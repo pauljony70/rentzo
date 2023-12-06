@@ -26,21 +26,21 @@
 									</div>
 									<div class="col-10">
 										<div class="d-flex justify-content-between p-3 pe-5">
-											<div class="order-id">Order id #<?= $order_history['order_id']; ?></div>
+											<a href="<?= base_url('orderDetails/' . $order_history['order_id'] . '/' . $order_history['prod_id']) ?>" class="order-id">Order id #<?= $order_history['order_id']; ?></a>
 											<div class="order-date"><?= date('d-m-Y', strtotime($order_history['create_date'])); ?></div>
 										</div>
 										<hr class="my-0">
 									</div>
 									<div class="col-3">
-										<a href="<?php echo base_url; ?>orderDetails/<?php echo $order_history['order_id']; ?>/<?php echo $order_history['prod_id']; ?>">
-											<img src="<?php echo weburl . 'media/' . $order_history['prod_img']; ?>" class="w-100 prod-img ps-3" />
+										<a href="<?= base_url('orderDetails/' . $order_history['order_id'] . '/' . $order_history['prod_id']) ?>">
+											<img src=" <?= weburl . 'media/' . $order_history['prod_img']; ?>" class="w-100 prod-img ps-3" />
 										</a>
 									</div>
 									<div class="col-9">
 										<div class="row h-100 pe-4">
 											<div class="col-md-5">
 												<div class="d-flex flex-column h-100">
-													<div class="prod-name line-clamp-2 mb-3"><?= $order_history['prod_name']; ?></div>
+													<a href="<?= base_url('orderDetails/' . $order_history['order_id'] . '/' . $order_history['prod_id']) ?>" class="prod-name line-clamp-2 mb-3"><?= $order_history['prod_name']; ?></a>
 													<?php if (!empty($order_history['prod_attr'])) : ?>
 														<table class="attributes mb-3">
 															<tbody>

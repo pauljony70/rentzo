@@ -147,7 +147,7 @@ class Order_model extends CI_Model
 		$query = $this->db->get('orders o');
 
 		$order_summery = array('order_id' => '', 'status' => '', 'payment_mode' => '', 'create_date' => '', 'total_qty' => '', 'total_price' => '', 'discount' => '', 'ordered_products' => []);
-		$shipping_address = array('fullname' => '', 'mobile' => '', 'email' => '', 'fulladdress' => '', 'country' => '', 'region' => '', 'governorate' => '', 'area' => '', 'addresstype' => '', 'coupon_value' => '');
+		$shipping_address = array('fullname' => '', 'mobile' => '', 'email' => '', 'fulladdress' => '', 'state' => '', 'city' => '', 'pincode' => '', 'addresstype' => '', 'coupon_value' => '');
 
 		$ordered_products = $this->db->select("op.prod_id, op.prod_sku, op.prod_name, op.prod_name_ar, op.prod_img, op.prod_attr, op.qty, op.prod_price, op.shipping, op.discount, op.status, op.tracking_id")->get_where('order_product op', array('op.order_id' => $order_id))->result_array();
 
@@ -175,15 +175,14 @@ class Order_model extends CI_Model
 			$shipping['mobile'] = $order_detail->mobile;
 			$shipping['email'] = $order_detail->email;
 			$shipping['fulladdress'] = $order_detail->fulladdress;
-			$shipping['country'] = $order_detail->country;
-			$shipping['region'] = $order_detail->region;
-			$shipping['governorate'] = $order_detail->governorate;
-			$shipping['area'] = $order_detail->area;
+			$shipping['state'] = $order_detail->state;
+			$shipping['city'] = $order_detail->city;
+			$shipping['pincode'] = $order_detail->pincode;
 			$shipping['addresstype'] = $order_detail->addresstype;
 
 			$shipping_address = $shipping;
 
-			$this->db->select("op.prod_id,op.prod_sku,op.prod_name, op.prod_name_ar,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.discount,op.status, sl.companyname,sl.seller_unique_id,op.tracking_id");
+			$this->db->select("op.prod_id,op.prod_sku,op.prod_name, op.prod_name_ar,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.discount,op.status, sl.companyname,sl.seller_unique_id,op.tracking_id, sl.address as seller_address, sl.city as seller_city, sl.state as seller_state, sl.pincode as seller_pincode");
 			$this->db->JOIN('sellerlogin sl', 'sl.seller_unique_id = op.vendor_id', 'INNER');
 			$this->db->where(array('op.order_id' => $order_id, 'op.prod_id' => $prod_id));
 			$query_prod = $this->db->get('order_product op');
@@ -211,16 +210,11 @@ class Order_model extends CI_Model
 					$order_product['status'] = $order_prod_detail->status;
 					$order_product['companyname'] = $order_prod_detail->companyname;
 					$order_product['tracking_id'] = $order_prod_detail->tracking_id;
-					if ($order_prod_detail->prod_attr) {
-						$attr = json_decode($order_prod_detail->prod_attr);
-						$attribute = '';
-						foreach ($attr as $prod_attr) {
-							$attribute .= $prod_attr->attr_name . ': ' . $prod_attr->item . ', ';
-						}
-						$order_product['attribute'] = rtrim($attribute, ', ');
-					} else {
-						$order_product['attribute'] = '';
-					}
+					$order_product['attribute'] = $order_prod_detail->prod_attr;
+					$order_product['seller_address'] = $order_prod_detail->seller_address;
+					$order_product['seller_city'] = $order_prod_detail->seller_city;
+					$order_product['seller_state'] = $order_prod_detail->seller_state;
+					$order_product['seller_pincode'] = $order_prod_detail->seller_pincode;
 					$order_product_array[] = $order_product;
 				}
 			}

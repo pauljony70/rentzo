@@ -361,11 +361,11 @@ class Order_model extends CI_Model
 
 			$shipping['fullname'] = $order_detail->fullname;
 			$shipping['mobile'] = $order_detail->mobile;
-			$shipping['locality'] = $order_detail->locality;
+			$shipping['locality'] = $order_detail->locality ?? '';
 			$shipping['fulladdress'] = $order_detail->fulladdress;
 			$shipping['city'] = $order_detail->city;
 			$shipping['state'] = $order_detail->state;
-			$shipping['pincode'] = $order_detail->pincode;
+			$shipping['pincode'] = $order_detail->pincode ?? '';
 			$shipping['addresstype'] = $order_detail->addresstype;
 			$shipping['email'] = $order_detail->email;
 

@@ -57,3 +57,290 @@
 #send-message-btn {
     border: none;
 }
+
+.page-heading {
+    color: #17183B;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 44px;
+}
+
+.order-heading {
+    padding: 5px;
+    border: 1px solid #D9D9D9;
+}
+
+.order-heading .order-id {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.order-heading .order-status {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 15px;
+    padding: 4px;
+    border: 1px solid #808080;
+}
+
+.order-heading .order-date {
+    color: #808080;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.order-details .order-type-rent {
+    position: relative;
+    background-color: var(--bs-warning);
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.order-details .order-type-rent .text {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 10px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 54%;
+    left: 10%;
+    transform-origin: top left;
+    transform-origin: 0% 0%;
+    letter-spacing: 2px;
+}
+
+.order-details .product-thumb {
+    height: 216px;
+    object-fit: contain;
+}
+
+.order-details .product-name {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.order-details .price-details,
+.order-details .order-tracking-details {
+    width: 295px;
+}
+
+.order-details .price-details tr,
+.order-details .order-tracking-details tr {
+    height: 35px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.order-details .price-details tr {
+    height: 35px;
+    color: #808080;
+}
+
+.order-details .shipping-address {
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+}
+
+.order-details .shipping-address .div-heading {
+    color: #17183B;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+    letter-spacing: 0.15px;
+}
+
+.order-details .shipping-address .location,
+.order-details .shipping-address .contact .des {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.order-details .shipping-address .contact .heading {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.shipping-address .user-name {
+    color: #17183B;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 32px;
+    letter-spacing: 0.15px;
+}
+
+.payment-details .heading {
+    color: #17183B;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 44px;
+}
+
+.payment-details .payment-details-div {
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.payment-details .payment-details-div {
+    color: #17183B;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.seller-address .d-flex {
+    gap: 10px;
+}
+
+.seller-address .heading,
+.seller-chat .btn,
+.action-btns .btn {
+    width: 156px;
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid #A2A3B1;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.32px;
+}
+
+#review_form .form-control {
+    background-color: #F5F5F5;
+    border: 1px solid #D9D9D9;
+    border-radius: 0px;
+}
+
+#review_form textarea {
+    height: 110px;
+}
+
+.dropify-wrapper {
+    border: 1px solid #D9D9D9;   
+    background-color: #F5F5F5;
+}
+
+#review_form .btn.btn-primary {
+    width: 234px;
+    padding: 14px 0px;
+    border-radius: 18px;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.rating_star {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.3rem;
+    --stroke: #666;
+    --fill: #FFAD33;
+}
+
+.rating_star input {
+    appearance: unset;
+}
+
+.rating_star label {
+    cursor: pointer;
+}
+
+.rating_star svg {
+    width: 2.3rem;
+    height: 2.3rem;
+    overflow: visible;
+    fill: transparent;
+    stroke: var(--stroke);
+    stroke-linejoin: bevel;
+    stroke-dasharray: 12;
+    animation: idle 4s linear infinite;
+    transition: stroke 0.2s, fill 0.5s;
+}
+
+@keyframes idle {
+    from {
+        stroke-dashoffset: 24;
+    }
+}
+
+.rating_star label:hover svg {
+    stroke: var(--fill);
+}
+
+.rating_star input:checked~label svg {
+    transition: 0s;
+    animation: idle 4s linear infinite, yippee 0.75s backwards;
+    fill: var(--fill);
+    stroke: var(--fill);
+    stroke-opacity: 0;
+    stroke-dasharray: 0;
+    stroke-linejoin: miter;
+    stroke-width: 3px;
+}
+
+@keyframes yippee {
+    0% {
+        transform: scale(1);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30% {
+        transform: scale(0);
+        fill: var(--fill);
+        fill-opacity: 0;
+        stroke-opacity: 1;
+        stroke: var(--stroke);
+        stroke-dasharray: 10;
+        stroke-width: 1px;
+        stroke-linejoin: bevel;
+    }
+
+    30.1% {
+        stroke: var(--fill);
+        stroke-dasharray: 0;
+        stroke-linejoin: miter;
+        stroke-width: 8px;
+    }
+
+    60% {
+        transform: scale(1.2);
+        fill: var(--fill);
+    }
+}

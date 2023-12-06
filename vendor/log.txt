@@ -87,3 +87,4 @@ User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 202
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-28 17:00:41
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-11-29 02:38:30
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-02 15:38:14
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-06 16:02:56

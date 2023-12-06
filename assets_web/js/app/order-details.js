@@ -179,4 +179,125 @@ function playNotificationSound() {
 window.onload = function () {
     getMessagesOnLoad();
     checkForNewMessages();
+    $('.dropify').dropify();
 };
+
+function video_call(email) {
+    $.ajax({
+        method: 'get',
+        url: site_url + 'email_videocall',
+        data: {
+            language: 1,
+            email: email,
+            [csrfName]: csrfHash
+        },
+        success: function (response) { }
+    });
+}
+
+$("#review_form").submit(function (event) {
+    event.preventDefault();
+
+    var ProductReview = $("#ProductReview").val();
+    var reviewtitle = $("#reviewtitle").val();
+    var pid = $("#prod_id").val();
+    var user_id = $("#user_id").val();
+    var rating = $('.rating_star input[type="radio"]:checked').val() || 0;
+
+    $.ajax({
+        method: "post",
+        url: site_url + "addProductReview",
+        data: {
+            language: default_language,
+            pid: pid,
+            user_id: user_id,
+            review_title: reviewtitle,
+            review_comment: ProductReview,
+            review_rating: rating,
+            [csrfName]: csrfHash,
+        },
+        success: function (response) {
+
+            if (response.status) {
+                Swal.fire({
+                    text: 'Review is submitted succesfully',
+                    type: "warning",
+                    showCancelButton: true,
+                    showCloseButton: true,
+                }).then(function (res) {
+                    if (res.value) {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'FAILED',
+                    text: response.msg,
+                    type: "warning",
+                    confirmButtonColor: '#ff6600',
+                    showCloseButton: true,
+                    timer: 3000,
+                })
+            }
+        },
+    });
+});
+
+function cancel_order(pid, order_id) {
+
+    Swal.fire({
+        text: 'Are you sure you want to cancel this order?',
+        type: "warning",
+        showCancelButton: true,
+        showCloseButton: true,
+    }).then(function (res) {
+        if (res.value) {
+            $.ajax({
+                method: 'post',
+                url: site_url + 'cancelOrder',
+                data: {
+                    language: 1,
+                    pid: pid,
+                    order_id: order_id,
+                    [csrfName]: csrfHash
+                },
+                success: function (response) {
+
+                    location.reload();
+                }
+            });
+        }
+    });
+}
+
+function return_order(pid, order_id) {
+
+    Swal.fire({
+        position: "center",
+        title: 'Are you Sure to Return Order?',
+        showConfirmButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#f42525'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                method: 'post',
+                url: site_url + 'returnOrder',
+                data: {
+                    language: 1,
+                    pid: pid,
+                    order_id: order_id,
+                    [csrfName]: csrfHash
+                },
+                success: function (response) {
+
+                    location.reload();
+                }
+            });
+
+        }
+    })
+
+}

@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+// echo "<pre>";
+// print_r($order_details);
+// exit;
+?>
 
 <head>
 	<?php $title = "Track Order";
 	include("include/headTag.php") ?>
+	<!-- Plugin Css -->
+	<link rel="stylesheet" href="<?= base_url('assets_web/libs/dropify/dist/css/dropify.min.css') ?>">
 	<link rel="stylesheet" href="<?= base_url('assets_web/style/css/order-details.css') ?>">
 </head>
 <style>
@@ -11,19 +18,13 @@
 </style>
 
 <body>
+	<?php include("include/loader.php"); ?>
 	<?php include("include/navbar-brand.php"); ?>
 
 	<main class="order-details-page">
 		<input type="hidden" name="seller_id" id="seller_id" value="<?= $order_details['product_details'][0]['vendor_id'] ?>">
 		<input type="hidden" name="order_id" id="order_id" value="<?= $order_details['order_summery']['order_id'] ?>">
 		<input type="hidden" name="prod_id" id="prod_id" value="<?= $order_details['product_details'][0]['prod_id'] ?>">
-
-		<div class="position-relative my-5" style="width: fit-content;">
-			<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
-				Button with data-bs-target
-			</button>
-			<div id="unseen-message-count"></div>
-		</div>
 
 		<div class="offcanvas offcanvas-end p-4" tabindex="-1" id="chatOffcanvas" aria-labelledby="chatOffcanvasLabel">
 			<div class="offcanvas-header">
@@ -33,10 +34,10 @@
 					</div>
 					<div class="seller-name text-light ms-2 line-clamp-1">Seller Name</div>
 				</div>
-				 
-				
-				
-				<a target="_blank" onclick="video_call('<?= $order_details['shipping_address']['email']; ?>')" href="<?php echo base_url(); ?>video?appid=2c35bc66b7364b47aefe72415b2f8cd3&channel=rentzo&token=">
+
+
+
+				<a target="_blank" onclick="video_call('<?= $order_details['shipping_address']['email']; ?>')" href="<?= base_url(); ?>video?appid=2c35bc66b7364b47aefe72415b2f8cd3&channel=rentzo&token=">
 					<img src="<?= base_url('assets_web/images/icons/add-call.svg') ?>" alt="Call" srcset="">
 				</a>
 			</div>
@@ -54,275 +55,188 @@
 			</div>
 		</div>
 		<!--Start: Track Order Section -->
-		<section>
-		
-			<div class="container px-1">
-				<div class="row mt-4">
-
-					<div class="col-lg-12">
-						<div class="left-block box-shadow-4">
-							<h5 class="title"><?= $this->lang->line('track-order') ?></h5>
-							<div class="row">
-								<div class="col-md-6">
-									<div class="cart-details row">
-										<div class="col-12 p-0">
-											<div class="card">
-												<div class="cart-body">
-													<div class="row">
-														<div class="col-3 p-0 product-thumb">
-															<img onclick="redirect_to_link('<?= base_url . $order_details['product_details'][0]['prod_sku'] . '?pid=' . $order_details['product_details'][0]['prod_id'] . '&sku=' . $order_details['product_details'][0]['prod_sku'] . '&sid=' . $order_details['product_details'][0]['vendor_id']; ?>')" src="<?= weburl . 'media/' . $order_details['product_details'][0]['prod_img']; ?>" class="product-thumb" />
-														</div>
-														<div class="col-9">
-															<div class="d-flex flex-column">
-																<h6 onclick="redirect_to_link('<?= base_url . $order_details['product_details'][0]['prod_sku'] . '?pid=' . $order_details['product_details'][0]['prod_id'] . '&sku=' . $order_details['product_details'][0]['prod_sku'] . '&sid=' . $order_details['product_details'][0]['vendor_id']; ?>')"><?= $order_details['product_details'][0]['prod_name']; ?></h6>
-																<?php if (!empty($order_details['order_summery']['prod_attr'])) : ?>
-																	<p class="text-muted mb-1">
-																		<?php foreach ($order_details['order_summery']['prod_attr'] as $conf_data) {
-																			echo '<span class="me-1"><b>' . $conf_data->attr_name . ':</b></span><span class="ms-1" style="font-size:14px;">' . $conf_data->item . '</span>&nbsp;,&nbsp;';
-																		} ?>
-																	</p>
-																<?php endif; ?>
-																<div class="wrap-details">
-																	<div class="rate mb-1">
-																		<h5><?= $order_details['product_details'][0]['prod_price']; ?></h5>
-																		<div class="old-price"><?= $order_details['product_details'][0]['prod_mrp']; ?></div>
-																		<!--<div class="off-price">60% off</div>-->
-																	</div>
-																	<div class="qty"><?= $this->lang->line('quantity') ?> : <?= $order_details['product_details'][0]['qty']; ?></div>
-																	<div class="order-id"><span><?= $this->lang->line('order-id') ?> : </span> <?= $order_details['order_summery']['order_id']; ?></div>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="order-progress mt-0">
-										<ul class="step-progress">
-											<li class="step-progress-item is-done">
-												<h6>Order Confirmed</h6>
-												<p><?= date('d-M-Y h:i:sa', strtotime($order_details['order_summery']['create_date'])); ?></p>
-											</li>
-											<li class="step-progress-item">
-												<h6><?= $order_details['product_details'][0]['status']; ?></h6>
-											</li>
-										</ul>
-									</div>
+		<section class="my-5">
+			<div class="container">
+				<div class="page-heading mb-3 mb-md-4">Order history</div>
+				<div class="order-heading mb-4">
+					<div class="d-flex justify-content-between">
+						<div class="order-id">Order id 34256748</div>
+						<div class="order-status">Status : on the way</div>
+						<div class="order-date">order date 5-10-2023</div>
+					</div>
+				</div>
+				<div class="row order-details mb-4">
+					<div class="col-md-7 mb-4">
+						<div class="row">
+							<div class="col-3 position-relative">
+								<img src="<?= weburl . 'media/' . $order_details['product_details'][0]['prod_img']; ?>" class="product-thumb w-100" alt="<?= $order_details['product_details'][0]['prod_name']; ?>" />
+								<div class="order-type order-type-rent position-absolute top-0">
+									<div class="text">Rent</div>
 								</div>
 							</div>
-
-							<div class="row">
-								<div class="col-md-6">
-									<h6><?= $this->lang->line('delivery-add') ?></h6>
-									<div class="address-details box-shadow-4">
-										<span class="badge"><?= $order_details['shipping_address']['addresstype']; ?></span>
-										<ul class="name my-2">
-											<li class="px-0">
-												<h6 class="m-0"><?= $order_details['shipping_address']['fullname']; ?></h6>
-											</li>
-										</ul>
-										<div class="address">
-											<h6>
-												<?= $order_details['shipping_address']['mobile']; ?><br>
-												<?= $order_details['shipping_address']['email']; ?><br>
-												<?= $order_details['shipping_address']['fulladdress']; ?><br>
-												<?= $order_details['shipping_address']['area'] . ', ' . $order_details['shipping_address']['governorate'] . ', ' . $order_details['shipping_address']['region'] . ', ' . $order_details['shipping_address']['country']; ?>
-											</h6>
-										</div>
-									</div>
-
-									<?php if ($order_details['product_details'][0]['tracking_id'] != '') { ?>
-										<div class="col-md-12"><br>
-											<strong>Tracking Url: </strong><br>
-											<a style="color:green;" target="_blank" href="<?= 'https://ship.nimbuspost.com/shipping/tracking/' . $order_details['product_details'][0]['tracking_id']; ?>"><span><?= 'https://ship.nimbuspost.com/shipping/tracking/' . $order_details['product_details'][0]['tracking_id']; ?></span></a>
-										</div>
-									<?php } ?>
-
-									<?php if ($order_details['product_details'][0]['status'] == 'Delivered') { ?>
-										<a class="btn btn-success mt-5 text-light pt-2" onclick="return_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')">Return Order</a>
-									<?php } else if ($order_details['product_details'][0]['status'] != 'Cancelled') { ?>
-										<a class="btn btn-success mt-5 text-light pt-2" onclick="cancel_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')"><?= $this->lang->line('cancel-order') ?></a>
-									<?php } ?>
-								</div>
-
-								<div class="col-md-6">
-									<h6><?= $this->lang->line('order-summary') ?></h6>
-									<div class="address-details box-shadow-4">
-										<ul class="px-0">
-											<label for="" class="text-dark fw-bolder"><?= $this->lang->line('ordered-products') ?></label>
-											<?php foreach ($order_details['order_summery']['ordered_products'] as $ordered_product) : ?>
-												<li>
-													<a class="dropdown-item" href="<?= base_url('orderDetails/' . $order_details['order_summery']['order_id'] . '/' . $ordered_product['prod_id']) ?>">
-														<div class="card search-card">
-															<div class="d-flex ">
-																<div class="d-flex-center search-card_image" style="background-image: url(<?= base_url('media/' . $ordered_product['prod_img']) ?>); width: 60px; height: 60px;margin: 10px 0px; background-position: center; background-repeat: no-repeat; background-size: cover; border-radius: 0.5rem; overflow: hidden;"></div>
-																<div class="w-100">
-																	<div class="card-body py-2 h-100 d-flex flex-column justify-content-evenly">
-																		<div class="w-100 d-flex justify-content-between">
-																			<h6 class="card-title mt-0" style="white-space: normal;"><?= $ordered_product['prod_name'] ?></h6>
-																		</div>
-																		<div class="d-flex">
-																			<p class="card-text m-0"><small class="text-dark"><?= price_format($ordered_product['prod_price']) ?></small></p>
-																			<p class="card-text mb-0 ms-3"><small class="text-muted text-decoration-line-through"><?= price_format($ordered_product['prod_price'] + $ordered_product['discount']) ?></small></p>
-																		</div>
-																		<p class="card-text m-0"><small class="text-muted">Qty: <?= $ordered_product['qty'] ?></small></p>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</a>
-												</li>
-											<?php endforeach; ?>
-										</ul>
-										<div class="price-details">
-											<div class="price my-2 pt-0 d-flex justify-content-between">
-												<div>
-													<h6>Cart Value (<?= $order_details['order_summery']['total_qty']; ?> items)</h6>
-												</div>
-												<div>
-													<h6><?= $order_details['order_summery']['total_mrp']; ?></h6>
-												</div>
-											</div>
-											<div class="discount my-2 d-flex justify-content-between">
-												<div>
-													<h6>Discount</h6>
-												</div>
-												<div>
-													<h6>-<?= $order_details['order_summery']['discount']; ?></h6>
-												</div>
-											</div>
-											<?php if ($order_details['order_summery']['coupon_value'] != 0) { ?>
-												<div class="discount d-flex justify-content-between">
-													<div>
-														<h6>Coupon Discount</h6>
-													</div>
-													<div>
-														<h6>-<?= $order_details['order_summery']['coupon_value']; ?></h6>
-													</div>
-												</div>
-											<?php } ?>
-										</div>
-										<hr>
-										<div class="total d-flex justify-content-between">
-											<div>
-												<h5>Total Amount</h5>
-											</div>
-											<div>
-												<h5><?= ($order_details['order_summery']['total_price']); ?></h5>
-											</div>
-										</div>
-										<hr>
-									</div>
-
-								</div>
+							<div class="col-9">
+								<div class="product-name mb-3 mb-md-4"><?= $order_details['product_details'][0]['prod_name']; ?></div>
+								<table class="price-details">
+									<tbody>
+										<tr>
+											<td class="text-start">Rent Price</td>
+											<td class="text-end"><?= price_format(500) ?></td>
+										</tr>
+										<tr>
+											<td class="text-start">Quantity</td>
+											<td class="text-end">1</td>
+										</tr>
+										<tr>
+											<td class="text-start">Total days</td>
+											<td class="text-end">3</td>
+										</tr>
+									</tbody>
+								</table>
+								<table class="order-tracking-details">
+									<tbody>
+										<tr>
+											<td class="text-start">Order Delivered</td>
+											<td class="text-end">18-10-2023</td>
+										</tr>
+										<tr>
+											<td class="text-start">Order Returned</td>
+											<td class="text-end">21-10-2023</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
-
 						</div>
 					</div>
-
-
-
+					<div class="col-md-5">
+						<div class="shipping-address mb-4">
+							<div class="div-heading mb-3">Shipping to this Address</div>
+							<div class="user-name mb-3"><?= $order_details['shipping_address']['fullname']; ?></div>
+							<div class="location mb-1"><?= $order_details['shipping_address']['fulladdress']; ?></div>
+							<div class="location"><?= $order_details['shipping_address']['city']; ?>, <?= $order_details['shipping_address']['state']; ?>, India, <?= $order_details['shipping_address']['pincode']; ?></div>
+							<div class="contact d-flex">
+								<div class="heading">Email -&nbsp;</div>
+								<div class="des"><?= $order_details['shipping_address']['email']; ?></div>
+							</div>
+							<div class="contact d-flex">
+								<div class="heading">Mobile -&nbsp;</div>
+								<div class="des"><?= $order_details['shipping_address']['mobile']; ?></div>
+							</div>
+						</div>
+						<div class="seller-address">
+							<div class="heading mb-3">Seller Address</div>
+							<div class="d-flex align-items-center justify-content-between">
+								<div class="address"><?= $order_details['product_details'][0]['seller_address'] ?>, <?= $order_details['product_details'][0]['seller_city'] ?>, <?= $order_details['product_details'][0]['seller_state'] ?>, India, <?= $order_details['product_details'][0]['seller_pincode'] ?></div>
+								<div class="seller-chat position-relative">
+									<button class="btn text-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
+										Talk to seller
+									</button>
+									<div id="unseen-message-count"></div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+				<div class="payment-details mb-3 mb-md-4">
+					<div class="heading">Payment Details</div>
+					<div class="payment-details-div">
+						<div class="d-flex justify-content-between w-100 mb-3">
+							<div>Price</div>
+							<div>For 3 Days</div>
+							<div><?= price_format(1500) ?></div>
+						</div>
+						<div class="d-flex justify-content-between w-100 mb-3">
+							<div>Security Deposited <span class="text-primary">(Refundable)</span></div>
+							<div class="text-primary"><?= price_format(1500) ?></div>
+						</div>
+						<div class="d-flex justify-content-between w-100 mb-3">
+							<div>Total</div>
+							<div class="fw-semibold"><?= price_format(1500) ?></div>
+						</div>
+						<div class="d-flex justify-content-between w-100">
+							<div>Payment Mode</div>
+							<div class="fw-semibold">UPI</div>
+						</div>
+					</div>
+				</div>
+				<div class="action-btns mb-4 mb-md-5">
+					<div class="d-flex justify-content-between">
+						<a href="#review-section" class="btn">Write Review</a>
+						<button type="button" class="btn" onclick="cancel_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')">Cancel Order</button>
+					</div>
+				</div>
+				<section id="review-section">
+					<div class="row">
+						<div class="col-md-9">
+							<form id="review_form" class="form">
+								<div class="mb-3">
+									<div class="form-floating">
+										<input type="text" class="form-control" name="reviewtitle" id="reviewtitle" placeholder="Review title" />
+										<label for="log_mobileno">Review title</label>
+										<span id="error"></span>
+									</div>
+								</div>
+								<div class="mb-3">
+									<div class="form-floating">
+										<textarea class="form-control" name="ProductReview" id="ProductReview" rows="10" placeholder="Please write your Review"></textarea>
+										<label class="form-label">Please write your Review</label>
+										<span id="error"></span>
+									</div>
+								</div>
+								<div class="mb-3">
+									<input type="file" name="kyc-document" id="kyc-document" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" multiple />
+									<span id="error"></span>
+								</div>
+								<div class="mb-4 d-flex">
+									<div class="rating_star">
+										<input value="5" name="star-radio" id="star-1" type="radio">
+										<label for="star-1">
+											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" pathLength="360"></path>
+											</svg>
+										</label>
+										<input value="4" name="star-radio" id="star-2" type="radio">
+										<label for="star-2">
+											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" pathLength="360"></path>
+											</svg>
+										</label>
+										<input value="3" name="star-radio" id="star-3" type="radio">
+										<label for="star-3">
+											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" pathLength="360"></path>
+											</svg>
+										</label>
+										<input value="2" name="star-radio" id="star-4" type="radio">
+										<label for="star-4">
+											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" pathLength="360"></path>
+											</svg>
+										</label>
+										<input value="1" name="star-radio" id="star-5" type="radio">
+										<label for="star-5">
+											<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z" pathLength="360"></path>
+											</svg>
+										</label>
+									</div>
+								</div>
+								<button class="btn btn-primary" type="submit">SUBMIT</button>
+							</form>
+						</div>
+					</div>
+				</section>
 			</div>
 		</section>
-		<!--End: Track Order Section --> 
+		<!--End: Track Order Section -->
 
 	</main>
 
 	<?php include("include/footer.php") ?>
 	<?php include("include/script.php") ?>
+	<!-- Plugin JS -->
+	<script src="<?php echo base_url(); ?>assets_web/libs/dropify/dist/js/dropify.min.js"></script>
+
 	<script src="<?= base_url('assets_web/js/app/order-details.js') ?>"></script>
-	  
-	 
-
-	<script>
-		var csrfName = $('.txt_csrfname').attr('name');
-		var csrfHash = $('.txt_csrfname').val();
-		var site_url = $('.site_url').val();
-		
-		function video_call(email)
-		{
-			$.ajax({
-				method: 'get',
-				url: site_url + 'email_videocall',
-				data: {
-					language: 1,
-					email: email,
-					[csrfName]: csrfHash
-				},
-				success: function(response) {
-				}
-			});
-		}
-
-
-		function cancel_order(pid, order_id) {
-
-			Swal.fire({
-				position: "center",
-				title: 'Are you sure you want to cancel this order?',
-				showConfirmButton: true,
-				showCancelButton: true,
-				confirmButtonText: 'Confirm',
-				cancelButtonText: 'Cancel',
-				confirmButtonColor: '#f42525'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					$.ajax({
-						method: 'post',
-						url: site_url + 'cancelOrder',
-						data: {
-							language: 1,
-							pid: pid,
-							order_id: order_id,
-							[csrfName]: csrfHash
-						},
-						success: function(response) {
-
-							location.reload();
-						}
-					});
-
-				}
-			})
-
-		}
-
-		function return_order(pid, order_id) {
-
-			Swal.fire({
-				position: "center",
-				title: 'Are you Sure to Return Order?',
-				showConfirmButton: true,
-				showCancelButton: true,
-				confirmButtonText: 'Confirm',
-				cancelButtonText: 'Cancel',
-				confirmButtonColor: '#f42525'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					$.ajax({
-						method: 'post',
-						url: site_url + 'returnOrder',
-						data: {
-							language: 1,
-							pid: pid,
-							order_id: order_id,
-							[csrfName]: csrfHash
-						},
-						success: function(response) {
-
-							location.reload();
-						}
-					});
-
-				}
-			})
-
-		}
-	</script>
 
 </body>
 
