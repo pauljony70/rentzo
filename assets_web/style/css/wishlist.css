@@ -1,0 +1,58 @@
+.page-heading {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.wishlist-card {
+    border-color: var(--bs-primary);
+}
+
+.wishlist-card .card-img-top {
+    height: 285px;
+    object-fit: contain;
+}
+
+.wishlist-card .btn {
+    height: 41px;
+    border-radius: 0px;
+    color: #FFF;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.wishlist-page .container .col-6:nth-child(even) .btn {
+    background-color: var(--bs-warning);
+}
+
+.wishlist-page .container .col-6:nth-child(odd) .btn {
+    background-color: var(--bs-primary);
+}
+
+
+.wishlist-card .product-title {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.wishlist-card .rent-price {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.wishlist-card .buy-price {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    opacity: 0.5;
+}

@@ -760,7 +760,7 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
-	
+
 	function get_home_events_request()
 	{
 		$this->db->select('*');
@@ -1071,11 +1071,11 @@ class Home_model extends CI_Model
 
 		return $product_array;
 	}
-	
+
 	function get_events_category($cat_id)
 	{
 
-		
+
 		$prod_result = array();
 
 		$product_array = array();
@@ -1088,14 +1088,14 @@ class Home_model extends CI_Model
 
 
 		$this->db->select('*');
-		
-		$this->db->where("cat_id in ($cat_id)",NULL);
+
+		$this->db->where("cat_id in ($cat_id)", NULL);
 
 
 		/*$this->db->where_in(array('cat_id' => $cat_id));*/
 
 		$query_prod = $this->db->get('category');
-	
+
 
 
 		if ($query_prod->num_rows() > 0) {
@@ -2032,6 +2032,14 @@ class Home_model extends CI_Model
 		}
 
 		return $category_result;
+	}
+
+	function getTopbarNotification()
+	{
+
+		$this->db->select('image as notification_title, link as notification_link');
+		$this->db->where('type', 'top_notification');
+		return $this->db->get('homepage_banner')->row_array();
 	}
 
 	function getTopOffers($language)

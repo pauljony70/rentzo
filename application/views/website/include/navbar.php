@@ -1,20 +1,4 @@
 <style>
-    .icon-count {
-        white-space: nowrap;
-        text-align: center;
-        line-height: 17px;
-        height: 16px;
-        width: 16px;
-        background: rgba(219, 68, 68, 0.9);
-        color: #FAFAFA;
-        position: absolute;
-        border-radius: 50%;
-        font-size: 12px;
-        top: -7px;
-        right: -7px;
-        font-weight: 700;
-    }
-
     .custom-accordion-button {
         position: relative;
         display: flex;
@@ -31,8 +15,49 @@
         transition: var(--mr-accordion-transition);
     }
 
+    .icon-count {
+        white-space: nowrap;
+        text-align: center;
+        line-height: 17px;
+        height: 16px;
+        width: 16px;
+        background: rgba(219, 68, 68, 0.9);
+        color: #FAFAFA;
+        position: absolute;
+        border-radius: 50%;
+        font-size: 12px;
+        top: -7px;
+        right: -7px;
+        font-weight: 700;
+    }
+
+    .wishlist-icon-count {
+        white-space: nowrap;
+        text-align: center;
+        line-height: 17px;
+        height: 16px;
+        width: 16px;
+        background: rgba(219, 68, 68, 0.9);
+        color: #FAFAFA;
+        position: absolute;
+        border-radius: 50%;
+        font-size: 12px;
+        top: -4px;
+        right: -4px;
+        font-weight: 700;
+    }
+
     @media (max-width: 768px) {
         .icon-count {
+            font-size: 8px;
+            line-height: 12px;
+            height: 12px;
+            width: 12px;
+            top: 0px;
+            right: -5px;
+        }
+
+        .wishlist-icon-count {
             font-size: 8px;
             line-height: 12px;
             height: 12px;
@@ -51,6 +76,15 @@
             top: 0px;
             right: -5px;
         }
+
+        .wishlist-icon-count {
+            font-size: 8px;
+            line-height: 12px;
+            height: 12px;
+            width: 12px;
+            top: 0px;
+            right: -3px;
+        }
     }
 </style>
 
@@ -60,13 +94,13 @@
     <!-- Part 1 Navbar (Logo, Search, Cart and User Details) -->
     <nav class="navbar menu-navbar navbar-expand-lg bg-white py-0">
         <div class="d-flex justify-content-lg-between justify-content-center container">
-            <a class="navbar-brand" href="<?= base_url('home') ?>">
+            <a class="navbar-brand" href="<?= base_url() ?>">
                 <img src="<?= base_url('assets_web/images/logo.svg') ?>" alt="<?= get_settings('system_name'); ?>" srcset="">
             </a>
             <div class="w-100 d-none d-lg-block mx-xl-5 mx-4">
                 <ul class="navbar-nav justify-content-evenly mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="<?= base_url() ?>">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#pincodeModal"><span id="address_data"><?= $this->session->userdata("address") != '' ? $this->session->userdata("address") : 'Location' ?></span></a>
@@ -74,9 +108,11 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-disabled="true">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="<?= base_url('sign-up') ?>" class="nav-link" aria-disabled="true">Sign Up</a>
-                    </li>
+                    <?php if ($this->session->userdata('user_id') == '') : ?>
+                        <li class="nav-item">
+                            <a href="<?= base_url('sign-up') ?>" class="nav-link" aria-disabled="true">Sign Up</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
             <div class="d-none d-lg-flex align-items-center">
@@ -95,8 +131,11 @@
                     </div>
 
                 </form>
-                <a href="<?= base_url('wishlist') ?>" class="ms-3" title="Wishlist">
+                <a href="<?= base_url('wishlist') ?>" class="ms-3 position-relative" title="Wishlist">
                     <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
+                    <span class="wishlist-icon-count">
+                        <div id="badge-wishlist-count">0</div>
+                    </span>
                 </a>
                 <a href="<?= base_url('cart') ?>" class="ms-3 position-relative" title="Cart">
                     <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">
@@ -137,8 +176,11 @@
                     <ul class="dropdown-menu container searchResults py-0 w-100" id="searchResults"></ul>
                 </div>
                 <div class="nav-icons-div d-flex align-items-center">
-                    <a href="<?= base_url('wishlist') ?>" class="" title="Wishlist">
+                    <a href="<?= base_url('wishlist') ?>" class="position-relative" title="Wishlist">
                         <img src="<?= base_url('assets_web/images/icons/wishlist.svg') ?>" alt="Wishlist" srcset="">
+                        <span class="wishlist-icon-count">
+                            <div id="badge-wishlist-count">0</div>
+                        </span>
                     </a>
                     <a href="<?= base_url('cart') ?>" class="position-relative" title="Cart">
                         <img src="<?= base_url('assets_web/images/icons/cart.svg') ?>" alt="Cart" srcset="">

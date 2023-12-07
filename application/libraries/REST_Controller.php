@@ -507,15 +507,19 @@ abstract class REST_Controller extends CI_Controller
         $this->data = array();
         $this->data['admin_email'] = $this->Home_model->get_admin_email();
         $this->data['admin_phone'] = $this->Home_model->get_admin_phone();
-        $this->data['top_offers'] = $this->Home_model->getTopOffers($languageCode);
+       /*  $this->data['top_offers'] = $this->Home_model->getTopOffers($languageCode);
         $top_offer_headings = array_map(function($item) {
             return '"' . $item['heading'] . '"';
         }, $this->Home_model->getTopOffers($languageCode));
-        $this->data['top_offer_headings'] = implode(',', $top_offer_headings);
+        $this->data['top_offer_headings'] = implode(',', $top_offer_headings); */
+        $this->data['topbar_notification'] = $this->Home_model->getTopbarNotification();
         $this->data['header_cat'] = $this->category_model->get_header_category_request($this->session->userdata("default_language"), 2);
         $this->data['header_brand'] = $this->brand_model->get_brand_request($this->session->userdata("default_language"), 1);
-        $this->data['wishlist'] = $this->wishlist_model->get_cart_full_details($this->session->userdata('user_id'), 2);
+        $this->data['wishlist'] = $this->wishlist_model->get_cart_full_details($this->session->userdata('default_language'), $this->session->userdata('user_id'));
         $this->data['cart'] = $this->cart_model->get_cart_full_details($this->session->userdata("default_language"), $this->session->userdata('user_id'), 1, $this->session->userdata("qoute_id"));
+        /* echo "<pre>";
+        print_r($this->data['wishlist']);
+        exit; */
         $this->request_method = strtolower($_SERVER["REQUEST_METHOD"]);
     }
     /**

@@ -90,7 +90,6 @@ class Wishlist_model extends CI_Model {
 	function get_cart_full_details($language, $user_id,$devicetype=''){
 		$this->db->select("prod_id, attr_sku, vendor_id, qty");
 		$this->db->where(array('user_id'=>$user_id));
-		
 		$query = $this->db->get('wishlistdetails');
 		
 		$product_detail_array = array();

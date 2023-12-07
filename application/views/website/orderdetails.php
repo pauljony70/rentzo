@@ -160,13 +160,13 @@
 				</div>
 				<div class="action-btns mb-4 mb-md-5">
 					<div class="d-flex justify-content-between">
-						<a href="#review-section" class="btn">Write Review</a>
+						<a href="#review-section" class="btn" data-bs-toggle="collapse" data-bs-target="#review-section" aria-expanded="false" aria-controls="review-section">Write Review</a>
 						<button type="button" class="btn" onclick="cancel_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')">Cancel Order</button>
 					</div>
 				</div>
-				<section id="review-section">
+				<section id="review-section" class="collapse">
 					<div class="row">
-						<div class="col-md-9">
+						<div class="col-lg-9">
 							<form id="review_form" class="form">
 								<div class="mb-3">
 									<div class="form-floating">
@@ -182,9 +182,31 @@
 										<span id="error"></span>
 									</div>
 								</div>
-								<div class="mb-3">
-									<input type="file" name="kyc-document" id="kyc-document" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" multiple />
-									<span id="error"></span>
+								<div class="row">
+									<div class="col-6 col-md-3">
+										<div class="mb-3">
+											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<span id="error"></span>
+										</div>
+									</div>
+									<div class="col-6 col-md-3">
+										<div class="mb-3">
+											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<span id="error"></span>
+										</div>
+									</div>
+									<div class="col-6 col-md-3">
+										<div class="mb-3">
+											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<span id="error"></span>
+										</div>
+									</div>
+									<div class="col-6 col-md-3">
+										<div class="mb-3">
+											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<span id="error"></span>
+										</div>
+									</div>
 								</div>
 								<div class="mb-4 d-flex">
 									<div class="rating_star">
