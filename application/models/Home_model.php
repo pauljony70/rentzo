@@ -9,6 +9,17 @@ class Home_model extends CI_Model
 		$this->load->model('product_model');
 		$this->date_time = date('Y-m-d H:i:s');
 	}
+	
+	function add_faq_form($name, $email,$subject, $content)
+	{
+		$data['user_name'] = $name;
+		$data['user_email'] = $email;
+		$data['subject'] = $subject;
+		$data['content'] = $content;
+		$data['create_at'] = $this->date_time;
+
+		$this->db->insert('faq_form', $data);
+	}
 
 	function get_admin_email()
 	{
@@ -832,6 +843,19 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
+	function get_faq_request()
+	{
+
+		$query = $this->db->query('SELECT * FROM faq where status = "1"');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$banner_result = $query->result_object();
+		}
+
+		return $banner_result;
+	}
+	
 	function get_header_section5_request($section)
 	{
 

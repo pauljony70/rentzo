@@ -21,7 +21,7 @@
    // include("include/navForMobile.php")
     ?>
 	
-<main class="cart-page">
+<main class="cart-page mt-2">
 
 	
 	<section id="privacy">

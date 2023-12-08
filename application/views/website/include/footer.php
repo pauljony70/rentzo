@@ -36,60 +36,52 @@
         </div>
         <div class="row row-cols-2 row-cols-md-4 footer-link-row">
             <div class="col mb-5">
-                <div class="col-heading mb-4">Our Products</div>
+                <div class="col-heading mb-4">Our Details</div>
                 <div class="footer-links mb-3">
-                    <a href="#">Cameras</a>
-                </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Clothing's</a>
-                </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Jewelry</a>
-                </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Xyz</a>
+                    <p class="">
+					The perfect one-stop shop for all your cravings. Rentzo 
+                    has simplified the shopping experience for its value - conscious buyers. Shop now on our online store and 
+                    and bring the world at your doorsteps.
+                </p>
                 </div>
             </div>
             <div class="col mb-5">
-                <div class="col-heading mb-4">Top Features</div>
+                <div class="col-heading mb-4">Top Category</div>
+				<?php  $count=0; foreach ($header_cat as $maincat_top) { if ( $count++ >= 5 ) { break;  }else{ ?>
                 <div class="footer-links mb-3">
-                    <a href="#">Purchase on Rent</a>
+                    <a href="<?php echo base_url . 'shop/' . $maincat_top['cat_slug']; ?>"><?php echo $maincat_top['cat_name']; ?></a>
                 </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Knowledge Base</a>
-                </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Help Desk Software</a>
-                </div>
+                <?php } } ?>
             </div>
             <div class="col mb-5">
-                <div class="col-heading mb-4">Resources</div>
+                <div class="col-heading mb-4">Our Policy</div>
                 <div class="footer-links mb-3">
-                    <a href="#">Product Support</a>
+                    <a href="<?= base_url('refund') ?>">Returns Policy</a>
                 </div>
                 <div class="footer-links mb-3">
-                    <a href="#">Request Demo</a>
+                    <a href="<?= base_url('privacy') ?>">Privacy Policy</a>
                 </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Library</a>
+				<div class="footer-links mb-3">
+                    <a href="<?= base_url('shipping_policy') ?>">Shipping Policy</a>
                 </div>
-                <div class="footer-links mb-3">
-                    <a href="#">Peoplepower Blog</a>
+				<div class="footer-links mb-3">
+                    <a href="<?= base_url('term_and_conditions') ?>">Terms & Condition</a>
                 </div>
+                
             </div>
             <div class="col mb-5">
-                <div class="col-heading mb-4">Company</div>
+                <div class="col-heading mb-4">About Us</div>
                 <div class="footer-links mb-3">
-                    <a href="#">About Us</a>
+                    <a href="<?= base_url('faq') ?>">FAQ</a>
                 </div>
                 <div class="footer-links mb-3">
-                    <a href="#">Press</a>
+                    <a href="<?= base_url('feedback') ?>">Feedback</a>
                 </div>
                 <div class="footer-links mb-3">
-                    <a href="#">Investors</a>
+                    <a href="<?= base_url('contact') ?>">Contact Us</a>
                 </div>
                 <div class="footer-links mb-3">
-                    <a href="#">Events</a>
+                    <a href="<?= base_url('help') ?>">Help & Support</a>
                 </div>
             </div>
         </div>

@@ -22,12 +22,12 @@ class Home extends REST_Controller
 	{
 		$this->load->view('website/thankyou_seller.php', $this->data);
 	}
-	
+
 	public function video_get()
 	{
 		$this->load->view('website/video_call.php', $this->data);
 	}
-	
+
 	public function email_videocall_get()
 	{
 		$email = $this->input->get('email');
@@ -80,7 +80,7 @@ class Home extends REST_Controller
 		$this->data['category'] = $this->home_model->get_category();
 		$this->load->view('website/top_category.php', $this->data);
 	}
-	
+
 	public function events_get($event_id)
 	{
 		$this->data['events'] = $this->home_model->get_events_request($event_id);
@@ -96,7 +96,7 @@ class Home extends REST_Controller
 
 	public function offers_get()
 	{
-		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, '' ,'home_bottom', ''); 
+		$this->data['offers_product'] = $this->home_model->get_home_products($default_language, '', 'home_bottom', '');
 		$this->load->view('website/offers.php', $this->data);
 	}
 
@@ -226,6 +226,7 @@ class Home extends REST_Controller
 	public function faq_get()
 	{
 		$this->data['page_content'] = $this->home_model->get_faq_data_request();
+		$this->data['faq_data'] = $this->home_model->get_faq_request();
 		$this->load->view('website/faq.php', $this->data);
 	}
 
@@ -334,41 +335,50 @@ class Home extends REST_Controller
 
 		$this->load->view('website/index.php', $this->data);
 	}
-	
+
 	function get_address_get()
 	{
 		$address_pincode = $this->input->get('address_pincode');
-		$data = file_get_contents('http://www.postalpincode.in/api/pincode/'.$address_pincode);
+		$data = file_get_contents('http://www.postalpincode.in/api/pincode/' . $address_pincode);
 		$data = json_decode($data);
-		if(isset($data->PostOffice['0']))
-		{
-			
+		if (isset($data->PostOffice['0'])) {
+
 			$newdata = array(
 				'address'  => $data->PostOffice['0']->Taluk,
 				'logged_in' => TRUE
 			);
 			$set_data = $this->session->set_userdata($newdata);
 			echo $data->PostOffice['0']->Taluk;
-		}
-		else
-		{
+		} else {
 			echo 'no';
 		}
-		
+
 		//echo json_encode($response);
 	}
 
+	function add_faq_form_post()
+	{
+		$name = $this->input->post('userName');
+		$email = $this->input->post('userEmail');
+		$subject = $this->input->post('subject');
+		$content = $this->input->post('content');
+
+		$response = $this->home_model->add_faq_form($name, $email, $subject, $content);
+		$this->email_model->sendEmail_faq($name, $email, $subject, $content);
+
+		return redirect('contact');
+	}
 	function get_home_products_get()
 	{
 		$type = $this->input->get('type');
 		$title = $this->input->get('title');
 		$timezone = $this->input->get('timezone');
 		$default_language = $this->session->userdata("default_language");
-		$response = $this->home_model->get_home_products($default_language, $title,$type, $timezone);
+		$response = $this->home_model->get_home_products($default_language, $title, $type, $timezone);
 
 		echo json_encode($response);
 	}
-	
+
 	function get_home_cat_products_get()
 	{
 		$type = $this->input->get('type');
@@ -384,7 +394,7 @@ class Home extends REST_Controller
 
 		echo json_encode($response);
 	}
-	
+
 	function get_home_arival_banner_get()
 	{
 
@@ -392,7 +402,7 @@ class Home extends REST_Controller
 
 		echo json_encode($response);
 	}
-	
+
 	function get_home_events_get()
 	{
 
@@ -400,18 +410,18 @@ class Home extends REST_Controller
 
 		echo json_encode($response);
 	}
-	
+
 	function get_home_product_title_get()
 	{
 
 		$type = $this->input->get('type');
-		
+
 		$response = $this->home_model->get_home_product_title_request($type);
 
 		echo json_encode($response);
 	}
-	
-	
+
+
 
 
 	function checkpincode_get()
