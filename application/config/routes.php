@@ -269,7 +269,7 @@ $route['get_upsell_products'] = 'Product/getUpsellProductDetails';
 $route['shop/(:any)'] = 'Home/sub_category/$1';
 $route['offers'] = 'Home/offers';
 
-$route['become_seller'] = 'SellerController/seller_form';
+$route['become-seller'] = 'SellerController/seller_form';
 $route['send-become-seller-phone-otp'] = 'SellerController/sendPhoneOtp';
 $route['validate-become-seller-phone-otp'] = 'SellerController/validatePhoneOtp';
 $route['send-become-seller-email-otp'] = 'SellerController/sendEmailOtp';

@@ -5,6 +5,7 @@
 	<?php $title = "Become a Seller";
 	include("include/headTag.php") ?>
 	<link href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/css/intlTelInput.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="<?= base_url('assets_web/style/css/become-seller.css') ?>">
 	<style>
 		<?php if ($default_language == 1) : ?>#error {
 			float: right;

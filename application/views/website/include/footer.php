@@ -38,11 +38,11 @@
             <div class="col mb-5">
                 <div class="col-heading mb-4">Our Details</div>
                 <div class="footer-links mb-3">
-                    <p class="">
+                    <a class="">
 					The perfect one-stop shop for all your cravings. Rentzo 
                     has simplified the shopping experience for its value - conscious buyers. Shop now on our online store and 
                     and bring the world at your doorsteps.
-                </p>
+                </a>
                 </div>
             </div>
             <div class="col mb-5">
@@ -168,7 +168,7 @@
                     <h3 class="fw-bold text-light text-xl-center "><?= $this->lang->line('footer-services'); ?></h3>
                     <ul class="list-unstyled mb-0">
                         <li><a href="<?php echo base_url ?>offers" class="text-decoration-none text-light fw-semibold d-xl-block text-center"><?= $this->lang->line('footer-offers-for-you'); ?></a></li>
-                        <li><a href="<?php echo base_url(); ?>become_seller" class="text-decoration-none text-light fw-semibold d-xl-block text-center"><?= $this->lang->line('footer-become-a-seller'); ?></a></li>
+                        <li><a href="<?php echo base_url(); ?>become-seller" class="text-decoration-none text-light fw-semibold d-xl-block text-center"><?= $this->lang->line('footer-become-a-seller'); ?></a></li>
                     </ul>
                 </div>
                 <div class="col mt-4 mt-md-4 mt-lg-4">

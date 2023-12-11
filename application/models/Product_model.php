@@ -73,7 +73,7 @@ class Product_model extends CI_Model
 		$wishlist_count = $this->db->where(array('prod_id' => $product_id, 'user_id' => $user_id))->count_all_results('wishlistdetails');
 
 		//get products details
-		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city,pd.security_deposit,pd.usage_info,pd.is_buy');
+		$this->db->select('pd.product_unique_id as id , pd.prod_name as name,pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active, vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, pd.prod_desc,pd.prod_desc_ar, pd.prod_fulldetail,pd.prod_fulldetail_ar,pd.product_video_url,pd.prod_img_url,vp1.product_purchase_limit,brnd.brand_name,pd.prod_rating,pd.prod_rating_count,pd.return_policy_id,vp1.stock_status,vp1.coupon_code,seller.phone, vp1.is_usd_price, vp1.affiliate_commission, vp1.offer_start_date, vp1.offer_end_date,pd.type as product_type,pd.day1_price,pd.day3_price,pd.day5_price,pd.day7_price,pd.city as product_city,pd.security_deposit,pd.usage_info,pd.is_buy,seller.seller_badge,seller.seller_badge1,seller.seller_badge2');
 
 		//join for get minumum price
 		$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -173,13 +173,67 @@ class Product_model extends CI_Model
 				{
 					$product_type = 'Rent';
 				}
+				
+				$badge_img_decode = json_decode($product_details->seller_badge);
+				$seller_badge = '';
+				if ($devicetype == 1) {
+					if (isset($badge_img_decode->{MOBILE})) {
+						$seller_badge = $badge_img_decode->{MOBILE};
+					} else {
+						$seller_badge = '';
+					}
+				} else {
+					if (isset($badge_img_decode->{DESKTOP})) {
+						$seller_badge = $badge_img_decode->{DESKTOP};
+					} else {
+						$seller_badge = '';
+					}
+				}
+				
+				$badge1_img_decode = json_decode($product_details->seller_badge1);
+				$seller_badge1 = '';
+				if ($devicetype == 1) {
+					if (isset($badge1_img_decode->{MOBILE})) {
+						$seller_badge1 = $badge1_img_decode->{MOBILE};
+					} else {
+						$seller_badge1 = '';
+					}
+				} else {
+					if (isset($badge1_img_decode->{DESKTOP})) {
+						$seller_badge1 = $badge1_img_decode->{DESKTOP};
+					} else {
+						$seller_badge1 = '';
+					}
+				}
+				
+				$badge2_img_decode = json_decode($product_details->seller_badge2);
+				$seller_badge2 = '';
+				if ($devicetype == 1) {
+					if (isset($badge2_img_decode->{MOBILE})) {
+						$seller_badge2 = $badge2_img_decode->{MOBILE};
+					} else {
+						$seller_badge2 = '';
+					}
+				} else {
+					if (isset($badge2_img_decode->{DESKTOP})) {
+						$seller_badge2 = $badge2_img_decode->{DESKTOP};
+					} else {
+						$seller_badge2 = '';
+					}
+				}
+				
+				$product_response['seller_badge'] = $seller_badge;
+				$product_response['seller_badge1'] = $seller_badge1;
+				$product_response['seller_badge2'] = $seller_badge2;
+				
+				
 				$product_response['product_type'] = $product_type;
 				$product_response['day1_price'] = $product_details->day1_price;
 				$product_response['day3_price'] = $product_details->day3_price;
 				$product_response['day5_price'] = $product_details->day5_price;
 				$product_response['day7_price'] = $product_details->day7_price;
 				$product_response['security_deposit'] = $product_details->security_deposit;
-				$product_response['usage_info'] = $product_details->usage_info;
+				$product_response['usage_info'] = html_entity_decode($product_details->usage_info);
 				$product_response['is_buy'] = $product_details->is_buy;
 				$product_response['product_city'] = $product_details->product_city;
 				$product_response['seller_data'] = $this->get_seller_details($product_details->vendor_id);
@@ -727,7 +781,7 @@ class Product_model extends CI_Model
 
 		//get products details
 		$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,
-				vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark');
+				vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark,pd.day1_price');
 
 
 		$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -761,6 +815,7 @@ class Product_model extends CI_Model
 				$product_response['vendor_id'] = $product_details->vendor_id;
 				$product_response['mrp'] = price_format($product_details->mrp);
 				$product_response['price'] = price_format($product_details->price);
+				$product_response['day1_price'] = price_format($product_details->day1_price);
 				$product_response['stock'] = $product_details->stock;
 				$product_response['remark'] = $product_details->remark;
 				$product_response['rating'] = 0;
@@ -807,7 +862,7 @@ class Product_model extends CI_Model
 			//print_r($product_id);	
 			//get products details
 			$this->db->select('pd.product_unique_id as id , pd.prod_name as name,  pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,
-				vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark');
+				vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark,pd.day1_price');
 
 
 			$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -845,6 +900,7 @@ class Product_model extends CI_Model
 					$product_response['vendor_id'] = $product_details->vendor_id;
 					$product_response['mrp'] = price_format($product_details->mrp);
 					$product_response['price'] = price_format($product_details->price);
+					$product_response['day1_price'] = price_format($product_details->day1_price);
 					$product_response['stock'] = $product_details->stock;
 					$product_response['remark'] = $product_details->remark;
 					$product_response['rating'] = 0;
@@ -890,7 +946,7 @@ class Product_model extends CI_Model
 		$product_array = array();
 		if (!empty($product_ids)) {
 
-			$this->db->select('pd.product_unique_id as id , pd.prod_name as name,  pd.prod_name_ar as name_ar, pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark');
+			$this->db->select('pd.product_unique_id as id , pd.prod_name as name,  pd.prod_name_ar as name_ar, pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark,pd.day1_price');
 
 
 			$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min FROM vendor_product vp WHERE  vp.product_id IN(' . $this->getValues($product_ids) . ') AND vp.enable_status=1 group by vp.product_id  ) as vp2', 'pd.product_unique_id = vp2.product_id');
@@ -924,6 +980,7 @@ class Product_model extends CI_Model
 					$product_response['vendor_id'] = $product_details->vendor_id;
 					$product_response['mrp'] = price_format($product_details->mrp);
 					$product_response['price'] = price_format($product_details->price);
+					$product_response['day1_price'] = price_format($product_details->day1_price);
 					$product_response['stock'] = $product_details->stock;
 					$product_response['remark'] = $product_details->remark;
 					$product_response['rating'] = $this->get_product_review_total($product_details->id);;

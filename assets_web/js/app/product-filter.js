@@ -53,16 +53,16 @@ function get_category_product(catid, sortby, pageno, callback) {
                             const wholeNumber = Math.floor(rating);
                             const fractionalPart = rating - wholeNumber;
                             for (let i = 0; i < wholeNumber; i++) {
-                                ratingHTML += '<img src="assets_web/images/icons/star-yellow.svg" alt="Star">';
+                                ratingHTML += '<img src="' + site_url + 'assets_web/images/icons/star-yellow.svg" alt="Star">';
                             }
                             if (fractionalPart >= 0.5) {
-                                ratingHTML += '<img src="assets_web/images/icons/half-star.svg" alt="Star">';
+                                ratingHTML += '<img src="' + site_url + 'assets_web/images/icons/half-star.svg" alt="Star">';
                             } else {
-                                ratingHTML += '<img src="assets_web/images/icons/star-grey.svg" alt="Star">';
+                                ratingHTML += '<img src="' + site_url + 'assets_web/images/icons/star-grey.svg" alt="Star">';
                             }
                             const emptyStars = 5 - wholeNumber - 1;
                             for (let i = 0; i < emptyStars; i++) {
-                                ratingHTML += '<img src="assets_web/images/icons/star-grey.svg" alt="Star">';
+                                ratingHTML += '<img src="' + site_url + 'assets_web/images/icons/star-grey.svg" alt="Star">';
                             }
 
                         }
@@ -76,7 +76,7 @@ function get_category_product(catid, sortby, pageno, callback) {
                                         <div class="d-flex stars py-1">
                                             ${ratingHTML}
                                         </div>
-                                        <div class="rent-price py-1">${this.price} / day</div>
+                                        <div class="rent-price py-1">${this.day1_price} / Day</div>
                                         <div class="product-location line-clamp-1 py-1">
                                             Subhas Nagar, Dheradun
                                         </div>

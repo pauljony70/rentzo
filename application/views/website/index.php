@@ -211,7 +211,7 @@
 							if ($key > 9) break;
 						?>
 							<div class="swiper-slide">
-								<a href="<?= base_url . 'brand_product/' . $brand['brand_name_link'] ?>">
+								<a href="<?= base_url . 'shop/brand/' . $brand['brand_name'] ?>">
 									<img src="<?= weburl . 'media/' . json_decode($brand['brand_img'])->{'280-310'}; ?>" alt="<?= $brand['brand_name']; ?>" class="brand-img">
 								</a>
 							</div>
@@ -310,7 +310,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="review mb-2">
+											<div class="review mb-2 line-clamp-2">
 												“<?= $reviews['comment']; ?>”
 											</div>
 											<div class="review-img text-center">

@@ -277,6 +277,7 @@
     font-weight: 400;
     line-height: 23.80px;
     word-wrap: break-word;
+	min-height : 50px;
 }
 
 .testimonial-section .review-img img {

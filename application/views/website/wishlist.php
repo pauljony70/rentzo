@@ -38,8 +38,8 @@
 									<div class="card-body d-flex flex-column product-card-body">
 										<h5 class="card-title product-title line-clamp-2 mb-2"><?= $wishlist_product['name'] ?></h5>
 										<div class="card-text d-flex justify-content-between mt-auto py-1">
-											<div class="rent-price text-primary">200/day</div>
-											<div class="buy-price">price Rs.4000 </div>
+											<div class="rent-price text-primary"><?= $wishlist_product['day1_price'] ?> / Day</div>
+											<div class="buy-price">Price <?= $wishlist_product['price'] ?> </div>
 										</div>
 									</div>
 								</a>

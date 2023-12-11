@@ -92,7 +92,7 @@ class CategoryProduct_model extends CI_Model
 			$start = 0;
 		}
 		$config_attr_decode =  json_decode($config_attr);
-		$this->db->select('product_details.product_unique_id as id , product_details.prod_name as name, product_details.prod_name_ar as name_ar,product_details.web_url as web_url, product_details.product_sku as sku, product_details.featured_img as img , "active" as active, vp.vendor_id, vp.product_mrp as mrp, vp.product_sale_price price, vp.product_stock as stock,vp.stock_status, vp.product_remark as remark');
+		$this->db->select('product_details.product_unique_id as id , product_details.prod_name as name, product_details.prod_name_ar as name_ar,product_details.web_url as web_url, product_details.product_sku as sku, product_details.featured_img as img , "active" as active, vp.vendor_id, vp.product_mrp as mrp, vp.product_sale_price price, vp.product_stock as stock,vp.stock_status, vp.product_remark as remark,product_details.day1_price');
 		$this->db->join('product_details', 'product_details.product_unique_id = product_category.prod_id', 'INNER');
 		$this->db->join('vendor_product vp', 'product_details.product_unique_id = vp.product_id', 'INNER');
 		$this->db->join('sellerlogin seller', 'vp.vendor_id = seller.seller_unique_id', 'INNER');
@@ -159,6 +159,7 @@ class CategoryProduct_model extends CI_Model
 
 				$prod_result[$key]['mrp'] = price_format($product_details['mrp']);
 				$prod_result[$key]['price'] = price_format($product_details['price']);
+				$prod_result[$key]['day1_price'] = price_format($product_details['day1_price']);
 				$prod_result[$key]['rating'] = $this->product_model->get_product_review_total($product_details['id']);
 				$discount_per = 0;
 				$discount_price = 0;

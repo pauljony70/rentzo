@@ -556,7 +556,7 @@ class Home_model extends CI_Model
 			
 			$this->db->limit(LIMIT,$start);*/
 
-		$sql = "SELECT `pd`.`product_unique_id` as `id`, `pd`.`prod_name` as `name`, `pd`.`prod_name_ar` as `name_ar`, `pd`.`web_url` as `web_url`, `pd`.`product_sku` as `sku`, `pd`.`featured_img` as `img`,  `vp1`.`vendor_id`, `vp1`.`product_mrp` as `mrp`, `vp1`.`product_sale_price` `price`, `vp1`.`product_stock` as `stock`, `vp1`.`stock_status`, `vp1`.`product_remark` as `remark`, 'active' as active
+		$sql = "SELECT `pd`.`product_unique_id` as `id`, `pd`.`prod_name` as `name`, `pd`.`prod_name_ar` as `name_ar`, `pd`.`web_url` as `web_url`, `pd`.`product_sku` as `sku`, `pd`.`featured_img` as `img`,  `vp1`.`vendor_id`, `vp1`.`product_mrp` as `mrp`, `vp1`.`product_sale_price` `price`, `vp1`.`product_stock` as `stock`, `vp1`.`stock_status`, `vp1`.`product_remark` as `remark`, 'active' as active,`pd`.`day1_price`
 					FROM `product_details` as `pd`
 					INNER JOIN `vendor_product` `vp1` ON `vp1`.`product_id` = `pd`.`product_unique_id`
 					INNER JOIN `sellerlogin` `seller` ON `vp1`.`vendor_id` = `seller`.`seller_unique_id`
@@ -594,6 +594,7 @@ class Home_model extends CI_Model
 				$product_response['vendor_id'] = $product_details->vendor_id;
 				$product_response['mrp'] = price_format($product_details->mrp);
 				$product_response['price'] = price_format($product_details->price);
+				$product_response['day1_price'] = price_format($product_details->day1_price);
 				$product_response['stock'] = $product_details->stock;
 				$product_response['stock_status'] = $product_details->stock_status;
 				$product_response['remark'] = $product_details->remark;
@@ -1263,7 +1264,7 @@ class Home_model extends CI_Model
 
 
 			//get products details
-			$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,	vp1.vendor_id, offer_start_date, offer_end_date, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, is_usd_price');
+			$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,	vp1.vendor_id, offer_start_date, offer_end_date, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, is_usd_price,pd.day1_price');
 
 
 			$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
@@ -1310,6 +1311,7 @@ class Home_model extends CI_Model
 					$product_response['price'] = $product_details->is_usd_price ? price_format_usd($product_details->price) : price_format($product_details->price);
 					$product_response['stock'] = $product_details->stock;
 					$product_response['remark'] = $product_details->remark;
+					$product_response['day1_price'] = price_format($product_details->day1_price);
 					$product_response['rating'] = $this->product_model->get_product_review_total($product_details->id);
 
 					$discount_per = 0;

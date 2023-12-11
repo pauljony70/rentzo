@@ -28,7 +28,7 @@
 		</main>
 	<?php } else { ?>
 		<main class="cart-page mt-0">
-			<section class="mt-5">
+			<section class="mt-4 mt-md-5">
 				<div class="container">
 					<div class="d-flex align-items-center mb-4">
 						<a href="javascript:void(0)" onclick="history.back(-1)" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>

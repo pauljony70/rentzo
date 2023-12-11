@@ -187,5 +187,9 @@ input[type="number"] {
     .form-container .next-page-div button {
         font-size: 14px;
     }
+	
+	.auth-image-container .image img {
+		width: 40%;
+	}
 
 }

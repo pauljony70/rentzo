@@ -283,7 +283,7 @@
 								---------------------------------------------------
 							-->
 							<div class="rent-price">
-								<span id="day1_price"><?= price_format($productdetails['day1_price']); ?></span>/ day
+								<span id="day1_price"><?= price_format($productdetails['day1_price']); ?></span>/ Day
 							</div>
 
 							<hr class="d-none d-md-block">
@@ -931,7 +931,7 @@
 									<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $recently_viewed_product_detail['name'] ?></h5>
 									<div class="card-text d-flex justify-content-between py-1">
 										<div class="rent-heading">Rent</div>
-										<div class="rent-price"><?= $recently_viewed_product_detail['price'] ?></div>
+										<div class="rent-price"><?= $recently_viewed_product_detail['day1_price'] ?> / Day</div>
 									</div>
 									<div class="product-card-footer pt-1">
 										<div class="text-success">Available Today</div>

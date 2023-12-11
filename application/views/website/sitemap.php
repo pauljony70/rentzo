@@ -62,7 +62,7 @@
         <priority>0.5</priority>
     </url>
 	<url>
-        <loc><?= base_url().'become_seller';?></loc> 
+        <loc><?= base_url().'become-seller';?></loc> 
         <priority>0.5</priority>
     </url>
 	<url>

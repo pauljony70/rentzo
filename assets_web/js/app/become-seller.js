@@ -8,21 +8,11 @@ const sendBecomeSellerPhoneOtp = () => {
     var phone_otp = document.getElementById('phone_otp');
 
     if (phone.value == "" || phone.value == null) {
-        if (language == 1) {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> الهاتف فارغ.')
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> الهاتف فارغ.')
-        } else {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
-        }
+        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
+        setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
     } else if (phone.value.length < 7) {
-        if (language == 1) {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف غير صالح.')
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف غير صالح.')
-        } else {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
-        }
+        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
+        setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
     } else {
         setInTelSuccessMsg(phone);
         setSuccessMsg(phone_otp);
@@ -79,21 +69,11 @@ const sendBecomeSellerEmailOtp = () => {
     var email_otp = document.getElementById('email_otp');
 
     if (email.value == "" || email.value == null) {
-        if (language == 1) {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> البريد الإلكتروني فارغ.')
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> البريد الإلكتروني فارغ.')
-        } else {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is empty.')
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Email is empty.')
-        }
+        setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is empty.')
+        setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Email is empty.')
     } else if (!emailRegex.test(email.value)) {
-        if (language == 1) {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> بريد إلكتروني خاطئ.')
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> بريد إلكتروني خاطئ.')
-        } else {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Invalid email.')
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Invalid email.')
-        }
+        setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Invalid email.')
+        setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Invalid email.')
     } else {
         setSuccessMsg(email);
         setSuccessMsg(email_otp);
@@ -164,11 +144,7 @@ const validateSellerForm = () => {
 
     if (business_type.value === '') {
         flag_business_type = false;
-        if (language == 1) {
-            setSelectErrorMsg(business_type, '<i class="fa-solid fa-circle-xmark"></i> نوع العمل مطلوب.');
-        } else {
-            setSelectErrorMsg(business_type, '<i class="fa-solid fa-circle-xmark"></i> Business type is required.');
-        }
+        setSelectErrorMsg(business_type, '<i class="fa-solid fa-circle-xmark"></i> Business type is required.');
     } else {
         flag_business_type = true;
         if (business_type.value == "Individual") {
@@ -184,11 +160,7 @@ const validateSellerForm = () => {
 
     if (vat_registered.value === '') {
         flag_vat_registered = false;
-        if (language == 1) {
-            setSelectErrorMsg(vat_registered, '<i class="fa-solid fa-circle-xmark"></i> هذه الخانة مطلوبه.');
-        } else {
-            setSelectErrorMsg(vat_registered, '<i class="fa-solid fa-circle-xmark"></i> This field is required.');
-        }
+        setSelectErrorMsg(vat_registered, '<i class="fa-solid fa-circle-xmark"></i> This field is required.');
     } else {
         flag_vat_registered = true;
         if (vat_registered.value == 1) {
@@ -202,10 +174,7 @@ const validateSellerForm = () => {
     if (vat_registered.value == 1) {
         if (vat_registratoion_no.value === '') {
             flag_vat_registratoion_no = false;
-            if (language == 1)
-                setErrorMsg(vat_registratoion_no, '<i class="fa-solid fa-circle-xmark"></i> رقم تسجيل ضريبة القيمة المضافة مطلوب.');
-            else
-                setErrorMsg(vat_registratoion_no, '<i class="fa-solid fa-circle-xmark"></i> VAT registratoion no is required.');
+            setErrorMsg(vat_registratoion_no, '<i class="fa-solid fa-circle-xmark"></i> VAT registratoion no is required.');
         }
     } else {
         flag_vat_registratoion_no = true;
@@ -214,11 +183,7 @@ const validateSellerForm = () => {
 
     if (seller_name.value === '') {
         flag_seller_name = false;
-        if (language == 1) {
-            setErrorMsg(seller_name, '<i class="fa-solid fa-circle-xmark"></i> اسم البائع مطلوب.');
-        } else {
-            setErrorMsg(seller_name, '<i class="fa-solid fa-circle-xmark"></i> Seller name is required.');
-        }
+        setErrorMsg(seller_name, '<i class="fa-solid fa-circle-xmark"></i> Seller name is required.');
     } else {
         flag_seller_name = true;
         setSuccessMsg(seller_name);
@@ -227,11 +192,7 @@ const validateSellerForm = () => {
     if (business_type.value === 'Company') {
         if (business_name.value === '') {
             flag_business_name = false;
-            if (language == 1) {
-                setErrorMsg(business_name, '<i class="fa-solid fa-circle-xmark"></i> اسم المحل مطلوب.');
-            } else {
-                setErrorMsg(business_name, '<i class="fa-solid fa-circle-xmark"></i> Shop name is required.');
-            }
+            setErrorMsg(business_name, '<i class="fa-solid fa-circle-xmark"></i> Shop name is required.');
         } else {
             flag_business_name = true;
             setSuccessMsg(business_name);
@@ -239,11 +200,7 @@ const validateSellerForm = () => {
 
         if (business_address.value === '') {
             flag_business_address = false;
-            if (language == 1) {
-                setErrorMsg(business_address, '<i class="fa-solid fa-circle-xmark"></i> عنوان المحل مطلوب.');
-            } else {
-                setErrorMsg(business_address, '<i class="fa-solid fa-circle-xmark"></i> Shop address is required.');
-            }
+            setErrorMsg(business_address, '<i class="fa-solid fa-circle-xmark"></i> Shop address is required.');
         } else {
             flag_business_address = true;
             setSuccessMsg(business_address);
@@ -251,11 +208,7 @@ const validateSellerForm = () => {
 
         if (business_details.value === '') {
             flag_business_details = false;
-            if (language == 1) {
-                setErrorMsg(business_details, '<i class="fa-solid fa-circle-xmark"></i> تفاصيل المتجر مطلوبة.');
-            } else {
-                setErrorMsg(business_details, '<i class="fa-solid fa-circle-xmark"></i> Shop details is required.');
-            }
+            setErrorMsg(business_details, '<i class="fa-solid fa-circle-xmark"></i> Shop details is required.');
         } else {
             flag_business_details = true;
             setSuccessMsg(business_details);
@@ -287,11 +240,7 @@ const validateSellerDescriptionForm = () => {
 
     if (country.value == '') {
         flag_country = false;
-        if (language == 1) {
-            setSelectErrorMsg(country, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-        } else {
-            setSelectErrorMsg(country, '<i class="fa-solid fa-circle-xmark"></i> Country is required.');
-        }
+        setSelectErrorMsg(country, '<i class="fa-solid fa-circle-xmark"></i> Country is required.');
     } else {
         flag_country = true;
         setSelectSuccessMsg(country);
@@ -300,11 +249,7 @@ const validateSellerDescriptionForm = () => {
     if (region.tagName === "SELECT") {
         if (region.value == '') {
             flag_region = false;
-            if (language == 1) {
-                setSelectErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setSelectErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
-            }
+            setSelectErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
         } else {
             flag_region = true;
             setSelectSuccessMsg(region);
@@ -312,11 +257,7 @@ const validateSellerDescriptionForm = () => {
     } else {
         if (region.value == '') {
             flag_region = false;
-            if (language == 1) {
-                setErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
-            }
+            setErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
         } else {
             flag_region = true;
             setSuccessMsg(region);
@@ -326,11 +267,7 @@ const validateSellerDescriptionForm = () => {
     if (governorates.tagName === "SELECT") {
         if (governorate.value == '') {
             flag_governorate = false;
-            if (language == 1) {
-                setSelectErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setSelectErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
-            }
+            setSelectErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
         } else {
             flag_governorate = true;
             setSelectSuccessMsg(governorate);
@@ -338,11 +275,7 @@ const validateSellerDescriptionForm = () => {
     } else {
         if (governorate.value == '') {
             flag_governorate = false;
-            if (language == 1) {
-                setErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
-            }
+            setErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
         } else {
             flag_governorate = true;
             setSuccessMsg(governorate);
@@ -352,11 +285,7 @@ const validateSellerDescriptionForm = () => {
     if (area.tagName === "SELECT") {
         if (area.value == '') {
             flag_area = false;
-            if (language == 1) {
-                setSelectErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setSelectErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
-            }
+            setSelectErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
         } else {
             flag_area = true;
             setSelectSuccessMsg(area);
@@ -364,11 +293,7 @@ const validateSellerDescriptionForm = () => {
     } else {
         if (area.value == '') {
             flag_area = false;
-            if (language == 1) {
-                setErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> الدولة مطلوبة.');
-            } else {
-                setErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
-            }
+            setErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
         } else {
             flag_area = true;
             setSuccessMsg(area);
@@ -405,18 +330,10 @@ const validateSellerInfoForm = (callback) => {
 
     if (phone.value === '') {
         flag_phone = false;
-        if (language == 1) {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> الهاتف مطلوب.');
-        } else {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is required.');
-        }
+        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is required.');
     } else if (!mobileNumberRegex.test(phone.value.trim())) {
         flag_phone = false;
-        if (language == 1) {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> رقم الهاتف لا يتطابق مع التنسيق المطلوب.');
-        } else {
-            setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone number does not match the required format.');
-        }
+        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone number does not match the required format.');
     } else {
         flag_phone = true;
         setInTelSuccessMsg(phone);
@@ -424,18 +341,10 @@ const validateSellerInfoForm = (callback) => {
 
     if (phone_otp.value === '') {
         flag_phone_otp = false;
-        if (language == 1) {
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> مطلوب OTP عبر الهاتف.');
-        } else {
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Phone OTP is required.');
-        }
+        setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Phone OTP is required.');
     } else if (phone_otp.value.length !== 6) {
         flag_phone_otp = false;
-        if (language == 1) {
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> يجب أن يكون طول كلمة المرور لمرة واحدة 6.');
-        } else {
-            setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
-        }
+        setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
     } else {
         $.ajax({
             url: site_url.concat('validate-become-seller-phone-otp'),
@@ -463,18 +372,10 @@ const validateSellerInfoForm = (callback) => {
 
     if (email.value === '') {
         flag_email = false;
-        if (language == 1) {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> البريد الالكتروني مطلوب.');
-        } else {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is required.');
-        }
+        setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is required.');
     } else if (!emailRegex.test(email.value.trim())) {
         flag_email = false;
-        if (language == 1) {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> البريد الإلكتروني غير صالح.');
-        } else {
-            setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is invalid.');
-        }
+        setErrorMsg(email, '<i class="fa-solid fa-circle-xmark"></i> Email is invalid.');
     } else {
         flag_email = true;
         setSuccessMsg(email);
@@ -482,18 +383,10 @@ const validateSellerInfoForm = (callback) => {
 
     if (email_otp.value === '') {
         flag_email_otp = false;
-        if (language == 1) {
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> البريد الإلكتروني OTP مطلوب.');
-        } else {
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Email OTP is required.');
-        }
+        setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> Email OTP is required.');
     } else if (email_otp.value.length !== 6) {
         flag_email_otp = false;
-        if (language == 1) {
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> يجب أن يكون طول كلمة المرور لمرة واحدة 6.');
-        } else {
-            setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
-        }
+        setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
     } else {
         $.ajax({
             url: site_url.concat('validate-become-seller-email-otp'),
@@ -521,18 +414,10 @@ const validateSellerInfoForm = (callback) => {
 
     if (password.value === '') {
         flag_password = false;
-        if (language == 1) {
-            setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> كلمة المرور مطلوبة.');
-        } else {
-            setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> Password is required.');
-        }
+        setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> Password is required.');
     } else if (!passwordRegex.test(password.value.trim())) {
         flag_password = false;
-        if (language == 1) {
-            setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> كلمة المرور لا تفي بالمعايير المطلوبة.');
-        } else {
-            setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> Password does not meet the required criteria.');
-        }
+        setErrorMsg(password, '<i class="fa-solid fa-circle-xmark"></i> Password does not meet the required criteria.');
     } else {
         flag_password = true;
         setSuccessMsg(password);
