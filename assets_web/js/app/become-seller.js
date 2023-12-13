@@ -2,19 +2,16 @@ const sendEmailOtpbtn = document.querySelector('#add_seller #send-email-otp-btn'
 const sendPhoneOtpbtn = document.querySelector('#add_seller #send-phone-otp-btn');
 const sendBecomeSellerPhoneOtp = () => {
     var phone = document.getElementById('seller_phone');
-    var iti = window.intlTelInputGlobals.getInstance(phone);
-    var selectedCountryData = iti.getSelectedCountryData();
-    var countryCode = selectedCountryData.dialCode;
     var phone_otp = document.getElementById('phone_otp');
 
     if (phone.value == "" || phone.value == null) {
-        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
+        setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
         setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Phone is empty.')
-    } else if (phone.value.length < 7) {
-        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
+    } else if (phone.value.length !== 10) {
+        setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
         setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> Invalid phone.')
     } else {
-        setInTelSuccessMsg(phone);
+        setSuccessMsg(phone);
         setSuccessMsg(phone_otp);
         sendPhoneOtpbtn.disabled = true;
         var phoneRemainingSeconds = 31;
@@ -36,19 +33,18 @@ const sendBecomeSellerPhoneOtp = () => {
             data: {
                 language: default_language,
                 phone: phone.value,
-                country_code: countryCode,
                 [csrfName]: csrfHash
             },
             success: function (response) {
                 if (response.status) {
-                    setInTelSuccessMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
-                    setSuccessMsg(phone_otp, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                    setSuccessMsg(phone);
+                    setSuccessMsg(phone_otp);
                     return true;
                 } else {
                     clearInterval(phoneCountdownInterval);
                     sendPhoneOtpbtn.innerText = "Get OTP";
                     sendPhoneOtpbtn.disabled = false;
-                    setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
+                    setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
                     setErrorMsg(phone_otp, `<i class="fa-solid fa-circle-xmark"></i> ${response.msg}.`);
                 }
             },
@@ -56,7 +52,7 @@ const sendBecomeSellerPhoneOtp = () => {
                 clearInterval(phoneCountdownInterval);
                 sendPhoneOtpbtn.innerText = "Get OTP";
                 sendPhoneOtpbtn.disabled = false;
-                setInTelErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
+                setErrorMsg(phone, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
                 setErrorMsg(phone_otp, `<i class="fa-solid fa-circle-xmark"></i> ${response.responseJSON.msg}.`);
             }
         });
@@ -127,16 +123,12 @@ const sendBecomeSellerEmailOtp = () => {
 const validateSellerForm = () => {
     const seller_form = document.getElementById('seller_form');
     const business_type = seller_form.querySelector('#business_type');
-    const vat_registered = seller_form.querySelector('#vat_registered');
-    const vat_registratoion_no = seller_form.querySelector('#vat_registratoion_no');
     const seller_name = seller_form.querySelector('#seller_name');
     const business_name = seller_form.querySelector('#business_name');
     const business_address = seller_form.querySelector('#business_address');
     const business_details = seller_form.querySelector('#business_details');
 
     var flag_business_type = false;
-    var flag_vat_registered = false;
-    var flag_vat_registratoion_no = false;
     var flag_seller_name = false;
     var flag_business_name = false;
     var flag_business_address = false;
@@ -148,37 +140,11 @@ const validateSellerForm = () => {
     } else {
         flag_business_type = true;
         if (business_type.value == "Individual") {
-            console.log(document.querySelector('#add_seller #commercial_registration').parentElement.parentElement)
-            document.querySelector('#add_seller #commercial_registration').parentElement.parentElement.classList.add('d-none')
-            document.querySelector('#add_seller #license').parentElement.parentElement.classList.add('d-none')
+            document.querySelector('#add_seller #gst_certificate').parentElement.parentElement.classList.add('d-none');
         } else if (business_type.value == "Company") {
-            document.querySelector('#add_seller #commercial_registration').parentElement.parentElement.classList.remove('d-none')
-            document.querySelector('#add_seller #license').parentElement.parentElement.classList.remove('d-none')
+            document.querySelector('#add_seller #gst_certificate').parentElement.parentElement.classList.remove('d-none');
         }
         setSelectSuccessMsg(business_type);
-    }
-
-    if (vat_registered.value === '') {
-        flag_vat_registered = false;
-        setSelectErrorMsg(vat_registered, '<i class="fa-solid fa-circle-xmark"></i> This field is required.');
-    } else {
-        flag_vat_registered = true;
-        if (vat_registered.value == 1) {
-            document.querySelector('#add_seller #vat_certificate').parentElement.parentElement.classList.remove('d-none')
-        } else {
-            document.querySelector('#add_seller #vat_certificate').parentElement.parentElement.classList.add('d-none')
-        }
-        setSelectSuccessMsg(vat_registered);
-    }
-
-    if (vat_registered.value == 1) {
-        if (vat_registratoion_no.value === '') {
-            flag_vat_registratoion_no = false;
-            setErrorMsg(vat_registratoion_no, '<i class="fa-solid fa-circle-xmark"></i> VAT registratoion no is required.');
-        }
-    } else {
-        flag_vat_registratoion_no = true;
-        setSuccessMsg(vat_registratoion_no);
     }
 
     if (seller_name.value === '') {
@@ -219,7 +185,7 @@ const validateSellerForm = () => {
         flag_business_details = true;
     }
 
-    if (flag_business_type == true && flag_vat_registered == true && flag_seller_name == true && flag_business_name == true && flag_business_address == true && flag_business_details == true) {
+    if (flag_business_type == true && flag_seller_name == true && flag_business_name == true && flag_business_address == true && flag_business_details == true) {
         return true;
     } else {
         return false;
@@ -228,84 +194,44 @@ const validateSellerForm = () => {
 
 const validateSellerDescriptionForm = () => {
     const seller_desc = document.getElementById('seller_desc');
-    const country = seller_desc.querySelector('#country');
-    const region = seller_desc.querySelector('#region');
-    const governorate = seller_desc.querySelector('#governorates');
-    const area = seller_desc.querySelector('#area');
+    const state = seller_desc.querySelector('#state');
+    const city = seller_desc.querySelector('#city');
+    const pincode = seller_desc.querySelector('#pincode');
 
-    var flag_country = false;
-    var flag_region = false;
-    var flag_governorate = false;
-    var flag_area = false;
+    var flag_state = false;
+    var flag_city = false;
+    var flag_pincode = false;
 
-    if (country.value == '') {
-        flag_country = false;
-        setSelectErrorMsg(country, '<i class="fa-solid fa-circle-xmark"></i> Country is required.');
+
+    if (state.value == '') {
+        flag_state = false;
+        setSelectErrorMsg(state, '<i class="fa-solid fa-circle-xmark"></i> State is required.');
     } else {
-        flag_country = true;
-        setSelectSuccessMsg(country);
+        flag_state = true;
+        setSelectSuccessMsg(state);
     }
 
-    if (region.tagName === "SELECT") {
-        if (region.value == '') {
-            flag_region = false;
-            setSelectErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
-        } else {
-            flag_region = true;
-            setSelectSuccessMsg(region);
-        }
+    if (city.value == '') {
+        flag_city = false;
+        setSelectErrorMsg(city, '<i class="fa-solid fa-circle-xmark"></i> City is required.');
     } else {
-        if (region.value == '') {
-            flag_region = false;
-            setErrorMsg(region, '<i class="fa-solid fa-circle-xmark"></i> Region is required.');
-        } else {
-            flag_region = true;
-            setSuccessMsg(region);
-        }
-    }
-
-    if (governorates.tagName === "SELECT") {
-        if (governorate.value == '') {
-            flag_governorate = false;
-            setSelectErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
-        } else {
-            flag_governorate = true;
-            setSelectSuccessMsg(governorate);
-        }
-    } else {
-        if (governorate.value == '') {
-            flag_governorate = false;
-            setErrorMsg(governorate, '<i class="fa-solid fa-circle-xmark"></i> Governorate is required.');
-        } else {
-            flag_governorate = true;
-            setSuccessMsg(governorate);
-        }
-    }
-
-    if (area.tagName === "SELECT") {
-        if (area.value == '') {
-            flag_area = false;
-            setSelectErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
-        } else {
-            flag_area = true;
-            setSelectSuccessMsg(area);
-        }
-    } else {
-        if (area.value == '') {
-            flag_area = false;
-            setErrorMsg(area, '<i class="fa-solid fa-circle-xmark"></i> Area is required.');
-        } else {
-            flag_area = true;
-            setSuccessMsg(area);
-        }
+        flag_city = true;
+        setSelectSuccessMsg(city);
     }
 
 
+    if (pincode.value == '') {
+        flag_pincode = false;
+        setErrorMsg(pincode, '<i class="fa-solid fa-circle-xmark"></i> Pincode is required.');
+    } else {
+        flag_pincode = true;
+        setSuccessMsg(pincode);
+    }
 
-    if (flag_country == true && flag_region == true && flag_governorate == true && flag_area == true) {
+
+    if (flag_state == true && flag_city == true && flag_pincode == true) {
         return true;
     } else {
-        console.log('first')
         return false;
     }
 }
@@ -325,18 +251,19 @@ const validateSellerInfoForm = (callback) => {
     var flag_password = false;
 
     var mobileNumberRegex = /^[+]?\d{8,15}$/;
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    let phoneOtpValidationPromise;
+    let emailOtpValidationPromise;
 
     if (phone.value === '') {
         flag_phone = false;
-        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is required.');
+        setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone is required.');
     } else if (!mobileNumberRegex.test(phone.value.trim())) {
         flag_phone = false;
-        setInTelErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone number does not match the required format.');
+        setErrorMsg(phone, '<i class="fa-solid fa-circle-xmark"></i> Phone number does not match the required format.');
     } else {
         flag_phone = true;
-        setInTelSuccessMsg(phone);
+        setSuccessMsg(phone);
     }
 
     if (phone_otp.value === '') {
@@ -346,27 +273,32 @@ const validateSellerInfoForm = (callback) => {
         flag_phone_otp = false;
         setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
     } else {
-        $.ajax({
-            url: site_url.concat('validate-become-seller-phone-otp'),
-            method: 'POST',
-            data: {
-                language: default_language,
-                otp: phone_otp.value,
-                [csrfName]: csrfHash
-            },
-            success: function (response) {
-                if (response.status) {
-                    flag_phone_otp = true;
-                    setSuccessMsg(phone_otp);
-                } else {
+        phoneOtpValidationPromise = new Promise((resolve, reject) => {
+            $.ajax({
+                url: site_url.concat('validate-become-seller-phone-otp'),
+                method: 'POST',
+                data: {
+                    language: default_language,
+                    otp: phone_otp.value,
+                    [csrfName]: csrfHash
+                },
+                success: function (response) {
+                    if (response.status) {
+                        flag_phone_otp = true;
+                        setSuccessMsg(phone_otp);
+                        resolve();
+                    } else {
+                        flag_phone_otp = false;
+                        setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> ' + response.msg);
+                        reject();
+                    }
+                },
+                error: function (xhr, status, error) {
                     flag_phone_otp = false;
-                    setErrorMsg(phone_otp, '<i class="fa-solid fa-circle-xmark"></i> ' + response.msg);
+                    console.error('Error:', error);
+                    reject();
                 }
-            },
-            error: function (xhr, status, error) {
-                flag_phone_otp = false;
-                console.error('Error:', error);
-            }
+            });
         });
     }
 
@@ -388,27 +320,32 @@ const validateSellerInfoForm = (callback) => {
         flag_email_otp = false;
         setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> OTP should be 6 in length.');
     } else {
-        $.ajax({
-            url: site_url.concat('validate-become-seller-email-otp'),
-            method: 'POST',
-            data: {
-                language: default_language,
-                otp: email_otp.value,
-                [csrfName]: csrfHash
-            },
-            success: function (response) {
-                if (response.status) {
-                    flag_email_otp = true;
-                    setSuccessMsg(email_otp);
-                } else {
+        emailOtpValidationPromise = new Promise((resolve, reject) => {
+            $.ajax({
+                url: site_url.concat('validate-become-seller-email-otp'),
+                method: 'POST',
+                data: {
+                    language: default_language,
+                    otp: email_otp.value,
+                    [csrfName]: csrfHash
+                },
+                success: function (response) {
+                    if (response.status) {
+                        flag_email_otp = true;
+                        setSuccessMsg(email_otp);
+                        resolve();
+                    } else {
+                        flag_email_otp = false;
+                        setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> ' + response.msg);
+                        reject();
+                    }
+                },
+                error: function (xhr, status, error) {
                     flag_email_otp = false;
-                    setErrorMsg(email_otp, '<i class="fa-solid fa-circle-xmark"></i> ' + response.msg);
+                    console.error('Error:', error);
+                    reject();
                 }
-            },
-            error: function (xhr, status, error) {
-                flag_email_otp = false;
-                console.error('Error:', error);
-            }
+            });
         });
     }
 
@@ -423,30 +360,33 @@ const validateSellerInfoForm = (callback) => {
         setSuccessMsg(password);
     }
 
-    setTimeout(() => {
-        if (flag_phone == true && flag_phone_otp == true && flag_email == true && flag_email_otp == true && flag_password == true) {
-            callback(true);
-        } else {
+    // Use Promise.all to wait for all promises to resolve
+    Promise.all([phoneOtpValidationPromise, emailOtpValidationPromise])
+        .then(() => {
+            if (flag_phone && flag_phone_otp && flag_email && flag_email_otp && flag_password) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        })
+        .catch(() => {
+            // Handle errors here if needed
             callback(false);
-        }
-    }, 500);
+        });
 }
 
 const validateDocForm = () => {
     const business_type = document.querySelector('#business_type');
-    const vat_registered = document.querySelector('#vat_registered');
     const seller_doc = document.getElementById('seller_doc');
     const business_logo = seller_doc.querySelector('#business_logo');
     const aadhar_card = seller_doc.querySelector('#aadhar_card');
-    const commercial_registration = seller_doc.querySelector('#commercial_registration');
-    const vat_certificate = seller_doc.querySelector('#vat_certificate');
-    const license = seller_doc.querySelector('#license');
+    const pan_card = seller_doc.querySelector('#pan_card');
+    const gst_certificate = seller_doc.querySelector('#gst_certificate');
 
     var flag_business_logo = false;
     var flag_aadhar_card = false;
-    var flag_commercial_registration = false;
-    var flag_vat_certificate = false;
-    var flag_license = false;
+    var flag_pan_card = false;
+    var flag_gst_certificate = false;
 
     if (business_logo.value === '') {
         flag_business_logo = false;
@@ -458,46 +398,33 @@ const validateDocForm = () => {
 
     if (aadhar_card.value === '') {
         flag_aadhar_card = false;
-        setDropifyErrorMsg(aadhar_card, aadhar_card.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Id proof is required.');
+        setDropifyErrorMsg(aadhar_card, aadhar_card.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Aadhaar card is required.');
     } else {
         flag_aadhar_card = true;
         setDropifySuccessMsg(aadhar_card, aadhar_card.parentElement.parentElement.querySelector('#error'));
     }
 
+    if (pan_card.value === '') {
+        flag_pan_card = false;
+        setDropifyErrorMsg(pan_card, pan_card.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Pan card is required.');
+    } else {
+        flag_pan_card = true;
+        setDropifySuccessMsg(pan_card, pan_card.parentElement.parentElement.querySelector('#error'));
+    }
+
     if (business_type.value === 'Company') {
-        if (commercial_registration.value === '') {
-            flag_commercial_registration = false;
-            setDropifyErrorMsg(commercial_registration, commercial_registration.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Commercial registration is required.');
+        if (gst_certificate.value === '') {
+            flag_gst_certificate = false;
+            setDropifyErrorMsg(gst_certificate, gst_certificate.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> Commercial registration is required.');
         } else {
-            flag_commercial_registration = true;
-            setDropifySuccessMsg(commercial_registration, commercial_registration.parentElement.parentElement.querySelector('#error'));
-        }
-
-        if (license.value === '') {
-            flag_license = false;
-            setDropifyErrorMsg(license, license.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> License is required.');
-        } else {
-            flag_license = true;
-            setDropifySuccessMsg(license, license.parentElement.parentElement.querySelector('#error'));
+            flag_gst_certificate = true;
+            setDropifySuccessMsg(gst_certificate, gst_certificate.parentElement.parentElement.querySelector('#error'));
         }
     } else {
-        flag_commercial_registration = true;
-        flag_license = true;
+        flag_gst_certificate = true;
     }
 
-    if (vat_registered.value == 1) {
-        if (vat_certificate.value === '') {
-            flag_vat_certificate = false;
-            setDropifyErrorMsg(vat_certificate, vat_certificate.parentElement.parentElement.querySelector('#error'), '<i class="fa-solid fa-circle-xmark"></i> VAT certificate is required.');
-        } else {
-            flag_vat_certificate = true;
-            setDropifySuccessMsg(vat_certificate, vat_certificate.parentElement.parentElement.querySelector('#error'));
-        }
-    } else {
-        flag_vat_certificate = true;
-    }
-
-    if (flag_business_logo == true && flag_aadhar_card == true && flag_commercial_registration == true && flag_vat_certificate == true && flag_license == true) {
+    if (flag_business_logo == true && flag_aadhar_card == true && flag_pan_card == true && flag_gst_certificate == true) {
         return true;
     } else {
         return false;
@@ -505,39 +432,30 @@ const validateDocForm = () => {
 }
 
 
+$(function () {
+    window.onload = getStatedata();
+    window.onload = getCitydata(0);
+});
+
+$('#state').on('change', function () {
+    getCitydata(this.value);
+});
+
+$('.dropify').dropify();
+
 $(document).ready(function () {
     document.querySelector('#business_type').addEventListener('change', function () {
-        document.querySelector('#vat_registratoion_no').parentElement.classList.add('d-none');
-        document.querySelector('#vat_registratoion_no').value = "";
         document.querySelector('#business_name').value = "";
         document.querySelector('#business_address').value = "";
         document.querySelector('#business_details').value = "";
         if (this.value === 'Company') {
-            document.querySelector('#vat_registered').value = "";
-            document.querySelector('#vat_registered').disabled = false;
-            document.querySelector('#vat_registered').parentElement.classList.remove('d-none');
             document.querySelector('#business_name').parentElement.classList.remove('d-none');
             document.querySelector('#business_address').parentElement.classList.remove('d-none');
             document.querySelector('#business_details').parentElement.classList.remove('d-none');
         } else {
-            document.querySelector('#vat_registered').value = 0;
-            document.querySelector('#vat_registered').disabled = true;
-            document.querySelector('#vat_registered').parentElement.classList.add('d-none');
             document.querySelector('#business_name').parentElement.classList.add('d-none');
             document.querySelector('#business_address').parentElement.classList.add('d-none');
             document.querySelector('#business_details').parentElement.classList.add('d-none');
-        }
-    });
-
-    document.querySelector('#vat_registered').addEventListener('change', function () {
-        setSuccessMsg(vat_registratoion_no);
-        if (this.value === '0') {
-            document.querySelector('#vat_registratoion_no').parentElement.classList.add('d-none');
-            document.querySelector('#vat_registratoion_no').value = "";
-            document.querySelector('#vat_registratoion_no').disabled = true;
-        } else {
-            document.querySelector('#vat_registratoion_no').parentElement.classList.remove('d-none');
-            document.querySelector('#vat_registratoion_no').disabled = false;
         }
     });
 
@@ -566,16 +484,6 @@ $(document).ready(function () {
         }
     });
 
-    const input = document.querySelector("#seller_phone");
-    var iti = window.intlTelInputGlobals.getInstance(input);
-    if (!iti) {
-        window.intlTelInput(input, {
-            initialCountry: "om",
-            onlyCountries: ["om", "bh", "kw", "qa", "sa", "ae"],
-            separateDialCode: true,
-            utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/js/utils.js"
-        });
-    }
 
     var current_fs, next_fs, previous_fs; //fieldsets
     var opacity;
@@ -648,9 +556,7 @@ $(document).ready(function () {
 
     $(".seller_info").click(function () {
         validateSellerInfoForm(function (isValid) {
-            console.log(isValid)
             if (isValid) {
-                console.log($(this).parent())
                 current_fs = $('.seller_info').parent();
                 next_fs = $('.seller_info').parent().next();
                 //Add Class Active
@@ -725,59 +631,43 @@ $(document).ready(function () {
             current_fs = $(this).parent();
             next_fs = $(this).parent().next();
             var business_type = $('#business_type').val();
-            var vat_registered = $('#vat_registered').val();
-            var vat_registratoion_no = $('#vat_registratoion_no').val();
             var seller_name = $('#seller_name').val();
             var business_name = $('#business_name').val();
             var business_address = $('textarea#business_address').val();
             var business_details = $('textarea#business_details').val();
-            var country_id = $('#country').val();
-            var country = $('#country option:selected').text();
-            var region_id = $('#region').is('input') ? '' : $('#region').val();
-            var region = $('#region').is('input') ? $('#region').val() : $('#region option:selected').text();
-            var governorate_id = $('#governorates').is('input') ? '' : $('#governorates').val();
-            var governorate = $('#governorates').is('input') ? $('#governorates').val() : $('#governorates option:selected').text();
-            var area_id = $('#area').is('input') ? '' : $('#area').val();
-            var area = $('#area').is('input') ? $('#area').val() : $('#area option:selected').text();
+            var city_id = $('#city').val();
+            var city = $('#city option:selected').text();
+            var state_id = $('#state').val();
+            var state = $('#state option:selected').text();
+            var pincode = $('#pincode').val();
             var phone = $('#seller_phone').val();
             var email = $('#seller_email').val();
             var website_link = $('#website_link').val();
             var facebook_link = $('#facebook_link').val();
             var instagram_link = $('#instagram_link').val();
             var passwords = $('#password').val();
-            var commercial_registration = null;
-            var vat_certificate = null;
-            var license = null;
+            var gst_certificate = null;
 
             var business_logo = $('#business_logo').prop('files')[0];
             var aadhar_card = $('#aadhar_card').prop('files')[0];
+            var pan_card = $('#pan_card').prop('files')[0];
 
             if (business_type == 'Company') {
-                commercial_registration = $('#commercial_registration').prop('files')[0];
-                license = $('#license').prop('files')[0];
-            }
-
-            if (vat_registered == 1) {
-                vat_certificate = $('#vat_certificate').prop('files')[0];
+                gst_certificate = $('#gst_certificate').prop('files')[0];
             }
 
 
             var form_data = new FormData();
             form_data.append('business_type', business_type);
-            form_data.append('vat_registered', vat_registered);
-            form_data.append('vat_registratoion_no', vat_registratoion_no);
             form_data.append('seller_name', seller_name);
             form_data.append('business_name', business_name);
             form_data.append('business_address', business_address);
             form_data.append('business_details', business_details);
-            form_data.append('country_id', country_id);
-            form_data.append('country', country);
-            form_data.append('region_id', region_id);
-            form_data.append('region', region);
-            form_data.append('governorate_id', governorate_id);
-            form_data.append('governorate', governorate);
-            form_data.append('area_id', area_id);
-            form_data.append('area', area);
+            form_data.append('state_id', state_id);
+            form_data.append('state', state);
+            form_data.append('city_id', city_id);
+            form_data.append('city', city);
+            form_data.append('pincode', pincode);
             form_data.append('phone', phone);
             form_data.append('email', email);
             form_data.append('website_link', website_link);
@@ -786,9 +676,8 @@ $(document).ready(function () {
             form_data.append('passwords', passwords);
             form_data.append('business_logo', business_logo);
             form_data.append('aadhar_card', aadhar_card);
-            form_data.append('commercial_registration', commercial_registration);
-            form_data.append('vat_certificate', vat_certificate);
-            form_data.append('license', license);
+            form_data.append('pan_card', pan_card);
+            form_data.append('gst_certificate', gst_certificate);
             form_data.append([csrfName], csrfHash);
 
             $.ajax({
@@ -821,6 +710,10 @@ $(document).ready(function () {
                         this.disabled = false;
                         setProgressBar(++current);
                     }, 1500);
+                },
+                error: function (response) {
+                    this.disabled = false;
+                    console.log(response);
                 }
             });
 

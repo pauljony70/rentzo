@@ -32,7 +32,7 @@ if (!isset($_SESSION['admin'])) {
 				<div class="col-12">
 					<div class="card">
 						<div class="card-body">
-							<!-- <button type="button" class="btn btn-danger waves-effect waves-light mb-2" id="add_categogy_btn">Add Category</button> -->
+							<button type="button" class="btn btn-danger waves-effect waves-light mb-2" id="add_categogy_btn">Add Category</button>
 
 							<div class="table-responsive"><input type="hidden" id="last_cat" value="0">
 								<table class="table table-hover" id="tblname">

@@ -77,9 +77,9 @@
 													<h6 class="mb-0"><?= $add_data['fullname']; ?>, </h6>
 												</div>
 												<div class="address m-0">
-													<h6 class="mb-0"><?= $add_data['email'] ?>, +<?= $add_data['country_code'] . ' ' . $add_data['mobile'] ?></h6>
+													<h6 class="mb-0"><?= $add_data['email'] ?>, <?= $add_data['country_code'] . ' ' . $add_data['mobile'] ?></h6>
 													<h6 class="m-0"><?= $add_data['fulladdress'] ?></h6>
-													<h6 class="m-0"><?= $add_data['area'] . ', ' . $add_data['governorate'] . ', ' . $add_data['region'] . ', ' . $add_data['country'] ?></h6>
+													<h6 class="m-0"><?= $add_data['city'] . ', ' . $add_data['state'] . ', ' . $add_data['country'] . ', ' . $add_data['pincode'] ?></h6>
 												</div>
 											</div>
 										</div>
@@ -268,6 +268,42 @@
 								<button type="button" href="javascript:void(0);" class="btn btn-primary w-100 place-order-btn" id="placeOrderBtn">Place Order</button>
 							</div>
 						</div>
+
+						<!-- <div class="continue paymentMethod0">
+							<h6>You will save <?php echo $checkout['total_discount']; ?> on this order</h6>
+							<?php
+							$str_result = '123456789ABCDEFGHIJKLMNPQRSTUVWXYZabcdefghijklmnpqrstuvwxyz';
+							?>
+							<form method="post" action="<?= base_url('CCAvenue/save') ?>" id="ccrevenue_checkout_form" onsubmit="return CCAvenueValidateForm()">
+								<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+								<input type="hidden" name="tid" id="tid" value="7292797898379" />
+								<input type="hidden" name="merchant_id" value="3089529" readonly />
+								<input type="hidden" name="order_id" id="order_id" value="<?= strtoupper('ODR' . substr(str_shuffle($str_result), 0, 6) . date("hi") . rand(1, 99)); ?>" />
+								<input type="number" name="amount" id="amount" value="1" />
+								<input type="hidden" name="currency" id="currency" value="INR" />
+								<input type="hidden" name="redirect_url" value="<?= base_url('CCAvenue/response') ?>" />
+								<input type="hidden" name="cancel_url" value="<?= base_url('CCAvenue/response') ?>" />
+								<input type="hidden" name="language" value="EN" />
+								<input type="hidden" name="billing_name" value="abc" />
+								<input type="hidden" name="billing_address" value="Ichapur" />
+								<input type="hidden" name="billing_city" value="kolkata" />
+								<input type="hidden" name="billing_state" value="West Bengal" />
+								<input type="hidden" name="billing_zip" value="743144" />
+								<input type="hidden" name="billing_country" value="India" />
+								<input type="hidden" name="billing_tel" value="9067686678" />
+								<input type="hidden" name="billing_email" value="chirag@gmail.com" />
+								<input type="hidden" name="delivery_name" id="delivery_name" value="abc" />
+								<input type="hidden" name="delivery_address" id="delivery_address" value="Ichapur" />
+								<input type="hidden" name="delivery_city" id="delivery_city" value="kolkata" />
+								<input type="hidden" name="delivery_state" id="delivery_state" value="West Bengal" />
+								<input type="hidden" name="delivery_zip" id="delivery_zip" value="743144" />
+								<input type="hidden" name="delivery_country" id="delivery_country" value="India" />
+								<input type="hidden" name="delivery_tel" id="delivery_tel" value="8200721023" />
+								<div id="place-order-btn-div">
+									<button id="online_place_order_btn" class="btn btn-default">Place Order</button>
+								</div>
+							</form>
+						</div> -->
 					</div>
 					<div class="col-lg-5 ps-xl-5 mt-5 mt-lg-0 d-none d-lg-block">
 						<div class="ps-lg-5">
@@ -385,6 +421,7 @@
 	<script src="<?= base_url('assets_web/libs/nativetoast/native-toast.js') ?>"></script>
 
 	<script src="<?= base_url('assets_web/js/app/checkout.js') ?>"></script>
+
 
 </body>
 

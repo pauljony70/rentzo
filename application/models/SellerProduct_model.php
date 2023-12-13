@@ -236,7 +236,7 @@ class SellerProduct_model extends CI_Model
 
 
 
-	function add_seller($business_type, $vat_registered, $vat_registratoion_no, $seller_name, $business_name, $business_address, $business_details, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $phone, $email, $website_link, $facebook_link, $instagram_link, $password, $business_logo, $aadhar_card, $commercial_registration, $vat_certificate, $license)
+	function add_seller($business_type, $seller_name, $business_name, $business_address, $business_details, $state_id, $state, $city_id, $city, $pincode, $phone, $email, $website_link, $facebook_link, $instagram_link, $password, $business_logo, $aadhar_card, $pan_card, $gst_certificate)
 	{
 		$status = '';
 		$seller_array = array();
@@ -253,20 +253,15 @@ class SellerProduct_model extends CI_Model
 
 		$seller_array['seller_unique_id'] = $seller_unique_id;
 		$seller_array['business_type'] = $business_type;
-		$seller_array['vat_registered'] = $vat_registered;
-		$seller_array['vat_registratoion_no'] = $vat_registratoion_no;
 		$seller_array['fullname'] = $seller_name;
 		$seller_array['companyname'] = $business_name;
 		$seller_array['address'] = $business_address;
 		$seller_array['description'] = $business_details;
-		$seller_array['country_id'] = $country_id;
-		$seller_array['country'] = $country;
-		$seller_array['region_id'] = $region_id;
-		$seller_array['region'] = $region;
-		$seller_array['governorate_id'] = $governorate_id;
-		$seller_array['governorate'] = $governorate;
-		$seller_array['area_id'] = $area_id;
-		$seller_array['area'] = $area;
+		$seller_array['state_id'] = $state_id;
+		$seller_array['state'] = $state;
+		$seller_array['city_id'] = $city_id;
+		$seller_array['city'] = $city;
+		$seller_array['pincode'] = $pincode;
 		$seller_array['phone'] = $phone;
 		$seller_array['email'] = $email;
 		$seller_array['websiteurl'] = $website_link;
@@ -275,9 +270,8 @@ class SellerProduct_model extends CI_Model
 		$seller_array['password'] = $password;
 		$seller_array['logo'] = $business_logo;
 		$seller_array['aadhar_card'] = $aadhar_card;
-		$seller_array['commercial_registration'] = $commercial_registration;
-		$seller_array['vat_certificate'] = $vat_certificate;
-		$seller_array['license'] = $license;
+		$seller_array['pan_card'] = $pan_card;
+		$seller_array['gst_certificate'] = $gst_certificate;
 		$seller_array['create_by'] = $datetime;
 		$seller_array['update_by'] = $datetime;
 		$seller_array['update_by'] = 0;

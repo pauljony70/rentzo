@@ -112,7 +112,7 @@ $(document).ready(function () {
 			successmsg("Please enter Days");
 		}
 		if (!price) {
-			successmsg("Please enter Price");
+			successmsg("Please enter Price"); 
 		}
 
 		if (price && days) {

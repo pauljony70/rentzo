@@ -23,7 +23,7 @@ class UserAddress extends REST_Controller
 	}
 
 	public function addUserAddress_post(){
-		$requiredparameters = array('language','username','mobile','locality','fulladdress','state','city','addresstype','email','city_id','pincode');
+		$requiredparameters = array('language','username','mobile','locality','fulladdress','state','city','addresstype','email','city_id','pincode','state_id');
 		
 		$language_code = removeSpecialCharacters($this->post('language'));
 		$username = removeSpecialCharacters($this->post('username'));
@@ -36,6 +36,7 @@ class UserAddress extends REST_Controller
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
 		$email = removeSpecialCharacters($this->post('email'));
 		$city_id = removeSpecialCharacters($this->post('city_id')); 
+		$state_id = removeSpecialCharacters($this->post('state_id')); 
 		$pincode = removeSpecialCharacters($this->post('pincode'));
 		
 		
@@ -43,7 +44,7 @@ class UserAddress extends REST_Controller
 		
     	if($validation=='valid') {
 			if($username && is_numeric($mobile) && $pincode && $user_id && $city && $addresstype){
-				$address = $this->address_model->add_user_address($username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id);
+				$address = $this->address_model->add_user_address($username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id,$state_id);
 				if($address =='done'){					
 					//$address_detail = $this->address_model->get_user_address_details_full($user_id);
 							
@@ -126,7 +127,7 @@ class UserAddress extends REST_Controller
 	}
 
 	public function editUserAddress_post(){
-		$requiredparameters = array('language','username','mobile','fulladdress','state','city','addresstype','email','city_id','pincode');
+		$requiredparameters = array('language','username','mobile','fulladdress','state','city','addresstype','email','city_id','pincode','state_id');
 		
 		$language_code = removeSpecialCharacters($this->post('language'));
 		$address_id = removeSpecialCharacters($this->post('address_id'));
@@ -140,13 +141,14 @@ class UserAddress extends REST_Controller
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
 		$email = removeSpecialCharacters($this->post('email'));
 		$city_id = removeSpecialCharacters($this->post('city_id')); 
+		$state_id = removeSpecialCharacters($this->post('state_id')); 
 		$pincode = removeSpecialCharacters($this->post('pincode'));
 
 		$validation = $this->parameterValidation($requiredparameters,$this->post()); //$this->post() holds post values
 		
     	if($validation=='valid') {
 			if($username && is_numeric($mobile) && $pincode && $user_id && $city && $addresstype){
-				$address = $this->address_model->edit_user_address($address_id, $username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id);
+				$address = $this->address_model->edit_user_address($address_id, $username,$mobile,$pincode,$user_id,$locality,$fulladdress,$state, $city, $addresstype,$email,$city_id,$state_id);
 				if($address =='done'){					
 					//$address_detail = $this->address_model->get_user_address_details_full($user_id);
 							

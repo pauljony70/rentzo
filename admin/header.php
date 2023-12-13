@@ -306,7 +306,7 @@
                             </a>
                         </li>
 
-                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'category.php') !== false || strpos($_SERVER['PHP_SELF'], 'brand.php') !== false || strpos($_SERVER['PHP_SELF'], 'pages.php') !== false || strpos($_SERVER['PHP_SELF'], 'meta.php') !== false || strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false || strpos($_SERVER['PHP_SELF'], 'coupancode.php') !== false || strpos($_SERVER['PHP_SELF'], 'days_price.php') !== false || strpos($_SERVER['PHP_SELF'], 'notification.php') !== false ? "menuitem-active" : ''; ?>">
+                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'category.php') !== false || strpos($_SERVER['PHP_SELF'], 'brand.php') !== false || strpos($_SERVER['PHP_SELF'], 'pages.php') !== false || strpos($_SERVER['PHP_SELF'], 'meta.php') !== false || strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false || strpos($_SERVER['PHP_SELF'], 'coupancode.php') !== false || strpos($_SERVER['PHP_SELF'], 'days_price.php') !== false || strpos($_SERVER['PHP_SELF'], 'faq.php') !== false || strpos($_SERVER['PHP_SELF'], 'contact_inquiry.php') !== false || strpos($_SERVER['PHP_SELF'], 'video_recording_list.php') !== false || strpos($_SERVER['PHP_SELF'], 'notification.php') !== false ? "menuitem-active" : ''; ?>">
                             <a href="#basic" data-toggle="collapse">
                                 <i class="fa fa-gear"></i>
                                 <span> Basic </span>
@@ -331,17 +331,35 @@
 
                                     <?php  } ?> 
 									<?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
+                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'video_recording_list.php') !== false ? "menuitem-active" : "" ?>">
+                                            <a href="video_recording_list.php"> Video Recording List</a>
+                                        </li>
+
+                                    <?php  } ?>
+									<?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
+                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'contact_inquiry.php') !== false ? "menuitem-active" : "" ?>">
+                                            <a href="contact_inquiry.php"> Contact Inquiry</a>
+                                        </li>
+
+                                    <?php  } ?>
+									<?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
+                                        <li class="<?= strpos($_SERVER['PHP_SELF'], 'faq.php') !== false ? "menuitem-active" : "" ?>">
+                                            <a href="faq.php"> FAQ'S</a>
+                                        </li>
+
+                                    <?php  } ?>
+									<?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'days_price.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="days_price.php"> Days Price</a>
                                         </li>
 
                                     <?php  } ?>
-                                    <?php if ($Common_Function->user_module_premission($_SESSION, $Pages)) { ?>
+                                    <?php /* if ($Common_Function->user_module_premission($_SESSION, $Pages)) { ?>
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'pages.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="pages.php"> <span>Pages</span> </a>
                                         </li>
-                                    <?php  } ?>
-                                    <?php if ($Common_Function->user_module_premission($_SESSION, $Meta)) { ?>
+                                    <?php  } */?>
+                                    <?php if ($Common_Function->user_module_premission($_SESSION, $CouponCode)) { ?>
                                         <li class="<?= strpos($_SERVER['PHP_SELF'], 'meta.php') !== false || strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false ? "menuitem-active" : "" ?>">
                                             <a href="meta.php" class="<?= strpos($_SERVER['PHP_SELF'], 'edit_custom_page.php') !== false ? 'active' : '' ?>"> <span>Custom Page</span> </a>
                                         </li>
@@ -446,6 +464,13 @@
                             <a href="security_payment.php">
                                 <i class="fa fa-cube"></i>
                                 <span>Security Payment</span>
+                            </a>
+                        </li>
+						
+						<li class="<?= strpos($_SERVER['PHP_SELF'], 'all_chats.php') !== false ? "menuitem-active" : "" ?>">
+                            <a href="all_chats.php">
+                                <i class="fa fa-cube"></i>
+                                <span>All Chats</span>
                             </a>
                         </li>
 

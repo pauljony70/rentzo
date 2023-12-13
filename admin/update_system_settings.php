@@ -100,10 +100,27 @@ if(!$Common_Function->user_module_premission($_SESSION,$StoreSettings)){
 			$img_decode3 = json_decode($category_banner);	
 			$prod_url3 = MEDIAURL.$img_decode3->{$img_dimension_arr[0][0].'-'.$img_dimension_arr[0][1]};
 		}
+		
+		if($_FILES['login_banner']['name']){	
+			$Common_Function->img_dimension_arr = $img_dimension_arr;
+			$login_banner1 = $Common_Function->file_upload('login_banner',$media_path);			
+			$login_banner = json_encode($login_banner1);	
+			
+			
+			  $query = $conn->query("SELECT * FROM `settings` WHERE type ='login_banner'");
+			if($query->num_rows > 0){
+				$query = $conn->query("UPDATE  `settings` SET description = '".$login_banner."' WHERE type ='login_banner'");
+			}else{
+				$query = $conn->query("INSERT INTO `settings` (type, description) VALUES ('login_banner', '".$login_banner."')");
+			}
+			
+			$img_decode4 = json_decode($login_banner);	
+			$prod_url4 = MEDIAURL.$img_decode4->{$img_dimension_arr[0][0].'-'.$img_dimension_arr[0][1]};
+		}
 	   
 		   
          
-    	echo json_encode(array('status'=>1,'msg' =>'Setting Updated Successfully.','system_logo'=>$prod_url1,'system_banner'=>$prod_url2,'category_banner'=>$prod_url3));
+    	echo json_encode(array('status'=>1,'msg' =>'Setting Updated Successfully.','system_logo'=>$prod_url1,'system_banner'=>$prod_url2,'category_banner'=>$prod_url3,'login_banner'=>$prod_url4));
        
         	 
 }else if( $code == $_SESSION['_token'] && $type =='sms_services') {

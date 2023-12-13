@@ -31,7 +31,7 @@ if (!isset($_SESSION['admin'])) {
 		$prod_short = trim(strip_tags($_POST['prod_short']));
 		$prod_details = trim($_POST['prod_details']);
 		
-		$usage_info = trim($_POST['usage_info']);
+		$usage_info = trim(strip_tags($_POST['usage_info']));
 		$is_buy = trim($_POST['is_buy']);
 		$day1_price = trim($_POST['day1_price']);
 		$day3_price = trim($_POST['day3_price']);

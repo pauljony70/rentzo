@@ -134,6 +134,33 @@ class OrderController extends REST_Controller
 		}
 	}
 
+	public function sendChatNotificationToSeller_post()
+	{
+		$order_id = $this->input->post('order_id');
+		$product = $this->input->post('product');
+		$seller_id = $this->input->post('seller_id');
+		$user_unseen_message_count = $this->input->post('user_unseen_message_count');
+
+		$seller_data = $this->db->get_where('sellerlogin', array('seller_unique_id' => $seller_id))->row_array();
+		ob_start();
+		$this->load->view('website/email_templates/message-notification.php', array(
+			'seller_name' => $seller_data['fullname'],
+			'unseen_message_count' => $user_unseen_message_count,
+			'order_id' => $order_id,
+			'product' => $product
+		));
+		$email_body = ob_get_clean();
+		$subject = 'You have got ' . $user_unseen_message_count . ' message';
+
+		send_email_smtp($seller_data['email'], $email_body, $subject);
+
+		$header = "MIME-Version: 1.0\r\n";
+		$header .= "Content-type: text/html\r\n";
+
+		$response = array('status' => 1, 'message' => 'Notification send to selller successfully');
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
+	}
+
 	public function order_details_get($order_id, $prod_id)
 	{
 		$user_id = $this->session->userdata("user_id");

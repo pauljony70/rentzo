@@ -10,6 +10,7 @@ $sellerid = $_SESSION['admin'];
 
 ?>
 <?php include("header.php");
+
 $cname = "";
 $fname = "";
 $address = "";
@@ -29,10 +30,10 @@ $flagid = "";
 $createby = "";
 $update_by = "";
 $pan_card = "";
-$aadhar_card = $pan_number = $cin_number = $seller_banner = "";
+$aadhar_card = $pan_number = $cin_number = $seller_banner = $seller_badge = $seller_badge1 = $seller_badge2 = "";
 
 $stmt = $conn->prepare("SELECT sellerid, companyname, fullname, address, description, city, pincode, state, country, phone, email, logo, websiteurl,
-						tax_number, groupid, status, flagid, create_by, update_by,pan_card,aadhar_card,business_proof,pan_number,cin_number,seller_banner FROM sellerlogin WHERE seller_unique_id=?");
+						tax_number, groupid, status, flagid, create_by, update_by,pan_card,aadhar_card,business_proof,pan_number,cin_number,seller_banner,seller_badge,seller_badge1,seller_badge2 FROM sellerlogin WHERE seller_unique_id=?");
 $stmt->bind_param("s", $sellerid);
 $stmt->execute();
 $data = $stmt->bind_result(
@@ -60,7 +61,10 @@ $data = $stmt->bind_result(
     $col23,
     $col24,
     $col25,
-    $col26
+    $col26,
+    $col27,
+    $col28,
+    $col29
 );
 
 $return = array();
@@ -90,8 +94,10 @@ while ($stmt->fetch()) {
     $pan_number = $col24;
     $cin_number = $col25;
     $seller_banner = $col26;
+    $seller_badge = $col27;
+    $seller_badge1 = $col28;
+    $seller_badge2 = $col29;
 }
-
 ?>
 
 <script>
@@ -380,16 +386,28 @@ while ($stmt->fetch()) {
                 var aadhar_card = $('#aadhar_card').prop('files')[0];
                 var business_proof = $('#business_proof').prop('files')[0];
                 var seller_banner = $('#seller_banner').prop('files')[0];
+                var seller_badge = $('#seller_badge').prop('files')[0];
+                var seller_badge1 = $('#seller_badge1').prop('files')[0];
+                var seller_badge2 = $('#seller_badge2').prop('files')[0];
 
                 var prod_imgurl = $("#prod_imgurl").val();
                 var pan_card1 = $("#pan_card1").val();
                 var aadhar_card1 = $("#aadhar_card1").val();
                 var business_proof1 = $("#business_proof1").val();
                 var seller_banner1 = $("#seller_banner1").val();
+                var seller_badge_1 = $("#seller_badge_1").val();
+                var seller_badge_2 = $("#seller_badge_2").val();
+                var seller_badge_3 = $("#seller_badge_3").val();
 
                 var form_data = new FormData();
                 form_data.append('business_proof', business_proof);
                 form_data.append('seller_banner', seller_banner);
+                form_data.append('seller_badge', seller_badge);
+                form_data.append('seller_badge1', seller_badge1);
+                form_data.append('seller_badge2', seller_badge2);
+                form_data.append('seller_badge_1', seller_badge_1);
+                form_data.append('seller_badge_2', seller_badge_2);
+                form_data.append('seller_badge_3', seller_badge_3);
                 form_data.append('seller_banner1', seller_banner1);
                 form_data.append('pan_card', pan_card);
                 form_data.append('aadhar_card', aadhar_card);
@@ -721,7 +739,159 @@ while ($stmt->fetch()) {
                                         </div>
 
                                     </div>
+									<div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0">Update Badge</label>
+
+                                        <div class="col-sm-8">
+                                            <div class="input-files">
+
+                                                <div>
+
+                                                    <input type="file" name="seller_badge" id="seller_badge" class="form-control-file" onchange="uploadFile1('seller_badge')" ;>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- icon-hover-effects -->
+                                    <div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0"></label>
+                                        <?php
+                                        ?>
+                                        <div class="col-sm-8">
+                                            <div class="tables" style="background-color: #F6EAEA;">
+                                                <div class="wrap">
+
+                                                    <div class="bg-effect">
+                                                        <ul class="bt_list" id="bt_list_banner">
+
+                                                            <?php
+                                                            $badge_img_decode = json_decode($seller_badge);
+                                                            $badge_url = MEDIAURL . $badge_img_decode->{$img_dimension_arr[0][0] . '-' . $img_dimension_arr[0][1]};
+
+
+                                                            if ($badge_url) {
+                                                                echo '<img src=' . $badge_url . ' id="banner_img" height="75" width="75" hspace="20" vspace="20"> ';
+                                                            }
+                                                            ?>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+									<div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0">Update Badge 1</label>
+
+                                        <div class="col-sm-8">
+                                            <div class="input-files">
+
+                                                <div>
+
+                                                    <input type="file" name="seller_badge1" id="seller_badge1" class="form-control-file" onchange="uploadFile1('seller_badge1')" ;>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- icon-hover-effects -->
+                                    <div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0"></label>
+                                        <?php
+                                        ?>
+                                        <div class="col-sm-8">
+                                            <div class="tables" style="background-color: #F6EAEA;">
+                                                <div class="wrap">
+
+                                                    <div class="bg-effect">
+                                                        <ul class="bt_list" id="bt_list_banner">
+
+                                                            <?php
+                                                            $badge1_img_decode = json_decode($seller_badge1);
+                                                            $badge1_url = MEDIAURL . $badge1_img_decode->{$img_dimension_arr[0][0] . '-' . $img_dimension_arr[0][1]};
+
+
+                                                            if ($badge1_url) {
+                                                                echo '<img src=' . $badge1_url . ' id="banner_img" height="75" width="75" hspace="20" vspace="20"> ';
+                                                            }
+                                                            ?>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+									
+									<div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0">Update Badge 2</label>
+
+                                        <div class="col-sm-8">
+                                            <div class="input-files">
+
+                                                <div>
+
+                                                    <input type="file" name="seller_badge2" id="seller_badge2" class="form-control-file" onchange="uploadFile1('seller_badge2')" ;>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- icon-hover-effects -->
+                                    <div class="form-group row align-items-center">
+
+                                        <label for="exampleInputFile" class="col-sm-2 control-label m-0"></label>
+                                        <?php
+                                        ?>
+                                        <div class="col-sm-8">
+                                            <div class="tables" style="background-color: #F6EAEA;">
+                                                <div class="wrap">
+
+                                                    <div class="bg-effect">
+                                                        <ul class="bt_list" id="bt_list_banner">
+
+                                                            <?php
+                                                            $badge2_img_decode = json_decode($seller_badge2);
+                                                            $badge2_url = MEDIAURL . $badge2_img_decode->{$img_dimension_arr[0][0] . '-' . $img_dimension_arr[0][1]};
+
+
+                                                            if ($badge2_url) {
+                                                                echo '<img src=' . $badge2_url . ' id="banner_img" height="75" width="75" hspace="20" vspace="20"> ';
+                                                            }
+                                                            ?>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+									
                                     <input type="hidden" class="form-control" id="seller_banner1" value=<?php echo $seller_banner; ?>></input>
+                                    <input type="hidden" class="form-control" id="seller_badge_1" value=<?php echo $seller_badge; ?>></input>
+                                    <input type="hidden" class="form-control" id="seller_badge_2" value=<?php echo $seller_badge1; ?>></input>
+                                    <input type="hidden" class="form-control" id="seller_badge_3" value=<?php echo $seller_badge2; ?>></input>
 
                                     <input type="hidden" class="form-control" id="prod_imgurl" value=<?php echo $logo; ?>></input>
 

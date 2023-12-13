@@ -37,129 +37,8 @@ class SellerController extends REST_Controller
 		$this->load->view('website/thankyouseller.php', $this->data);  // ye view/website folder hai
 	}
 
-	function create_media_folder($media_path)
-	{
-
-		$folder_name = $media_path . date("Y-m-d");
-		if (!is_dir($folder_name)) {
-			mkdir($folder_name);
-
-			$content = "<!DOCTYPE html>
-					<html>
-					<head>
-						<title>403 Forbidden</title>
-					</head>
-					<body>
-					
-					<p>Directory access is forbidden.</p>
-					
-					</body>
-					</html>";
-			$fp = fopen($folder_name . "/index.html", "wb");
-			fwrite($fp, $content);
-			fclose($fp);
-		}
-		return $folder_name;
-	}
-
-	function file_upload($file_name, $media_path)
-	{
-		include_once('libraries/php-image-resize-master/lib/ImageResize.php');
-
-		$media_dir = $this->create_media_folder($media_path);
-		$file_full_path = '';
-		if (is_array($_FILES[$file_name]["name"])) {
-			$count = count($_FILES[$file_name]["name"]);
-			$file_full_path = array();
-			for ($i = 0; $i < $count; $i++) {
-				$path_info = '';
-				if ($_FILES[$file_name]["name"][$i] != "") {
-					$path_info = pathinfo($_FILES[$file_name]["name"][$i]);
-
-					$extension = $path_info['extension'];
-					$filename = $this->makeimagepath($path_info['filename']);
-
-					$intFile = mt_rand();
-					$file_full_path1 = $media_dir . '/' . $filename . $intFile . '.' . $extension;
-					//$file_full_path1 = $media_dir.'/'.$intFile.$this->makeimagepath($_FILES[$file_name]["name"][$i]);
-					move_uploaded_file($_FILES[$file_name]["tmp_name"][$i], $file_full_path1);
-
-					$thumb = array();
-					foreach ($this->img_dimension_arr as $value) {
-						$height = $value[0];
-						$width = $value[1];
-						$destination_file = $media_dir . '/' . $filename . $intFile . '-' . $height . '-' . $width . '.' . $extension;
-
-						$image = new ImageResize($file_full_path1);
-						$image->resizeToBestFit($height, $width);
-						$image->save($destination_file);
-						$thumb[$height . '-' . $width] = str_replace($media_path, '', $destination_file);
-					}
-					//unlink($file_full_path1);
-					$file_full_path[] = $thumb;
-				}
-			}
-		} else {
-			if ($_FILES[$file_name]["name"] != "") {
-				$path_info = pathinfo($_FILES[$file_name]["name"]);
-
-				$extension = $path_info['extension'];
-				$filename = $this->makeimagepath($path_info['filename']);
-
-				$intFile = mt_rand();
-				$file_full_path1 = $media_dir . '/' . $filename . $intFile . '.' . $extension;
-				//$file_full_path1 = $media_dir.'/'.$intFile.$this->makeimagepath($_FILES[$file_name]["name"]);
-				move_uploaded_file($_FILES[$file_name]["tmp_name"], $file_full_path1);
-
-				$thumb = array();
-				foreach ($this->img_dimension_arr as $value) {
-					$height = $value[0];
-					$width = $value[1];
-					$destination_file = $media_dir . '/' . $filename . $intFile . '-' . $height . '-' . $width . '.' . $extension;
-
-					$image = new ImageResize($file_full_path1);
-					$image->resizeToBestFit($height, $width);
-					$image->save($destination_file);
-					$thumb[$height . '-' . $width] = str_replace($media_path, '', $destination_file);
-				}
-				//unlink($file_full_path1);
-				$file_full_path = $thumb;
-			}
-		}
-
-		return $file_full_path;
-	}
-
 	//function for upload products image and resize image in multiple dimention
-	function doc_upload($file_name, $media_path)
-	{
-
-		$media_dir = $this->create_media_folder($media_path);
-		$file_full_path = '';
-		if (is_array($_FILES[$file_name]["name"])) {
-			$count = count($_FILES[$file_name]["name"]);
-			$file_full_path = array();
-			for ($i = 0; $i < $count; $i++) {
-				if ($_FILES[$file_name]["name"][$i] != "") {
-					$intFile = mt_rand();
-					$file_full_path1 = $media_dir . '/' . $intFile . $this->makeimagepath($_FILES[$file_name]["name"][$i]);
-					move_uploaded_file($_FILES[$file_name]["tmp_name"][$i], $file_full_path1);
-					$file_full_path[] = str_replace($media_path, '', $file_full_path1);
-				}
-			}
-		} else {
-			if ($_FILES[$file_name]["name"] != "") {
-
-				$intFile = mt_rand();
-				$file_full_path1 = $media_dir . '/' . $intFile . $this->makeimagepath($_FILES[$file_name]["name"]);
-				move_uploaded_file($_FILES[$file_name]["tmp_name"], $file_full_path1);
-
-				$file_full_path = str_replace($media_path, '', $file_full_path1);
-			}
-		}
-
-		return $file_full_path;
-	}
+	
 
 	function makeimagepath($str)
 	{
@@ -205,31 +84,25 @@ class SellerController extends REST_Controller
 	{
 		$media_path = 'media/';
 		$business_type = $_POST['business_type'];
-		$vat_registered = $_POST['vat_registered'];
-		$vat_registratoion_no = $_POST['vat_registratoion_no'];
 		$seller_name = $_POST['seller_name'];
 		$business_name = $_POST['business_name'];
 		$business_address = $_POST['business_address'];
 		$business_details = $_POST['business_details'];
-		$country_id = $_POST['country_id'];
-		$country = $_POST['country'];
-		$region_id = $_POST['region_id'];
-		$region = $_POST['region'];
-		$governorate_id = $_POST['governorate_id'];
-		$governorate = $_POST['governorate'];
-		$area_id = $_POST['area_id'];
-		$area = $_POST['area'];
+		$state_id = $_POST['state_id'];
+		$state = $_POST['state'];
+		$city_id = $_POST['city_id'];
+		$city = $_POST['city'];
+		$pincode = $_POST['pincode'];
 		$phone = $_POST['phone'];
 		$email = $_POST['email'];
 		$website_link = $_POST['website_link'];
 		$facebook_link = $_POST['facebook_link'];
 		$instagram_link = $_POST['instagram_link'];
 		$password = $_POST['passwords'];
-		$business_logo = '';
-		$aadhar_card = '';
-		$commercial_registration = null;
-		$vat_certificate = null;
-		$license = null;
+		$business_logo = null;
+		$aadhar_card = null;
+		$pan_card = null;
+		$gst_certificate = null;
 
 		$publickey_server = $this->config->item("encryption_key");
 		$encruptfun = new encryptfun();
@@ -237,25 +110,19 @@ class SellerController extends REST_Controller
 		$password  = $encryptedpassword;
 
 		if (strlen($_FILES['business_logo']['name']) > 1) {
-			$business_logo = $this->doc_upload('business_logo', $media_path);
+			$business_logo = doc_upload('business_logo', $media_path);
 		}
 		if (strlen($_FILES['aadhar_card']['name']) > 1) {
-			$aadhar_card = $this->doc_upload('aadhar_card', $media_path);
+			$aadhar_card = doc_upload('aadhar_card', $media_path);
 		}
-		if (strlen($_FILES['commercial_registration']['name']) > 1) {
-			$commercial_registration = $this->doc_upload('commercial_registration', $media_path);
+		if (strlen($_FILES['pan_card']['name']) > 1) {
+			$pan_card = doc_upload('pan_card', $media_path);
 		}
-		if (strlen($_FILES['vat_certificate']['name']) > 1) {
-			$vat_certificate = $this->doc_upload('vat_certificate', $media_path);
-		}
-		if (strlen($_FILES['license']['name']) > 1) {
-			$license = $this->doc_upload('license', $media_path);
+		if (strlen($_FILES['gst_certificate']['name']) > 1) {
+			$gst_certificate = doc_upload('gst_certificate', $media_path);
 		}
 
-
-
-
-		$seller_array = $this->sellerProduct_model->add_seller($business_type, $vat_registered, $vat_registratoion_no, $seller_name, $business_name, $business_address, $business_details, $country_id, $country, $region_id, $region, $governorate_id, $governorate, $area_id, $area, $phone, $email, $website_link, $facebook_link, $instagram_link, $password, $business_logo, $aadhar_card, $commercial_registration, $vat_certificate, $license);
+		$seller_array = $this->sellerProduct_model->add_seller($business_type, $seller_name, $business_name, $business_address, $business_details, $state_id, $state, $city_id, $city, $pincode, $phone, $email, $website_link, $facebook_link, $instagram_link, $password, $business_logo, $aadhar_card, $pan_card, $gst_certificate);
 
 
 		echo $seller_array;
@@ -263,15 +130,14 @@ class SellerController extends REST_Controller
 
 	function sendPhoneOtp_post()
 	{
-		$requiredparameters = array('language', 'phone', 'country_code');
+		$requiredparameters = array('language', 'phone');
 		$language_code = removeSpecialCharacters($this->post('language'));
 		$phone  = removeSpecialCharacters($this->post('phone'));
-		$country_code  = removeSpecialCharacters($this->post('country_code'));
 		$validation = $this->parameterValidation($requiredparameters, $this->post());
 		if ($validation == 'valid') {
 			$otp = $this->sms_model->generateNumericOTP(6);
-			$message = 'Dear customer welcome onboard ! ' . $otp . ' is your OTP to login your EBuy account. EBUY';
-			$sms_sent = $this->sms_model->send_sms_new($message, $country_code, $phone);
+			$message = 'Dear customer welcome onboard ! ' . $otp . ' is your OTP to login your Rentzo account. RENTZO';
+			$sms_sent = $this->sms_model->send_sms_new($message, $phone);
 			if ($sms_sent == 'disabled') {
 				$this->responses(0, get_phrase('sms_disabled', $language_code));
 			} else if ($sms_sent == 'sent') {

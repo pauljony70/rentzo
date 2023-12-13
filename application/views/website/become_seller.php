@@ -4,50 +4,8 @@
 <head>
 	<?php $title = "Become a Seller";
 	include("include/headTag.php") ?>
-	<link href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/css/intlTelInput.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="<?= base_url('assets_web/libs/dropify/dist/css/dropify.min.css') ?>">
 	<link rel="stylesheet" href="<?= base_url('assets_web/style/css/become-seller.css') ?>">
-	<style>
-		<?php if ($default_language == 1) : ?>#error {
-			float: right;
-			text-align: right;
-		}
-
-		.form-label {
-			float: right !important;
-		}
-
-		#send-phone-otp-btn,
-		#send-email-otp-btn {
-			border-top-left-radius: 3px;
-			border-bottom-left-radius: 3px;
-		}
-
-		<?php else : ?>#error {
-			float: left;
-			text-align: left;
-		}
-
-		#send-phone-otp-btn,
-		#send-email-otp-btn {
-			border-top-right-radius: 3px;
-			border-bottom-right-radius: 3px;
-		}
-
-		<?php endif; ?>.intl-tel-input,
-		.iti--separate-dial-code {
-			width: 100%;
-		}
-
-		.iti__country-list {
-			border-radius: 3px;
-		}
-
-		.iti-mobile .iti--container {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-	</style>
 </head>
 
 <body>
@@ -73,8 +31,8 @@
 				<?php endif; ?>
 				<div class="row">
 					<div class="wrap">
-						<h4><?= $this->lang->line('become-a-seller'); ?></h4>
-						<p><?= $this->lang->line('sub_heading'); ?></p>
+						<h4>Become a Seller</h4>
+						<p>Fill all form field to go to next step</p>
 					</div>
 
 
@@ -83,11 +41,11 @@
 
 						<!-- progressbar -->
 						<ul id="progressbar" class="d-none d-lg-block">
-							<li class="active" id="email"><?= $this->lang->line('list_item_1'); ?></li>
-							<li id="account"><?= $this->lang->line('list_item_2'); ?></li>
-							<li id="personal"><?= $this->lang->line('list_item_3'); ?></li>
-							<li id="document"><?= $this->lang->line('list_item_4'); ?></li>
-							<li id="confirm"><?= $this->lang->line('list_item_5'); ?></li>
+							<li class="active" id="email">Seller Information</li>
+							<li id="account">Shop Description</li>
+							<li id="personal">Personal Info.</li>
+							<li id="document">Documents Upload</li>
+							<li id="confirm">Finish</li>
 						</ul>
 						<div class="progress d-lg-none">
 							<div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -96,129 +54,109 @@
 						<fieldset>
 							<div class="row g-3" id="seller_form">
 								<div class="col-7">
-									<h6 class="<?= $default_language == 1 ? 'text-end' : 'text-start' ?>"><?= $this->lang->line('list_item_1'); ?>:</h6>
+									<h6 class="text-start">Seller Information:</h6>
 								</div>
 								<div class="col-5">
-									<h6 class="<?= $default_language == 1 ? 'text-start' : 'text-end' ?>"><?= $this->lang->line('step'); ?> 1 - 5</h6>
+									<h6 class="text-end">Step 1 - 5</h6>
 								</div>
 
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('business_type'); ?> :</label>
+									<label class="form-label">Business Type :</label>
 									<select class="form-select" id="business_type" name="business_type" aria-label="Default select example">
-										<option value="">-- <?= $this->lang->line('select-business-type'); ?> --</option>
-										<option value="Individual"><?= $this->lang->line('individual'); ?></option>
-										<option value="Company"><?= $this->lang->line('company'); ?></option>
+										<option value="">-- Select business type --</option>
+										<option value="Individual">Individual</option>
+										<option value="Company">Company</option>
 									</select>
-									<span id="error"></span>
-								</div>
-								<div class="col-md-12 mt-0 d-none">
-									<label class="form-label mt-4"><?= $this->lang->line('vat_register'); ?> :</label>
-									<select class="form-select" id="vat_registered" name="vat_registered" aria-label="Default select example" style="padding-top: 0.77rem;">
-										<option value="">-- <?= $this->lang->line('select'); ?> --</option>
-										<option value="1"><?= $this->lang->line('yes'); ?></option>
-										<option value="0"><?= $this->lang->line('no'); ?></option>
-									</select>
-									<span id="error"></span>
-								</div>
-								<div class="col-md-12 mt-0 d-none">
-									<label class="form-label mt-4">VAT Registration No :</label>
-									<input type="text" class="form-control" id="vat_registratoion_no" name="vat_registratoion_no" disabled required />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('seller_name'); ?> :</label>
+									<label class="form-label">Seller Name :</label>
 									<input type="text" class="form-control" id="seller_name" name="seller_name" required />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12 d-none">
-									<label class="form-label"><?= $this->lang->line('shop_name'); ?> :</label>
+									<label class="form-label">Shop Name :</label>
 									<input type="text" class="form-control" id="business_name" name="business_name" required />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12 d-none">
-									<label class="form-label"><?= $this->lang->line('shop_address'); ?> :</label>
+									<label class="form-label">Shop Address :</label>
 									<textarea class="form-control" rows="5" id="business_address" name="business_address" required></textarea>
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12 d-none">
-									<label class="form-label"><?= $this->lang->line('shop_details'); ?> :</label>
+									<label class="form-label">Shop Details :</label>
 									<textarea class="form-control" rows="5" id="business_details" name="business_details" required></textarea>
 									<span id="error"></span>
 								</div>
 
 							</div>
-							<button type="button" class="seller_form btn btn-default"><?= $this->lang->line('next'); ?></button>
+							<button type="button" class="seller_form btn btn-primary">Next</button>
 						</fieldset>
 						<fieldset>
 							<div class="row g-3" id="seller_desc">
 								<div class="col-7">
-									<h6 class="<?= $default_language == 1 ? 'text-end' : 'text-start' ?>"><?= $this->lang->line('list_item_2'); ?></h6>
+									<h6 class="text-start">Personal Info.</h6>
 								</div>
 								<div class="col-5">
-									<h6 class="<?= $default_language == 1 ? 'text-start' : 'text-end' ?>"><?= $this->lang->line('step'); ?> 2 - 5</h6>
+									<h6 class="text-end">Step 2 - 5</h6>
 								</div>
 
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('select_country'); ?></label>
-									<select class="form-select" id="country" name="country">
-										<option value=""><?= $this->lang->line('select_country'); ?></option>
-										<?php foreach ($get_country['data'] as $country) : ?>
-											<option value="<?= $country['id'] ?>"><?= $country['name'] ?></option>
-										<?php endforeach; ?>
+									<label class="form-label">Select State:</label>
+									<select name="state" id="state" required class="form-select">
+										<option value="">Select State</option>
 									</select>
 									<span id="error"></span>
 								</div>
-								<div class="col-md-12" id="region-div">
-									<label class="form-label"><?= $this->lang->line('region'); ?></label>
-									<input type="text" class="form-control" id="region" name="region" readonly />
+								<div class="col-md-12">
+									<label class="form-label">Select City:</label>
+									<select name="city" id="city" required class="form-select">
+										<option value="">Select City</option>
+									</select>
 									<span id="error"></span>
 								</div>
-								<div class="col-md-12" id="governorates-div">
-									<label class="form-label"><?= $this->lang->line('governorate'); ?></label>
-									<input type="text" class="form-control" id="governorates" name="governorates" readonly />
-									<span id="error"></span>
-								</div>
-								<div class="col-md-12" id="area-div">
-									<label class="form-label"><?= $this->lang->line('area'); ?></label>
-									<input type="text" class="form-control" id="area" name="area" readonly />
+								<div class="col-md-12" id="pincode-div">
+									<label class="form-label">Pincode</label>
+									<input type="number" class="form-control" id="pincode" name="pincode" oninput="enforceMaxLength(this)" maxlength="6" />
 									<span id="error"></span>
 								</div>
 							</div>
-							<button type="button" class="previous btn btn-secondary"><?= $this->lang->line('previous'); ?></button>
-							<button type="button" class="seller_desc btn btn-default"><?= $this->lang->line('next'); ?></button>
+							<button type="button" class="previous btn btn-secondary">Previous</button>
+							<button type="button" class="seller_desc btn btn-primary">Next</button>
 						</fieldset>
 						<fieldset>
 							<div class="row g-3" id="seller_info">
 								<div class="col-7">
-									<h6 class="<?= $default_language == 1 ? 'text-end' : 'text-start' ?>"><?= $this->lang->line('list_item_3'); ?>:</h6>
+									<h6 class="text-start">Personal Info. :</h6>
 								</div>
 								<div class="col-5">
-									<h6 class="<?= $default_language == 1 ? 'text-start' : 'text-end' ?>"><?= $this->lang->line('step'); ?> 3 - 5</h6>
+									<h6 class="text-end">Step 3 - 5</h6>
 								</div>
 
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('enter_phone_number'); ?>:</label>
-									<input type="text" class="form-control intl-tel-input" id="seller_phone" maxlength="10" required onkeypress="return AllowOnlyNumbers(event);" name="seller_phone" />
+									<label class="form-label">Phone Number:</label>
+									<input type="number" class="form-control" id="seller_phone" maxlength="10" required oninput="enforceMaxLength(this)"" name=" seller_phone" />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('enter_phone_number_otp'); ?>:</label>
+									<label class="form-label">Phone OTP:</label>
 									<div class="input-group">
-										<input type="text" class="form-control" id="phone_otp" maxlength="6" required onkeypress="return AllowOnlyNumbers(event);" name="phone_otp" />
-										<button class="btn btn-outline-secondary mt-0" type="button" id="send-phone-otp-btn"><?= $this->lang->line('get_otp'); ?></button>
+										<input type="number" class="form-control" id="phone_otp" maxlength="6" required oninput="enforceMaxLength(this)"" name=" phone_otp" />
+										<button class="btn btn-outline-secondary mt-0" type="button" id="send-phone-otp-btn">Get OTP</button>
 										<span id="error"></span>
 									</div>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('enter_email'); ?>:</label>
+									<label class="form-label">Email:</label>
 									<input type="text" class="form-control" id="seller_email" maxlength="30" required name="seller_email" />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('enter_email_otp'); ?>:</label>
+									<label class="form-label">Email OTP:</label>
 									<div class="input-group">
-										<input type="text" class="form-control" id="email_otp" maxlength="6" required onkeypress="return AllowOnlyNumbers(event);" name="email_otp" />
-										<button class="btn btn-outline-secondary mt-0" type="button" id="send-email-otp-btn"><?= $this->lang->line('get_otp'); ?></button>
+										<input type="mumber" class="form-control" id="email_otp" maxlength="6" required oninput="enforceMaxLength(this)"" name=" email_otp" />
+										<button class="btn btn-outline-secondary mt-0" type="button" id="send-email-otp-btn">Get OTP</button>
 										<span id="error"></span>
 									</div>
 								</div>
@@ -226,88 +164,83 @@
 									<div class="form-check text-start">
 										<input class="form-check-input" type="checkbox" value="" id="social_media_handle">
 										<label class="form-check-label" for="social_media_handle">
-											<?= $this->lang->line('social-website'); ?>
+											Do you have social media handles or website?
 										</label>
 									</div>
 								</div>
 
 								<div class="col-md-12 social-media-handle d-none">
-									<label class="form-label"><?= $this->lang->line('website-link'); ?></label>
+									<label class="form-label">Website link:</label>
 									<input type="text" class="form-control" id="website_link" name="website_link" />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12 social-media-handle d-none">
-									<label class="form-label"><?= $this->lang->line('facebook-link'); ?></label>
+									<label class="form-label">Facebook link:</label>
 									<input type="text" class="form-control" id="facebook_link" name="facebook_link" />
 									<span id="error"></span>
 								</div>
 								<div class="col-md-12 social-media-handle d-none">
-									<label class="form-label"><?= $this->lang->line('instagram-link'); ?></label>
+									<label class="form-label">Instagram link:</label>
 									<input type="text" class="form-control" id="instagram_link" name="instagram_link" />
 									<span id="error"></span>
 								</div>
 
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('enter_password'); ?>:</label>
+									<label class="form-label">Password:</label>
 									<input type="password" id="password" maxlength="30" name="password" required class="form-control" />
 									<span id="error"></span>
 								</div>
 
 							</div>
-							<button type="button" class="previous btn btn-secondary"><?= $this->lang->line('previous'); ?></button>
-							<button type="button" class="seller_info btn btn-default"><?= $this->lang->line('next'); ?></button>
+							<button type="button" class="previous btn btn-secondary">Previous</button>
+							<button type="button" class="seller_info btn btn-primary">Next</button>
 						</fieldset>
 						<fieldset>
 							<div class="row g-3" id="seller_doc">
 								<div class="col-7">
-									<h6 class="<?= $default_language == 1 ? 'text-end' : 'text-start' ?>"><?= $this->lang->line('list_item_4'); ?>:</h6>
+									<h6 class="text-start">Personal Info. :</h6>
 								</div>
 								<div class="col-5">
-									<h6 class="<?= $default_language == 1 ? 'text-start' : 'text-end' ?>"><?= $this->lang->line('step'); ?> 4 - 5</h6>
+									<h6 class="text-end">Step 4 - 5</h6>
 								</div>
 
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('upload_business_logo'); ?>:</label>
+									<label class="form-label">Upload Business Logo:</label>
 									<input type="file" name="business_logo" id="business_logo" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
-									<span id="error"></span>
+									<div id="error" class="text-start"></div>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('upload_id_proof'); ?>:</label>
+									<label class="form-label">Upload Aadhaar Card:</label>
 									<input type="file" name="aadhar_card" id="aadhar_card" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
-									<span id="error"></span>
+									<div id="error" class="text-start"></div>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('commercial-registration'); ?></label>
-									<input type="file" name="commercial_registration" id="commercial_registration" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
-									<span id="error"></span>
+									<label class="form-label">Upload Pan Card:</label>
+									<input type="file" name="pan_card" id="pan_card" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
+									<div id="error" class="text-start"></div>
 								</div>
 								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('vat-certification'); ?></label>
-									<input type="file" name="vat_certificate" id="vat_certificate" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
-									<span id="error"></span>
-								</div>
-								<div class="col-md-12">
-									<label class="form-label"><?= $this->lang->line('license'); ?></label>
-									<input type="file" name="license" id="license" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
-									<span id="error"></span>
+									<label class="form-label">GST Certificate:</label>
+									<input type="file" name="gst_certificate" id="gst_certificate" class="dropify" data-height="100" data-max-file-size="1m" data-allowed-file-extensions="jpg png pdf" />
+									<div id="error" class="text-start"></div>
 								</div>
 							</div>
-							<button type="button" href="#" class="previous btn btn-secondary"><?= $this->lang->line('previous'); ?></button>
-							<button class="btn btn-default submit" name="submit" type="button"><?= $this->lang->line('submit'); ?></button>
+							<button type="button" href="#" class="previous btn btn-secondary">Previous</button>
+							<button class="btn btn-primary submit" name="submit" type="button">Submit</button>
 
 						</fieldset>
 						<fieldset>
 							<div class="row g-3">
 								<div class="col-7">
-									<h6 class="text-start"><?= $this->lang->line('finish'); ?>:</h6>
+									<h6 class="text-start">Finish:</h6>
 								</div>
 								<div class="col-5">
-									<h6 class="text-end"><?= $this->lang->line('step'); ?> 5 - 5</h6>
+									<h6 class="text-end">Step 5 - 5</h6>
 								</div>
 								<img src="<?php echo base_url; ?>/assets_web/images/icons/thanks-icon.png" class="success-img" />
-								<h4><?= $this->lang->line('success'); ?> !</h4>
-								<h6><?= $this->lang->line('success_msg'); ?>.</h6>
-								<h6><?= $this->lang->line('thanks'); ?>.</h6>
+								<h4>SUCCESS !</h4>
+								<h6>Thank you, your application is in process. Our team will contact you shortly.</h6>
+								<h6>Thanks.</h6>
 							</div>
 						</fieldset>
 					</form>
@@ -318,15 +251,13 @@
 
 	</main>
 
-	<?php
-	include("include/footer.php")
-	?>
+	<?php include("include/footer.php") ?>
 
-	<?php
-	include("include/script.php")
-	?>
+	<?php include("include/script.php") ?>
 
-	<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.8/build/js/intlTelInput.min.js"></script>
+	<!-- Plugin JS -->
+	<script src="<?php echo base_url(); ?>assets_web/libs/dropify/dist/js/dropify.min.js"></script>
+
 	<script src="<?php echo base_url; ?>assets_web/js/app/become-seller.js"></script>
 </body>
 

@@ -8,7 +8,7 @@ class Sms_model extends CI_Model
 		parent::__construct();
 	}
 
-	function send_sms_new($message = '', $country_code = '', $reciever_phone = '')
+	function send_sms_new($message, $reciever_phone)
 	{
 		/* if ($country_code == 968) {
 			$message = urlencode($message);

@@ -15,7 +15,7 @@ class CCAvenue extends REST_Controller
 
 	public function response_post()
 	{
-		$workingKey = '66C0AD305B73E91679EC5A31A0249158';
+		$workingKey = 'CCE86567FD4D81008A422EFB8DF00021';
 		$encResponse = $_POST["encResp"];
 		$rcvdString = $this->decrypt($encResponse, $workingKey);
 		$order_status = "";
@@ -84,7 +84,7 @@ class CCAvenue extends REST_Controller
 			'merchant_id' => 'merchant_id',
 			'order_id' => 'order_id',
 			'amount' => 'amount',
-			'currency' => 'currency',
+			'currency' => 'currency', // Fix the key here
 			'redirect_url' => 'redirect_url',
 			'cancel_url' => 'cancel_url',
 			'language' => 'language',
@@ -103,26 +103,24 @@ class CCAvenue extends REST_Controller
 			'delivery_zip' => 'delivery_zip',
 			'delivery_country' => 'delivery_country',
 			'delivery_tel' => 'delivery_tel'
-
 		));
-
+		
 		$merchant_data = '';
-		$working_key = '66C0AD305B73E91679EC5A31A0249158'; //Shared by CCAVENUES
-		$access_code = 'AVMW43KC08CE92WMEC'; //Shared by CCAVENUES
-
+		$working_key = 'CCE86567FD4D81008A422EFB8DF00021'; // Shared by CCAVENUES
+		$access_code = 'AVWO39KL45AV85OWVA'; // Shared by CCAVENUES
+		
 		foreach ($data as $key => $value) {
-			$merchant_data .= $key . '=' . urlencode($value) . '&';
+			$merchant_data .= $key . '=' . $value . '&';
 		}
-
+		
 		//$encrypted_data=encrypt($merchant_data,$working_key); // Method for encrypting the data.
-		$this->load->library('CcAvenueHandler');
 
 		$encrypted_data = $this->encrypt($merchant_data, $working_key);
 
 		// var_dump($encrypted_data);
 
 ?>
-		<form method="post" name="redirect" action="https://secure.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
+		<form method="post" name="redirect" action="https://test.ccavenue.com/transaction/transaction.do?command=initiateTransaction">
 			<?php
 			echo "<input type=hidden name=encRequest value=$encrypted_data>";
 			echo "<input type=hidden name=access_code value=$access_code>";

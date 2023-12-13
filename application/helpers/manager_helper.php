@@ -30,6 +30,7 @@ if (!function_exists('manager')) {
 		return $config;
 	}
 }
+
 if (!function_exists('get_settings')) {
 
 	function get_settings($type)
@@ -257,6 +258,79 @@ if (!function_exists('file_upload')) {
 		}
 
 		return $file_full_path;
+	}
+}
+
+if (!function_exists('doc_upload')) {
+	function doc_upload($file_name, $media_path)
+	{	
+		$media_dir = create_media_folder($media_path);
+		$file_full_path = '';
+		if (is_array($_FILES[$file_name]["name"])) {
+			$count = count($_FILES[$file_name]["name"]);
+			$file_full_path = array();
+			for ($i = 0; $i < $count; $i++) {
+				if ($_FILES[$file_name]["name"][$i] != "") {
+					$intFile = mt_rand();
+					$file_full_path1 = $media_dir . '/' . $intFile . makeimagepath($_FILES[$file_name]["name"][$i]);
+					move_uploaded_file($_FILES[$file_name]["tmp_name"][$i], $file_full_path1);
+					$file_full_path[] = str_replace($media_path, '', $file_full_path1);
+				}
+			}
+		} else {
+			if ($_FILES[$file_name]["name"] != "") {
+
+				$intFile = mt_rand();
+				$file_full_path1 = $media_dir . '/' . $intFile . makeimagepath($_FILES[$file_name]["name"]);
+				move_uploaded_file($_FILES[$file_name]["tmp_name"], $file_full_path1);
+
+				$file_full_path = str_replace($media_path, '', $file_full_path1);
+			}
+		}
+
+		return $file_full_path;
+	}
+}
+
+if (!function_exists('remmakeimagepathFile')) {
+	function makeimagepath($str)
+	{
+		$inputstring = trim(strip_tags($str));
+		$lowertext = strtolower($inputstring);
+		//$lowertext = preg_replace('/[^A-Za-z0-9\-]/', '', $lowertext);
+		$lowertext = str_replace(" ", "-", $lowertext);
+		$lowertext = str_replace("&", "", $lowertext);
+		$lowertext = str_replace("%", "", $lowertext);
+		$lowertext = str_replace("--", "-", $lowertext);
+		$lowertext = str_replace("---", "-", $lowertext);
+		$lowertext = str_replace("  ", "-", $lowertext);
+		$lowertext = str_replace("_", "-", $lowertext);
+		$lowertext = str_replace("$", "", $lowertext);
+		$lowertext = str_replace("@", "", $lowertext);
+		$lowertext = str_replace("!", "", $lowertext);
+		$lowertext = str_replace("#", "", $lowertext);
+		$lowertext = str_replace("^", "", $lowertext);
+		$lowertext = str_replace("`", "", $lowertext);
+		$lowertext = str_replace("*", "", $lowertext);
+		$lowertext = str_replace("(", "", $lowertext);
+		$lowertext = str_replace(")", "", $lowertext);
+		$lowertext = str_replace("+", "", $lowertext);
+		$lowertext = str_replace("=", "", $lowertext);
+		$lowertext = str_replace(":", "", $lowertext);
+		$lowertext = str_replace(";", "", $lowertext);
+		$lowertext = str_replace("<", "", $lowertext);
+		$lowertext = str_replace("?", "", $lowertext);
+		$lowertext = str_replace(">", "", $lowertext);
+		$lowertext = str_replace("'", "", $lowertext);
+		$lowertext = str_replace('"', "", $lowertext);
+		$lowertext = str_replace(',', "", $lowertext);
+		$lowertext = str_replace('[', "", $lowertext);
+		$lowertext = str_replace(']', "", $lowertext);
+		$lowertext = str_replace('{', "", $lowertext);
+		$lowertext = str_replace('}', "", $lowertext);
+		$lowertext = str_replace('|', "", $lowertext);
+		$lowertext = str_replace('/', "", $lowertext);
+		return $lowertext;
 	}
 }
 

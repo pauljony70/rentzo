@@ -124,7 +124,7 @@
 							</div>
 							<div class="action-button d-flex flex-column">
 								<a class="btn delete-address-btn mb-4 ms-auto" onclick="delete_address(<?= $add_data['address_id']; ?>,'<?= $this->session->userdata('user_id'); ?>')">DELETE</a>
-								<a data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="<?= $add_data['address_id'] ?>" data-full-name="<?= $add_data['fullname'] ?>" data-email="<?= $add_data['email'] ?>" data-mobile="<?= $add_data['mobile'] ?>" data-pincode="<?= $add_data['pincode'] ?>" data-fulladdress="<?= $add_data['fulladdress'] ?>" data-state-id="<?= $add_data['state'] ?>" data-city-id="<?= $add_data['city_id'] ?>" class="btn edit-address-btn ms-auto">EDIT</a>
+								<a data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="<?= $add_data['address_id'] ?>" data-full-name="<?= $add_data['fullname'] ?>" data-email="<?= $add_data['email'] ?>" data-mobile="<?= $add_data['mobile'] ?>" data-pincode="<?= $add_data['pincode'] ?>" data-fulladdress="<?= $add_data['fulladdress'] ?>" data-state-id="<?= $add_data['state_id'] ?>" data-city-id="<?= $add_data['city_id'] ?>" class="btn edit-address-btn ms-auto">EDIT</a>
 							</div>
 						</div>
 						<hr class="my-4">
@@ -401,11 +401,12 @@
 							pincode: $("#pincode").val(),
 							locality: "",
 							fulladdress: $("#fulladdress").val(),
-							state: $("#state").val(),
+							state: $('#state').find(":selected").text(),
 							city: $('#city').find(":selected").text(),
 							addresstype: "home",
 							email: $("#email").val(),
 							city_id: $("#city").val(),
+							state_id: $("#state").val(),
 							[csrfName]: csrfHash,
 						},
 						success: function(response) {
@@ -435,6 +436,7 @@
 			var email = $("#edit-email").val();
 			var fulladdress = $("#edit-address").val();
 			var city_id = $("#edit-city option:selected").val();
+			var state_id = $("#edit-state option:selected").val();
 
 
 			$.ajax({
@@ -448,11 +450,12 @@
 					pincode: pincode,
 					locality: "",
 					fulladdress: fulladdress,
-					state: state,
+					state: $('#edit-state').find(":selected").text(),
 					city: $('#edit-city').find(":selected").text(),
 					addresstype: "home",
 					email: email,
 					city_id: city_id,
+					state_id: state_id,
 					[csrfName]: csrfHash,
 				},
 				success: function(response) {

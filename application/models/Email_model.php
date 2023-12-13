@@ -320,12 +320,12 @@ class Email_model extends CI_Model
 		$header = "MIME-Version: 1.0\r\n";
 		$header .= "Content-type: text/html\r\n";
 	}
-	
-	function sendEmail_faq($name, $email,$subject, $content)
+
+	function sendEmail_faq($name, $email, $subject, $content)
 	{
-			$system_name = get_settings('system_name');
-			$subjects = $system_name . ' Your Content Inquiry Details';
-			$email_body =
+		$system_name = get_settings('system_name');
+		$subjects = $system_name . ' Your Content Inquiry Details';
+		$email_body =
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0">
 					<div style="border-bottom:1px solid #eee">
@@ -346,13 +346,13 @@ class Email_model extends CI_Model
 					</div>
 				</div>
 			</div>';
-			
-			send_email_smtp($email, $email_body, $subjects);
 
-			$header = "MIME-Version: 1.0\r\n";
-			$header .= "Content-type: text/html\r\n";
+		send_email_smtp($email, $email_body, $subjects);
+
+		$header = "MIME-Version: 1.0\r\n";
+		$header .= "Content-type: text/html\r\n";
 	}
-	
+
 	function sendEmail_videocall($email)
 	{
 		$system_name = get_settings('system_name');
@@ -631,18 +631,16 @@ class Email_model extends CI_Model
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0">
 					<div style="border-bottom:1px solid #eee">
-						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600">
-							<h1 class="font-2 mt-2" id="heading"><span style="color: rgb(4, 166, 157);">Baksa</span><span style="color: #EB008B">tales</span></h1>
-						</a>
+						<a href="' . base_url() . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600"><img src="' . base_url('assets_web/images/logo.png') . '" alt="logo" width="70">
 					</div>
 					<p style="font-size:1.1em">Hi ' . $seller_name . ',</p>
-					<p>Thank you for choosing Baksatales. Your application is in process. Our team will contact you shortly.</p>
-					<p style="font-size:0.9em; margin-bottom: 0px;">Regards,<br />Baksatales</p>
-					<a style="font-size:0.9em;" href="https://baksatales.com/">https://baksatales.com/</a><br>
-					<img style="margin-top: 5px;" src="' . base_url . 'assets_web/images/baksatales-logo.png' . '" alt="logo" width="70">
+					<p>Thank you for choosing ' . get_settings('system_name') . '. Your application is in process. Our team will contact you shortly.</p>
+					<p style="font-size:0.9em; margin-bottom: 0px;">Regards,<br />' . get_settings('system_name') . '</p>
+					<a style="font-size:0.9em;" href="' . base_url() . '">' . base_url() . '</a><br>
+					<img style="margin-top: 5px;" src="' . base_url() . 'assets_web/images/logo.png' . '" alt="logo" width="70">
 					<hr style="border:none;border-top:1px solid #eee" />
 					<div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-						<p>Baksatales Inc</p>
+						<p>' . get_settings('system_name') . ' Inc</p>
 						<!-- <p>1600 Amphitheatre Parkway</p> -->
 						<!-- <p>California</p> -->
 					</div>
@@ -653,21 +651,19 @@ class Email_model extends CI_Model
 			'<div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
 				<div style="margin:50px auto;width:70%;padding:20px 0">
 					<div style="border-bottom:1px solid #eee">
-						<a href="' . base_url . 'assets_web/images/baksatales-logo.png' . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600">
-							<h1 class="font-2 mt-2" id="heading"><span style="color: rgb(4, 166, 157);">Baksa</span><span style="color: #EB008B">tales</span></h1>
-						</a>
+						<a href="' . base_url() . '" style="font-size:1.4em;color: #008ecc;text-decoration:none;font-weight:600"><img src="' . base_url('assets_web/images/logo.png') . '" alt="logo" width="70">
 					</div>
 					<p style="font-size:1.1em">Hi Admin,</p>
 					<p>We are delighted to inform you that a new seller has successfully registered with our platform. Please review the details below:</p>
 					<p><b>Seller Name:</b> ' . $seller_name . '</p>
 					<p><b>Email:</b> ' . $email . '</p>
 					<p><b>Phone:</b> ' . $phone . '</p>
-					<p style="font-size:0.9em; margin-bottom: 0px;">Regards,<br />Baksatales</p>
-					<a style="font-size:0.9em;" href="https://baksatales.com/">https://baksatales.com/</a><br>
-					<img style="margin-top: 5px;" src="' . base_url . 'assets_web/images/baksatales-logo.png' . '" alt="logo" width="70">
+					<p style="font-size:0.9em; margin-bottom: 0px;">Regards,<br />' . get_settings('system_name') . '</p>
+					<a style="font-size:0.9em;" href="' . base_url() . '">' . base_url() . '</a><br>
+					<img style="margin-top: 5px;" src="' . base_url() . 'assets_web/images/logo.png' . '" alt="logo" width="70">
 					<hr style="border:none;border-top:1px solid #eee" />
 					<div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
-						<p>Baksatales Inc</p>
+						<p>' . get_settings('system_name') . ' Inc</p>
 						<!-- <p>1600 Amphitheatre Parkway</p> -->
 						<!-- <p>California</p> -->
 					</div>

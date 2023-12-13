@@ -7,6 +7,8 @@ const user_id = document.getElementById('user_id');
 const seller_id = document.getElementById('seller_id');
 let lastMessageId = 0;
 let updateSeenStatusValue = 0;
+let messagePollingInterval;
+let isemailSend = false;
 
 function isModalOpen() {
     return $('#chatModal').hasClass('show');
@@ -24,6 +26,8 @@ document.getElementById('send-message-form').addEventListener('submit', (event) 
     event.preventDefault();
     sendMessageBtn.disabled = true;
     sendMessageBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+
+    clearInterval(messagePollingInterval); // Clear the interval before sending a message
 
     $.ajax({
         method: "post",
@@ -60,6 +64,9 @@ document.getElementById('send-message-form').addEventListener('submit', (event) 
 
                 messageInput.value = '';
                 sendMessageBtn.innerHTML = `<img src="${site_url.concat('assets_web/images/icons/send-message.svg')}" class="pe-0" alt="Send">`;
+
+                // Restart the interval after the message has been sent
+                messagePollingInterval = setInterval(getMessagesOnLoad, 2000);
             } else {
                 sendMessageBtn.disabled = false;
                 sendMessageBtn.innerHTML = `<img src="${site_url.concat('assets_web/images/icons/send-message.svg')}" class="pe-0" alt="Send">`;
@@ -94,7 +101,7 @@ function getMessagesOnLoad() {
                 if (data.data.messages.length > 0) {
                     lastMessageId = data.data.messages[data.data.messages.length - 1].message_id;
                     updateSeenStatusValue = 0;
-                    if (data.data.unseen_message_count) {
+                    if (data.data.user_unseen_message_count) {
                         playNotificationSound();
                     }
                 }
@@ -102,12 +109,31 @@ function getMessagesOnLoad() {
                     updateSeenStatus();
                     updateSeenStatusValue = 1;
                 } else {
-                    if (data.data.unseen_message_count) {
+                    if (data.data.user_unseen_message_count) {
                         document.getElementById('unseen-message-count').style.cssText = "position: absolute; top: -10px; right: -10px; background: var(--red); height: 24px; border-radius: 50%; color: #fff; width: 24px; display: flex; align-items: center; justify-content: center";
-                        document.getElementById('unseen-message-count').innerText = data.data.unseen_message_count;
+                        document.getElementById('unseen-message-count').innerText = data.data.user_unseen_message_count;
                     } else {
                         document.getElementById('unseen-message-count').innerText = ""
                     }
+                }
+                if ((!isemailSend && data.data.seller_unseen_message_count > 0) || (!isemailSend && data.data.seller_unseen_message_count >= 10)) {
+                    $.ajax({
+                        method: "post",
+                        url: "chat.php",
+                        data: {
+                            action: 'sendChatNotification',
+                            order_id: order_id.value,
+                            product: product.value,
+                            user_id: user_id.value,
+                            seller_id: seller_id.value,
+                            seller_unseen_message_count: data.data.seller_unseen_message_count,
+                            code: code_ajax
+                        },
+                        success: function (response) {
+                            isemailSend = true;
+                            console.log(response);
+                        },
+                    });
                 }
             } else {
                 console.error("Error fetching messages:", data.message);
@@ -159,11 +185,7 @@ function displayMessages(messages) {
     });
 }
 
-function checkForNewMessages() {
-    setInterval(function () {
-        getMessagesOnLoad();
-    }, 2000);
-}
+messagePollingInterval = setInterval(getMessagesOnLoad, 2000);
 
 function playNotificationSound() {
     var audio = new Audio(site_url.concat('assets_web/sounds/Notification.mp3'));
@@ -176,5 +198,10 @@ function playNotificationSound() {
 
 window.onload = function () {
     getMessagesOnLoad();
-    checkForNewMessages();
 };
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash === '#openChat') {
+        $('#chatModal').modal('show');
+    }
+});

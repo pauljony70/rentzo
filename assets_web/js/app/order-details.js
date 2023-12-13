@@ -6,6 +6,8 @@ const product = document.getElementById('prod_id');
 const seller_id = document.getElementById('seller_id');
 let lastMessageId = 0;
 let updateSeenStatusValue = 0;
+let messagePollingInterval;
+let isemailSend = false;
 
 function isOffcanvasOpen() {
     return chatOffcanvas._element.classList.contains('show');
@@ -25,6 +27,8 @@ document.getElementById('send-message-form').addEventListener('submit', (event) 
     sendMessageBtn.disabled = true;
     sendMessageBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
 
+    clearInterval(messagePollingInterval); // Clear the interval before sending a message
+
     $.ajax({
         method: "post",
         url: site_url + "send-chat-message",
@@ -38,36 +42,18 @@ document.getElementById('send-message-form').addEventListener('submit', (event) 
             [csrfName]: csrfHash,
         },
         success: function (response) {
-
             if (response.status) {
-                // lastMessageId = response.id;
-
-                // var container = document.getElementById("messageContainer");
-
-                // var newMessageDiv = document.createElement("div");
-                // newMessageDiv.className = "d-flex justify-content-end user-message ms-5 mb-3";
-
-                // var newMessageContent = document.createElement("div");
-                // newMessageContent.className = "message py-1 px-2";
-                // newMessageContent.textContent = messageInput.value;
-
-                // newMessageDiv.appendChild(newMessageContent);
-
-                // container.insertBefore(newMessageDiv, container.firstChild);
                 getMessagesOnLoad();
 
                 messageInput.value = '';
                 sendMessageBtn.innerHTML = `<img src="${site_url.concat('assets_web/images/icons/send-message.svg')}" class="pe-0" alt="Send">`;
+
+                // Restart the interval after the message has been sent
+                messagePollingInterval = setInterval(getMessagesOnLoad, 2000);
             } else {
                 sendMessageBtn.disabled = false;
                 sendMessageBtn.innerHTML = `<img src="${site_url.concat('assets_web/images/icons/send-message.svg')}" class="pe-0" alt="Send">`;
-                /* Swal.fire({
-                    type: "error",
-                    text: response.message,
-                    showCancelButton: true,
-                    showCloseButton: true,
-                    timer: 3000,
-                }); */
+
                 window.location = site_url + "login";
             }
         },
@@ -93,7 +79,7 @@ function getMessagesOnLoad() {
                 if (response.data.messages.length > 0) {
                     lastMessageId = response.data.messages[response.data.messages.length - 1].message_id;
                     updateSeenStatusValue = 0;
-                    if (response.data.unseen_message_count) {
+                    if (response.data.seller_unseen_message_count) {
                         playNotificationSound();
                     }
                 }
@@ -101,12 +87,31 @@ function getMessagesOnLoad() {
                     updateSeenStatus();
                     updateSeenStatusValue = 1;
                 } else {
-                    if (response.data.unseen_message_count) {
+                    if (response.data.seller_unseen_message_count) {
                         document.getElementById('unseen-message-count').style.cssText = "position: absolute; top: -10px; right: -10px; background: var(--bs-danger); height: 24px; border-radius: 50%; color: #fff; width: 24px; display: flex; align-items: center; justify-content: center";
-                        document.getElementById('unseen-message-count').innerText = response.data.unseen_message_count;
+                        document.getElementById('unseen-message-count').innerText = response.data.seller_unseen_message_count;
                     } else {
+                        document.getElementById('unseen-message-count').style.cssText = "";
                         document.getElementById('unseen-message-count').innerText = "";
                     }
+                }
+                if ((!isemailSend && response.data.user_unseen_message_count > 0) || (!isemailSend && response.data.user_unseen_message_count >= 10)) {
+                    $.ajax({
+                        method: "post",
+                        url: site_url + "send-message-notification",
+                        data: {
+                            order_id: order_id.value,
+                            product: product.value,
+                            user_id: user_id,
+                            seller_id: seller_id.value,
+                            user_unseen_message_count: response.data.user_unseen_message_count,
+                            [csrfName]: csrfHash,
+                        },
+                        success: function (response) {
+                            isemailSend = true;
+                            console.log(response);
+                        },
+                    });
                 }
             } else {
                 console.error("Error fetching messages:", response.message);
@@ -145,12 +150,12 @@ function displayMessages(messages) {
         var messageDiv;
         if (message.send_by === 'seller') {
             messageDiv =
-                `<div class="d-flex justify-content-start seller-message mr-5 mb-3">
+                `<div class="d-flex justify-content-start seller-message me-5 mb-3">
                     <div class="message py-1 px-2">${message.message}</div>
                 </div>`;
         } else if (message.send_by === 'user') {
             messageDiv =
-                `<div class="d-flex justify-content-end user-message ml-5 mb-3">
+                `<div class="d-flex justify-content-end user-message ms-5 mb-3">
                     <div class="message py-1 px-2">${message.message}</div>
                 </div>`;
         }
@@ -160,11 +165,7 @@ function displayMessages(messages) {
     });
 }
 
-function checkForNewMessages() {
-    setInterval(function () {
-        getMessagesOnLoad();
-    }, 2000);
-}
+messagePollingInterval = setInterval(getMessagesOnLoad, 2000);
 
 function playNotificationSound() {
     var audio = new Audio(site_url.concat('assets_web/sounds/Notification.mp3'));
@@ -178,9 +179,15 @@ function playNotificationSound() {
 
 window.onload = function () {
     getMessagesOnLoad();
-    checkForNewMessages();
     $('.dropify').dropify();
 };
+
+document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.hash === '#openChat') {
+        var chatOffcanvas = new bootstrap.Offcanvas(document.getElementById('chatOffcanvas'));
+        chatOffcanvas.show();
+    }
+});
 
 function video_call(email) {
     $.ajax({

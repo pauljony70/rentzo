@@ -3,23 +3,23 @@ var code_ajax = $("#code_ajax").val();
 $(document).ready(function () {
     getnew_notification();
 
-    $(".notificationLink").click(function () {
+   /*  $(".notificationLink").click(function () {
         $("#notificationContainer").fadeToggle(300);
         $("#notification_count").fadeOut("slow");
         return false;
-    });
+    }); */
 
 
 
     //Document Click hiding the popup 
-    $(document).click(function () {
+    /*  $(document).click(function () {
         $("#notificationContainer").hide();
     });
 
     //Popup on click
     $("#notificationContainer").click(function () {
         return false;
-    });
+    }); */
 
     $("#download_product").click(function (event) {
         event.preventDefault();

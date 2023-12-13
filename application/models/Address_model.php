@@ -11,7 +11,7 @@ class Address_model extends CI_Model
 	}
 
 	//Functiofor for add product into cart
-	function add_user_address($username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id)
+	function add_user_address($username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id,$state_id)
 	{
 		$this->db->select('user_unique_id');
 		$this->db->where(array('user_unique_id' => $user_id));
@@ -43,7 +43,7 @@ class Address_model extends CI_Model
 					'state' => $state,
 					'pincode' => $pincode,
 					'email' => $email,
-					'addresstype' => $addresstype, 'city_id' => $city_id
+					'addresstype' => $addresstype, 'city_id' => $city_id, 'state_id' => $state_id
 				);
 
 
@@ -71,7 +71,7 @@ class Address_model extends CI_Model
 					'state' => $state,
 					'pincode' => $pincode,
 					'email' => $email,
-					'addresstype' => $addresstype, 'city_id' => $city_id
+					'addresstype' => $addresstype, 'city_id' => $city_id, 'state_id' => $state_id
 				);
 
 				$address['addressarray'] = json_encode(array($address_json_array));
@@ -90,7 +90,7 @@ class Address_model extends CI_Model
 		return $status;
 	}
 
-	function edit_user_address($address_id, $username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id)
+	function edit_user_address($address_id, $username, $mobile, $pincode, $user_id, $locality, $fulladdress, $state, $city, $addresstype, $email, $city_id,$state_id)
 	{
 
 		$this->db->select('user_unique_id');
@@ -125,7 +125,8 @@ class Address_model extends CI_Model
 							'pincode' => $pincode,
 							'email' => $email,
 							'addresstype' => $addresstype,
-							'city_id' => $city_id
+							'city_id' => $city_id,
+							'state_id' => $state_id
 						];
 					else :
 						$edited_address[] = $address;

@@ -23,6 +23,9 @@ include('session.php');
     $pan_number =$_POST['pan_number'];
     $cin_number =$_POST['cin_number'];
     $seller_banner1 =$_POST['seller_banner1'];
+    $seller_badge_1 =$_POST['seller_badge_1'];
+    $seller_badge_2 =$_POST['seller_badge_2'];
+    $seller_badge_3 =$_POST['seller_badge_3'];
   
     $code =    stripslashes($code);
     $sellername=  stripslashes($sellername);
@@ -42,6 +45,9 @@ include('session.php');
     $pan_number =   stripslashes($pan_number);
     $cin_number =   stripslashes($cin_number);
     $seller_banner1 =   stripslashes($seller_banner1);
+    $seller_badge_1 =   stripslashes($seller_badge_1);
+    $seller_badge_2 =   stripslashes($seller_badge_2);
+    $seller_badge_3 =   stripslashes($seller_badge_3);
      // $imagejson = "[sdfas]";
     
 // echo "sdfsa ".$name.$short.$full.$mrp.$price.$qty.$cat.$brand.$imagejson ;
@@ -91,6 +97,32 @@ include('session.php');
 				$seller_banner = $seller_banner1;
 			}
 			
+			$seller_badge ='';
+			if(strlen($_FILES['seller_badge']['name']) > 1){
+				$Common_Function->img_dimension_arr = $img_dimension_arr;
+				$seller_badge01 = $Common_Function->file_upload('seller_badge',$media_path);
+				$seller_badge = json_encode($seller_badge01);
+			}else{
+				$seller_badge = $seller_badge_1;
+			}
+			
+			$seller_badge1 ='';
+			if(strlen($_FILES['seller_badge1']['name']) > 1){
+				$Common_Function->img_dimension_arr = $img_dimension_arr;
+				$seller_badge02 = $Common_Function->file_upload('seller_badge1',$media_path);
+				$seller_badge1 = json_encode($seller_badge02);
+			}else{
+				$seller_badge1 = $seller_badge_2;
+			}
+			$seller_badge2 ='';
+			if(strlen($_FILES['seller_badge2']['name']) > 1){
+				$Common_Function->img_dimension_arr = $img_dimension_arr;
+				$seller_badge02 = $Common_Function->file_upload('seller_badge2',$media_path);
+				$seller_badge2 = json_encode($seller_badge02);
+			}else{
+				$seller_badge2 = $seller_badge_3;
+			}
+			
 			$aadhar_card ='';
 			if(strlen($_FILES['aadhar_card']['name']) >1){			
 				$aadhar_card = $Common_Function->doc_upload('aadhar_card',$media_path);			
@@ -116,9 +148,9 @@ include('session.php');
 			//code for upload images - END
 		
         $stmt11 = $conn->prepare("UPDATE sellerlogin SET companyname=?, fullname=?, address=?, description=?, city=?, pincode=?, state=?, country=?, phone=?, email=?, logo=?, websiteurl=?, tax_number=?, groupid=?,
-				 update_by=?, pan_card=?, aadhar_card=?, business_proof=?,pan_number=?, cin_number=?,seller_banner=? WHERE seller_unique_id=?");
-    	$stmt11->bind_param( "ssssisiisssssiisssssss", $businessname, $sellername, $buss_address, $buss_desc, $city, $pincode, $state, $country, $phone, $email, $seller_logo, $website, $gst, $groupid,
-				$datetime,$pan_card,$aadhar_card,$business_proof, $pan_number,$cin_number,$seller_banner, $sellerid );
+				 update_by=?, pan_card=?, aadhar_card=?, business_proof=?,pan_number=?, cin_number=?,seller_banner=?,seller_badge=?,seller_badge1=?,seller_badge2=? WHERE seller_unique_id=?");
+    	$stmt11->bind_param( "ssssisiisssssiissssssssss", $businessname, $sellername, $buss_address, $buss_desc, $city, $pincode, $state, $country, $phone, $email, $seller_logo, $website, $gst, $groupid,
+				$datetime,$pan_card,$aadhar_card,$business_proof, $pan_number,$cin_number,$seller_banner,$seller_badge,$seller_badge1,$seller_badge2, $sellerid );
 		$stmt11->execute();
 	    $stmt11->store_result();
     

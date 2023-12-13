@@ -1150,6 +1150,20 @@ $(document).ready(function () {
 
         });
     }
+	if ($("#usage_info").length > 0) {
+        tinymce.init({
+            selector: "textarea#usage_info",
+            theme: "modern",
+            height: 300,
+            plugins: [
+                "advlist lists print",
+                //  "wordcount code fullscreen",
+                "save table directionality emoticons paste textcolor"
+            ],
+            toolbar: " undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+
+        });
+    }
     if ($("#prod_short_ar").length > 0) {
         tinymce.init({
             selector: "textarea#prod_short_ar",

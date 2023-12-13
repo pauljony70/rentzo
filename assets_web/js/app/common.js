@@ -1,3 +1,5 @@
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 (function () {
   function checkDeviceType() {
     var userAgent = navigator.userAgent.toLowerCase();
@@ -304,4 +306,85 @@ const validateAddressForm = async () => {
   } else {
     throw new Error('Validation failed'); // Throw an error if validation fails
   }
+}
+
+
+
+
+function getStatedata() {
+  $.ajax({
+    method: 'POST',
+    url: site_url + "get_state",
+    data: {
+      language: default_language,
+      [csrfName]: csrfHash
+    },
+    success: function (response) {
+      // successmsg(response); // display response from the PHP script, if any
+      var data = $.parseJSON(response);
+      $('#state').empty();
+      $('#tcity').empty();
+      var o = new Option("Select State", "");
+      $("#state").append(o);
+      if (data["status"] == "1") {
+        $getcity = true;
+        var stateid = ''
+        $firstitemid = '';
+        $firstitemflag = true;
+        $(data["data"]).each(function () {
+          if (stateid === this.id) {
+            var o = new Option(this.name, this.id);
+            $("#state").append(o);
+            $('#state').val(this.id);
+            $getcity = false;
+          } else {
+            var o = new Option(this.name, this.id);
+            $("#state").append(o);
+          }
+
+          if ($firstitemflag == true) {
+            $firstitemflag = false;
+            $firstitemid = this.id;
+          }
+        });
+
+        if ($getcity == true) {
+          $getcity = false;
+        }
+
+      }
+    }
+  });
+}
+
+function getCitydata(stateid) {
+  $.ajax({
+    method: 'POST',
+    url: site_url + "get_city",
+    data: {
+      stateid: stateid,
+      [csrfName]: csrfHash
+    },
+    success: function (response) {
+      var data = $.parseJSON(response);
+      $('#city').empty();
+      var o = new Option("Select City", "");
+      $("#city").append(o);
+      if (data["status"] == "1") {
+        var cityid = '';
+
+        $(data["data"]).each(function () {
+          if (cityid === this.id) {
+            var o = new Option(this.name, this.id);
+            $("#city").append(o);
+            $('#city').val(this.id);
+
+          } else {
+            var o = new Option(this.name, this.id);
+            $("#city").append(o);
+          }
+        });
+      }
+    }
+  });
 }

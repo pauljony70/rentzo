@@ -359,7 +359,7 @@ if (isset($_POST['code'])) {
 													<div class="row m-0">
 														<div class="col-md-6 p-0 text-center text-light">
 
-															<div class="icon-prime" style="background-image: url('<?= $section5_image1; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image1; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link1; 
@@ -398,7 +398,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-2" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image2; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image2; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link2; 
@@ -437,7 +437,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-3" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image3; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image3; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link3; 
@@ -476,7 +476,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-4" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image4; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image4; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link4; 
@@ -515,7 +515,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-5" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image5; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image5; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link5; 
@@ -554,7 +554,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-6" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image6; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image6; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -593,7 +593,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-7" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image7; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image7; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -632,7 +632,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-8" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image8; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image8; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -671,7 +671,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-9" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image9; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image9; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -710,7 +710,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-10" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image10; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image10; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
 																																									?>', '<?= $section5_type10; ?>', '<?= $section5_catid10; ?>');">Upload</button>
@@ -737,7 +737,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-11" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image11; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image11; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -776,7 +776,7 @@ if (isset($_POST['code'])) {
 												<div class="tab-pane fade" id="tabs-12" role="tabpanel">
 													<div class="row">
 														<div class="col-md-6">
-															<div class="icon-prime" style="background-image: url('<?= $section5_image12; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+															<div class="icon-prime" style="background-image: url('<?= $section5_image12; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 																<h3></h3>
 																<button type="button" class="btn btn-dark waves-effect waves-light" onclick="add_banner_section5( '<?php // echo  $section5_link6; 
@@ -853,7 +853,7 @@ if (isset($_POST['code'])) {
 										}
 										?>
 										<div class="col-lg-4 mb-2">
-											<div class="icon-box" style="height:300px; background-image: url('<?= $section1_image1; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+											<div class="icon-box" style="height:140px; background-image: url('<?= $section1_image1; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 												<div class="icon-img">
 													<h3><b>Banner 1</b></h3>
@@ -863,7 +863,7 @@ if (isset($_POST['code'])) {
 											</div>
 										</div>
 										<div class="col-lg-4 mb-2">
-											<div class="icon-box" style="background: linear-gradient(#31AADE, #2825AD);height:300px; background-image: url('<?= $section1_image2; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+											<div class="icon-box" style="background: linear-gradient(#31AADE, #2825AD);height:140px; background-image: url('<?= $section1_image2; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 												<div class="icon-img">
 													<h3><b>Banner 2</b></h3>
@@ -873,7 +873,7 @@ if (isset($_POST['code'])) {
 											</div>
 										</div>
 										<div class="col-lg-4 mb-2">
-											<div class="icon-box" style="height:300px; background-image: url('<?= $section1_image3; ?>');background-size: cover;background-repeat: no-repeat;background-position: center center;">
+											<div class="icon-box" style="height:140px; background-image: url('<?= $section1_image3; ?>');background-size: contain;background-repeat: no-repeat;background-position: center center;">
 
 												<div class="icon-img">
 													<h3><b>Banner 3</b></h3>
@@ -928,6 +928,19 @@ if (isset($_POST['code'])) {
 												</div>
 										<?php }
 										} ?>
+									</div>
+								</div>
+							</section>
+							
+							<section id="events" class="">
+								<div class="container">
+									<div class="row">
+										<div class="col-12">
+											<h3 style="text-align: center;"> Manage Events</h3><br>
+										</div>
+										<div class="col-12">
+											<a class="btn btn-danger waves-effect waves-light mb-2" target="_blank" href="<?php  echo BASEURL;?>/admin/manage_events.php">Add Events</a>
+										</div>
 									</div>
 								</div>
 							</section>

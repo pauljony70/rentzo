@@ -146,7 +146,7 @@ class Order_model extends CI_Model
 		$this->db->join('order_product', 'order_product.order_id = o.order_id');
 		$query = $this->db->get('orders o');
 
-		$order_summery = array('order_id' => '', 'status' => '', 'payment_mode' => '', 'create_date' => '', 'total_qty' => '', 'total_price' => '', 'discount' => '', 'ordered_products' => []);
+		$order_summary = array('order_id' => '', 'status' => '', 'payment_mode' => '', 'create_date' => '', 'total_qty' => '', 'total_price' => '', 'discount' => '', 'ordered_products' => []);
 		$shipping_address = array('fullname' => '', 'mobile' => '', 'email' => '', 'fulladdress' => '', 'state' => '', 'city' => '', 'pincode' => '', 'addresstype' => '', 'coupon_value' => '');
 
 		$ordered_products = $this->db->select("op.prod_id, op.prod_sku, op.prod_name, op.prod_name_ar, op.prod_img, op.prod_attr, op.qty, op.prod_price, op.shipping, op.discount, op.status, op.tracking_id")->get_where('order_product op', array('op.order_id' => $order_id))->result_array();
@@ -169,7 +169,7 @@ class Order_model extends CI_Model
 			$orders['ordered_products'] = $ordered_products;
 			$orders['prod_attr'] = json_decode($order_detail->prod_attr);
 
-			$order_summery = $orders;
+			$order_summary = $orders;
 
 			$shipping['fullname'] = $order_detail->fullname;
 			$shipping['mobile'] = $order_detail->mobile;
@@ -182,44 +182,54 @@ class Order_model extends CI_Model
 
 			$shipping_address = $shipping;
 
-			$this->db->select("op.prod_id,op.prod_sku,op.prod_name, op.prod_name_ar,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.discount,op.status, sl.companyname,sl.seller_unique_id,op.tracking_id, sl.address as seller_address, sl.city as seller_city, sl.state as seller_state, sl.pincode as seller_pincode");
+			$this->db->select("op.prod_id,op.prod_sku,op.prod_name, op.prod_name_ar,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.discount,op.status, sl.companyname,sl.seller_unique_id,op.tracking_id, op.type as order_type, security_deposit, op.rent_from_date, op.rent_to_date, sl.address as seller_address, sl.city as seller_city, sl.state as seller_state, sl.pincode as seller_pincode");
 			$this->db->JOIN('sellerlogin sl', 'sl.seller_unique_id = op.vendor_id', 'INNER');
 			$this->db->where(array('op.order_id' => $order_id, 'op.prod_id' => $prod_id));
 			$query_prod = $this->db->get('order_product op');
 
-			$order_product_array = $order_product = array();
+			$order_product = array();
 
 			if ($query_prod->num_rows() > 0) {
-				$order_prod_result = $query_prod->result_object();
-				foreach ($order_prod_result as $order_prod_detail) {
-					$order_product['prod_id'] = $order_prod_detail->prod_id;
-					$order_product['vendor_id'] = $order_prod_detail->seller_unique_id;
-					$order_product['prod_sku'] = $order_prod_detail->prod_sku;
-					if ($language == 1) {
-						$order_product['prod_name'] = $order_prod_detail->prod_name_ar;
-					} else {
-						$order_product['prod_name'] = $order_prod_detail->prod_name;
-					}
-					$order_product['prod_img'] = $order_prod_detail->prod_img;
-					$order_product['qty'] = $order_prod_detail->qty;
-					$order_product['prod_price'] = price_format($order_prod_detail->prod_price);
-					$order_product['shipping'] = price_format($order_prod_detail->shipping);
-					$order_product['discount'] = price_format($order_prod_detail->discount);
-					$order_product['prod_mrp'] = price_format($order_prod_detail->prod_price + $order_prod_detail->discount);
-					$order_product['total_mrp'] = price_format($order_prod_detail->prod_price + $order_prod_detail->shipping);
-					$order_product['status'] = $order_prod_detail->status;
-					$order_product['companyname'] = $order_prod_detail->companyname;
-					$order_product['tracking_id'] = $order_prod_detail->tracking_id;
-					$order_product['attribute'] = $order_prod_detail->prod_attr;
-					$order_product['seller_address'] = $order_prod_detail->seller_address;
-					$order_product['seller_city'] = $order_prod_detail->seller_city;
-					$order_product['seller_state'] = $order_prod_detail->seller_state;
-					$order_product['seller_pincode'] = $order_prod_detail->seller_pincode;
-					$order_product_array[] = $order_product;
+				$order_prod_result = $query_prod->row_array();
+				$order_product['prod_id'] = $order_prod_result['prod_id'];
+				$order_product['vendor_id'] = $order_prod_result['seller_unique_id'];
+				$order_product['prod_sku'] = $order_prod_result['prod_sku'];
+				if ($language == 1) {
+					$order_product['prod_name'] = $order_prod_result['prod_name_ar'];
+				} else {
+					$order_product['prod_name'] = $order_prod_result['prod_name'];
 				}
+				$order_product['prod_img'] = $order_prod_result['prod_img'];
+				$order_product['qty'] = $order_prod_result['qty'];
+				$order_product['prod_price'] = price_format($order_prod_result['prod_price']);
+				$order_product['shipping'] = price_format($order_prod_result['shipping']);
+				$order_product['discount'] = price_format($order_prod_result['discount']);
+				$order_product['prod_mrp'] = price_format($order_prod_result['prod_price'] + $order_prod_result['discount']);
+				$order_product['total_mrp'] = price_format($order_prod_result['prod_price'] + $order_prod_result['shipping']);
+				$order_product['status'] = $order_prod_result['status'];
+				$order_product['companyname'] = $order_prod_result['companyname'];
+				$order_product['tracking_id'] = $order_prod_result['tracking_id'];
+				$order_product['order_type'] = $order_prod_result['order_type'];
+				$order_product['security_deposit'] = $order_prod_result['security_deposit'];
+				$order_product['rent_from_date'] = $order_prod_result['rent_from_date'];
+				$order_product['rent_to_date'] = $order_prod_result['rent_to_date'];
+				$total_days = '';
+				if($order_prod_result['rent_from_date'] != '' && $order_prod_result['rent_to_date'] != '')
+				{
+					$earlier = new DateTime($order_prod_result['rent_from_date']);
+					$later = new DateTime($order_prod_result['rent_to_date']);
+					
+					$total_days = $later->diff($earlier)->format("%a")+1;
+				}
+				$order_product['total_days'] = $total_days;
+				$order_product['attribute'] = $order_prod_result['prod_attr'];
+				$order_product['seller_address'] = $order_prod_result['seller_address'];
+				$order_product['seller_city'] = $order_prod_result['seller_city'];
+				$order_product['seller_state'] = $order_prod_result['seller_state'];
+				$order_product['seller_pincode'] = $order_prod_result['seller_pincode'];
 			}
 		}
-		return array('order_summery' => $order_summery, 'shipping_address' => $shipping_address, 'product_details' => $order_product_array);
+		return array('order_summary' => $order_summary, 'shipping_address' => $shipping_address, 'product_details' => $order_product);
 	}
 
 	function change_order_status_details($order_id, $pid, $status1)

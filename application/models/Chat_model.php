@@ -18,13 +18,21 @@ class Chat_model extends CI_Model
         $this->db->order_by('created_at', 'asc');
         $query = $this->db->get('chat_messages');
         $messages =  $query->result_array();
-        $unseen_message_count = $this->db->where([
+        $user_unseen_message_count = $this->db->where([
+            'order_id' => $order_id,
+            'product' => $product,
+            'send_by' => 'user',
+            'seen' => false
+        ])->count_all_results('chat_messages');
+        
+        $seller_unseen_message_count = $this->db->where([
             'order_id' => $order_id,
             'product' => $product,
             'send_by' => 'seller',
             'seen' => false
         ])->count_all_results('chat_messages');
-        return array('messages' => $messages, 'unseen_message_count' => $unseen_message_count);
+        
+        return array('messages' => $messages, 'user_unseen_message_count' => $user_unseen_message_count, 'seller_unseen_message_count' => $seller_unseen_message_count);
     }
 
     public function updateSeenStatus($order_id, $product, $user_id, $seller_id, $lastMessageId)

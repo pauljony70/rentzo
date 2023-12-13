@@ -120,6 +120,22 @@
     letter-spacing: 2px;
 }
 
+.order-details .order-type-purchase {
+    background-color: var(--bs-primary);
+    width: 140px;
+    height: 100px;
+    clip-path: inset(0 0 67% 0);
+}
+
+.order-details .order-type-purchase .text {
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
 .order-details .product-thumb {
     height: 216px;
     object-fit: contain;
@@ -245,7 +261,7 @@
 }
 
 .dropify-wrapper {
-    border: 1px solid #D9D9D9;   
+    border: 1px solid #D9D9D9;
     background-color: #F5F5F5;
 }
 

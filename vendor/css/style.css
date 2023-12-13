@@ -4,7 +4,7 @@
     overflow: visible;
     width: 400px;
     z-index: 99;
-    display: none;
+    transform: none !important;
     /* Enable this after jquery implementation  */
 }
 

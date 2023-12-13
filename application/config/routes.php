@@ -246,6 +246,7 @@ $route['add-bank-details'] = 'Home/addBankDetails';
 $route['send-chat-message'] = 'OrderController/insertMessage';
 $route['get-chat-messages'] = 'OrderController/getMessages';
 $route['update-seen-status'] = 'OrderController/updateSeenStatus';
+$route['send-message-notification'] = 'OrderController/sendChatNotificationToSeller';
 
 // Surepass Document Verfication
 $route['verify-document/ocr/aadhaar'] = 'SurepassController/aadhaarVerification';

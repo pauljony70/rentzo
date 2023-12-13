@@ -286,7 +286,7 @@ class Home extends REST_Controller
 		// $this->data['category'] = $this->home_model->get_category();
 
 
-		$this->load->view('website/comming-soon.php', $this->data);
+		$this->load->view('website/comming-soon.php');
 	}
 
 

@@ -22,9 +22,9 @@
 	<?php include("include/navbar-brand.php"); ?>
 
 	<main class="order-details-page">
-		<input type="hidden" name="seller_id" id="seller_id" value="<?= $order_details['product_details'][0]['vendor_id'] ?>">
-		<input type="hidden" name="order_id" id="order_id" value="<?= $order_details['order_summery']['order_id'] ?>">
-		<input type="hidden" name="prod_id" id="prod_id" value="<?= $order_details['product_details'][0]['prod_id'] ?>">
+		<input type="hidden" name="seller_id" id="seller_id" value="<?= $order_details['product_details']['vendor_id'] ?>">
+		<input type="hidden" name="order_id" id="order_id" value="<?= $order_details['order_summary']['order_id'] ?>">
+		<input type="hidden" name="prod_id" id="prod_id" value="<?= $order_details['product_details']['prod_id'] ?>">
 
 		<div class="offcanvas offcanvas-end p-4" tabindex="-1" id="chatOffcanvas" aria-labelledby="chatOffcanvasLabel">
 			<div class="offcanvas-header">
@@ -60,47 +60,49 @@
 				<div class="page-heading mb-3 mb-md-4">Order history</div>
 				<div class="order-heading mb-4">
 					<div class="d-flex justify-content-between">
-						<div class="order-id">Order id 34256748</div>
-						<div class="order-status">Status : on the way</div>
-						<div class="order-date">order date 5-10-2023</div>
+						<div class="order-id">Order id <?= $order_details['order_summary']['order_id'] ?></div>
+						<div class="order-status">Status : <?= $order_details['order_summary']['status'] ?></div>
+						<div class="order-date">Order date <?= date('d-m-Y', strtotime($order_details['order_summary']['create_date'])) ?></div>
 					</div>
 				</div>
 				<div class="row order-details mb-4">
 					<div class="col-md-7 mb-4">
 						<div class="row">
 							<div class="col-3 position-relative">
-								<img src="<?= weburl . 'media/' . $order_details['product_details'][0]['prod_img']; ?>" class="product-thumb w-100" alt="<?= $order_details['product_details'][0]['prod_name']; ?>" />
-								<div class="order-type order-type-rent position-absolute top-0">
-									<div class="text">Rent</div>
+								<img src="<?= weburl . 'media/' . $order_details['product_details']['prod_img']; ?>" class="product-thumb w-100" alt="<?= $order_details['product_details']['prod_name']; ?>" />
+								<div class="order-type order-type-<?= $order_details['product_details']['order_type'] === 'Rent' ? 'rent' : 'purchase' ?> position-absolute top-0">
+									<div class="text"><?= $order_details['product_details']['order_type'] === 'Rent' ? 'Rent' : 'Purchase' ?></div>
 								</div>
 							</div>
 							<div class="col-9">
-								<div class="product-name mb-3 mb-md-4"><?= $order_details['product_details'][0]['prod_name']; ?></div>
+								<div class="product-name mb-3 mb-md-4"><?= $order_details['product_details']['prod_name']; ?></div>
 								<table class="price-details">
 									<tbody>
 										<tr>
 											<td class="text-start">Rent Price</td>
-											<td class="text-end"><?= price_format(500) ?></td>
+											<td class="text-end"><?= price_format(500) ?>(Static)</td>
 										</tr>
 										<tr>
 											<td class="text-start">Quantity</td>
-											<td class="text-end">1</td>
+											<td class="text-end"><?= $order_details['product_details']['qty'] ?></td>
 										</tr>
-										<tr>
-											<td class="text-start">Total days</td>
-											<td class="text-end">3</td>
-										</tr>
+										<?php if ($order_details['product_details']['order_type'] === 'Rent') : ?>
+											<tr>
+												<td class="text-start">Total days</td>
+												<td class="text-end"><?= $order_details['product_details']['total_days'] ?></td>
+											</tr>
+										<?php endif; ?>
 									</tbody>
 								</table>
 								<table class="order-tracking-details">
 									<tbody>
 										<tr>
 											<td class="text-start">Order Delivered</td>
-											<td class="text-end">18-10-2023</td>
+											<td class="text-end">__-__-____</td>
 										</tr>
 										<tr>
 											<td class="text-start">Order Returned</td>
-											<td class="text-end">21-10-2023</td>
+											<td class="text-end">__-__-____</td>
 										</tr>
 									</tbody>
 								</table>
@@ -125,7 +127,7 @@
 						<div class="seller-address">
 							<div class="heading mb-3">Seller Address</div>
 							<div class="d-flex align-items-center justify-content-between">
-								<div class="address"><?= $order_details['product_details'][0]['seller_address'] ?>, <?= $order_details['product_details'][0]['seller_city'] ?>, <?= $order_details['product_details'][0]['seller_state'] ?>, India, <?= $order_details['product_details'][0]['seller_pincode'] ?></div>
+								<div class="address"><?= $order_details['product_details']['seller_address'] ?>, <?= $order_details['product_details']['seller_city'] ?>, <?= $order_details['product_details']['seller_state'] ?>, India, <?= $order_details['product_details']['seller_pincode'] ?></div>
 								<div class="seller-chat position-relative">
 									<button class="btn text-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chatOffcanvas" aria-controls="chatOffcanvas">
 										Talk to seller
@@ -141,27 +143,27 @@
 					<div class="payment-details-div">
 						<div class="d-flex justify-content-between w-100 mb-3">
 							<div>Price</div>
-							<div>For 3 Days</div>
+							<!-- <div>For 3 Days</div> -->
 							<div><?= price_format(1500) ?></div>
 						</div>
 						<div class="d-flex justify-content-between w-100 mb-3">
 							<div>Security Deposited <span class="text-primary">(Refundable)</span></div>
-							<div class="text-primary"><?= price_format(1500) ?></div>
+							<div class="text-primary"><?= price_format($order_details['product_details']['security_deposit']) ?></div>
 						</div>
 						<div class="d-flex justify-content-between w-100 mb-3">
 							<div>Total</div>
-							<div class="fw-semibold"><?= price_format(1500) ?></div>
+							<div class="fw-semibold"><?= $order_details['order_summary']['total_price'] ?></div>
 						</div>
 						<div class="d-flex justify-content-between w-100">
 							<div>Payment Mode</div>
-							<div class="fw-semibold">UPI</div>
+							<div class="fw-semibold"><?= $order_details['order_summary']['payment_mode'] ?></div>
 						</div>
 					</div>
 				</div>
 				<div class="action-btns mb-4 mb-md-5">
 					<div class="d-flex justify-content-between">
 						<a href="#review-section" class="btn" data-bs-toggle="collapse" data-bs-target="#review-section" aria-expanded="false" aria-controls="review-section">Write Review</a>
-						<button type="button" class="btn" onclick="cancel_order('<?= $order_details['product_details'][0]['prod_id']; ?>','<?= $order_details['order_summery']['order_id']; ?>')">Cancel Order</button>
+						<button type="button" class="btn" onclick="cancel_order('<?= $order_details['product_details']['prod_id']; ?>','<?= $order_details['order_summary']['order_id']; ?>')">Cancel Order</button>
 					</div>
 				</div>
 				<section id="review-section" class="collapse">

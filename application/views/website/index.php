@@ -53,9 +53,9 @@
 				</div>
 				<div class="swiper section-5-category-div" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
 					<div class="swiper-wrapper">
-						<?php foreach ($home_section5 as $home_category) : ?>
+						<?php  foreach ($home_section5 as $home_category) : ?>
 							<div class="swiper-slide">
-								<a href="<?= $home_category->link ?>" class="d-flex align-items-center flex-column justify-content-center">
+								<a href="<?php echo base_url.$home_category->cat_name; ?>" class="d-flex align-items-center flex-column justify-content-center">
 									<div class="d-flex justify-content-center">
 										<img src="<?= base_url('media/' . json_decode($home_category->image)->{'470-720'}) ?>" alt="<?= $home_category->cat_name ?>">
 									</div>

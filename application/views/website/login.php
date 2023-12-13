@@ -6,7 +6,7 @@
 
     include("include/headTag.php");
     ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url; ?>assets_web/style/css/login.css">
+    <link rel="stylesheet" type="text/css" href="<?= base_url; ?>assets_web/style/css/login.css">
 </head>
 
 <body class="">
@@ -17,10 +17,10 @@
     <div class="container login-containter my-4 my-md-5" id="login-containter">
         <div class="row" id="login-input-container">
             <div class="col-md-6 px-2 px-md-3 auth-image-container py-3">
-                <div class="heading mb-2">"Shop Smart, Rent First."</div>
-                <div class="des">Unlock Ownership through Renting</div>
+                <!-- <div class="heading mb-2">"Shop Smart, Rent First."</div>
+                <div class="des">Unlock Ownership through Renting</div> -->
                 <div class="image text-center">
-                    <img src="<?= base_url('assets_web/images/auth.png') ?>" alt="Image">
+                    <img src="<?= MEDIA_URL . json_decode(get_settings('login_banner'))->{'280-310'}; ?>" alt="Image">
                 </div>
             </div>
             <div class="col-md-6 form-container">
@@ -91,7 +91,7 @@
     <?php
     include("include/script.php")
     ?>
-    <script src="<?php echo base_url; ?>assets_web/js/app/auth.js"></script>
+    <script src="<?= base_url; ?>assets_web/js/app/auth.js"></script>
 </body>
 
 </html>

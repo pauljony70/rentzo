@@ -1,6 +1,9 @@
 <?php
 include('session.php');
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION['admin'])) {
     header("Location: index.php");
 }
@@ -12,6 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         getMessages($conn, $_POST['order_id'], $_POST['product'], $_POST['user_id'], $_POST['seller_id'], $_POST['lastMessageId']);
     } elseif ($_POST['action'] === 'updateSeenStatus') {
         updateSeenStatus($conn, $_POST['order_id'], $_POST['product'], $_POST['user_id'], $_POST['seller_id'], $_POST['lastMessageId']);
+    } elseif ($_POST['action'] === 'sendChatNotification') {
+        sendChatNotification($conn, $Common_Function, $_POST['order_id'], $_POST['product'], $_POST['user_id'], $_POST['seller_id'], $_POST['seller_unseen_message_count']);
     }
 }
 
@@ -51,7 +56,6 @@ function insertMessage($conn, $data)
     }
 }
 
-
 function getMessages($conn, $order_id, $product, $user_id, $seller_id, $lastMessageId)
 {
     if (stripslashes($_POST['code']) == $_SESSION['_token'] && $seller_id == $_SESSION['admin']) {
@@ -83,19 +87,29 @@ function getMessages($conn, $order_id, $product, $user_id, $seller_id, $lastMess
 
             // Free the result set
             $result->free_result();
-            
-            $unseen_message_count= '';
+
+            $user_unseen_message_count = '';
             $send_by = 'user';
             $sql = "SELECT COUNT(*) as count FROM chat_messages WHERE order_id = ? AND product = ? AND send_by = ? AND seen = false";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sss", $order_id, $product, $send_by);
             $stmt->execute();
-            $stmt->bind_result($unseen_message_count);
+            $stmt->bind_result($user_unseen_message_count);
+            $stmt->fetch();
+            $stmt->close();
+
+            $seller_unseen_message_count = '';
+            $send_by = 'seller';
+            $sql = "SELECT COUNT(*) as count FROM chat_messages WHERE order_id = ? AND product = ? AND send_by = ? AND seen = false";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sss", $order_id, $product, $send_by);
+            $stmt->execute();
+            $stmt->bind_result($seller_unseen_message_count);
             $stmt->fetch();
             $stmt->close();
 
             // Send a success response with the fetched messages
-            $response = array('status' => 1, 'data' => array('messages' => $messages, 'unseen_message_count' => $unseen_message_count));
+            $response = array('status' => 1, 'data' => array('messages' => $messages, 'user_unseen_message_count' => $user_unseen_message_count, 'seller_unseen_message_count' => $seller_unseen_message_count));
             echo json_encode($response);
         }
     } else {
@@ -120,15 +134,55 @@ function updateSeenStatus($conn, $order_id, $product, $user_id, $seller_id, $las
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('sssi', date('Y-m-d H:i:s'), $order_id, $product, $lastMessageId);
         $stmt->execute();
-        
+
         // You can return a response if needed
         $success = $stmt->affected_rows > 0;
-        
+
         // Close statement and connection
         $stmt->close();
         $conn->close();
 
         return $success;
+    } else {
+        // Handle the case where the insert fails
+        $response = array('status' => 0, 'message' => 'Please login to continue chat');
+        echo json_encode($response);
+    }
+}
+
+function sendChatNotification($conn, $Common_Function, $order_id, $product, $user_id, $seller_id, $seller_unseen_message_count)
+{
+    if (stripslashes($_POST['code']) == $_SESSION['_token'] && $seller_id == $_SESSION['admin']) {
+        $order_id = mysqli_real_escape_string($conn, $order_id);
+        $product = mysqli_real_escape_string($conn, $product);
+        $user_id = mysqli_real_escape_string($conn, $user_id);
+        $seller_id = mysqli_real_escape_string($conn, $seller_id);
+
+        $sql = "SELECT * FROM appuser_login WHERE user_unique_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user_data = $result->fetch_assoc();
+        $stmt->close();
+
+        // Load the email template
+        ob_start();
+        include('email_templates/message-notification.php');
+        $emailTemplate = ob_get_clean();
+        // $templatePath = 'email_templates/message-notification.php';
+        // $emailTemplate = file_get_contents($templatePath);
+
+        $emailTemplate = str_replace('{USER_NAME}',  $user_data['fullname'], $emailTemplate);
+        $emailTemplate = str_replace('{ORDER_ID}',  $order_id, $emailTemplate);
+        $emailTemplate = str_replace('{PRODUCT_ID}',  $product, $emailTemplate);
+        $emailTemplate = str_replace('{UNSEEN_MESSAGE_COUNT}',  $seller_unseen_message_count, $emailTemplate);
+        
+        $subject = 'You have got ' . $seller_unseen_message_count . ' message';
+        $Common_Function->smtp_email($conn, $user_data['email'], $subject, $emailTemplate);
+        
+        echo $emailTemplate;
+        $conn->close();
     } else {
         // Handle the case where the insert fails
         $response = array('status' => 0, 'message' => 'Please login to continue chat');

@@ -147,11 +147,12 @@ if (isset($_POST['new_orderstatus'])) {
 	$new_orderstatus = trim($_POST['new_orderstatus']);
 
 	$new_pickupdate = trim($_POST['pick_date']);
+	$curier_name = trim($_POST['curier_name']);
 
 	$curtime = date('H:i:s');
 	$pick_date = date("Y-m-d H:i:s", strtotime($new_pickupdate . $curtime));
 
-	$sql_new = $conn->prepare("UPDATE order_product SET status = '" . $new_orderstatus . "', pickup_date = '" . $pick_date . "', update_date = '" . $datetime . "' WHERE order_id = '" . $ordersno . "' AND prod_id = '" . $product_id . "'");
+	$sql_new = $conn->prepare("UPDATE order_product SET status = '" . $new_orderstatus . "', pickup_date = '" . $pick_date . "',pickup_type = '" . $curier_name . "', update_date = '" . $datetime . "' WHERE order_id = '" . $ordersno . "' AND prod_id = '" . $product_id . "'");
 	$sql_new->execute();
 	$sql_new->store_result();
 	echo "<script>successmsg1('Order updated successfully.', 'edit_order.php?orderid={$ordersno}&product_id={$product_id}'); </script>";
@@ -354,11 +355,11 @@ if ($col2) {
 
 												<tbody id="tbodyPostid">
 													<?php
-													$stmtp = $conn->prepare("SELECT op.prod_id,op.prod_sku,op.prod_name,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.igst,op.discount,op.status, sl.companyname, op.invoice_number,op.pickup_type,op.pickup_date,op.p_weight,op.p_length,op.p_width,op.p_height,op.coupon_value,op.tracking_id,op.delivery_date, op.tracking_url FROM `order_product` op, sellerlogin sl WHERE op.order_id = '" . $ordersno . "' AND op.prod_id = '" . $product_id . "' AND sl.seller_unique_id = op.vendor_id ");
+													$stmtp = $conn->prepare("SELECT op.prod_id,op.prod_sku,op.prod_name,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.igst,op.discount,op.status, sl.companyname, op.invoice_number,op.pickup_type,op.pickup_date,op.p_weight,op.p_length,op.p_width,op.p_height,op.coupon_value,op.tracking_id,op.delivery_date, op.tracking_url,op.security_deposit FROM `order_product` op, sellerlogin sl WHERE op.order_id = '" . $ordersno . "' AND op.prod_id = '" . $product_id . "' AND sl.seller_unique_id = op.vendor_id ");
 
 													$stmtp->execute();
-													$datap = $stmtp->bind_result($prod_id, $prod_sku, $prod_name, $prod_img, $prod_attr, $qty, $prod_price, $shipping, $igst, $discount, $status, $seller, $invoice_number, $pickup_type, $pickup_date, $p_weight, $p_length, $p_width, $p_height, $coupon_value, $tracking_id, $delivery_date, $tracking_url);
-													$prod_id1 = $prod_sku1 = $prod_name1 = $prod_img1 = $prod_attr1 = $qty1 = $prod_price1 = $shipping1 = $igst = $discount = $status1 = $seller  = $invoice_number1 = $pickup_type = $pickup_date = $p_weight = $p_length = $p_width = $p_height = $coupon_value = $tracking_id = '';
+													$datap = $stmtp->bind_result($prod_id, $prod_sku, $prod_name, $prod_img, $prod_attr, $qty, $prod_price, $shipping, $igst, $discount, $status, $seller, $invoice_number, $pickup_type, $pickup_date, $p_weight, $p_length, $p_width, $p_height, $coupon_value, $tracking_id, $delivery_date, $tracking_url,$security_deposit);
+													$prod_id1 = $prod_sku1 = $prod_name1 = $prod_img1 = $prod_attr1 = $qty1 = $prod_price1 = $shipping1 = $igst = $discount = $status1 = $seller  = $invoice_number1 = $pickup_type = $pickup_date = $p_weight = $p_length = $p_width = $p_height = $coupon_value = $tracking_id = $security_deposit = '';
 													while ($stmtp->fetch()) {
 														$prod_attr1 = '';
 														if ($prod_attr) {
@@ -422,10 +423,10 @@ if ($col2) {
 											<?php if ($pickup_type != '') { ?>
 												<br><br><br><br>
 												<strong>Shipping Type: </strong><br>
-												<a style="color:black;"><span id="paymentid"><?php if ($pickup_type == 1) {
+												<a style="color:black;"><span id="paymentid"><?php if ($pickup_type == 'self') {
 																									echo 'Self Ship';
-																								} else if ($pickup_type == 2) {
-																									echo 'Ship By Marurang';
+																								} else if ($pickup_type == 'rentzo') {
+																									echo 'Ship By Rentzo';
 																								}; ?></span></a>
 												<?php if ($pickup_type != '') { ?>
 													<br><br>
@@ -492,6 +493,16 @@ if ($col2) {
 																</select>
 															</div>
 														</div>
+														<div class="form-group row align-items-center">
+															<label class="col-4 control-label m-0"> Courier Name*</label>
+															<div class="col-8">
+																<select class="form-control" id="curier_name" name="curier_name">
+																	<option value="">Select Courier</option>
+																	<option value="self">Self Ship</option>
+																	<option value="rentzo">Ship By Rentzo</option>
+																</select>
+															</div>
+														</div>
 
 														<div class="form-group row align-items-center" id="new_pickupdate" style="display:none;">
 															<label for="focusedinput" class="col-4 control-label m-0">Pickup Date</label>
@@ -509,7 +520,45 @@ if ($col2) {
 												<br><br><a class="btn btn-success" href="<?= $print_label_data; ?>"><i class="fa fa-download"></i> Label</a>
 											<?php } ?>
 											<br>
-											<?php if ($order_status !== '' || $order_status !== NULL || $order_status == 'Placed' || $order_status == 'Rejected' || $order_status == 'Cancelled') : ?>
+											<?php
+													$status_array = array();
+													
+													if($order_status == 'Accepted' || $order_status == 'Placed')
+													{
+														$status_array = array('Packed' => 'Packed','Shipped' => 'Shipped','Cancelled' => 'Cancelled','Return Request' => 'Return Request','Returned Completed' => 'Returned Completed','Delivered' => 'Delivered');
+													}
+													else if($order_status == 'Packed')
+													{
+														$status_array = array('Shipped' => 'Shipped','Cancelled' => 'Cancelled');
+													}
+													else if($order_status == 'Shipped')
+													{
+														$status_array = array('Cancelled' => 'Cancelled','Delivered' => 'Delivered','RTO' => 'RTO');
+													}
+													else if($order_status == 'Cancelled')
+													{
+														$status_array = array();
+													}
+													else if($order_status == 'Return Request')
+													{
+														$status_array = array('Returned Completed' => 'Returned Completed');
+													}
+													else if($order_status == 'Returned Completed')
+													{
+														$status_array = array();
+													}
+													else if($order_status == 'RTO')
+													{
+														$status_array = array();
+													}
+													else if($order_status == 'Delivered')
+													{
+														$status_array = array('Return Request' => 'Return Request','Returned Completed' => 'Returned Completed');
+													}
+													
+
+											?>
+											<?php if ($order_status !== '' || $order_status !== NULL || $order_status == 'Placed' || $order_status == 'Rejected' || $order_status == 'Cancelled') : ?> 
 												<div class="form-three widget-shadow mt-2 dontprint">
 													<strong>Update Status:</strong><br>
 													<form class="form-horizontal" method="post" id="myform">
@@ -519,16 +568,21 @@ if ($col2) {
 															<div class="col-8">
 																<select class="form-control" id="orderstatus" name="orderstatus" required>
 																	<option value="">Select</option>
-																	<option value="Packed">Packed</option>
+																	<?php foreach($status_array as $status_key => $status_val)  { ?>
+																		<option value="<?php echo $status_key; ?>"><?php echo $status_val; ?></option>
+																	<?php } ?>
+																	<!--<option value="Packed">Packed</option>
 																	<option value="Shipped">Shipped</option>
 																	<option value="Cancelled">Cancelled</option>
 																	<option value="Return Request">Return Request</option>
 																	<option value="Returned Completed">Return Completed</option>
 																	<option value="RTO">RTO</option>
-																	<option value="Delivered">Delivered</option>
+																	<option value="Delivered">Delivered</option>-->
 																</select>
 															</div>
 														</div>
+														
+														
 
 														<div class="form-group row align-items-center">
 															<label for="focusedinput" class="col-4 control-label m-0">Message</label>
@@ -554,6 +608,10 @@ if ($col2) {
 															<td><span id="subtotal"><?= ($prod_price * $qty) + ($discount * $qty); ?></span></td>
 														</tr>
 														<tr>
+															<th style="width:50%">Security Deposit:</th>
+															<td><span id="subtotal"><?= $security_deposit; ?></span></td>
+														</tr>
+														<tr>
 															<th style="width:50%">Discount:</th>
 															<td><span id="subtotal"><?= ($discount * $qty); ?></span></td>
 														</tr>
@@ -566,7 +624,7 @@ if ($col2) {
 															<td><span id="subtotal"><?= ($shipping); ?></span></td>
 														</tr>
 														<tr>
-															<th style="width:50%">VAT:</th>
+															<th style="width:50%">GST:</th>
 															<td><span id="subtotal"><?= $igst; ?></span></td>
 														</tr>
 														<tr>
@@ -784,8 +842,10 @@ if ($col2) {
 	$('#new_orderstatus').change(function() {
 		if ($(this).val() == 'Accepted') {
 			$('#new_pickupdate').show();
+			$('#curier_name').show();
 		} else {
 			$('#new_pickupdate').hide();
+			$('#curier_name').hide();
 		}
 
 

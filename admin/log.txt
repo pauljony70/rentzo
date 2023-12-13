@@ -243,3 +243,4 @@ User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 202
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-04 22:22:38
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-05 12:45:06
 User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-07 15:14:20
+User logged in - IP: ::1 - System Name: JONYs-MacBook-Air.local - Timestamp: 2023-12-12 10:20:25

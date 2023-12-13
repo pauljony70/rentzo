@@ -15,7 +15,7 @@ header('Cache-Control: no cache');
   <meta name="keywords" content="Multi Vendor eCommerce app Admin panel" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" /> 
+  <meta http-equiv="Expires" content="0" />
   <!-- App favicon -->
   <!-- <link rel="shortcut icon" href="images/favicon_io/favicon.ico"> -->
   <link rel="apple-touch-icon" sizes="180x180" href="images/favicon_io/apple-touch-icon.png">
@@ -266,7 +266,7 @@ header('Cache-Control: no cache');
   <script src="https://rawgit.com/someatoms/jsPDF-AutoTable/master/dist/jspdf.plugin.autotable.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.0.16/jspdf.plugin.autotable.js"></script>
   <script src="assets/js/vendor.min.js"></script>
-    <script src="js/admin/common.js"></script>
+  <script src="js/admin/common.js"></script>
 
   <!--   multi select github link is working correctly  https://github.com/nobleclem/jQuery-MultiSelect -->
   <link href="<?php echo BASEURL; ?>assets/css/jquery.multiselect.css" rel="stylesheet" />
@@ -312,7 +312,8 @@ header('Cache-Control: no cache');
               </div>
             </div>
           </li> -->
-          <li class="dropdown notification-list">
+
+          <li class="dropdown notification-list topbar-dropdown">
             <a id="notf_conv" href="javascript:void(0);" class="dropdown-togg notificationLink nav-link dropdown-toggle nav-user mr-0 waves-effect" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
               <i class="fa-regular fa-bell"></i>
               <span id="new_noti_count">0</span>
@@ -395,7 +396,7 @@ header('Cache-Control: no cache');
                   <div class="logo-box">
                     <a href="" class="logo logo-light text-center">
                       <span class="logo-large">
-                        <img src="<?php echo MEDIAURL .json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="25">
+                        <img src="<?php echo MEDIAURL . json_decode($Common_Function->get_system_settings($conn, 'system_logo'))->{'200-200'}; ?>" class="mb-1" alt="" height="25">
                       </span>
                     </a>
                   </div>
@@ -527,9 +528,9 @@ header('Cache-Control: no cache');
               </a>
               <div class="collapse" id="products">
                 <ul class="nav-second-level">
-                  <li class="<?= strpos($_SERVER['PHP_SELF'], 'import_product.php') !== false ? "active" : "" ?>">
+                  <!-- <li class="<?= strpos($_SERVER['PHP_SELF'], 'import_product.php') !== false ? "active" : "" ?>">
                     <a href="import_product.php"> Import Product </a>
-                  </li>
+                  </li>-->
 
                   <li class="<?= strpos($_SERVER['PHP_SELF'], 'inventory.php') !== false ? "active" : "" ?>">
                     <a href="inventory.php"> Update Inventory</a>
