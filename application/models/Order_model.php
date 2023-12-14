@@ -139,15 +139,15 @@ class Order_model extends CI_Model
 		return array('order_summery' => $order_summery, 'shipping_address' => $shipping_address, 'product_details' => $order_product_array);
 	}
 
-	function get_order_track_details($language, $order_id, $prod_id)
+	function get_order_track_details($language, $user_id, $order_id, $prod_id)
 	{
 		$this->db->select("o.order_id,o.status, o.total_price,o.payment_mode,o.create_date, o.discount,o.total_qty, o.fullname, o.mobile, o.locality, o.fulladdress, o.city, o.state, o.pincode, o.addresstype, o.email, o.coupon_value, order_product.prod_attr, country, region, governorate, area");
-		$this->db->where(array('o.order_id' => $order_id));
+		$this->db->where(array('o.order_id' => $order_id, 'o.user_id' => $user_id));
 		$this->db->join('order_product', 'order_product.order_id = o.order_id');
 		$query = $this->db->get('orders o');
 
-		$order_summary = array('order_id' => '', 'status' => '', 'payment_mode' => '', 'create_date' => '', 'total_qty' => '', 'total_price' => '', 'discount' => '', 'ordered_products' => []);
-		$shipping_address = array('fullname' => '', 'mobile' => '', 'email' => '', 'fulladdress' => '', 'state' => '', 'city' => '', 'pincode' => '', 'addresstype' => '', 'coupon_value' => '');
+		$order_summary = array();
+		$shipping_address = array();
 
 		$ordered_products = $this->db->select("op.prod_id, op.prod_sku, op.prod_name, op.prod_name_ar, op.prod_img, op.prod_attr, op.qty, op.prod_price, op.shipping, op.discount, op.status, op.tracking_id")->get_where('order_product op', array('op.order_id' => $order_id))->result_array();
 

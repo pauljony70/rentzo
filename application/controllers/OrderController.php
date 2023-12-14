@@ -164,10 +164,13 @@ class OrderController extends REST_Controller
 	public function order_details_get($order_id, $prod_id)
 	{
 		$user_id = $this->session->userdata("user_id");
-		$default_language = $this->session->userdata("default_language");
-		$this->data['order_details'] = $this->order_model->get_order_track_details($default_language, $order_id, $prod_id);
-
-		$this->load->view('website/orderdetails.php', $this->data);  // ye view/website folder hai
+		if ($user_id) {
+			$default_language = $this->session->userdata("default_language");
+			$this->data['order_details'] = $this->order_model->get_order_track_details($default_language, $user_id, $order_id, $prod_id);
+			$this->load->view('website/orderdetails.php', $this->data);  // ye view/website folder hai
+		} else {
+			redirect(base_url('login'));
+		}
 	}
 
 	// function for get cart count
