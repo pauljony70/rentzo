@@ -127,3 +127,19 @@
     font-weight: 400;
     line-height: normal;
 }
+
+/* 
+ * -----------------------------------------
+ * Notification 
+ * -----------------------------------------
+ */
+
+.notifications {
+    padding: 34px 0px;
+    background: #F5F5F5;
+}
+
+.notifications .wrap {
+    padding: 0px 70px;
+    cursor: pointer;
+}
