@@ -200,64 +200,16 @@ $(document).on('change', '.defaultAdderess', function () {
 
             $(parsedJSON).each(function () {
                 if (address_id == this.address_id) {
-
-                    $('#lat').val(this.lat);
-                    $('#lng').val(this.lng);
                     $("#fullname_a").val(this.fullname);
                     $("#email").val(this.email);
-                    iti.setNumber(`+${this.country_code}${this.mobile}`)
+                    $("#mobile").val(this.mobile);
                     $("#fulladdress").val(this.fulladdress);
-                    $("#country").val($("#country option:contains('" + this.country + "')").val());
-                    if (this.country_id == 1) {
-                        $('#region-div').html(
-                            `<label class="form-label"><?= $this->lang->line('region'); ?></label>
-                            <select name="region" id="region" class="form-select">
-                                <option value=""><?= $this->lang->line('select_region'); ?></option>
-                            </select>
-                            <span id="error"></span>`);
-                        $('#governorates-div').html(
-                            `<label class="form-label"><?= $this->lang->line('governorate'); ?></label>
-                            <select name="governorates" id="governorates" class="form-select">
-                            <option value=""><?= $this->lang->line('select_governorate'); ?></option>
-                            </select>
-                            <span id="error"></span>`);
-                        $('#area-div').html(
-                            `<label class="form-label"><?= $this->lang->line('area'); ?></label>
-                            <select name="area" id="area" class="form-select">
-                                <option value=""><?= $this->lang->line('select_area'); ?></option>
-                            </select>
-                            <span id="error"></span>`);
-                        getRegiondata($("#country").val());
-                        setTimeout(() => {
-                            $("#region").val($("#region option:contains('" + this.region + "')").val());
-                            getGovernoratedata($("#region").val());
-                            setTimeout(() => {
-                                $("#governorates").val($("#governorates option:contains('" + this.governorate + "')").val());
-                                getAreadata($("#governorates").val());
-                                setTimeout(() => {
-                                    $("#area").val($("#area option:contains('" + this.area + "')").val());
-                                }, 400);
-                            }, 400);
-                        }, 400);
-                    } else {
-                        $('#region-div').html(
-                            `<label class="form-label"><?= $this->lang->line('region'); ?></label>
-                            <input type="text" class="form-control" id="region" name="region" value="${this.region}" />
-                            <span id="error"></span>`);
-                        $('#governorates-div').html(
-                            `<label class="form-label"><?= $this->lang->line('governorate'); ?></label>
-                            <input type="text" class="form-control" id="governorates" name="governorates" value="${this.governorate}" />
-                            <span id="error"></span>`);
-                        $('#area-div').html(
-                            `<label class="form-label"><?= $this->lang->line('area'); ?></label>
-                            <input type="text" class="form-control" id="area" name="area" value="${this.area}" />
-                            <span id="error"></span>`);
-                    }
-
-                    user_pincode = '743144';
+                    $("#pincode").val(this.pincode);
+                    $("#state").val(this.state_id);
+                    $('#city').val(this.city_id);
+                    get_checkout_data(this.pincode);
                 }
             });
-            get_checkout_data(user_pincode);
         }
     });
 });

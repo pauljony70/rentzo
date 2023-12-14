@@ -88,6 +88,15 @@ label.radio-card .card-content h5 {
     color: #686d73;
 }
 
+#address_div_id {
+    color: var(--bs-primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;

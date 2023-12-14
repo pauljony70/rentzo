@@ -87,9 +87,9 @@
 													<h6 class="mb-0"><?= $add_data['fullname']; ?>, </h6>
 												</div>
 												<div class="address m-0">
-													<h6 class="mb-0"><?= $add_data['email'] ?>, <?= $add_data['country_code'] . ' ' . $add_data['mobile'] ?></h6>
+													<h6 class="mb-0"><?= $add_data['email'] ?>, <?= $add_data['mobile'] ?></h6>
 													<h6 class="m-0"><?= $add_data['fulladdress'] ?></h6>
-													<h6 class="m-0"><?= $add_data['city'] . ', ' . $add_data['state'] . ', ' . $add_data['country'] . ', ' . $add_data['pincode'] ?></h6>
+													<h6 class="m-0"><?= $add_data['city'] . ', ' . $add_data['state'] . ', ' . 'India' . ', ' . $add_data['pincode'] ?></h6>
 												</div>
 											</div>
 										</div>
@@ -97,9 +97,10 @@
 							<?php endforeach;
 							endif;  ?>
 						</div>
-						<a href="" class="btn btn-light my-4" id="address_div_id"><?= $this->lang->line('add-new-add'); ?></a>
 
-						<form id="formoid" action="#" class="form row mb-4 mb-md-5" method="post">
+						<a id="address_div_id" class="btn ps-0 my-4" <?= !empty($address['address_details']) ? 'data-bs-toggle="collapse"' : '' ?> href="#formoid" role="button" aria-expanded="false" aria-controls="address-form"><i class="fa-solid fa-plus"></i> <span class="ms-3">Add a New Address</span></a>
+
+						<form id="formoid" action="#" class="form row mb-4 mb-md-5 collapse <?= empty($address['address_details']) ? 'show' : '' ?>" method="post">
 							<div class="col-md-12">
 								<div class="mb-3">
 									<label class="form-label">Full Name <span class="text-danger">&#42;</span></label>
