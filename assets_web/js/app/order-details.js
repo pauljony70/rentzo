@@ -205,49 +205,91 @@ function video_call(email) {
 $("#review_form").submit(function (event) {
     event.preventDefault();
 
-    var ProductReview = $("#ProductReview").val();
-    var reviewtitle = $("#reviewtitle").val();
+    var ProductReview = document.querySelector("#ProductReview");
+    var reviewtitle = document.querySelector("#reviewtitle");
     var pid = $("#prod_id").val();
     var user_id = $("#user_id").val();
     var rating = $('.rating_star input[type="radio"]:checked').val() || 0;
 
-    $.ajax({
-        method: "post",
-        url: site_url + "addProductReview",
-        data: {
-            language: default_language,
-            pid: pid,
-            user_id: user_id,
-            review_title: reviewtitle,
-            review_comment: ProductReview,
-            review_rating: rating,
-            [csrfName]: csrfHash,
-        },
-        success: function (response) {
+    var flag_reviewtitle = false;
+    var flag_ProductReview = false;
+    var flag_rating = false;
 
-            if (response.status) {
-                Swal.fire({
-                    text: 'Review is submitted succesfully',
-                    type: "warning",
-                    showCancelButton: true,
-                    showCloseButton: true,
-                }).then(function (res) {
-                    if (res.value) {
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: 'FAILED',
-                    text: response.msg,
-                    type: "warning",
-                    confirmButtonColor: '#ff6600',
-                    showCloseButton: true,
-                    timer: 3000,
-                })
-            }
-        },
-    });
+    var firstErrorElement = null;
+
+    if (reviewtitle.value == '') {
+        flag_reviewtitle = false;
+        setErrorMsg(reviewtitle, '<i class="fa-solid fa-circle-xmark"></i> Review title is required.');
+        if (!firstErrorElement) {
+            firstErrorElement = reviewtitle;
+        }
+    } else {
+        flag_reviewtitle = true;
+        setSuccessMsg(reviewtitle);
+    }
+
+    if (ProductReview.value == '') {
+        flag_ProductReview = false;
+        setErrorMsg(ProductReview, '<i class="fa-solid fa-circle-xmark"></i> Review is required.');
+        if (!firstErrorElement) {
+            firstErrorElement = ProductReview;
+        }
+    } else {
+        flag_ProductReview = true;
+        setSuccessMsg(ProductReview);
+    }
+
+    if (rating == '' || rating <= 0) {
+        flag_rating = false;
+        document.querySelector('#rating-error').innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Review is required.';
+    } else {
+        flag_rating = true;
+        document.querySelector('#rating-error').innerHTML = '';
+    }
+
+    if (firstErrorElement) {
+        firstErrorElement.focus();
+    }
+
+    if (flag_reviewtitle === true && flag_ProductReview === true && flag_rating === true) {
+        $.ajax({
+            method: "post",
+            url: site_url + "addProductReview",
+            data: {
+                language: default_language,
+                pid: pid,
+                user_id: user_id,
+                review_title: reviewtitle.value,
+                review_comment: ProductReview.value,
+                review_rating: rating,
+                [csrfName]: csrfHash,
+            },
+            success: function (response) {
+
+                if (response.status) {
+                    Swal.fire({
+                        text: 'Review is submitted succesfully',
+                        type: "warning",
+                        showCancelButton: true,
+                        showCloseButton: true,
+                    }).then(function (res) {
+                        if (res.value) {
+                            location.reload();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'FAILED',
+                        text: response.msg,
+                        type: "warning",
+                        confirmButtonColor: '#ff6600',
+                        showCloseButton: true,
+                        timer: 3000,
+                    })
+                }
+            },
+        });
+    }
 });
 
 function cancel_order(pid, order_id) {

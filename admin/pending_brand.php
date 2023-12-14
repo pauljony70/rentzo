@@ -127,36 +127,42 @@ if(!isset($_SESSION['admin'])){
        	  
         				
 ?>
-		<!-- main content start-->
-		<div id="page-wrapper">
-			<div class="main-page">
-				<div class="work-progres">
-					<header class="widget-header"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
-                        <div class="pull-right" style="float:left;">
-                           
-					  </div>
-					 	<h4 class="widget-title">
-						    
-						    <b>All Brand </b> 
+
+<div class="content-page">
+	<!-- Start content -->	
+	<div class="content">
+		<div class="container-fluid">
+			<!-- start page title -->
+			<div class="row">
+				<div class="col-12">
+					<div class="page-title-box">
+						
+						<h4 class="page-title">All Brand </h4>
+					</div>
+				</div>
+			</div>
+			<!-- end page title -->
+
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
 							
-						</h4>
-                    </header>
-				<hr class="widget-separator">
-		        
-			
-			 <div class="table-responsive"><input type="hidden" id="last_cat" value="0">
-            <table class="table table-hover"  id="tblname" >
-               <thead>
-                  <tr>
-                     <th>Sno</th>                                    
-                     <th>Image</th>    
-                     <th>Brand</th>
-                     <th>Status</th>
-                     <th>Action</th>
-                  </tr>
-               </thead>
-               <tbody id="cat_list"> 
-			   <?php 
+							<div class="work-progres">
+
+								<div class="table-responsive"><input type="hidden" id="last_cat" value="0">
+									<table class="table table-hover table-centered" id="tblname">
+										<thead class="thead-light">
+											<tr>
+												 <th>Sno</th>                                    
+												 <th>Image</th>    
+												 <th>Brand</th>
+												 <th>Status</th>
+												 <th>Action</th>
+											  </tr>
+										</thead>
+										<tbody id="cat_list">
+											<?php 
 					 foreach ($final_arr as $row) { 
        	       
 						$i++;
@@ -168,9 +174,11 @@ if(!isset($_SESSION['admin'])){
 					<td><?php echo $row['name']; ?></td>
 					<td>Pending</td>
 					<td>
-						<?php echo $Common_Function->select_reject_reason($conn,$row['id']); ?>
-						<button style=" margin-left: 10px;" type="submit" class= "btn btn-danger btn-sm pull-left" name="delete" onclick="deleteRecord('<?php echo $row['id'];?>');">Reject</button>
-						<button  style=" margin-left: 10px;" type="submit" class="btn btn-success btn-sm pull-left" name="edit" onclick='verifyRecord("<?php echo $row['id'];?>")';>Approve</button>
+						<div class="d-flex">
+							<?php echo $Common_Function->select_reject_reason($conn,$row['id']); ?>
+							<button style=" margin-left: 10px;" type="submit" class= "btn btn-danger btn-sm pull-left" name="delete" onclick="deleteRecord('<?php echo $row['id'];?>');">Reject</button>
+							<button  style=" margin-left: 10px;" type="submit" class="btn btn-success btn-sm pull-left" name="edit" onclick='verifyRecord("<?php echo $row['id'];?>")';>Approve</button>
+						</div>
 					</td>
 				
 				</tr>				
@@ -178,26 +186,30 @@ if(!isset($_SESSION['admin'])){
 			}
 			   
 			   ?>
-               </tbody>
-            </table>
-         </div>
-             
-			<div class="clearfix"> </div>
-			
-		</div>
-			    
-		
-		
-		<div class="col_1">
-			
-			
-			<div class="clearfix"> </div>
-			
-		</div>
-				
+										</tbody>
+									</table>
+								</div>
+
+								<div class="clearfix"> </div>
+
+							</div>
+
+							<div class="col_1">
+
+								<div class="clearfix"> </div>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		</div>
+
+	</div>
+</div>
+
+
 	<!--footer-->
         <?php include("footernew.php"); ?>
     <!--//footer-->

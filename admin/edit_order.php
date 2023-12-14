@@ -187,11 +187,11 @@ if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 														echo $html; ?>
 													</td>
 													<td>
-														<?= $fullname . '<br>' . $mobile . ', ' . $email;
-														echo $fulladdress . ',<br>' . $area . ', ' . $governorate . ', ' . $region . ', ' . $country . '(' . $addresstype . ')';
+														<?= $fullname . '<br>' . $mobile . ', ' . $email. '<br>' ;
+														echo $fulladdress . ',<br>' . $city . ', ' . $state . ', ' . $region . ', ' . $country . '(' . $addresstype . ')';
 														?>
 														<br>
-														<a href="https://www.google.com/maps/search/?api=1&query=<?= $lat ?>,<?= $lng ?>" target="_blank" class="text-dark"><strong>View in map <i class="fa fa-external-link" aria-hidden="true"></i></strong></a>
+														<!--<a href="https://www.google.com/maps/search/?api=1&query=<?= $lat ?>,<?= $lng ?>" target="_blank" class="text-dark"><strong>View in map <i class="fa fa-external-link" aria-hidden="true"></i></strong></a>-->
 													</td>
 													<td>
 														<?= $order_status; ?>
@@ -284,7 +284,7 @@ if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 															</td>
 															<td class="dontprint" style="min-width: 205px;">
 																<div class="d-flex">
-																	<button type="button" class="btn btn-dark waves-effect waves-light" onclick="back_page('edit_shipped_order.php?orderid=<?= $ordersno ?>&product_id=<?= $prod_id; ?>')">Edit</button>
+																	<!--<button type="button" class="btn btn-dark waves-effect waves-light" onclick="back_page('edit_shipped_order.php?orderid=<?= $ordersno ?>&product_id=<?= $prod_id; ?>')">Edit</button>-->
 
 																	<button type="button" onclick="back_page('view_product.php?id=<?= $prod_id; ?>')" id="back_btn" class="btn  btn-danger waves-effect waves-light" style="margin-left:6px;"> View Product</button>
 																</div>

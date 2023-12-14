@@ -588,7 +588,7 @@ include("header.php");
 
 															$img = MEDIAURL . $featured_decod->{$img_dimension_arr[2][0] . '-' . $img_dimension_arr[2][1]};
 															?>
-															<img height="75" style="width: 100%; display: block;" src="<?= $img; ?>" alt="" />
+															<img height="75" style="display: block;" src="<?= $img; ?>" alt="" />
 														</div>
 													</div>
 												</div>
@@ -614,7 +614,7 @@ include("header.php");
 																				<a class="text-dark" href="javascript:void(0);" style="float: right;" title="Delete"><i class="fa-solid fa-circle-xmark"></i></a>
 																			</div>
 																		</div>
-																		<img height="75" style="width: 100%; display: block;" src="<?= $img1; ?>" />
+																		<img height="75" style="display: block;" src="<?= $img1; ?>" />
 
 																	</div>
 																</div>
@@ -626,7 +626,7 @@ include("header.php");
 											</div>
 										</div>
 										<div class="form-group row align-items-center">
-											<label for="focusedinput" class="col-sm-2 control-label m-0">Youtube Video ID</label>
+											<label for="focusedinput" class="col-sm-2 control-label m-0">Upload Video</label>
 											<div class="col-sm-8">
 												<input type="text" class="form-control" id="prod_youtubeid" value="<?php echo $product_video_url; ?>" name="prod_youtubeid">
 											</div>
@@ -661,14 +661,14 @@ include("header.php");
 										</div>
 										<input type="hidden" name="product_id" id="product_id" value="<?php echo $prod_unique_id; ?>">
 										<div class="form-group row align-items-center">
-											<div class="col-12">
+											<div class="col-12 text-center">
 												<button type="submit" class="btn btn-dark waves-effect waves-light" href="javascript:void(0)" id="addProduct_btn">Update Details</button>
 											</div>
 										</div>
 									</form>
 									<div class="col-sm-offset-2">
 										<button style="font-size: 12px;" type="submit" class="btn btn-danger  waves-effect waves-light" name="delete" onclick="deleteRecord('<?php echo $prod_unique_id; ?>');">Reject</button>
-										<button style=" margin-left: 10px;font-size: 12px;" type="submit" class="btn btn-dark waves-effect waves-light" name="edit" onclick="verifyRecord('<?php echo $prod_unique_id; ?>')" ;>Approve</button>
+										<button style=" margin-left: 30px;font-size: 12px;" type="submit" class="btn btn-dark waves-effect waves-light" name="edit" onclick="verifyRecord('<?php echo $prod_unique_id; ?>')" ;>Approve</button>
 
 									</div>
 

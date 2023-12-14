@@ -181,6 +181,48 @@ input[type="number"] {
     line-height: 24px;
 }
 
+.cart-items .cart-type-rent {
+    position: absolute;
+    left: 12px;
+    background-color: var(--bs-warning);
+    width: 100px;
+    height: 100px;
+    clip-path: polygon(100% 0, 0 0, 0 100%);
+}
+
+.cart-items .cart-type-rent .text {
+    color: #FFF;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 10px;
+    transform: rotate(-45deg);
+    position: absolute;
+    top: 54%;
+    left: 10%;
+    transform-origin: top left;
+    transform-origin: 0% 0%;
+    letter-spacing: 2px;
+}
+
+.cart-items .cart-type-purchase {
+    position: absolute;
+    left: 12px;
+    background-color: var(--bs-primary);
+    width: 140px;
+    height: 100px;
+    clip-path: inset(0 0 67% 0);
+}
+
+.cart-items .cart-type-purchase .text {
+    color: #FFF;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
 .prod-details tr {
     height: 35px;
 }

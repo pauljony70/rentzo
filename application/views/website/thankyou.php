@@ -56,7 +56,7 @@
 	<?php include("include/script.php") ?>
 
 	<script type="text/javascript">
-		/* $(document).ready(function() {
+		$(document).ready(function() {
 			var order_id = $('#order_id').val();
 			$.ajax({
 				method: 'get',
@@ -70,7 +70,7 @@
 
 				}
 			});
-		}); */
+		});
 	</script>
 
 </body>

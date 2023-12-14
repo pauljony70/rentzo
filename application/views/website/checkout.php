@@ -26,6 +26,16 @@
 		<input type="hidden" value="<?= $checkout['total_price_value']; ?>" name="total_value" id="total_value">
 		<input type="hidden" value="<?= $checkout['seller_pincode']; ?>" name="seller_pincode" id="seller_pincode">
 		<input type="hidden" value="<?= $checkout['imgurl']; ?>" name="imgurl" id="imgurl">
+		<?php
+		$cartType = 'purchase';
+		foreach ($cart_items['cart_full'] as $key => $cart) {
+			if ($cart['cart_type'] == 'Rent') {
+				$cartType = 'rent';
+				break;
+			}
+		}
+		?>
+		<input type="hidden" value="<?= $cartType ?>" name="cart_type" id="cart_type">
 
 		<section class="my-5">
 			<div class="container px-1">
@@ -228,24 +238,34 @@
 							</div>
 						</div>
 
-						<div class="kyc-div mb-5">
-							<div class="heading">please Upload KYC Document <span class="text-danger">&#42;</span></div>
-							<div class="des mb-4">Upload Aadhar card / Driving license / Passport / voter Id</div>
-							<div class="mb-3">
-								<select class="form-select" id="documentType" name="documentType">
-									<option value="">-- Choose documen type --</option>
-									<option value="aadhaar">Aadhar Card</option>
-									<option value="drivingLicense">Driving License</option>
-									<option value="passport">Passport</option>
-									<option value="voterId">Voter ID</option>
-								</select>
-								<span id="error"></span>
-							</div>
-							<div class="mb-3">
-								<input type="file" name="kyc-document" id="kyc-document" class="dropify" data-height="100" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
-								<span id="error"></span>
-							</div>
-						</div>
+						<?php
+						$cartType = 'purchase';
+						foreach ($cart_items['cart_full'] as $key => $cart) {
+							if ($cart['cart_type'] == 'Rent') {
+						?>
+								<div class="kyc-div mb-5">
+									<div class="heading">please Upload KYC Document <span class="text-danger">&#42;</span></div>
+									<div class="des mb-4">Upload Aadhar card / Driving license / Passport / voter Id</div>
+									<div class="mb-3">
+										<select class="form-select" id="documentType" name="documentType">
+											<option value="">-- Choose documen type --</option>
+											<option value="aadhaar">Aadhar Card</option>
+											<option value="drivingLicense">Driving License</option>
+											<option value="passport">Passport</option>
+											<option value="voterId">Voter ID</option>
+										</select>
+										<span id="error"></span>
+									</div>
+									<div class="mb-3">
+										<input type="file" name="kyc-document" id="kyc-document" class="dropify" data-height="100" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+										<span id="error"></span>
+									</div>
+								</div>
+						<?php
+								break;
+							}
+						}
+						?>
 
 						<div class="payment-types mx-2 mb-5">
 							<div class="heading mb-3">Payment Type</div>
@@ -309,12 +329,15 @@
 						<div class="ps-lg-5">
 							<div class="cart-items mb-4">
 								<?php foreach ($cart_items['cart_full'] as $key => $cart) : ?>
-									<div class="row ps-4">
+									<div class="row ps-4 position-relative">
+										<div class="cart-type-<?= $cart['cart_type'] == 'Rent' ? 'rent' : 'purchase'; ?>">
+											<div class="text"><?= $cart['cart_type']; ?></div>
+										</div>
 										<div class="col-4">
 											<img src="<?= base_url('media/' . $cart['imgurl']) ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
 										</div>
 										<div class="col-8">
-											<div class="product-name pe-4 mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
+											<div class="product-name pe-4 mt-5 mb-2 line-clamp-2"><?= $cart['name'] ?></div>
 											<div class="prod-details">
 												<table class="w-100">
 													<tr>
@@ -329,7 +352,7 @@
 											</div>
 										</div>
 									</div>
-									<?= $key !== count($cart_items['cart_full']) - 1 ? '<hr class="my-2">' : '' ?>
+									<?= $key !== count($cart_items['cart_full']) - 1 ? '<hr class="mt-2 mb-0">' : '' ?>
 								<?php endforeach; ?>
 							</div>
 

@@ -10,11 +10,6 @@ if(!isset($_SESSION['admin'])){
  
  include("header.php"); ?>
 	<style>
-		body {
-		margin: 0 auto;
-		max-width: 100%;
-		padding: 0 20px;
-		}
 		.container {
 		border: 2px solid #dedede;
 		background-color: #f1f1f1;
@@ -27,6 +22,11 @@ if(!isset($_SESSION['admin'])){
 		.darker {
 		border-color: #ccc;
 		background-color: #ddd;
+		}
+
+		.light {
+			border-color: #ccc;
+			background-color: #f5f5f5;
 		}
 
 		.container::after {
@@ -59,18 +59,27 @@ if(!isset($_SESSION['admin'])){
 		color: #999;
 		}
 </style>
-		<!-- main content start-->
-	<div id="page-wrapper">
-		<div class="main-page">
-			<div class="col_3">		
-				<div class="col_1">
-					<div class="col-md-12">
-						<div class="activity_box">					
-							<header class="widget-header">			
-								<h2>Support</h2>						
-							</header>					
-							<div id="chat_div" style="height: 350px;overflow: auto;">
-								<?php 
+<div class="content-page">
+	<!-- Start content -->
+	<div class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12">
+					<div class="page-title-box">
+						<h4 class="page-title">Support</h4>
+					</div>
+				</div>
+			</div>
+			<!-- end page title -->
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="activity_box">
+										<div id="chat_div" style="height: 350px;overflow: auto;">
+											<?php 
 									
 									$query = $conn->query("SELECT * FROM vendor_admin_chat WHERE  user_id = '".$_REQUEST["id"]."' AND status='Y' ORDER BY created_at ASC");
 									
@@ -78,14 +87,14 @@ if(!isset($_SESSION['admin'])){
 										while($row = $query->fetch_assoc()){
 											$time = date('H:i A',strtotime($row['created_at']));
 											if($row['message_by'] =='VENDOR'){
-												echo '<div class="container">
-														<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+												echo '<div class="container light">
+														<img src="'.BASEURL.'bandmember.jpg" alt="Avatar" style="height: 40px;width: 40px;position: relative; margin-top: 10px;">
 														<p>'.$row['message'].'</p>
 														<span class="time-right">'.$time.'</span>
 													</div>';
 											}else{
 												echo '<div class="container darker">
-													<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
+													<img src="'.BASEURL.'avatar_g2.jpg" alt="Avatar" class="right" style="height: 40px;width: 40px;position: relative; margin-top: 10px;">
 													<p>'.$row['message'].'</p>
 													<span class="time-left">'.$time.'</span>
 												</div>';
@@ -94,26 +103,33 @@ if(!isset($_SESSION['admin'])){
 										}
 									}
 								?>
-								
-								
-								
-								
-								
-								
-							</div>	
-							<div class="panel-footer">
-									<div class="input-group">
-										<input id="message" type="text" class="form-control input-sm" placeholder="Type your message here...">
-										<span class="input-group-btn">
-											<button class="btn btn-success btn-sm" id="btn_chat">Send</button>
-										</span>
+
+										</div>
+										<div class="panel-footer">
+											<div class="input-group">
+												<input id="message" type="text" class="form-control input-sm" placeholder="Type your message here...">
+												<span class="input-group-btn">
+													<button class="btn btn-dark waves-effect waves-light" id="btn_chat">Send</button>
+												</span>
+											</div>
+										</div>
 									</div>
 								</div>
+							</div>
+
+							<div class="clearfix"> </div>
 						</div>
 					</div>
 				</div>
-		<div class="clearfix"> </div>
-		</br>	
+
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+	
 <script>
 	$(document).ready(function(){
 		

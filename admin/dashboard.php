@@ -52,7 +52,7 @@ if (!isset($_SESSION['admin'])) {
 										<span data-plugin="counterup">
 											<?php
 
-											$stmt = $conn->prepare("SELECT SUM(prod_price*qty) FROM `order_product` WHERE status ='Delivered'");
+											$stmt = $conn->prepare("SELECT SUM(prod_price*qty) FROM `order_product`");
 											$stmt->execute();
 											$data = $stmt->bind_result($col1);
 											$revenue = 0;
@@ -126,7 +126,7 @@ if (!isset($_SESSION['admin'])) {
 						</div>
 					</div>
 				</a>
-				<a class="col-md-4 col-xl-3" onclick="redirect_page('manage_orders.php')">
+				<!--<a class="col-md-4 col-xl-3" onclick="redirect_page('manage_orders.php')">
 					<div class="widget-rounded-circle card-box">
 						<div class="row align-items-center">
 							<div class="col-4">
@@ -153,7 +153,7 @@ if (!isset($_SESSION['admin'])) {
 							</div>
 						</div>
 					</div>
-				</a>
+				</a>-->
 				<a class="col-md-4 col-xl-3" onclick="redirect_page('manage_orders.php')">
 					<div class="widget-rounded-circle card-box">
 						<div class="row align-items-center">
@@ -266,6 +266,62 @@ if (!isset($_SESSION['admin'])) {
 										</span>
 									</h3>
 									<p class="text-muted mb-1 text-truncate">Pending Product</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a class="col-md-4 col-xl-3" onclick="redirect_page('pending_category.php')">
+					<div class="widget-rounded-circle card-box">
+						<div class="row align-items-center">
+							<div class="col-4">
+								<div class="avatar-md rounded-circle bg-soft-light border-dark border">
+									<i class="fa-solid fa-chart-pie font-22 avatar-title text-dark"></i>
+								</div>
+							</div>
+							<div class="col-8">
+								<div class="text-right">
+									<h3 class="mt-1">
+										<span data-plugin="counterup">
+											<?php
+
+											$query_total = $conn->prepare("SELECT count(cat_id) FROM category where status NOT IN(1,3)");
+											$query_total->execute();
+											$query_total->store_result();
+											echo $query_total->num_rows;
+
+											?>
+										</span>
+									</h3>
+									<p class="text-muted mb-1 text-truncate">Pending Category</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a class="col-md-4 col-xl-3" onclick="redirect_page('pending_brand.php')">
+					<div class="widget-rounded-circle card-box">
+						<div class="row align-items-center">
+							<div class="col-4">
+								<div class="avatar-md rounded-circle bg-soft-light border-dark border">
+									<i class="fa-solid fa-chart-pie font-22 avatar-title text-dark"></i>
+								</div>
+							</div>
+							<div class="col-8">
+								<div class="text-right">
+									<h3 class="mt-1">
+										<span data-plugin="counterup">
+											<?php
+
+											$query_total = $conn->prepare("SELECT count(brand_id) FROM brand where status NOT IN(1,3)");
+											$query_total->execute();
+											$query_total->store_result();
+											echo $query_total->num_rows;
+
+											?>
+										</span>
+									</h3>
+									<p class="text-muted mb-1 text-truncate">Pending Brand</p>
 								</div>
 							</div>
 						</div>

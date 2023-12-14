@@ -121,7 +121,8 @@ async function place_order_data(ele) {
     try {
         // Wait for both functions to complete
         await validateAddressForm();
-        await verifyKycDocument();
+        if (document.getElementById('cart_type').value === 'rent')
+            await verifyKycDocument();
 
         // alert("call true");
 

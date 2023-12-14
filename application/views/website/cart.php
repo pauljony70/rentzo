@@ -212,12 +212,11 @@
 							document.getElementById('total_price').innerText = response.total_price;
 						} else {
 							Swal.fire({
-								title: response.msg,
-								type: 'error',
-								confirmButtonColor: '#FF6600',
-								confirmButtonText: 'OK',
-								timer: 1000
-							});
+								text: response.msg,
+								type: "error",
+								showCancelButton: true,
+								showCloseButton: true,
+							})
 						}
 
 					},

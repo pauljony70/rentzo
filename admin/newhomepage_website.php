@@ -925,7 +925,7 @@ if (isset($_POST['code'])) {
 
 														</div>
 													</div>
-												</div>
+												</div> 
 										<?php }
 										} ?>
 									</div>
@@ -938,8 +938,8 @@ if (isset($_POST['code'])) {
 										<div class="col-12">
 											<h3 style="text-align: center;"> Manage Events</h3><br>
 										</div>
-										<div class="col-12">
-											<a class="btn btn-danger waves-effect waves-light mb-2" target="_blank" href="<?php  echo BASEURL;?>/admin/manage_events.php">Add Events</a>
+										<div class="col-12 text-center">
+											<a class="btn btn-danger waves-effect waves-light mb-2 w-30" target="_blank" href="<?php  echo BASEURL;?>/admin/manage_events.php">Add Events</a>
 										</div>
 									</div>
 								</div>

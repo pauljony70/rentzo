@@ -187,30 +187,30 @@
 								<div class="row">
 									<div class="col-6 col-md-3">
 										<div class="mb-3">
-											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<input type="file" name="review_image_1" id="review_image_1" class="dropify" data-height="102" data-max-file-size="1m" data-allowed-file-extensions="jpg jpeg png" />
 											<span id="error"></span>
 										</div>
 									</div>
 									<div class="col-6 col-md-3">
 										<div class="mb-3">
-											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<input type="file" name="review_image_2" id="review_image_2" class="dropify" data-height="102" data-max-file-size="1m" data-allowed-file-extensions="jpg jpeg png" />
 											<span id="error"></span>
 										</div>
 									</div>
 									<div class="col-6 col-md-3">
 										<div class="mb-3">
-											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<input type="file" name="review_image_3" id="review_image_3" class="dropify" data-height="102" data-max-file-size="1m" data-allowed-file-extensions="jpg jpeg png" />
 											<span id="error"></span>
 										</div>
 									</div>
 									<div class="col-6 col-md-3">
 										<div class="mb-3">
-											<input type="file" name="review-image" id="review-image" class="dropify" data-height="102" data-max-file-size="5m" data-allowed-file-extensions="jpg png" />
+											<input type="file" name="review_image_4" id="review_image_4" class="dropify" data-height="102" data-max-file-size="1m" data-allowed-file-extensions="jpg jpeg png" />
 											<span id="error"></span>
 										</div>
 									</div>
 								</div>
-								<div class="mb-4 d-flex">
+								<div class="d-flex">
 									<div class="rating_star">
 										<input value="5" name="star-radio" id="star-1" type="radio">
 										<label for="star-1">
@@ -244,6 +244,7 @@
 										</label>
 									</div>
 								</div>
+								<div class="mb-4 fw-bolder" id="rating-error" style="font-size: .875em; color: var(--bs-form-invalid-color);"></div>
 								<button class="btn btn-primary" type="submit">SUBMIT</button>
 							</form>
 						</div>

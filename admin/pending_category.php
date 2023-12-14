@@ -72,12 +72,7 @@ function categoryTree1($parent_id)
 			<div class="row">
 				<div class="col-12">
 					<div class="page-title-box">
-						<div class="page-title-right">
-							<ol class="breadcrumb m-0" id="category_bradcumb">
-								<li class="breadcrumb-item" id="li0" onclick="getCategory_bradcumb(0)"><a href="javascript: void(0);"><i class="fa fa-home"></i> Home</a></li>
-								<!-- <li class="breadcrumb-item active">Datatables</li> -->
-							</ol>
-						</div>
+						
 						<h4 class="page-title">All Pending Category</h4>
 					</div>
 				</div>

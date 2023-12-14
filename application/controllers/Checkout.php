@@ -43,16 +43,14 @@ class Checkout extends REST_Controller
 
 	public function thankyou_get($order_id)
 	{
-		/*if ($this->session->tempdata('place_order_status') === 1) {
+		if ($this->session->tempdata('place_order_status') === 1) {
 			$default_language = $this->session->userdata("default_language");
 			$this->data['order_id'] = $order_id;
-			$this->data['recommended_product'] = $this->home_model->get_home_products($default_language, 'Recommended', '');
+			// $this->data['recommended_product'] = $this->home_model->get_home_products($default_language, 'Recommended', '');
 			$this->load->view('website/thankyou.php', $this->data);  // ye view/website folder hai
 		} else {
 			redirect($this->agent->referrer());
-		}*/
-		$this->data['order_id'] = $order_id;
-		$this->load->view('website/thankyou.php', $this->data);
+		}
 	}
 
 
