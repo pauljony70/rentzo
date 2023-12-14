@@ -12,78 +12,91 @@
 	<?php include("include/topbar.php") ?>
 	<?php include("include/navbar.php") ?>
 
-	<div class="modal fade" id="editAddressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg  modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
-					<button type="button" class="btn-close btn-radious" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body pb-0">
-					<form action="" class="form row" method="post" id="editAddressForm">
-						<input type="hidden" name="address_id" id="address_id" value="">
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Full name</label>
-								<input type="text" name="edit-fullname" id="edit-fullname" class="form-control">
+	<main class="address-page">
+		<div class="modal fade" id="editAddressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg  modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+						<button type="button" class="btn-close btn-radious" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body pb-0">
+						<form action="" class="form row" method="post" id="editAddressForm">
+							<input type="hidden" name="address_id" id="address_id" value="">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label">Full name <span class="text-danger">&#42;</label>
+									<input type="text" name="edit-fullname" id="edit-fullname" class="form-control">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Email</label>
-								<input type="text" name="edit-email" id="edit-email" class="form-control">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Email <span class="text-danger">&#42;</label>
+									<input type="text" name="edit-email" id="edit-email" class="form-control">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Phone no</label>
-								<input type="text" name="edit-mobile" id="edit-mobile" class="form-control">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Phone no <span class="text-danger">&#42;</label>
+									<input type="number" name="edit-mobile" id="edit-mobile" class="form-control" oninput="enforceMaxLength(this)" maxlength="10">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Pincode</label>
-								<input type="text" name="edit-pincode" id="edit-pincode" class="form-control">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label">Address <span class="text-danger">&#42;</label>
+									<input type="text" name="edit-address" id="edit-address" class="form-control">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-12">
-							<div class="form-group">
-								<label>Address</label>
-								<input type="text" name="edit-address" id="edit-address" class="form-control">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label">Landmark</label>
+									<input type="text" name="edit-landmark" id="edit-landmark" class="form-control">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>State</label>
-								<select class="form-control" id="edit-state" name="edit-state">
-									<option value="">Select State</option>
-								</select>
+							<div class="col-md-4">
+								<div class="mb-3">
+									<label class="form-label">Pincode <span class="text-danger">&#42;</label>
+									<input type="number" name="edit-pincode" id="edit-pincode" class="form-control" oninput="enforceMaxLength(this)" maxlength="6">
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>City</label>
-								<select class="form-control" id="edit-city" name="edit-city">
-									<option value="">Select City</option>
-								</select>
+							<div class="col-md-4">
+								<div class="mb-3">
+									<label class="form-label">State <span class="text-danger">&#42;</label>
+									<select class="form-select" id="edit-state" name="edit-state">
+										<option value="">Select State</option>
+									</select>
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-						<div class="form-group my-3">
-							<div class="text-end">
-								<button type="submit" class="btn btn-primary btn-radious"><span class="text-light">Submit</span></button>
+							<div class="col-md-4">
+								<div class="mb-3">
+									<label class="form-label">City <span class="text-danger">&#42;</label>
+									<select class="form-select" id="edit-city" name="edit-city">
+										<option value="">Select City</option>
+									</select>
+									<span id="error"></span>
+								</div>
 							</div>
-						</div>
-					</form>
-				</div>
-				<!-- <div class="modal-footer">
+							<div class="form-group my-3">
+								<div class="text-end">
+									<button type="submit" class="btn btn-primary btn-radious"><span class="text-light">Submit</span></button>
+								</div>
+							</div>
+						</form>
+					</div>
+					<!-- <div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary">Save changes</button>
 				</div> -->
+				</div>
 			</div>
 		</div>
-	</div>
-
-	<main class="my-order-page checkout-page cart-page">
 
 		<!--Start: Manage Address Section -->
 		<section class="my-5">
@@ -98,17 +111,6 @@
 					foreach ($address['address_details'] as $add_data) :
 				?>
 						<div class="adresss-div d-flex justify-content-between">
-							<!-- <ul class="name m-0 d-flex justify-content-between mb-1">
-								<li class="pe-2">
-									<h6><?= $add_data['fullname']; ?>, </h6>
-								</li>
-								<div class="d-flex">
-									<a data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="<?= $add_data['address_id'] ?>" data-full-name="<?= $add_data['fullname'] ?>" data-email="<?= $add_data['email'] ?>" data-mobile="<?= $add_data['mobile'] ?>" data-pincode="<?= $add_data['pincode'] ?>" data-fulladdress="<?= $add_data['fulladdress'] ?>" data-state-id="<?= $add_data['state'] ?>" data-city-id="<?= $add_data['city_id'] ?>" class="btn btn-sm btn-success edit-address-btn me-2 btn-radious"><span class="text-light"><i class="fa-regular fa-pen-to-square "></i> Edit</span></a>
-
-									
-								</div>
-							</ul> -->
-
 							<div class="address">
 								<div class="name"><?= $add_data['fullname']; ?></div>
 								<div class="fulladdress"><?= $add_data['fulladdress'] ?></div>
@@ -131,9 +133,9 @@
 				<?php endforeach;
 				endif; ?>
 
-				<a id="address_div_id" class="btn ps-0 my-5" data-bs-toggle="collapse" href="#address-form" role="button" aria-expanded="false" aria-controls="address-form"><i class="fa-solid fa-plus"></i> <span class="ms-3">Add a New Address</span></a>
+				<a id="address_div_id" class="btn ps-0 my-5" <?= !empty($address['address_details']) ? 'data-bs-toggle="collapse"' : '' ?> href="#address-form" role="button" aria-expanded="false" aria-controls="address-form"><i class="fa-solid fa-plus"></i> <span class="ms-3">Add a New Address</span></a>
 
-				<div class="address-form collapse" id="address-form">
+				<div class="address-form collapse <?= empty($address['address_details']) ? 'show' : '' ?>" id="address-form">
 					<form id="formoid" action="#" class="form row mb-4 mb-md-5" method="post">
 						<div class="col-md-12">
 							<div class="mb-3">
@@ -216,13 +218,6 @@
 	<?php include("include/footer.php") ?>
 	<?php include("include/script.php") ?>
 	<script>
-		// $(document).ready(function() {
-		// 	$("#address_div_id").click(function() {
-		// 		event.preventDefault();
-		// 		$("#address_div").toggle();
-		// 	});
-		// });
-
 		var selected_state = '';
 		var selected_city = '';
 
@@ -287,7 +282,6 @@
 					[csrfName]: csrfHash
 				},
 				success: function(response) {
-					// successmsg(response); // display response from the PHP script, if any
 					var data = $.parseJSON(response);
 					$('#state').empty();
 					$('#tcity').empty();
@@ -295,15 +289,12 @@
 					$("#state").append(o);
 					if (data["status"] == "1") {
 						$getcity = true;
-						var stateid = '' // <?php $state; ?>;
+						var stateid = '';
 						$firstitemid = '';
 						$firstitemflag = true;
-						//  successmsg('<?= "some info"; ?>');
-						// successmsg("state "+ stateid );
+
 						$(data["data"]).each(function() {
-							//	successmsg(this.id +"--"+stateid+"--");
 							if (stateid === this.id) {
-								// successmsg("match==="+stateid);
 								var o = new Option(this.name, this.id);
 								$("#state").append(o);
 								$('#state').val(this.id);
@@ -323,21 +314,15 @@
 								$firstitemid = this.id;
 							}
 						});
-
 						if ($getcity == true) {
 							$getcity = false;
-							// getCitydata( $firstitemid );
 						}
-
-					} else {
-						successmsg(data["msg"]);
 					}
 				}
 			});
 		}
 
 		function getCitydata(stateid, selected_city) {
-			// successmsg("state id "+stateid );
 			$.ajax({
 				method: 'POST',
 				url: site_url + "get_city",
@@ -346,7 +331,6 @@
 					[csrfName]: csrfHash
 				},
 				success: function(response) {
-					// successmsg(response); // display response from the PHP script, if any
 					var data = $.parseJSON(response);
 					$('#city').empty();
 					var o = new Option("Select City", "");
@@ -356,9 +340,7 @@
 						var cityid = '';
 
 						$(data["data"]).each(function() {
-							//	successmsg(this.name+"---"+cityid);
 							if (cityid === this.id) {
-								// successmsg("match==="+stateid);
 								var o = new Option(this.name, this.id);
 								$("#city").append(o);
 								$('#city').val(this.id);
@@ -368,15 +350,8 @@
 								$("#city").append(o);
 								$("#edit-city").append(`<option value="${this.id}">${this.name}</option>`);
 							}
-							//	var o = new Option(this.name, this.id);
-							//   $("#selectcity").append(o);
-							// pass PHP variable declared above to JavaScript variable
-
 						});
 						$('#edit-city').val(selected_city);
-
-					} else {
-						successmsg(data["msg"]);
 					}
 				}
 			});

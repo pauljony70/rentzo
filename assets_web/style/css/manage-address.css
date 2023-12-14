@@ -70,7 +70,7 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
-#formoid .form-label {
+.address-page form .form-label {
     color: #000;
     font-size: 12px;
     font-style: normal;
@@ -78,14 +78,14 @@ input[type="number"] {
     line-height: normal;
 }
 
-#formoid .form-control,
-#formoid .form-select {
+.address-page form .form-control,
+.address-page form .form-select {
     height: 50px;
     background-color: #F5F5F5;
     border-radius: 0;
 }
 
-#formoid button[type="submit"] {
+.address-page form button[type="submit"] {
     padding: 14px;
     display: flex;
     justify-content: center;
@@ -99,7 +99,7 @@ input[type="number"] {
     line-height: normal;
 }
 
-#formoid button[type="submit"] .spinner-border {
+.address-page form button[type="submit"] .spinner-border {
     --bs-spinner-width: 1.4rem;
     --bs-spinner-height: 1.4rem;
     --bs-spinner-border-width: 0.15em;
