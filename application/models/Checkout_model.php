@@ -331,17 +331,16 @@ class Checkout_model extends CI_Model
 
 	//function for place order
 
-	function place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id)
+	function place_order_details($user_id, $qouteid, $fullname, $email, $mobile, $fulladdress, $country, $pincode, $addresstype, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $state_id, $city, $city_id)
 	{
 		$status = array('status' => '');
 		$delivery_array = $order = array();
 		$this->load->model('cart_model');
 
 		$order_id = '';
-
 		$devicetype = 1;
-		$this->db->select("prod_id, attr_sku, vendor_id, qty, affiliated_by, qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
 
+		$this->db->select("prod_id, attr_sku, vendor_id, qty, affiliated_by, qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
 		if ($user_id) {
 			$this->db->where(array('user_id' => $user_id));
 		} else {
@@ -350,42 +349,61 @@ class Checkout_model extends CI_Model
 		$query = $this->db->get('cartdetails');
 
 		$product_detail_array = array();
-		$total_mrp = $total_discount = $total_price = $total_item = $qoute_id = 0;
+		$total_mrp = $total_discount = $total_price = $total_item = 0;
 
 		if ($query->num_rows() > 0) {
 			$order_id = strtoupper('ODR' . $this->random_strings(6) . date("hi") . rand(1, 99));
 
-			$add_order = $this->create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress,  $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id);
+			$order['order_id'] = $order_id;
+			$order['user_id'] = $user_id;
+			$order['qoute_id'] = $qouteid;
+			$order['fullname'] = $fullname;
+			$order['email'] = $email;
+			$order['mobile'] = $mobile;
+			$order['fulladdress'] = $fulladdress;
+			$order['country'] = $country;
+			$order['pincode'] = $pincode;
+			$order['addresstype'] = $addresstype;
+			$order['payment_id'] = $payment_id;
+			$order['payment_mode'] = $payment_mode;
+			$order['coupon_code'] = $coupon_code;
+			$order['coupon_value'] = $coupon_value;
+			$order['state'] = $state;
+			$order['state_id'] = $state_id;
+			$order['city'] = $city;
+			$order['cityid'] = $city_id;
+			$order['total_price'] = '';
+			$order['payment_orderid'] = '';
+			$order['create_date'] = date('Y-m-d H:i:s');
+			$order['discount'] = '';
+			$order['status'] = 'Placed';
 
-			if ($add_order != 'add') {
+			if ($this->db->insert('orders', $order)) {
 				return false;
 			}
-			$cart_result = $query->result_object();
+
+			$cart_result = $query->result_array();
 
 			foreach ($cart_result as $cart_detail) {
-				$prod_id = $cart_detail->prod_id;
-				$sku = $cart_detail->attr_sku;
-				$vendor_id = $cart_detail->vendor_id;
-				$qty = $cart_detail->qty;
-				$affiliated_by = $cart_detail->affiliated_by;
-				$qoute_id = $cart_detail->qoute_id;
-				$rent_price = $cart_detail->rent_price;
-				$rent_from_date = $cart_detail->rent_from_date;
-				$rent_to_date = $cart_detail->rent_to_date;
-				$cart_type = $cart_detail->cart_type;
+				$prod_id = $cart_detail['prod_id'];
+				$sku = $cart_detail['attr_sku'];
+				$vendor_id = $cart_detail['vendor_id'];
+				$qty = $cart_detail['qty'];
+				$affiliated_by = $cart_detail['affiliated_by'];
+				$qoute_id = $cart_detail['qoute_id'];
+				$rent_price = $cart_detail['rent_price'];
+				$rent_from_date = $cart_detail['rent_from_date'];
+				$rent_to_date = $cart_detail['rent_to_date'];
+				$cart_type = $cart_detail['cart_type'];
 
 				//check product details
 				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy,return_policy_id, vp.product_mrp, vp.product_sale_price, vp.affiliate_commission, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id, prp.policy_validity,prp.policy_type_refund,prp.policy_type_replace,prp.policy_type_exchange,sellerlogin.pincode as seller_pincode,sellerlogin.phone as seller_phone,shipping,vp.coupon_code,vp.seller_price,vp.product_tax_class,product_hsn_code,product_unique_code,security_deposit");
-
 				//join for get product return policy
 				$this->db->join('product_return_policy prp', 'prp.id = product_details.return_policy_id', 'LEFT');
-
 				//join for get vendor product
 				$this->db->join('vendor_product vp', 'vp.product_id = product_details.product_unique_id', 'INNER');
 				$this->db->join('sellerlogin', 'sellerlogin.seller_unique_id = vp.vendor_id', 'INNER');
-
-				$this->db->where(array('product_unique_id' => $prod_id, 'vendor_id' => $vendor_id));
-
+				$this->db->where(array('product_unique_id' => $cart_detail['prod_id'], 'vendor_id' => $cart_detail['vendor_id']));
 				$query_prod = $this->db->get('product_details');
 
 				$product_detail = array();
@@ -396,35 +414,34 @@ class Checkout_model extends CI_Model
 				$product_detail['totaloff'] = 0;
 				$product_detail['totaloff1'] = 0;
 				if ($query_prod->num_rows() > 0) {
-					$prod_result = $query_prod->result_object();
-					$is_heavy = $prod_result[0]->is_heavy;
-
-					$product_detail['prodid'] = $prod_id;
-					$product_detail['sku'] = $prod_result[0]->product_sku;
+					$prod_result = $query_prod->row_array();
+					$is_heavy = $prod_result['is_heavy'];
+					$product_detail['prodid'] = $cart_detail['prod_id'];
+					$product_detail['sku'] = $prod_result['product_sku'];
 					$product_detail['vendor_id'] = $vendor_id;
-					$product_detail['name'] = $prod_result[0]->prod_name;
-					$product_detail['name_ar'] = $prod_result[0]->prod_name_ar;
-					$product_detail['web_url'] = $prod_result[0]->web_url;
-					$product_detail['seller_pincode'] = $prod_result[0]->seller_pincode;
-					$product_detail['shipping'] = $prod_result[0]->shipping;
-					$product_detail['seller_phone'] = $prod_result[0]->seller_phone;
-					$product_detail['coupon_code'] = $prod_result[0]->coupon_code;
-					$product_detail['seller_price'] = $prod_result[0]->seller_price;
-					$product_detail['product_hsn_code'] = $prod_result[0]->product_hsn_code;
-					$product_detail['product_unique_code'] = $prod_result[0]->product_unique_code;
-					$product_detail['security_deposit'] = $prod_result[0]->security_deposit;
+					$product_detail['name'] = $prod_result['prod_name'];
+					$product_detail['name_ar'] = $prod_result['prod_name_ar'];
+					$product_detail['web_url'] = $prod_result['web_url'];
+					$product_detail['seller_pincode'] = $prod_result['seller_pincode'];
+					$product_detail['shipping'] = $prod_result['shipping'];
+					$product_detail['seller_phone'] = $prod_result['seller_phone'];
+					$product_detail['coupon_code'] = $prod_result['coupon_code'];
+					$product_detail['seller_price'] = $prod_result['seller_price'];
+					$product_detail['product_hsn_code'] = $prod_result['product_hsn_code'];
+					$product_detail['product_unique_code'] = $prod_result['product_unique_code'];
+					$product_detail['security_deposit'] = $prod_result['security_deposit'];
 
-					$tax_details = $this->get_tax_data($prod_result[0]->product_tax_class);
-
+					$tax_details = $this->get_tax_data($prod_result['product_tax_class']);
 					$product_detail['coupon_tax'] =  $tax_details['percent'];
 
 					$ger_vendor_coupon_name = '';
-					if ($prod_result[0]->coupon_code != '') {
-						$this->db->where(array('sno' => $prod_result[0]->coupon_code, 'activate' => 'active'));
+
+					if ($prod_result['coupon_code'] != '') {
+						$this->db->where(array('sno' => $prod_result['coupon_code'], 'activate' => 'active'));
 						$query_coupon0 = $this->db->get('coupancode_vendor');
 						if ($query_coupon0->num_rows() > 0) {
-							$coupon_result = $query_coupon0->result_object()[0];
-							$ger_vendor_coupon_name = $coupon_result->name;
+							$coupon_result = $query_coupon0->row_array();
+							$ger_vendor_coupon_name = $coupon_result['name'];
 						}
 					}
 
@@ -434,37 +451,36 @@ class Checkout_model extends CI_Model
 					$product_detail['price'] = 0;
 					$product_detail['totaloff'] = 0;
 
-					$img_decode = json_decode($prod_result[0]->featured_img);
+					$img_decode = json_decode($prod_result['featured_img']);
 					$img = '';
 
 					if ($devicetype == 1) {
 						if (isset($img_decode->{MOBILE})) {
 							$img = $img_decode->{MOBILE};
 						} else {
-							$img = $prod_result[0]->featured_img;
+							$img = $prod_result['featured_img'];
 						}
 					} else {
 						if (isset($img_decode->{DESKTOP})) {
 							$img = $img_decode->{DESKTOP};
 						} else {
-							$img = $prod_result[0]->featured_img;
+							$img = $prod_result['featured_img'];
 						}
 					}
-
-
 					$product_detail['imgurl'] = $img;
 					$prod_type = "";
-					if ($prod_result[0]->product_sku == $sku) {
+
+					if ($prod_result['product_sku'] == $sku) {
 						//check vendor product details
 
-						$tot_mrp = $prod_result[0]->product_mrp;
-						$tot_price = $prod_result[0]->product_sale_price;
+						$tot_mrp = $prod_result['product_mrp'];
+						$tot_price = $prod_result['product_sale_price'];
 
 						$product_detail['mrp'] = $tot_mrp;
 						$product_detail['price'] = $tot_price;
 
-						$tot_mrp1 = ($prod_result[0]->product_mrp * $qty);
-						$tot_price1 = ($prod_result[0]->product_sale_price * $qty);
+						$tot_mrp1 = ($prod_result['product_mrp'] * $qty);
+						$tot_price1 = ($prod_result['product_sale_price'] * $qty);
 
 						$product_detail['mrp1'] = $tot_mrp1;
 						$product_detail['price1'] = $tot_price1;
@@ -478,7 +494,7 @@ class Checkout_model extends CI_Model
 						$product_detail['totaloff1'] = $discount_price1;
 						$prod_type = "simple";
 					} else {
-						$vendor_prod_id = $prod_result[0]->vendor_prod_id;
+						$vendor_prod_id = $prod_result['vendor_prod_id'];
 
 						$this->db->select("prod_attr_value, price, mrp, stock");
 						$this->db->where(array('product_id' => $prod_id, 'vendor_prod_id' => $vendor_prod_id, 'product_sku' => $sku));
@@ -535,13 +551,14 @@ class Checkout_model extends CI_Model
 					//calculate shipping fee
 
 					//calculate return date
-					$policy_validity = $prod_result[0]->policy_validity;
-					$policy_type_refund = $prod_result[0]->policy_type_refund;
+					$policy_validity = $prod_result['policy_validity'];
+					$policy_type_refund = $prod_result['policy_type_refund'];
 
 					$return_last_date = '';
 					if ($policy_validity > 0 && $policy_type_refund > 0) {
 						$return_last_date =  date('Y-m-d', strtotime('+' . $policy_validity . ' days'));
 					}
+
 					//calculate return date
 					$coupon_discount = 0;
 					$validate_coupon = $this->Validate_coupon_code($user_id, $coupon_code, '');
@@ -565,16 +582,13 @@ class Checkout_model extends CI_Model
 
 
 					$this->db->select("commission");
-					$this->db->where("FLOOR(price_from) <= ", $prod_result[0]->seller_price);
-					$this->db->where("FLOOR(price_to) >= ", $prod_result[0]->seller_price);
-
-
-
+					$this->db->where("FLOOR(price_from) <= ", $prod_result['seller_price']);
+					$this->db->where("FLOOR(price_to) >= ", $prod_result['seller_price']);
 					$query_comm = $this->db->get('seller_commission');
 					if ($query_comm->num_rows() > 0) {
-						$comm_result = $query_comm->result_object();
+						$comm_result = $query_comm->row_array();
 
-						$admin_profit = number_format($comm_result[0]->commission);
+						$admin_profit = number_format($comm_result['commission']);
 					}
 
 					$sgst = 0;
@@ -585,16 +599,16 @@ class Checkout_model extends CI_Model
 
 					$igst = $tax_value;
 
-					/*$admin_profit = $prod_result[0]->product_sale_price - $prod_result[0]->seller_price;*/
+					/*$admin_profit = $prod_result['product_sale_price'] - $prod_result['seller_price'];*/
 
-					$tax_class = ($prod_result[0]->product_sale_price / 100) * $product_detail['coupon_tax'];
+					$tax_class = ($prod_result['product_sale_price'] / 100) * $product_detail['coupon_tax'];
 
-					$payable_value = $prod_result[0]->product_sale_price - $tax_class;
+					$payable_value = $prod_result['product_sale_price'] - $tax_class;
 
 					$tds = round(($payable_value / 100) * 1, 2);
 					$tcs = round(($payable_value / 100) * 1, 2);
 
-					$gross_amount = round($prod_result[0]->seller_price - ($tds +  $tcs), 2);
+					$gross_amount = round($prod_result['seller_price'] - ($tds +  $tcs), 2);
 
 					$gst_input = round(($admin_profit / 100) * 18, 2);
 
@@ -646,10 +660,10 @@ class Checkout_model extends CI_Model
 					if ($query) {
 						$this->update_vendor_stock($product_detail['prodid'], $product_detail['vendor_id'], $sku, $prod_type, $qty);
 						//$this->update_vendor_payment($product_detail['prodid'],$product_detail['vendor_id'],$qty,$product_detail['price'],$shipping);
-						if ($affiliated_by) {
-							$wallet_data = $this->db->get_where('wallet_summery', array('user_id' => $affiliated_by))->row_array();
+						if ($cart_detail['affiliated_by']) {
+							$wallet_data = $this->db->get_where('wallet_summery', array('user_id' => $cart_detail['affiliated_by']))->row_array();
 							if (!empty($wallet_data)) {
-								$commission = $prod_result[0]->product_sale_price * $qty * ($prod_result[0]->affiliate_commission / 100);
+								$commission = $prod_result['product_sale_price'] * $qty * ($prod_result['affiliate_commission'] / 100);
 								$insert_wallet_transaction_history = $this->db->insert('wallet_transaction_history', array(
 									'wallet_id' => $wallet_data['wallet_id'],
 									'payment_type' => '0',
@@ -662,7 +676,7 @@ class Checkout_model extends CI_Model
 									'user_id' => $user_id,
 								));
 								if ($insert_wallet_transaction_history) {
-									$this->db->where('user_id', $affiliated_by);
+									$this->db->where('user_id', $cart_detail['affiliated_by']);
 									$this->db->update('wallet_summery', array(
 										'amount' => $wallet_data['amount'] + $commission
 									));
@@ -673,7 +687,6 @@ class Checkout_model extends CI_Model
 				}
 
 
-
 				$total_price += $product_detail['price1'];
 				$total_item += $product_detail['qty'];
 				$total_discount += $product_detail['totaloff1'];
@@ -682,25 +695,18 @@ class Checkout_model extends CI_Model
 
 
 			$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-			$query_coupon0 = $this->db->get('coupancode');
-			if ($query_coupon0->num_rows() > 0) {
-
-				$this->db->select("*");
-				$this->db->where(array('name' => $coupon_code, 'activate' => 'active'));
-
-				$query_coupon = $this->db->get('coupancode');
+			$query_coupon = $this->db->get('coupancode');
+			if ($query_coupon->num_rows() > 0) {
 				$coupon_discount = 0;
-				if ($query_coupon->num_rows() > 0) {
-					$coupon_result = $query_coupon->result_object()[0];
+				$coupon_result = $query_coupon->row_array();
 
-					$coupon_type = $coupon_result->coupon_type;
-					$value = $coupon_result->value;
+				$coupon_type = $coupon_result['coupon_type'];
+				$value = $coupon_result['value'];
 
-					if ($coupon_type == 1) {
-						$coupon_discount =  ($total_price / 100) * $value;
-					} else if ($coupon_type == 2) {
-						$coupon_discount =  $value;
-					}
+				if ($coupon_type == 1) {
+					$coupon_discount =  ($total_price / 100) * $value;
+				} else if ($coupon_type == 2) {
+					$coupon_discount =  $value;
 				}
 			}
 
@@ -720,10 +726,10 @@ class Checkout_model extends CI_Model
 			}
 		}
 
-		$message = 'Dear customer your Order has been Placed Successfully. Order Id is ' . $order_id . ' and Total price is Rs.' . $total_price . '. Thank You For Shopping with EBuy. EBUY';
+		$message = 'Dear customer your Order has been Placed Successfully. Order Id is ' . $order_id . ' and Total price is Rs.' . $total_price . '. Thank You For Shopping with Rentzo. RENTZO';
 		$this->sms_model->send_sms_new($message, '968', $mobile);
 
-		$message_seller = 'Dear Marurang seller, you have Received a New Order . Please login into seller dashboard to see details. Order Id is ' . $order_id . ' – Regards, Marurang. MRURNG';
+		$message_seller = 'Dear Rentzo seller, you have Received a New Order . Please login into seller dashboard to see details. Order Id is ' . $order_id . ' – Regards, Rentzo. RENTZO';
 		$this->sms_model->send_sms_new($message_seller, '968', $seller_phone);
 
 		return $status;
@@ -1202,37 +1208,34 @@ class Checkout_model extends CI_Model
 		return $seller_inv;
 	}
 
-	function create_order($order_id, $user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorates, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id)
+	function create_order($order_id, $user_id, $qouteid, $fullname, $email, $mobile, $fulladdress,  $country, $pincode, $addresstype, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $state_id, $city, $city_id)
 	{
 		$status = '';
 		$order = array();
 
 		$order['order_id'] = $order_id;
 		$order['user_id'] = $user_id;
-		$order['total_price'] = '';
-		$order['payment_orderid'] = '';
-		$order['payment_id'] = $payment_id;
-		$order['payment_mode'] = $payment_mode;
 		$order['qoute_id'] = $qouteid;
-		$order['create_date'] = date('Y-m-d H:i:s');
-		$order['discount'] = '';
 		$order['fullname'] = $fullname;
+		$order['email'] = $email;
 		$order['mobile'] = $mobile;
-		$order['area'] = $area;
 		$order['fulladdress'] = $fulladdress;
 		$order['country'] = $country;
-		$order['region'] = $region;
-		$order['governorate'] = $governorates;
-		$order['lat'] = $lat;
-		$order['lng'] = $lng;
+		$order['pincode'] = $pincode;
 		$order['addresstype'] = $addresstype;
-		$order['email'] = $email;
-		$order['status'] = 'Placed';
+		$order['payment_id'] = $payment_id;
+		$order['payment_mode'] = $payment_mode;
 		$order['coupon_code'] = $coupon_code;
 		$order['coupon_value'] = $coupon_value;
 		$order['state'] = $state;
+		$order['state_id'] = $state_id;
 		$order['city'] = $city;
 		$order['cityid'] = $city_id;
+		$order['total_price'] = '';
+		$order['payment_orderid'] = '';
+		$order['create_date'] = date('Y-m-d H:i:s');
+		$order['discount'] = '';
+		$order['status'] = 'Placed';
 
 		$query = $this->db->insert('orders', $order);
 		if ($query) {

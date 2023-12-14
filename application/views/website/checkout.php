@@ -271,13 +271,13 @@
 						<div class="payment-types mx-2 mb-5">
 							<div class="heading mb-3">Payment Type</div>
 							<div class="form-check mb-2">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="netBanking" value="online" checked>
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="netBanking" value="Online" checked>
 								<label class="form-check-label" for="netBanking">
 									Net Banking / UPI / Credit card / Debit card
 								</label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="cashOnDelivery" value="cod">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="cashOnDelivery" value="COD">
 								<label class="form-check-label" for="cashOnDelivery">
 									Cash On Delivery(COD)
 								</label>

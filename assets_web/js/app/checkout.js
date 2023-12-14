@@ -115,8 +115,8 @@ const verifyKycDocument = async () => {
 }
 
 async function place_order_data(ele) {
-    ele.disabled = true;
-    buttonLoader(ele);
+    // ele.disabled = true;
+    // buttonLoader(ele);
 
     try {
         // Wait for both functions to complete
@@ -124,10 +124,6 @@ async function place_order_data(ele) {
         if (document.getElementById('cart_type').value === 'rent')
             await verifyKycDocument();
 
-        // alert("call true");
-
-
-        // alert(" place order req send ");
         var coupon_code = $('#coupon_code').val();
         var coupon_value = $('#coupo_discount_value').text();
 
@@ -141,13 +137,14 @@ async function place_order_data(ele) {
                 locality: '',
                 fulladdress: $("#fulladdress").val(),
                 city: $('#city').find(":selected").text(),
+                city_id: $("#city").val(),
                 state: $('#state').find(":selected").text(),
+                state_id: $("#state").val(),
                 pincode: $("#pincode").val(),
                 addresstype: 'Home',
                 email: $("#email").val(),
                 payment_id: 'Pay12345',
-                payment_mode: 'COD',
-                city_id: $("#city option:selected").val(),
+                payment_mode: $('input[name="flexRadioDefault"]:checked').val(),
                 coupon_code: coupon_code,
                 coupon_value: coupon_value,
                 [csrfName]: csrfHash,

@@ -343,14 +343,11 @@ class Checkout extends REST_Controller
 		$fullname = removeSpecialCharacters($this->post('fullname'));
 		$mobile = removeSpecialCharacters($this->post('mobile'));
 		$email = removeSpecialCharacters($this->post('email'));
-		$area = '';
 		$fulladdress = removeSpecialCharacters($this->post('fulladdress'));
 		$country = '1';
-		$region = '';
-		$governorate = '';
-		$lat = '';
-		$lng = '';
+		$pincode = removeSpecialCharacters($this->post('pincode'));
 		$state = removeSpecialCharacters($this->post('state'));
+		$state_id = removeSpecialCharacters($this->post('state_id'));
 		$city = removeSpecialCharacters($this->post('city'));
 		$city_id = removeSpecialCharacters($this->post('city_id'));
 		$addresstype = removeSpecialCharacters($this->post('addresstype'));
@@ -365,7 +362,7 @@ class Checkout extends REST_Controller
 		if ($validation == 'valid') {
 			if (($user_id || $qouteid) && $fullname && $mobile && $fulladdress && $country && $addresstype && $payment_id && $payment_mode) {
 
-				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $city, $city_id);
+				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $email, $mobile, $fulladdress, $country, $pincode, $addresstype, $payment_id, $payment_mode, $coupon_code, $coupon_value, $state, $state_id, $city, $city_id);
 
 				if ($order_detail['status'] == 'update') {
 					$this->session->set_tempdata('place_order_status', 1, 5);
@@ -394,77 +391,60 @@ class Checkout extends REST_Controller
 						$this->config->item('rest_status_field_name') => 0,
 						$this->config->item('rest_message_field_name') => get_phrase('cart_empty', $language_code),
 						$this->config->item('rest_data_field_name') => $order_details
-
 					], self::HTTP_OK);
 				}
 			} else if (!$user_id && !$qouteid) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('invalid_request', $language_code),
-					$this->config->item('rest_data_field_name') => $cart_detail
-
 				], self::HTTP_OK);
 			} else if (!$fullname) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('username_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
-
 				], self::HTTP_OK);
 			} else if (!is_numeric($mobile)) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('phone_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
-
 				], self::HTTP_OK);
 			} else if (!$fulladdress) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('address_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
-
 				], self::HTTP_OK);
 			} else if (!$state) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('state_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
 
 				], self::HTTP_OK);
 			} else if (!$city) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('city_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
-
 				], self::HTTP_OK);
 			} else if (!$addresstype) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('addresstype_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
-
 				], self::HTTP_OK);
 			} else if (!$email) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('email_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
 
 				], self::HTTP_OK);
 			} else if (!$payment_id) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('payment_id_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
 
 				], self::HTTP_OK);
 			} else if (!$payment_mode) {
 				$this->response([
 					$this->config->item('rest_status_field_name') => 0,
 					$this->config->item('rest_message_field_name') => get_phrase('payment_mode_mandatory', $language_code)
-					//$this->config->item('rest_data_field_name') => $address_detail
 
 				], self::HTTP_OK);
 			}
