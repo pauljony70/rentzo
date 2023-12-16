@@ -252,7 +252,7 @@ if (!isset($_SESSION['admin'])) {
 					$day3_price,
 					$day5_price,
 					$day7_price,
-					$selectcity,
+					$selectcity.',',
 					$security_deposit
 				);
 

@@ -97,7 +97,7 @@
                         <div class="w-100 d-flex justify-content-between">
                           <h6 class="card-title line-clamp-2" style="white-space: normal;">${this.name}</h6>
                         </div>
-                        <p class="card-text d-flex"><small class="text-muted">${this.day1_price} / Day</small></p>
+                        <p class="card-text d-flex"><small class="text-muted">${this.day1_price}/day</small></p>
                       </div>
                     </div>
                   </div>

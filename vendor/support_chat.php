@@ -7,9 +7,24 @@ if (!isset($_SESSION['admin'])) {
 
 include("header.php"); ?>
 <style>
+
+	.container {
+		border: 2px solid #dedede;
+		background-color: #f1f1f1;
+		border-radius: 5px;
+		padding: 10px;
+		margin: 10px 10px;
+		width:98%;
+		}
+	
 	.darker {
 		border-color: #ccc;
 		background-color: #ddd;
+	}
+	
+	.light {
+		border-color: #ccc;
+		background-color: #f5f5f5;
 	}
 
 	.container::after {
@@ -71,14 +86,14 @@ include("header.php"); ?>
 												while ($row = $query->fetch_assoc()) {
 													$time = date('H:i A', strtotime($row['created_at']));
 													if ($row['message_by'] == 'ADMIN') {
-														echo '<div class="container my-1">
-														<img src="/w3images/bandmember.jpg" alt="Avatar" style="width:100%;">
+														echo '<div class="container light my-1">
+														<img src="'.BASEURL.'bandmember.jpg" alt="Avatar" style="height: 40px;width: 40px;position: relative; margin-top: 10px;">
 														<p>' . $row['message'] . '</p>
 														<span class="float-right">' . $time . '</span>
 													</div>';
 													} else {
 														echo '<div class="container darker my-1">
-													<img src="/w3images/avatar_g2.jpg" alt="Avatar" class="right" style="width:100%;">
+													<img src="'.BASEURL.'avatar_g2.jpg" alt="Avatar" class="right" style="height: 40px;width: 40px;position: relative; margin-top: 10px;">
 													<p>' . $row['message'] . '</p>
 													<span class="float-left">' . $time . '</span>
 												</div>';

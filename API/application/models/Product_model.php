@@ -15,11 +15,11 @@ class Product_model extends CI_Model
 		$return = array();
 		$i = 0;
 		$this->db->select('city_id, city_name');
-		$this->db->where("city_id in ($city_id)", NULL);
+		$this->db->where_in('city_id', rtrim($city_id, ','), FALSE);
 		$this->db->order_by('city_name', 'ASC');
 
 		$query = $this->db->get('city');
-		$state_array = $query->result_object();
+		$state_array = $query->result();
 		foreach ($state_array as $state_details) {
 			$return[$i] =
 				array(
@@ -193,7 +193,7 @@ class Product_model extends CI_Model
 				$product_response['day5_price'] = $product_details->day5_price;
 				$product_response['day7_price'] = $product_details->day7_price;
 				$product_response['security_deposit'] = $product_details->security_deposit;
-				$product_response['usage_info'] = $product_details->usage_info;
+				$product_response['usage_info'] = html_entity_decode($product_details->usage_info);
 				$product_response['is_buy'] = $product_details->is_buy;
 				$product_response['product_city'] = $product_details->product_city !== '' ? $this->get_city($product_details->product_city) : '';
 
@@ -314,6 +314,7 @@ class Product_model extends CI_Model
 				$val_decode = json_decode($attr->attr_value);
 				$new_attr = array();
 				foreach ($val_decode as $key => $val) {
+					print_r($val_decode);
 					$new_attr[]['itemvalue'] = $val;
 				}
 

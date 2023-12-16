@@ -324,6 +324,15 @@ class HomeController extends REST_Controller
 		$main_array = array();
 		if ($validation == 'valid') {
 
+			$top_noti_array = $this->home_model->get_header_noti_request('top_notification');
+			$main_array[0] = [
+				'index' => '1',
+				'label' => 'Top Notification',
+				'data_banner' => $top_noti_array,
+				'data_product' => array()
+
+			];
+			
 			$top_slider_array = $this->home_model->get_header_banner_request('section1', '1920-680');
 			$main_array[0] = [
 				'index' => '1',
@@ -342,6 +351,8 @@ class HomeController extends REST_Controller
 				'data_product' => array()
 
 			];
+			
+			
 
 			$today_deals_array = $this->home_model->get_home_products($language_code, 'New');
 
@@ -382,6 +393,37 @@ class HomeController extends REST_Controller
 				'data_product' => array()
 
 			];
+			
+			$timezone = '';
+			$today_deals_array = $this->home_model->get_home_products_new($language_code, 'prod_section1_title', 'prod_section_1',$timezone);
+			$main_array[6] = [
+				'index' => '7',
+				'label' => "New Deals",
+				'data_banner' => array(),	
+				'data_product' => $today_deals_array
+
+			];
+			
+			$timezone = '';
+			$new_array = $this->home_model->get_home_products_new($language_code, 'prod_section2_title', 'prod_section_2',$timezone);
+			$main_array[7] = [
+				'index' => '8',
+				'label' => "New",
+				'data_banner' => array(),
+				'data_product' => $new_array
+
+			];
+			
+			$new_four_banner_array = $this->home_model->get_header_banner_request('section_four_banner', '1920-680');
+
+			$main_array[8] = [
+				'index' => '9',
+				'label' => "New Arrival",
+				'data_banner' => $new_four_banner_array,
+				'data_product' => array()
+
+			];
+			
 
 			$this->responses(1, 'All data', $main_array);
 		} else {
@@ -412,7 +454,7 @@ class HomeController extends REST_Controller
 			$three_banner_array = $this->home_model->get_header_banner_request('section8', '610-400');
 			$main_array[1] = [
 				'index' => '2',
-				'label' => '1*2 Banner',
+				'label' => '1*3 Banner',
 				'data_banner' => $three_banner_array,
 				'data_product' => array()
 
@@ -1113,7 +1155,7 @@ class HomeController extends REST_Controller
 
 
 			if ($seller_array) {
-				$seller_array = array("name" => $seller_array[0]['name'], "phone" => $seller_array[0]['phone'], "email_1" => $seller_array[0]['email_1'], "email_2" => $seller_array[0]['email_2'], "whatsapp" => '+91' . $seller_array[0]['whatsapp']);
+				$seller_array = array("name" => $seller_array[0]['name'], "phone" => $seller_array[0]['phone'], "email_1" => $seller_array[0]['email_1'], "email_2" => $seller_array[0]['email_2'], "whatsapp" => '+91' . $seller_array[0]['whatsapp'], "login_banner" => $seller_array[0]['login_banner']);
 				$this->response([
 					$this->config->item('rest_status_field_name') => 1,
 					'msg' => 'Get Settings Successfully',
@@ -1121,7 +1163,7 @@ class HomeController extends REST_Controller
 
 				], self::HTTP_OK);
 			} else {
-				$seller_array = array("name" => '', "phone" => '', "email_1" => '', "email_2" => '', "whatsapp" => '');
+				$seller_array = array("name" => '', "phone" => '', "email_1" => '', "email_2" => '', "whatsapp" => '',"login_banner" => '');
 				$this->responses(0, get_phrase('no_record_found', $language_code), $seller_array);
 			}
 		} else {

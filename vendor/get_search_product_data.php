@@ -50,6 +50,8 @@ if (!isset($_SESSION['admin'])) {
 		
 	
 		$stmt = $conn->prepare($query);
+		
+		
            
         $stmt ->bind_param("ii", $start, $limit);
         $stmt->execute();
@@ -83,7 +85,7 @@ if (!isset($_SESSION['admin'])) {
 			$sr = ($page-1)*$limit+$i;
             $imageurl = MEDIAURL.$imgarray['72-72'];            
             $tbl_html .=  '<tr id="tr'.$products['product_unique_id'].'"><td>'.$sr.'</td>';
-            $tbl_html .=  '<td><img src="'.$imageurl.'"></td>';
+            $tbl_html .=  '<td><img width="72" src="'.$imageurl.'"></td>';
             $tbl_html .=  '<td>'.$products['product_unique_id'].'</td>';
             $tbl_html .=  '<td>'.$products['prod_name'].'</td>';
             $tbl_html .=  '<td>'.$products['product_sku'].'</td>';

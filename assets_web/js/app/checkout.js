@@ -127,28 +127,33 @@ async function place_order_data(ele) {
         var coupon_code = $('#coupon_code').val();
         var coupon_value = $('#coupo_discount_value').text();
 
+        var form_data = new FormData();
+        form_data.append('language', default_language);
+        form_data.append('fullname', $("#fullname_a").val());
+        form_data.append('mobile', $("#mobile").val());
+        form_data.append('locality', '');
+        form_data.append('fulladdress', $("#fulladdress").val());
+        form_data.append('city', $('#city').find(":selected").text());
+        form_data.append('city_id', $("#city").val());
+        form_data.append('state', $('#state').find(":selected").text());
+        form_data.append('state_id', $("#state").val());
+        form_data.append('pincode', $("#pincode").val());
+        form_data.append('addresstype', 'Home');
+        form_data.append('email', $("#email").val());
+        form_data.append('payment_id', 'Pay12345');
+        form_data.append('payment_mode', $('input[name="flexRadioDefault"]:checked').val());
+        form_data.append('coupon_code', coupon_code);
+        form_data.append('coupon_value', coupon_value);
+        form_data.append('kyc_document', document.getElementById('cart_type').value === 'rent' ? $('#kyc-document').prop('files')[0] : null);
+        form_data.append([csrfName], csrfHash);
+
         $.ajax({
             method: "post",
             url: site_url + "placeOrder",
-            data: {
-                language: default_language,
-                fullname: $("#fullname_a").val(),
-                mobile: $("#mobile").val(),
-                locality: '',
-                fulladdress: $("#fulladdress").val(),
-                city: $('#city').find(":selected").text(),
-                city_id: $("#city").val(),
-                state: $('#state').find(":selected").text(),
-                state_id: $("#state").val(),
-                pincode: $("#pincode").val(),
-                addresstype: 'Home',
-                email: $("#email").val(),
-                payment_id: 'Pay12345',
-                payment_mode: $('input[name="flexRadioDefault"]:checked').val(),
-                coupon_code: coupon_code,
-                coupon_value: coupon_value,
-                [csrfName]: csrfHash,
-            },
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
             success: function (response) {
 
                 if (response.status == 1) {

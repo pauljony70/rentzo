@@ -628,6 +628,10 @@ class Checkout_model extends CI_Model
 					$order_prod['type'] = $cart_detail['cart_type'];
 					$order_prod['security_deposit'] = $cart_detail['cart_type'] === "Rent" ? $prod_result['security_deposit'] : null;
 
+					if ($cart_detail['cart_type'] == "Rent" && strlen($_FILES['kyc_document']['name']) > 1) {
+						$order_prod['kyc_document'] = doc_upload('kyc_document', 'media/');
+					}
+
 					$query = $this->db->insert('order_product', $order_prod);
 
 					if ($query) {

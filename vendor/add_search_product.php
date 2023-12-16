@@ -133,14 +133,15 @@ if (!isset($_SESSION['admin'])) {
 							} ?>" id="product_sel_page">
 
 
-<!-- main content start-->
+
+
 <div class="content-page">
-	<!-- Start content -->
+	<!-- Start content -->	
 	<div class="content">
 		<div class="container-fluid">
 			<div data-example-id="simple-form-inline">
-				<div class="pull-right page_div" style="float:left;display:none;"> </div>
-				<div class="perpage" id="perpage_div" style="display:none;">
+				<!--<div class="pull-right page_div" style="float:left;display:none;"> </div>
+				<div class="perpage mt-2" id="perpage_div" style="display:none;">
 					<div class="pull-right col-sm-2">
 						<select class="form-control" id="perpage" name="perpage" onchange="perpage_filter()" style="float:left;">
 							<option value="10">10</option>
@@ -149,62 +150,119 @@ if (!isset($_SESSION['admin'])) {
 						</select>
 					</div><span class="pull-right per-pag">Per Page:</span>
 
-				</div>
+				</div>-->
 				<div style=" display: inline-block;  vertical-align: middle">
 				</div>
 			</div>
 			</br>
-			<div class="work-progres">
-				<header class="widget-header">
-					<div class="pull-right" style="float:left;display:none;" id="total_div">
-						Total Row : <a id="totalrowvalue" class="totalrowvalue"></a>
+
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							
+							<div class="work-progres">
+							
+							
+								
+								
+								<form class="example">
+									<label for="search_name"> Find your products in catalog</label>
+									<div class="row align-items-center">
+									<div class="col-md-9 mb-2">
+										<div class="form-group d-flex flex-wrap">
+
+											<input type="text" class="form-control" id="search_name" aria-describedby="emailHelp" placeholder="Product name, SKU" style="width:50%">
+											<button type="submit" href="javascript:void(0)" class="btn btn-danger waves-effect waves-light" id="searchName"><i class="fa fa-search"></i></button>
+
+								
+						
+										</div>
+									</div>
+									<div class="col-md-3 mb-2" id="perpage_div" style="display:none;">
+										<div class="d-flex align-items-center">
+											<div class="ml-md-auto">
+												<div class="d-flex align-items-center">
+													<span>Show</span>
+													<select class="form-control mx-1" id="perpage" name="perpage" onchange="perpage_filter()" style="float:left;">
+
+														<option value="10">10</option>
+
+														<option value="25">25</option>
+
+														<option value="50">50</option>
+
+													</select>
+													<span class="pull-right per-pag">entries</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									</div>
+									
+									
+
+								<div class="table-responsive"><input type="hidden" id="last_cat" value="0">
+									<table class="table table-hover" id="tblname" style="display:none;">
+										<thead class="thead-light">
+											<tr>
+												<th>Sno</th>
+												<th>Image</th>
+												<th>ProductID</th>
+												<th>Name</th>
+												<th>SKU</th>
+												<th>Brand</th>
+												<th>Category</th>
+												<th>Action</th>
+											</tr>
+										</thead>
+										<tbody id="tbodyPostid">
+											
+										</tbody>
+									</table>
+									
+								</div>
+								<div class="row align-items-center">
+										<div class="col-md-6">
+											<div class="pull-right" style="float:left;">
+												Total Row : <a id="totalrowvalue" class="totalrowvalue"></a>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="pull-right page_div ml-auto" style="float:right;"> </div>
+										</div>
+									</div>
+								
+								<div class="additional-links"><br>
+								<small id="emailHelp" class="form-text text-muted" style="border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;padding:20px"><a class="create-new-redirect" href="add_product.php">I'm adding a product not sold</a></small>
+								<small id="emailHelp" class="form-text text-muted" style="border-right:1px solid #d3d3d3;padding:20px"><a class="create-new-redirect" href="import_product.php">I'm uploading a file to add multiple products</a></small>
+							</div>
+							<div class="clearfix"> <br></div>
+							<div class="clearfix"> <br></div>
+							<div class="clearfix"> </div>
+						</form>
+
+								<div class="clearfix"> </div>
+
+							</div>
+
+							<div class="col_1">
+
+								<div class="clearfix"> </div>
+
+							</div>
+
+						</div>
 					</div>
-
-				</header>
-				<hr class="widget-separator">
-				<div class="table">
-					<form class="example">
-						<label for="search_name">Find your products in catalog</label>
-						<div class="form-group">
-
-							<input type="text" class="form-control" id="search_name" aria-describedby="emailHelp" placeholder="Product name, SKU" style="width:50%">
-							<button type="submit" href="javascript:void(0)" class="btn btn-default" id="searchName"><i class="fa fa-search"></i></button>
-
-						</div>
-						<table class="table table-hover" id="tblname" style="display:none;">
-							<thead>
-								<tr>
-									<th>Sno</th>
-									<th>Image</th>
-									<th>ProductID</th>
-									<th>Name</th>
-									<th>SKU</th>
-									<th>Brand</th>
-									<th>Category</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody id="tbodyPostid">
-							</tbody>
-						</table>
-						<div class="additional-links"><br>
-							<small id="emailHelp" class="form-text text-muted" style="border-left:1px solid #d3d3d3;border-right:1px solid #d3d3d3;padding:20px"><a class="create-new-redirect" href="add_product.php">I'm adding a product not sold</a></small>
-							<small id="emailHelp" class="form-text text-muted" style="border-right:1px solid #d3d3d3;padding:20px"><a class="create-new-redirect" href="import_product.php">I'm uploading a file to add multiple products</a></small>
-						</div>
-						<div class="clearfix"> <br></div>
-						<div class="clearfix"> <br></div>
-						<div class="clearfix"> </div>
-					</form>
 				</div>
 			</div>
-			<div class="clearfix"> </div>
 		</div>
-		<div class="clearfix"></div>
+
 	</div>
 </div>
-<div class="col_1">
-	<div class="clearfix"> </div>
-</div>
+
+
+
 <!--footer-->
 <?php include('footernew.php'); ?>
 <script src="js/admin/search-product.js"></script>

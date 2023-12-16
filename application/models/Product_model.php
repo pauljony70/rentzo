@@ -9,54 +9,61 @@ class Product_model extends CI_Model
 
 		$this->date_time = date('Y-m-d H:i:s');
 	}
-	
+
 	function get_city($city_id)
 	{
 		$return = array();
-		$i =0;
+		$i = 0;
+
 		$this->db->select('city_id, city_name');
-		$this->db->where("city_id in ($city_id)",NULL);
-		$this->db->order_by('city_name','ASC');
-		
+		$this->db->where_in('city_id', rtrim($city_id, ','), FALSE);
+		$this->db->order_by('city_name', 'ASC');
+
 		$query = $this->db->get('city');
-		$state_array = $query->result_object();
-		foreach($state_array as $state_details){
-			$return[$i] = 
-        					array(	
-        					    'id' => $state_details->city_id,
-        						'name' => $state_details->city_name);
-              		   $i = $i+1;  			  
-                $status = 1;
-                $msg = "Details here";
+		$state_array = $query->result();
+		foreach ($state_array as $state_details) {
+			$return[$i] =
+				array(
+					'id' => $state_details->city_id,
+					'name' => $state_details->city_name
+				);
+			$i = $i + 1;
+			$status = 1;
+			$msg = "Details here";
 		}
-		$information =array( 'status' => $status,
-                              'msg' =>   $msg,
-                              'data' => $return);
+		$information = array(
+			'status' => $status,
+			'msg' =>   $msg,
+			'data' => $return
+		);
 		return $information;
 	}
-	
+
 	function get_rents_data_request($pid)
 	{
 		$return = array();
-		$i =0;
+		$i = 0;
 		$this->db->select('rent_from_date, rent_to_date');
 		$this->db->where_in('prod_id', $pid);
-		
+
 		$query = $this->db->get('order_product');
 		$state_array = $query->result_object();
-		foreach($state_array as $state_details){
-			$return[$i] = 
-        					array(	
-        					    'rent_from_date' => $state_details->rent_from_date,
-        						'rent_to_date' => $state_details->rent_to_date);
-              		   $i = $i+1;  			  
-                $status = 1;
-                $msg = "Details here";
+		foreach ($state_array as $state_details) {
+			$return[$i] =
+				array(
+					'rent_from_date' => $state_details->rent_from_date,
+					'rent_to_date' => $state_details->rent_to_date
+				);
+			$i = $i + 1;
+			$status = 1;
+			$msg = "Details here";
 		}
-		$information =array( 'status' => $status,
-                              'msg' =>   $msg,
-                              'prod_id' =>   $pid,
-                              'daterange' => $return);
+		$information = array(
+			'status' => $status,
+			'msg' =>   $msg,
+			'prod_id' =>   $pid,
+			'daterange' => $return
+		);
 		return $information;
 	}
 
@@ -165,15 +172,12 @@ class Product_model extends CI_Model
 				$product_response['is_usd_price'] = $product_details->is_usd_price;
 				$product_response['affiliate_commission'] = $product_details->affiliate_commission;
 				$product_type = $product_details->product_type;
-				if($product_type == 1)
-				{
+				if ($product_type == 1) {
 					$product_type = 'Sell';
-				}
-				else if($product_type == 2)
-				{
+				} else if ($product_type == 2) {
 					$product_type = 'Rent';
 				}
-				
+
 				$badge_img_decode = json_decode($product_details->seller_badge);
 				$seller_badge = '';
 				if ($devicetype == 1) {
@@ -189,7 +193,7 @@ class Product_model extends CI_Model
 						$seller_badge = '';
 					}
 				}
-				
+
 				$badge1_img_decode = json_decode($product_details->seller_badge1);
 				$seller_badge1 = '';
 				if ($devicetype == 1) {
@@ -205,7 +209,7 @@ class Product_model extends CI_Model
 						$seller_badge1 = '';
 					}
 				}
-				
+
 				$badge2_img_decode = json_decode($product_details->seller_badge2);
 				$seller_badge2 = '';
 				if ($devicetype == 1) {
@@ -221,12 +225,12 @@ class Product_model extends CI_Model
 						$seller_badge2 = '';
 					}
 				}
-				
+
 				$product_response['seller_badge'] = $seller_badge;
 				$product_response['seller_badge1'] = $seller_badge1;
 				$product_response['seller_badge2'] = $seller_badge2;
-				
-				
+
+
 				$product_response['product_type'] = $product_type;
 				$product_response['day1_price'] = $product_details->day1_price;
 				$product_response['day3_price'] = $product_details->day3_price;

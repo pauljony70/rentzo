@@ -318,6 +318,8 @@ class Home extends REST_Controller
 		$default_language = $this->session->userdata("default_language");
 		$this->data['header_banner'] = $this->home_model->get_header_banner_request('section1', '1920-680');
 		$this->data['home_section5'] = $this->home_model->get_header_section5_request('section5');
+		$this->data['review_data'] = $this->home_model->get_home_review($default_language);
+		$this->data['nearby_products'] = $this->home_model->get_nearby_products($default_language, $this->session->userdata("address"));
 		// $this->data['deals_banners'] = $this->home_model->get_header_banner_request('section_four_banner', '200-200');
 		// $this->data['home_section2'] = $this->home_model->get_home_section2_request('section2');
 		// $this->data['home_section4'] = $this->home_model->get_header_banner_request('section4', '1930-150');
@@ -328,10 +330,7 @@ class Home extends REST_Controller
 		// $this->data['home_bottom_banner'] = $this->home_model->get_header_banner_request('section8', '610-400');
 		// $this->data['offers_product'] = $this->home_model->get_home_products($default_language, '','Offers', '');
 		// $this->data['brands'] = $this->Brand_model->getTopBrands($default_language, '1');
-		// $this->data['category'] = $this->home_model->get_category();
-
-		$this->data['review_data'] = $this->home_model->get_home_review($default_language);
-
+		// $this->data['category'] = $this->home_model->get_category();		
 
 		$this->load->view('website/index.php', $this->data);
 	}
@@ -363,11 +362,33 @@ class Home extends REST_Controller
 		$subject = $this->input->post('subject');
 		$content = $this->input->post('content');
 
-		$response = $this->home_model->add_faq_form($name, $email, $subject, $content);
-		$this->email_model->sendEmail_faq($name, $email, $subject, $content);
+		$ticket_id = rand(10000000, 99999999);
+
+		$response = $this->home_model->add_faq_form($ticket_id, $name, $email, $subject, $content);
+		$this->email_model->sendEmail_faq($ticket_id, $name, $email, $subject, $content);
 
 		return redirect('contact');
 	}
+
+	function add_ticket_replay_form_post()
+	{
+		$ticket_id = $this->input->post('ticket_id');
+		$subject = $this->input->post('subject');
+		$content = $this->input->post('content');
+
+		$response = $this->home_model->add_ticket_replay_form($ticket_id, $subject, $content);
+		$this->email_model->sendEmail_ticket($ticket_id, $subject, $content);
+
+		return redirect('ticket/' . $ticket_id);
+	}
+
+	public function ticket_get($ticket_id)
+	{
+		$this->data['ticket_id'] = $ticket_id;
+		$this->data['get_ticket'] = $this->home_model->get_ticket_replay();
+		$this->load->view('website/ticket.php', $this->data);
+	}
+
 	function get_home_products_get()
 	{
 		$type = $this->input->get('type');
@@ -377,6 +398,14 @@ class Home extends REST_Controller
 		$response = $this->home_model->get_home_products($default_language, $title, $type, $timezone);
 
 		echo json_encode($response);
+	}
+
+	function get_nearby_products_get()
+	{
+		$default_language = $this->session->userdata("default_language");
+		$user_city = $this->input->get('user_city');
+		$response = $this->home_model->get_nearby_products($default_language, $user_city);
+		$this->output->set_content_type('application/json')->set_output(json_encode($response));
 	}
 
 	function get_home_cat_products_get()

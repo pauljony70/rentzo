@@ -9,9 +9,10 @@ class Home_model extends CI_Model
 		$this->load->model('product_model');
 		$this->date_time = date('Y-m-d H:i:s');
 	}
-	
-	function add_faq_form($name, $email,$subject, $content)
+
+	function add_faq_form($ticket_id, $name, $email, $subject, $content)
 	{
+		$data['ticket_id'] = 'tkt' . $ticket_id;
 		$data['user_name'] = $name;
 		$data['user_email'] = $email;
 		$data['subject'] = $subject;
@@ -19,6 +20,17 @@ class Home_model extends CI_Model
 		$data['create_at'] = $this->date_time;
 
 		$this->db->insert('faq_form', $data);
+	}
+
+	function add_ticket_replay_form($ticket_id, $subject, $content)
+	{
+		$data['ticket_id'] = $ticket_id;
+		$data['subject'] = $subject;
+		$data['content'] = $content;
+		$data['type'] = 'User';
+		$data['create_at'] = $this->date_time;
+
+		$this->db->insert('ticket_history', $data);
 	}
 
 	function get_admin_email()
@@ -221,6 +233,54 @@ class Home_model extends CI_Model
 
 		return $product_array;
 	}
+
+	function get_ticket_replay()
+	{
+		$prod_result = array();
+
+		$product_array = array();
+
+		$start = 0;
+
+		$sortby = 1;
+
+		$devicetype = 1;
+
+
+		$this->db->select('*');
+
+		$query_prod = $this->db->get('ticket_history');
+
+
+
+		if ($query_prod->num_rows() > 0) {
+
+			$ticket_result = $query_prod->result_object();
+
+
+
+			$inq_array = array();
+
+			foreach ($ticket_result as $ticket_details) {
+
+				$tkt_response = array();
+
+				$tkt_response['ticket_id'] = $ticket_details->ticket_id;
+
+				$tkt_response['subject'] = $ticket_details->subject;
+				$tkt_response['content'] = $ticket_details->content;
+
+				$tkt_response['type'] = $ticket_details->type;
+				$tkt_response['create_at'] = $ticket_details->create_at;
+
+				$inq_array[] = $tkt_response;
+			}
+		}
+
+
+		return $inq_array;
+	}
+
 
 	function get_firebase_notification_request($devicetype)
 	{
@@ -856,7 +916,7 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
-	
+
 	function get_header_section5_request($section)
 	{
 
@@ -1413,6 +1473,54 @@ class Home_model extends CI_Model
 		$res_result['title'] = $banner_result;
 
 		return $res_result;
+	}
+
+	function get_nearby_products($language, $user_city)
+	{
+
+		$user_city = str_replace(' City', '', $user_city);
+
+		$this->db->select('city_id');
+		$this->db->like('city_name', $user_city);
+		$city_id = $this->db->get('city')->row_array()['city_id'];
+
+		$prod_data = [];
+
+		if ($city_id != '') {
+			$this->db->select('product_unique_id as product_id');
+			$this->db->where(array('status' => 1));
+			$this->db->like('city', $city_id . ',');
+			$this->db->order_by("id", 'DESC');
+			$this->db->limit(15, 0);
+			$product_ids_result = $this->db->get('product_details')->result_array();
+			$product_ids = array_column($product_ids_result, 'product_id');
+
+			if (count($product_ids)) {
+				$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar, pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img,	vp1.vendor_id, offer_start_date, offer_end_date, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark, is_usd_price, pd.day1_price');
+				$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
+				FROM vendor_product vp WHERE  vp.product_id IN(' . $this->getValues($product_ids) . ') AND vp.enable_status=1 group by vp.product_id  ) as vp2', 'pd.product_unique_id = vp2.product_id');
+				$this->db->join('vendor_product vp1', 'vp1.product_id = vp2.product_id AND vp1.product_sale_price = vp2.mrp_min', 'INNER');
+				$this->db->join('sellerlogin seller', 'vp1.vendor_id = seller.seller_unique_id', 'INNER');
+				$this->db->where_in('pd.product_unique_id', $product_ids);
+				$this->db->where(array('pd.status' => 1, 'vp1.enable_status' => 1, 'seller.status' => 1));
+				$this->db->group_by("pd.product_unique_id");
+				$this->db->order_by("pd.id", 'DESC');
+				$prod_data = $this->db->get('product_details as pd')->result_array();
+
+				if (count($prod_data)) {
+					foreach ($prod_data as $key => $product) {
+						$img_decode = json_decode($product['img']);
+						if (isset($img_decode->{DESKTOP})) {
+							$img = $img_decode->{DESKTOP};
+						} else {
+							$img = $product['img'];
+						}
+						$prod_data[$key]['img'] = MEDIA_URL . $img;
+					}
+				}
+			}
+		}
+		return $prod_data;
 	}
 
 	function get_order_details_products($language, $type)

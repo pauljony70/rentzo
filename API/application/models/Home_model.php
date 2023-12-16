@@ -1025,6 +1025,171 @@ class Home_model extends CI_Model
 
 		return $banner_result;
 	}
+	
+	function get_header_noti_request($section)
+	{
+		$this->db->select('*');
+
+		$this->db->where(array('section' => $section));
+		$query = $this->db->get('homepage_banner');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners_data) {
+				$banners = array();
+				$banners['title'] = $banners_data->image;
+				$banners['link'] = $banners_data->link;
+				
+				$banner_result[] = $banners;
+			}
+		}
+
+		return $banner_result;
+	}
+	
+	
+	function get_home_products_new($language, $title, $type, $timezone)
+	{
+		$prod_result = array();
+		$product_array = array();
+		$start = 0;
+		$sortby = 1;
+		$devicetype = 1;
+
+		if ($type != 'New0') {
+
+			$this->db->select('popular_product.product_id');
+			$this->db->join('product_details', 'product_details.product_unique_id = popular_product.product_id', 'INNER');
+			$this->db->join('vendor_product vp', 'product_details.product_unique_id = vp.product_id', 'INNER');
+			$this->db->join('sellerlogin seller', 'vp.vendor_id = seller.seller_unique_id', 'INNER');
+			$this->db->where(array('product_details.status' => 1, 'vp.enable_status' => 1, 'seller.status' => 1, 'popular_product.type' => $type));
+			$this->db->order_by("popular_product.id", 'ASC');
+
+			$this->db->limit(15, $start);
+
+			$query = $this->db->get('popular_product');
+		} else {
+			$this->db->select('product_unique_id as product_id');
+			$this->db->where(array('status' => 1));
+			$this->db->order_by("id", 'DESC');
+			$this->db->limit(15, $start);
+			$query = $this->db->get('product_details');
+		}
+
+
+		if ($query->num_rows() > 0) {
+			$category_result = $query->result_object();
+
+			$product_id = array();
+			foreach ($category_result as $cat_product) {
+				$product_id[] = $cat_product->product_id;
+			}
+
+
+			$this->db->select('pd.product_unique_id as id , pd.prod_name as name, pd.prod_name_ar as name_ar,pd.web_url as web_url, pd.product_sku as sku, pd.featured_img as img , "active" as active,
+				vp1.vendor_id, vp1.product_mrp as mrp, vp1.product_sale_price price, vp1.product_stock as stock, vp1.product_remark as remark');
+
+
+			$this->db->join('(SELECT vp.id as min_id,vp.product_id,  min(vp.product_sale_price) as mrp_min
+				FROM vendor_product vp WHERE  vp.product_id IN(' . $this->getValues($product_id) . ') AND vp.enable_status=1 group by vp.product_id  ) as vp2', 'pd.product_unique_id = vp2.product_id');
+			$this->db->join('vendor_product vp1', 'vp1.product_id = vp2.product_id AND vp1.product_sale_price = vp2.mrp_min', 'INNER');
+			$this->db->join('sellerlogin seller', 'vp1.vendor_id = seller.seller_unique_id', 'INNER');
+			$this->db->where_in('pd.product_unique_id', $product_id);
+			$this->db->where(array('pd.status' => 1, 'vp1.enable_status' => 1, 'seller.status' => 1));
+			$this->db->group_by("pd.product_unique_id");
+
+			if ($type == 'New') {
+				$this->db->order_by("pd.id", 'DESC');
+			}
+
+			/*if($sortby==1){
+				$this->db->order_by("vp2.mrp_min",'ASC'); 
+			}else if($sortby==2){
+				$this->db->order_by("vp2.mrp_min",'DESC'); 
+			}else if($sortby==3){
+				$this->db->order_by("pd.created_at",'DESC'); 
+			}else if($sortby==4){
+				$this->db->order_by("pd.prod_rating_count",'DESC'); 
+			}*/
+
+			$query_prod = $this->db->get('product_details as pd');
+
+			if ($query_prod->num_rows() > 0) {
+				$prod_result = $query_prod->result_object();
+
+				$product_array = array();
+				foreach ($prod_result as $product_details) {
+					$product_response = array();
+					$product_response['id'] = $product_details->id;
+					if ($language == 1) {
+						$product_response['name'] = $product_details->name_ar;
+					} else {
+						$product_response['name'] = $product_details->name;
+					}
+					$product_response['web_url'] = $product_details->web_url;
+					$product_response['sku'] = $product_details->sku;
+					$product_response['active'] = $product_details->active;
+					$product_response['vendor_id'] = $product_details->vendor_id;
+					$product_response['mrp'] = price_format($product_details->mrp);
+					$product_response['price'] = price_format($product_details->price);
+					$product_response['stock'] = $product_details->stock;
+					$product_response['remark'] = $product_details->remark;
+					$product_response['rating'] = 0;
+
+					$discount_per = 0;
+					$discount_price = 0;
+					if ($product_details->price > 0) {
+						$discount_price = ($product_details->mrp - $product_details->price);
+
+						$discount_per = ($discount_price / $product_details->mrp) * 100;
+					}
+					$product_response['totaloff'] = price_format($discount_price);
+					$product_response['offpercent'] = round($discount_per) . '% off';
+
+					$img_decode = json_decode($product_details->img);
+
+					if ($devicetype == 1) {
+						if (isset($img_decode->{MOBILE})) {
+							$img = $img_decode->{MOBILE};
+						} else {
+							$img = $product_details->img;
+						}
+					} else {
+						if (isset($img_decode->{DESKTOP})) {
+							$img = $img_decode->{DESKTOP};
+						} else {
+							$img = $product_details->img;
+						}
+					}
+
+					$product_response['imgurl'] = MEDIA_URL . $img;
+					$product_array[] = $product_response;
+				}
+			}
+		}
+		
+		
+		$res_result = array();
+		$res_result['product_array'] = $product_array;
+
+		$this->db->select('*');
+
+		$this->db->where(array('section' => $title));
+		$query = $this->db->get('homepage_banner');
+
+		$banner_result = array();
+		if ($query->num_rows() > 0) {
+			$home_result = $query->result_object();
+			foreach ($home_result as $banners) {
+				$banners->image = $banners->image;
+				$banner_result[] = $banners->image;
+			}
+		}
+		$res_result['title'] = $banner_result;
+
+		return $product_array;
+	}
 
 
 	function get_home_products($language, $type)
@@ -1167,6 +1332,7 @@ class Home_model extends CI_Model
 			$email_1 = '';
 			$email_2 = '';
 			$aboutus = '';
+			$login_banner = '';
 			foreach ($category_array as $cat_details) {
 				if ($cat_details->type == 'system_name') {
 					$name = $cat_details->description;
@@ -1181,8 +1347,21 @@ class Home_model extends CI_Model
 				} else if ($cat_details->type == 'aboutus') {
 					$aboutus = strip_tags(html_entity_decode($cat_details->description));
 				}
+				else if ($cat_details->type == 'login_banner') {
+					
+					if ($devicetype == 1) {
+						$img_decode = json_decode($cat_details->description);
+
+						$img_login = $img_decode->{MOBILE};
+					} else {
+						$img_decode = json_decode($cat_details->description);
+						$img_login = $img_decode->{DESKTOP};
+					}
+					$login_banner = $img_login;
+					
+				}
 			}
-			$data[] = array('name' => $name, 'phone' => $phone, 'email_1' => $email_1, 'email_2' => $email_2, 'whatsapp' => $whatsapp, 'aboutus' => $aboutus);
+			$data[] = array('name' => $name, 'phone' => $phone, 'email_1' => $email_1, 'email_2' => $email_2, 'whatsapp' => $whatsapp, 'aboutus' => $aboutus, 'login_banner' => $login_banner);
 		}
 		return $data;
 	}

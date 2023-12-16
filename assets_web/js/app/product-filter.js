@@ -76,7 +76,7 @@ function get_category_product(catid, sortby, pageno, callback) {
                                         <div class="d-flex stars py-1">
                                             ${ratingHTML}
                                         </div>
-                                        <div class="rent-price py-1">${this.day1_price} / Day</div>
+                                        <div class="rent-price py-1">${this.day1_price}/day</div>
                                         <div class="product-location line-clamp-1 py-1">
                                             Subhas Nagar, Dheradun
                                         </div>

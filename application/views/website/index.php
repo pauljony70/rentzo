@@ -53,9 +53,9 @@
 				</div>
 				<div class="swiper section-5-category-div" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
 					<div class="swiper-wrapper">
-						<?php  foreach ($home_section5 as $home_category) : ?>
+						<?php foreach ($home_section5 as $home_category) : ?>
 							<div class="swiper-slide">
-								<a href="<?php echo base_url.$home_category->cat_name; ?>" class="d-flex align-items-center flex-column justify-content-center">
+								<a href="<?php echo base_url . $home_category->cat_name; ?>" class="d-flex align-items-center flex-column justify-content-center">
 									<div class="d-flex justify-content-center">
 										<img src="<?= base_url('media/' . json_decode($home_category->image)->{'470-720'}) ?>" alt="<?= $home_category->cat_name ?>">
 									</div>
@@ -186,6 +186,49 @@
 				</div>
 			</div>
 		</section>
+
+		<!-- 
+			---------------------------------------------------
+			Nearby Products
+			---------------------------------------------------
+		-->
+		<?php if (count($nearby_products)) : ?>
+			<section class="best-deal-section mb-4 mb-md-5">
+				<div class="container">
+					<div class="d-flex align-items-center justify-content-between mb-4 mb-md-5">
+						<div class="section-heading pb-md-3">
+							<span style="color: #666666;">Products available in </span>
+							<span style="color: var(--bs-primary);"> <?= $this->session->userdata("address") ?></span>
+						</div>
+						<!--<div class="d-flex align-items-center">
+						<span class="view-all">View All</span>
+						<i class="fa-solid fa-chevron-right ms-2"></i>
+					</div>-->
+					</div>
+					<div class="swiper product-swiper" style="--swiper-navigation-color: #fff; --swiper-pagination-color: #ff6600; --swiper-navigation-size: 18px; --swiper-scrollbar-sides-offset: 50%">
+						<div class="swiper-wrapper" id="near_products">
+							<?php foreach ($nearby_products as $nearby_product) : ?>
+								<div class="swiper-slide">
+									<a href="<?= base_url($nearby_product['web_url'] . '?pid=' . $nearby_product['id'] . '&sku=' . $nearby_product['sku'] . '&sid=' . $nearby_product['vendor_id']) ?>" class="d-flex flex-column card product-card rounded-4">
+										<img src="<?= $nearby_product['img'] ?>" class="card-img-top product-card-img rounded-4" alt="<?= $nearby_product['name'] ?>">
+										<div class="card-body d-flex flex-column product-card-body">
+											<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $nearby_product['name'] ?></h5>
+											<div class="card-text d-flex justify-content-between py-1">
+												<div class="rent-heading">Rent</div>
+												<div class="rent-price"><?= $nearby_product['day1_price'] ?>/day</div>
+											</div>
+											<div class="product-card-footer pt-1">
+												<div class="text-success">Available Today</div>
+											</div>
+										</div>
+									</a>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+			</section>
+		<?php endif; ?>
+
 
 		<!--
 			--------------------------------------------------- 

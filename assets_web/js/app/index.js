@@ -175,7 +175,7 @@ function get_home_products(title, type) {
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
 										<div class="rent-heading">Rent</div>
-										<div class="rent-price">${this.day1_price} / Day</div>
+										<div class="rent-price">${this.day1_price}/day</div>
 									</div>
 									<div class="product-card-footer pt-1">
 										<div class="text-success">Available Today</div>
@@ -186,30 +186,6 @@ function get_home_products(title, type) {
 				});
 			} else { }
 			$("#" + type + "_products").html(product_html);
-			new Swiper(".product-swiper", {
-				slidesPerView: 2.7,
-				spaceBetween: 15,
-				freeMode: true,
-				grabCursor: true,
-				mousewheel: {
-					forceToAxis: true,
-				},
-				forceToAxis: false,
-				breakpoints: {
-					640: {
-						slidesPerView: 3.5,
-						spaceBetween: 15,
-					},
-					1024: {
-						slidesPerView: 4.5,
-						spaceBetween: 15,
-					},
-					1400: {
-						slidesPerView: 5.5,
-						spaceBetween: 15,
-					},
-				},
-			});
 		},
 	});
 }
@@ -244,7 +220,7 @@ function get_home_bottom_products(title, type) {
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
 										<div class="rent-heading">Rent</div>
-										<div class="rent-price">${this.day1_price} / Day</div>
+										<div class="rent-price">${this.day1_price}/day</div>
 									</div>
 									<div class="product-card-footer pt-1">
 										<div class="text-success">Available Today</div>
@@ -262,6 +238,30 @@ function get_home_bottom_products(title, type) {
 	});
 }
 
+var homeProductSwiper = new Swiper(".product-swiper", {
+	slidesPerView: 2.7,
+	spaceBetween: 15,
+	freeMode: true,
+	grabCursor: true,
+	mousewheel: {
+		forceToAxis: true,
+	},
+	forceToAxis: false,
+	breakpoints: {
+		640: {
+			slidesPerView: 3.5,
+			spaceBetween: 15,
+		},
+		1024: {
+			slidesPerView: 4.5,
+			spaceBetween: 15,
+		},
+		1400: {
+			slidesPerView: 5.5,
+			spaceBetween: 15,
+		},
+	},
+});
 
 var categorySwiper = new Swiper(".section-5-category-div", {
 	slidesPerView: 4.7,

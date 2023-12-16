@@ -123,7 +123,7 @@ include("header.php");
 					'" . $ordersno . "','" . $product_id . "','" . $orderstatus . "','" . $ordermessage . "','" . $datetime . "')");
 	$sql_status->execute();
 	$sql_status->store_result();
-	$rows = $sql_status->affected_rows;
+	$rows = $sql_status->affected_rows; 
 
 
 	$reverse_shipping = 0;
@@ -136,10 +136,12 @@ include("header.php");
 	$sql1->store_result();
 
 	if ($rows > 0) {
+		$Common_Function->send_delivered_email_invoice_user($conn, $ordersno, $product_id, $_SESSION['admin'], $orderstatus);
 		echo "<script>successmsg1('Order updated successfully.', 'edit_order.php?orderid={$ordersno}&product_id={$product_id}'); </script>";
 		//if($orderstatus =='Delivered'){
-		$Common_Function->send_delivered_email_invoice_user($conn, $ordersno, $product_id, $_SESSION['admin'], $orderstatus);
+		
 		//}
+		
 	}
 }
 
@@ -207,11 +209,11 @@ if ($query->num_rows > 0) {
 
 $col1 = $col2 = $col3 = $col4 = $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = $col12 = $col13 = $col14 = $col15 = $col16 = '';
 
-$stmt = $conn->prepare("SELECT order_id, user_id, status, total_price, payment_orderid, payment_id, payment_mode, qoute_id, create_date, discount, total_qty, fullname, mobile, fulladdress, country, region, governorate, area, lat, lng, addresstype, email FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
+$stmt = $conn->prepare("SELECT order_id, user_id, status, total_price, payment_orderid, payment_id, payment_mode, qoute_id, create_date, discount, total_qty, fullname, mobile, fulladdress, country, city, state, area, lat, lng, addresstype, email,pincode FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
 
 
 $stmt->execute();
-$data = $stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11, $col12, $col13, $col14, $col15, $col16, $col17, $col18, $col19, $col20, $col21, $col22);
+$data = $stmt->bind_result($col1, $col2, $col3, $col4, $col5, $col6, $col7, $col8, $col9, $col10, $col11, $col12, $col13, $col14, $col15, $col16, $col17, $col18, $col19, $col20, $col21, $col22, $col23);
 
 while ($stmt->fetch()) {
 
@@ -230,13 +232,14 @@ while ($stmt->fetch()) {
 	$mobile =  $col13;
 	$fulladdress =  $col14;
 	$country =  $col15;
-	$region =  $col16;
-	$governorate =  $col17;
+	$city =  $col16;
+	$state =  $col17;
 	$area =  $col18;
 	$lat =  $col19;
 	$lng =  $col20;
 	$addresstype =  $col21;
 	$email =  $col22;
+	$pincode =  $col23;
 }
 
 
@@ -258,6 +261,15 @@ if ($col2) {
 } else {
 	$user_type = 'Guest';
 }
+
+$stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $country . "' ");
+
+	$stmt_country->execute();
+	$data1 = $stmt_country->bind_result($country_name);
+	$country_name  = '';
+	while ($stmt_country->fetch()) {
+		$country_name = $country_name;
+	}
 
 ?>
 
@@ -320,10 +332,10 @@ if ($col2) {
 														</td>
 														<td>
 															<?= $fullname . '<br>' . $mobile . ', ' . $email;
-															echo '<br>' . $fulladdress . ',<br>' . $area . ', ' . $governorate . ', ' . $region . ', ' . $country . '(' . $addresstype . ')';
+															echo '<br>' . $fulladdress . ',<br>' . $city . ', ' . $state . ', ' . $country_name . '(' . $addresstype . ')';
 															?>
 															<br>
-															<a href="https://www.google.com/maps/search/?api=1&query=<?= $lat ?>,<?= $lng ?>" target="_blank" class="text-dark"><strong>View in map <i class="fa fa-external-link" aria-hidden="true"></i></strong></a>
+															<!--<a href="https://www.google.com/maps/search/?api=1&query=<?= $lat ?>,<?= $lng ?>" target="_blank" class="text-dark"><strong>View in map <i class="fa fa-external-link" aria-hidden="true"></i></strong></a>-->
 														</td>
 														<td><?= $order_status; ?> </td>
 														<td><?= $create_date; ?> </td>
@@ -494,7 +506,7 @@ if ($col2) {
 															</div>
 														</div>
 														<div class="form-group row align-items-center">
-															<label class="col-4 control-label m-0"> Courier Name*</label>
+															<label class="col-4 control-label m-0"> Courier By*</label>
 															<div class="col-8">
 																<select class="form-control" id="curier_name" name="curier_name">
 																	<option value="">Select Courier</option>
@@ -503,6 +515,91 @@ if ($col2) {
 																</select>
 															</div>
 														</div>
+														
+														<?php
+													$curl1 = curl_init();
+													curl_setopt_array($curl1, array(
+														CURLOPT_URL => 'https://api.nimbuspost.com/v1/users/login',
+														CURLOPT_RETURNTRANSFER => true,
+														CURLOPT_ENCODING => '',
+														CURLOPT_MAXREDIRS => 10,
+														CURLOPT_TIMEOUT => 0,
+														CURLOPT_FOLLOWLOCATION => true,
+														CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+														CURLOPT_CUSTOMREQUEST => 'POST',
+														CURLOPT_POSTFIELDS => '{
+															"email" : "rentzoin+928@gmail.com",
+															"password" : "smFrs6JUAI"				
+														}',
+														CURLOPT_HTTPHEADER => array(
+															'content-type: application/json'
+														),
+													));
+													$response1 = curl_exec($curl1);
+													curl_close($curl1);
+													$token_data = json_decode($response1);
+													$token = $token_data->data;
+													$curl = curl_init();
+													curl_setopt_array($curl, array(
+														CURLOPT_URL => 'https://api.nimbuspost.com/v1/courier/serviceability',
+														CURLOPT_RETURNTRANSFER => true,
+														CURLOPT_ENCODING => '',
+														CURLOPT_MAXREDIRS => 10,
+														CURLOPT_TIMEOUT => 0,
+														CURLOPT_FOLLOWLOCATION => true,
+														CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+														CURLOPT_CUSTOMREQUEST => 'POST',
+														CURLOPT_POSTFIELDS => '{
+															"origin" : ' . $_SESSION['seller_pincode'] . ',
+															"destination" : ' . $pincode . ',
+															"payment_type" : "cod",
+															"order_amount" : "50",
+															"weight" : "10",	
+															"length" : "10",
+															"breadth" : "10",
+															"height" : "10"
+														}',
+														CURLOPT_HTTPHEADER => array(
+															'Content-Type: application/json',
+															'Authorization: token ' . $token . ''
+														),
+													));
+													$response_rate = curl_exec($curl);
+													curl_close($curl);
+													$response_rate = json_decode($response_rate);
+													/*print_r($response_rate);*/
+													?>
+													<div class="form-group row align-items-center">
+														<label for="focusedinput" class="col-4 control-label m-0">Courier Name</label>
+														<div class="col-8">
+															<select class="form-control" id="curier_company" name="curier_company">
+																<option>select Courier</option>
+																<?php
+																foreach ($response_rate->data as $ship_data) {
+																	if ($ship_data->id != '' && $ship_data->id == 179) /*Blue dark */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 67) /* Smartr */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 17) /* Kerry Indev */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 3) /* Xpressbees Air */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 79) /* DTDC Air */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 10) /* Ecom EXP */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 15) /* Ekart */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																		<?php } else if ($ship_data->id != '' && $ship_data->id == 92) /* Delhivery Air Reverse */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																	<?php } else if ($ship_data->id != '' && $ship_data->id == 66) /* Amazon Shipping */ { ?>
+																		<option value="<?php echo $ship_data->id; ?>"><?php echo $ship_data->name.' (Rs.'.$ship_data->freight_charges.')'; ?></option>
+																<?php }
+																}
+																?>
+															</select>
+														</div>
+													</div>
 
 														<div class="form-group row align-items-center" id="new_pickupdate" style="display:none;">
 															<label for="focusedinput" class="col-4 control-label m-0">Pickup Date</label>
@@ -523,9 +620,13 @@ if ($col2) {
 											<?php
 													$status_array = array();
 													
-													if($order_status == 'Accepted' || $order_status == 'Placed')
+													if($order_status == 'Placed')
 													{
 														$status_array = array('Packed' => 'Packed','Shipped' => 'Shipped','Cancelled' => 'Cancelled','Return Request' => 'Return Request','Returned Completed' => 'Returned Completed','Delivered' => 'Delivered');
+													}
+													if($order_status == 'Accepted')
+													{
+														$status_array = array('Packed' => 'Packed','Cancelled' => 'Cancelled');
 													}
 													else if($order_status == 'Packed')
 													{
@@ -558,7 +659,7 @@ if ($col2) {
 													
 
 											?>
-											<?php if ($order_status !== '' || $order_status !== NULL || $order_status == 'Placed' || $order_status == 'Rejected' || $order_status == 'Cancelled') : ?> 
+											<?php if ($order_status != 'Placed' || $order_status == 'Rejected' || $order_status == 'Cancelled') : ?> 
 												<div class="form-three widget-shadow mt-2 dontprint">
 													<strong>Update Status:</strong><br>
 													<form class="form-horizontal" method="post" id="myform">
@@ -644,7 +745,7 @@ if ($col2) {
 														<div class="form-group row align-items-center">
 															<label for="focusedinput" class="col-4 control-label m-0">Delivery Date</label>
 															<div class="col-8">
-																<input type="text" class="form-control" id="delivery_date" name="delivery_date" placeholder="" value="<?= $delivery_date ?>">
+																<input type="text" class="form-control" id="delivery_date" name="delivery_date" placeholder="" value="<?php if($delivery_date != '0000-00-00') { echo $delivery_date; } ?>">
 															</div>
 														</div>
 														<div class="form-group row align-items-center">
@@ -843,9 +944,11 @@ if ($col2) {
 		if ($(this).val() == 'Accepted') {
 			$('#new_pickupdate').show();
 			$('#curier_name').show();
+			$('#curier_company').show();
 		} else {
 			$('#new_pickupdate').hide();
 			$('#curier_name').hide();
+			$('#curier_company').hide();
 		}
 
 

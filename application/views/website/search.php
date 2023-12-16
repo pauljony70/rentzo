@@ -69,7 +69,7 @@
 									?>
 									<?php endif; ?>
 								</div>
-								<div class="rent-price py-1"><?= $new_product_data['day1_price'] ?> / Day</div>
+								<div class="rent-price py-1"><?= $new_product_data['day1_price'] ?>/day</div>
 								<div class="product-location line-clamp-1 py-1">
 									Subhas Nagar, Dheradun
 								</div>

@@ -15,7 +15,7 @@ class SellerController extends REST_Controller {
         // Load the user model
         $this->load->model('sellerProduct_model');
         $this->load->model('home_model');
-    }
+    } 
 	public function index_get()
 	{
 		$this->responses(1,'Server OK');

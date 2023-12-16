@@ -87,8 +87,8 @@ echo $msg;
 <?php include("header.php"); ?>
 
 	<!-- main content start-->
-		<div id="page-wrapper">
-			<div class="main-page">
+		<div class="content-page" id="page-wrapper">
+			<div class="main-page mb-2">
 				<div>
 			  	    <div class="bs-example widget-shadow" data-example-id="hoverable-table"> 
         			    <h4 style="padding: 15px; height: 4px">
@@ -102,8 +102,8 @@ echo $msg;
 					
 				</div>
 			</div>
-			<div class="col-md-8 ">
-				<div class="activity_box activity_box1">
+			<div class="col-md-8 card">
+				<div class="activity_box activity_box1 card-body">
 					<h3>Inventory Product Status</h3>
 					<div class="" id="style-3">
 					<table class="table table-hover" id="tblname">
@@ -154,9 +154,10 @@ echo $msg;
 			</div>
 		</div>
 		<!--footer-->
-              <?php    include('footernew.html'); ?>
+              <?php  //  include('footernew.html'); ?>
         <!--//footer-->
 	</div>
+	<?php include('footernew.php'); ?>
 	<script>	
 		$(document).ready(function(){
 			$("#finish_update").click(function(event){
@@ -168,14 +169,14 @@ echo $msg;
 	</script>		
 
 	<!--scrolling js-->
-	<script src="js/jquery.nicescroll.js"></script>
-	<script src="js/scripts.js"></script>
+	<!--<script src="js/jquery.nicescroll.js"></script>
+	<script src="js/scripts.js"></script>-->
 	<!--//scrolling js-->
 	
 	<!-- side nav js -->
-	<script src='js/SidebarNav.min.js' type='text/javascript'></script>
+	<!--<script src='js/SidebarNav.min.js' type='text/javascript'></script>-->
 	<script>
-      $('.sidebar-menu').SidebarNav()
+      //$('.sidebar-menu').SidebarNav()
     </script>
 	<!-- //side nav js -->
 	

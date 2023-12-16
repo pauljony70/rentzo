@@ -14,8 +14,7 @@ class Order_model extends CI_Model
 
 	function get_order_list_details($user_id)
 	{
-		$this->db->select("o.order_id,o.status, o.total_price,o.payment_mode,o.create_date,
-							o.discount,o.total_qty");
+		$this->db->select("o.order_id, o.status, o.total_price, o.payment_mode, o.create_date, o.discount,o.total_qty");
 
 
 		$this->db->where(array('o.user_id' => $user_id));
@@ -49,7 +48,7 @@ class Order_model extends CI_Model
 
 	function get_order_full_details($user_id, $order_id, $pid)
 	{
-		$this->db->select("o.order_id, o.status, o.total_price,o.payment_mode,o.create_date, o.discount,o.total_qty, o.fullname, o.mobile, o.fulladdress, o.country, o.region, o.governorate, o.area, o.addresstype, o.email, o.coupon_code, o.coupon_value");
+		$this->db->select("o.order_id, o.status, o.total_price,o.payment_mode,o.create_date, o.discount,o.total_qty, o.fullname, o.mobile, o.fulladdress, o.country, o.region, o.governorate, o.area, o.addresstype, o.email, o.coupon_code, o.coupon_value,o.city,o.state,o.pincode");
 
 		$this->db->where(array('o.user_id' => $user_id, 'o.order_id' => $order_id));
 		$query = $this->db->get('orders o');
@@ -73,9 +72,12 @@ class Order_model extends CI_Model
 			$shipping['fullname'] = $order_detail->fullname;
 			$shipping['mobile'] = $order_detail->mobile;
 			$shipping['fulladdress'] = $order_detail->fulladdress;
+			$shipping['city'] = $order_detail->city;
+			$shipping['state'] = $order_detail->state;
 			$shipping['country'] = $order_detail->country;
 			$shipping['region'] = $order_detail->region;
 			$shipping['area'] = $order_detail->area;
+			$shipping['pincode'] = $order_detail->pincode;
 			$shipping['governorate'] = $order_detail->governorate;
 			$shipping['addresstype'] = $order_detail->addresstype;
 			$shipping['email'] = $order_detail->email;

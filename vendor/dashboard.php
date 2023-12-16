@@ -57,7 +57,7 @@ if (!isset($_SESSION['admin'])) {
 										<span data-plugin="counterup">
 											<?php
 
-											$stmt = $conn->prepare("SELECT SUM(prod_price*qty) FROM `order_product` WHERE status ='Delivered' AND vendor_id= '" . $_SESSION['admin'] . "'");
+											$stmt = $conn->prepare("SELECT SUM(prod_price*qty) FROM `order_product` WHERE  vendor_id= '" . $_SESSION['admin'] . "'");
 											$stmt->execute();
 											$data = $stmt->bind_result($col1);
 											$revenue = 0;

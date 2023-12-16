@@ -558,7 +558,7 @@ function related_product() {
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
 										<div class="rent-heading">Rent</div>
-										<div class="rent-price">${this.day1_price} / Day</div>
+										<div class="rent-price">${this.day1_price}/day</div>
 									</div>
 									<div class="product-card-footer pt-1">
 										<div class="text-success">Available Today</div>
@@ -634,7 +634,7 @@ function upsell_product() {
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
 									<div class="card-text d-flex justify-content-between py-1">
 										<div class="rent-heading">Rent</div>
-										<div class="rent-price">${this.day1_price} / Day</div>
+										<div class="rent-price">${this.day1_price}/day</div>
 									</div>
 									<div class="product-card-footer pt-1">
 										<div class="text-success">Available Today</div>

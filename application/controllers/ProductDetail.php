@@ -88,7 +88,7 @@ class ProductDetail extends REST_Controller
 			}
 		}
 
-		$this->data['product_custom_cloth'] = $this->product_model->get_product_custom_cloth($pid);
+		// $this->data['product_custom_cloth'] = $this->product_model->get_product_custom_cloth($pid);
 		$this->data['product_review'] = $this->product_model->get_product_review($pid, '');
 		$this->data['product_review_total'] = $this->product_model->get_product_review_total($pid);
 		$this->data['related_product'] = $this->product_model->get_popular_product_request($default_language, 2, $product_id);

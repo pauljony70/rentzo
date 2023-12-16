@@ -296,7 +296,7 @@ class Checkout extends REST_Controller
 	// function for placeOrder
 	public function placeOrder_post()
 	{
-		$requiredparameters = array('language', 'user_id', 'qouteid', 'fullname', 'mobile', 'email', 'area', 'fulladdress', 'country', 'region', 'governorate', 'lat', 'lng', 'addresstype', 'payment_id', 'payment_mode', 'coupon_code', 'coupon_value');
+		$requiredparameters = array('language', 'user_id', 'qouteid', 'fullname', 'mobile', 'email', 'area', 'fulladdress', 'country', 'region', 'governorate', 'lat', 'lng', 'addresstype', 'payment_id', 'payment_mode', 'coupon_code', 'coupon_value','city','state','pincode');
 
 		$language_code = removeSpecialCharacters($this->post('language'));
 		$user_id = removeSpecialCharacters($this->post('user_id'));
@@ -316,6 +316,9 @@ class Checkout extends REST_Controller
 		$payment_mode = removeSpecialCharacters($this->post('payment_mode'));
 		$coupon_code = removeSpecialCharacters($this->post('coupon_code'));
 		$coupon_value = removeSpecialCharacters($this->post('coupon_value'));
+		$city = removeSpecialCharacters($this->post('city'));
+		$state = removeSpecialCharacters($this->post('state'));
+		$pincode = removeSpecialCharacters($this->post('pincode'));
 
 
 
@@ -324,7 +327,7 @@ class Checkout extends REST_Controller
 		if ($validation == 'valid') {
 			if (($user_id || $qouteid) && $fullname && $mobile && $fulladdress && $country && $addresstype && $payment_id && $payment_mode) {
 
-				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value);
+				$order_detail = $this->checkout_model->place_order_details($user_id, $qouteid, $fullname, $mobile, $area, $fulladdress, $country, $region, $governorate, $lat, $lng, $addresstype, $email, $payment_id, $payment_mode, $coupon_code, $coupon_value,$city,$state,$pincode);
 
 				if ($order_detail['status'] == 'update') {
 					$order_details['order_id'] = $order_detail['order_id'];

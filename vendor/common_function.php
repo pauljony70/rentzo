@@ -1139,7 +1139,7 @@ class Common_Function
 	function price_formate($conn, $price)
 	{
 		$currency = $this->get_system_settings($conn, 'system_currency_symbol');
-		return number_format($price) . ' ' . $currency;
+		return $currency.' ' .number_format($price);
 	}
 
 	function get_cat($col1, $conn)
@@ -1236,7 +1236,6 @@ class Common_Function
 							email FROM orders WHERE order_id = '" . $order_id . "'");
 
 
-
 			if ($order_detail->num_rows > 0) {
 				$order_result = $order_detail->fetch_assoc();
 
@@ -1329,6 +1328,113 @@ class Common_Function
 				}
 			}
 		}
+		else
+		{
+			$subject = "Your Order Status Update is".$orderstatus;
+			$email_body = '';
+
+			//query for get order _details
+			$order_detail = $conn->query("SELECT total_price, create_date, fullname,mobile,locality,fulladdress,city,state,pincode,addresstype,
+							email FROM orders WHERE order_id = '" . $order_id . "'");
+
+			
+
+			if ($order_detail->num_rows > 0) {
+				$order_result = $order_detail->fetch_assoc();
+				
+				$total_price = $this->price_formate($conn, $order_result['total_price']);
+				$create_date = date("M d, Y", strtotime($order_result['create_date']));
+				$fullname = $order_result['fullname'];
+				$mobile = $order_result['mobile'];
+				$toemail = $order_result['email'];
+				$address = $order_result['fulladdress'] . '<br>' . $order_result['locality'] . '<br>' . $order_result['city'] . ',' . $order_result['state'] . ',' . $order_result['pincode'];
+
+				$android_app_link = $this->get_system_settings($conn, 'android_app_link');
+				$ios_app_link = $this->get_system_settings($conn, 'ios_app_link');
+				$system_name = $this->get_system_settings($conn, 'system_name');
+				$ios_app_link_img = MEDIAURL . 'ios_store.png';
+				$and_app_img =  MEDIAURL . 'google_play.png';
+
+				/*$email_body = str_replace(array('{AMOUNT_PAID}', 'AMOUNT_PAID'), $total_price, $email_body);
+				$email_body = str_replace(array('{USER_NAME}', 'USER_NAME'), $fullname, $email_body);
+				$email_body = str_replace(array('{ORDER_DATE}', 'ORDER_DATE'), $create_date, $email_body);
+				$email_body = str_replace(array('{ORDER_ID}', 'ORDER_ID'), $order_id, $email_body);
+				$email_body = str_replace(array('{USER_ADDRESS}', 'USER_ADDRESS'), $address, $email_body);
+				$email_body = str_replace(array('{USER_PHONE}', 'USER_PHONE'), $mobile, $email_body);
+				$email_body = str_replace(array('{STORE_NAME}', 'STORE_NAME'), $system_name, $email_body);
+				$email_body = str_replace(array('{APP_LINK}', 'APP_LINK'), $android_app_link, $email_body);
+				$email_body = str_replace(array('{IOS_APP}', 'IOS_APP'), $ios_app_link, $email_body);
+				$email_body = str_replace(array('{AND_LINK_IMG}', 'AND_LINK_IMG'), $and_app_img, $email_body);
+				$email_body = str_replace(array('{IOS_LINK_IMG}', 'IOS_LINK_IMG'), $ios_app_link_img, $email_body);*/
+
+				//query for get order _details
+				$query_order_prod = $conn->query("SELECT prod_name, prod_img, prod_attr,qty,prod_price,shipping,discount,delivery_date,companyname
+							FROM order_product op ,sellerlogin sl WHERE order_id= '" . $order_id . "' AND op.prod_id ='" . $product_id . "' AND  sl.seller_unique_id = op.vendor_id");
+
+				$html = '';
+				if ($query_order_prod->num_rows > 0) {
+					
+					$prod_details = $query_order_prod->fetch_assoc();
+
+					$prod_name = $prod_details['prod_name'];
+					$prod_img = MEDIAURL . $prod_details['prod_img'];
+					$prod_attr = $prod_details['prod_attr'];
+					$qty = $prod_details['qty'];
+					$prod_price = $this->price_formate($conn, $prod_details['prod_price']);
+					$shipping = $this->price_formate($conn, $prod_details['shipping']);
+					$discount = $this->price_formate($conn, $prod_details['discount']);
+					$delivery_date = date("M d, Y", strtotime($prod_details['delivery_date']));
+					$companyname = $prod_details['companyname'];
+					
+
+					/*$html .= '<tr>
+								<td align="left">
+									<table class="m_-4345841705994091849col" border="0" cellspacing="0" cellpadding="0" align="left">
+										<tbody>
+											<tr>
+												<td class="m_-4345841705994091849link" style="padding-top: 20px;" align="center" valign="middle" width="120">
+													<a style="color: #fff; text-decoration: none; outline: none; font-size: 13px;" href="" target="_blank" rel="noopener noreferrer">
+														<img class="CToWUd" style="border: none; max-width: 125px; max-height: 125px;" src="' . $prod_img . '" alt="' . $prod_name . '" border="0" />
+													</a>
+												</td>
+												<td style="padding-top: 20px; padding-left: 15px;" align="left" valign="top">
+													<p class="m_-4345841705994091849link" style="margin-top: 0; margin-bottom: 7px;">
+														<a style="font-family: Arial; font-size: 14px; font-weight: normal; font-style: normal; font-stretch: normal; line-height: 20px; color: #212121; text-decoration: none!important; word-spacing: 0.2em; max-width: 360px; display: inline-block; min-width: 352px; width: 352px;" href="" target="_blank" rel="noopener noreferrer">' . $prod_name . '</a>
+														<span style="min-width: 100px; font-size: 12px; font-weight: bold; padding-right: 0px; line-height: 20px; text-align: right; display: inline-block; float: right;"> ' . $prod_price . '</span>
+													</p>
+													<p style="line-height: 18px; margin-top: 0px; margin-bottom: 2px; font-family: Arial; font-size: 12px; color: #212121;">Delivery 
+														<span style="line-height: 18px; font-family: Arial; font-size: 12px; font-weight: bold; color: #139b3b;"> by ' . $delivery_date . '  </span>
+													</p>
+													<p style="line-height: 18px; margin-top: 0px; margin-bottom: 2px; font-family: Arial; font-size: 12px; color: #212121;">Seller: ' . $companyname . '
+														<span style="float: right; font-size: 12px; padding-right: 5px;">
+															<span style="color: #878787; text-align: right; margin-right: 5px;">Delivery charges</span>
+															<span style="float: right; text-align: right;">' . $shipping . '</span>
+														</span>
+													</p>
+													<p style="line-height: 18px; margin-top: 0px; margin-bottom: 0px; font-family: Arial; font-style: normal; font-size: 12px; font-stretch: normal; color: #212121;">Qty: ' . $qty . '</p>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>';*/
+				}
+				
+				//$email_body = str_replace($html,$email_body);
+				
+				$file_path = '';
+				/*if ($orderstatus == 'Delivered') {
+					$file_path = $this->generate_invoice($conn, $order_id, $product_id, '1');
+				}*/
+	
+				$this->smtp_email($conn, $toemail, $subject, $email_body, $file_path);
+
+				if (file_exists($file_path)) {
+					unlink($file_path);
+				}
+			}
+			
+		}
 	}
 
 
@@ -1377,6 +1483,7 @@ class Common_Function
 	function generate_invoice($conn, $ordersno, $product_id, $save_pdf)
 	{
 		require_once('../tcpdf/tcpdf.php');
+		
 
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -1404,10 +1511,12 @@ class Common_Function
 		}
 		$pdf->SetFont('helvetica', '', 11);
 		$pdf->AddPage();
+		
+		
 
 		$col1 = $col2 = $col3 = $col4 = $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = $col12 = $col13 = $col14 = $col15 = $col16 = $col17 = $col18 = $col19 = $col20  = '';
 		$stmt = $conn->prepare("SELECT o.order_id,o.user_id,o.status, o.total_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,DATE(o.create_date),
-							o.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress,o.governorate,o.region, o.country, o.addresstype,o.email FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
+							o.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress,o.city,o.state, o.country, o.addresstype,o.email FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
 
 
 		$stmt->execute();
@@ -1430,14 +1539,23 @@ class Common_Function
 			$mobile =  $col13;
 			$area =  $col14;
 			$fulladdress =  $col15;
-			$governorate =  $col16;
-			$region =  $col17;
+			$city =  $col16;
+			$state =  $col17;
 			$country =  $col18;
 			$addresstype =  $col19;
 			$email =  $col20;
 		}
+		
+		$stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $country . "' ");
 
-		$address = $fulladdress . ', ' . $area . ', ' . $governorate . ', ' . $region . ', ' . $country;
+		$stmt_country->execute();
+		$data1 = $stmt_country->bind_result($country_name);
+		$country_name  = '';
+		while ($stmt_country->fetch()) {
+			$country_name = $country_name;
+		}
+
+		$address = $fulladdress . ',' . $city . ', ' . $state . ', ' . $country_name;
 
 
 
@@ -1468,6 +1586,8 @@ class Common_Function
 		while ($stmt_tax->fetch()) {
 			$total_tax_percent = $tax_percent;
 		}
+		
+		
 
 
 		$cname = "";
@@ -1506,7 +1626,7 @@ class Common_Function
 		$imagePath = BASEURL . 'assets_web/images/logo-appbar.png'; // Replace with the actual path to your image
 
 		// Get the dimensions of the image
-		list($imageWidth, $imageHeight) = getimagesize($imagePath);
+		/*list($imageWidth, $imageHeight) = getimagesize($imagePath);
 
 		// Calculate the image dimensions and position to center it at the top
 		$imageMaxWidth = $pdf->getPageWidth() - 185; // Adjust the margin as needed
@@ -1523,6 +1643,8 @@ class Common_Function
 
 		// Add the image to the PDF
 		$pdf->Image($imagePath, $imageX, $imageY, $imageWidth, $imageHeight, $imageType = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+
+		*/
 
 		$html2 = '
 		<html>
@@ -1585,7 +1707,7 @@ class Common_Function
 							<td style = "text-align:right;border:1px solid #cccccc;width:35px;">Qty</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:48px;">Gross Amount</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:48px;">Taxable Amount</td>
-							<td style = "text-align:right;border:1px solid #cccccc;width:38px;">VAT</td>
+							<td style = "text-align:right;border:1px solid #cccccc;width:38px;">GST</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:66px;">Subtotal (' . $currency . ')</td>
 						</tr>
 						<tr>
@@ -1619,6 +1741,8 @@ class Common_Function
 			</body>
 		</html>';
 
+
+		
 
 		$pdf->writeHTML($html2, true, false, true, false, '');
 		// print_r($html2);
