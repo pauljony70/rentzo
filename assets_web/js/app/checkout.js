@@ -115,8 +115,8 @@ const verifyKycDocument = async () => {
 }
 
 async function place_order_data(ele) {
-    // ele.disabled = true;
-    // buttonLoader(ele);
+    ele.disabled = true;
+    buttonLoader(ele);
 
     try {
         // Wait for both functions to complete

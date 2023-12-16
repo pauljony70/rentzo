@@ -378,23 +378,23 @@ class Checkout_model extends CI_Model
 			$order['discount'] = '';
 			$order['status'] = 'Placed';
 
-			if ($this->db->insert('orders', $order)) {
+			if (!$this->db->insert('orders', $order)) {
 				return false;
 			}
 
 			$cart_result = $query->result_array();
 
 			foreach ($cart_result as $cart_detail) {
-				$prod_id = $cart_detail['prod_id'];
-				$sku = $cart_detail['attr_sku'];
-				$vendor_id = $cart_detail['vendor_id'];
-				$qty = $cart_detail['qty'];
-				$affiliated_by = $cart_detail['affiliated_by'];
-				$qoute_id = $cart_detail['qoute_id'];
-				$rent_price = $cart_detail['rent_price'];
-				$rent_from_date = $cart_detail['rent_from_date'];
-				$rent_to_date = $cart_detail['rent_to_date'];
-				$cart_type = $cart_detail['cart_type'];
+				// $prod_id = $cart_detail['prod_id'];
+				// $sku = $cart_detail['attr_sku'];
+				// $vendor_id = $cart_detail['vendor_id'];
+				// $qty = $cart_detail['qty'];
+				// $affiliated_by = $cart_detail['affiliated_by'];
+				// $qoute_id = $cart_detail['qoute_id'];
+				// $rent_price = $cart_detail['rent_price'];
+				// $rent_from_date = $cart_detail['rent_from_date'];
+				// $rent_to_date = $cart_detail['rent_to_date'];
+				// $cart_type = $cart_detail['cart_type'];
 
 				//check product details
 				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy,return_policy_id, vp.product_mrp, vp.product_sale_price, vp.affiliate_commission, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id, prp.policy_validity,prp.policy_type_refund,prp.policy_type_replace,prp.policy_type_exchange,sellerlogin.pincode as seller_pincode,sellerlogin.phone as seller_phone,shipping,vp.coupon_code,vp.seller_price,vp.product_tax_class,product_hsn_code,product_unique_code,security_deposit");
@@ -406,33 +406,33 @@ class Checkout_model extends CI_Model
 				$this->db->where(array('product_unique_id' => $cart_detail['prod_id'], 'vendor_id' => $cart_detail['vendor_id']));
 				$query_prod = $this->db->get('product_details');
 
-				$product_detail = array();
-				$product_detail['qty'] = 0;
-				$product_detail['mrp'] = 0;
-				$product_detail['price'] = 0;
-				$product_detail['price1'] = 0;
-				$product_detail['totaloff'] = 0;
-				$product_detail['totaloff1'] = 0;
+				// $product_detail = array();
+				// $product_detail['qty'] = 0;
+				// $product_detail['mrp'] = 0;
+				// $product_detail['price'] = 0;
+				// $product_detail['price1'] = 0;
+				// $product_detail['totaloff'] = 0;
+				// $product_detail['totaloff1'] = 0;
 				if ($query_prod->num_rows() > 0) {
 					$prod_result = $query_prod->row_array();
 					$is_heavy = $prod_result['is_heavy'];
-					$product_detail['prodid'] = $cart_detail['prod_id'];
-					$product_detail['sku'] = $prod_result['product_sku'];
-					$product_detail['vendor_id'] = $vendor_id;
-					$product_detail['name'] = $prod_result['prod_name'];
-					$product_detail['name_ar'] = $prod_result['prod_name_ar'];
-					$product_detail['web_url'] = $prod_result['web_url'];
-					$product_detail['seller_pincode'] = $prod_result['seller_pincode'];
-					$product_detail['shipping'] = $prod_result['shipping'];
-					$product_detail['seller_phone'] = $prod_result['seller_phone'];
-					$product_detail['coupon_code'] = $prod_result['coupon_code'];
-					$product_detail['seller_price'] = $prod_result['seller_price'];
-					$product_detail['product_hsn_code'] = $prod_result['product_hsn_code'];
-					$product_detail['product_unique_code'] = $prod_result['product_unique_code'];
-					$product_detail['security_deposit'] = $prod_result['security_deposit'];
+					// $product_detail['prodid'] = $cart_detail['prod_id'];
+					// $product_detail['sku'] = $prod_result['product_sku'];
+					// $product_detail['vendor_id'] = $vendor_id;
+					// $product_detail['name'] = $prod_result['prod_name'];
+					// $product_detail['name_ar'] = $prod_result['prod_name_ar'];
+					// $product_detail['web_url'] = $prod_result['web_url'];
+					// $product_detail['seller_pincode'] = $prod_result['seller_pincode'];
+					// $product_detail['shipping'] = $prod_result['shipping'];
+					// $product_detail['seller_phone'] = $prod_result['seller_phone'];
+					// $product_detail['coupon_code'] = $prod_result['coupon_code'];
+					// $product_detail['seller_price'] = $prod_result['seller_price'];
+					// $product_detail['product_hsn_code'] = $prod_result['product_hsn_code'];
+					// $product_detail['product_unique_code'] = $prod_result['product_unique_code'];
+					// $product_detail['security_deposit'] = $prod_result['security_deposit'];
 
 					$tax_details = $this->get_tax_data($prod_result['product_tax_class']);
-					$product_detail['coupon_tax'] =  $tax_details['percent'];
+					// $product_detail['coupon_tax'] =  $tax_details['percent'];
 
 					$ger_vendor_coupon_name = '';
 
@@ -444,12 +444,6 @@ class Checkout_model extends CI_Model
 							$ger_vendor_coupon_name = $coupon_result['name'];
 						}
 					}
-
-					$product_detail['qty'] = $qty;
-					$product_detail['configure_attr'] = array();
-					$product_detail['mrp'] = 0;
-					$product_detail['price'] = 0;
-					$product_detail['totaloff'] = 0;
 
 					$img_decode = json_decode($prod_result['featured_img']);
 					$img = '';
@@ -467,81 +461,67 @@ class Checkout_model extends CI_Model
 							$img = $prod_result['featured_img'];
 						}
 					}
-					$product_detail['imgurl'] = $img;
+					$prod_result['imgurl'] = $img;
+
+					// $product_detail['qty'] = $qty;
+					// $product_detail['configure_attr'] = array();
+					$configure_attr = array();
+					$mrp = 0;
+					$price = 0;
+					$totaloff = 0;
 					$prod_type = "";
 
-					if ($prod_result['product_sku'] == $sku) {
-						//check vendor product details
+					$invoice_number = $this->generate_invoice_number($cart_detail['vendor_id']);
 
-						$tot_mrp = $prod_result['product_mrp'];
-						$tot_price = $prod_result['product_sale_price'];
-
-						$product_detail['mrp'] = $tot_mrp;
-						$product_detail['price'] = $tot_price;
-
-						$tot_mrp1 = ($prod_result['product_mrp'] * $qty);
-						$tot_price1 = ($prod_result['product_sale_price'] * $qty);
-
-						$product_detail['mrp1'] = $tot_mrp1;
-						$product_detail['price1'] = $tot_price1;
-
-						$discount_price = $discount_price1 = 0;
-						if ($tot_price > 0) {
-							$discount_price = ($tot_mrp - $tot_price);
-							$discount_price1 = ($tot_mrp1 - $tot_price1);
-						}
-						$product_detail['totaloff'] = $discount_price;
-						$product_detail['totaloff1'] = $discount_price1;
-						$prod_type = "simple";
+					if ($cart_detail['cart_type'] === 'Rent') {
+						$total_mrp = $cart_detail['rent_price'] * $cart_detail['qty'];;
+						$total_price = $cart_detail['rent_price'] * $cart_detail['qty'];;
 					} else {
-						$vendor_prod_id = $prod_result['vendor_prod_id'];
+						if ($prod_result['product_sku'] == $cart_detail['attr_sku']) {
+							//check vendor product details
 
-						$this->db->select("prod_attr_value, price, mrp, stock");
-						$this->db->where(array('product_id' => $prod_id, 'vendor_prod_id' => $vendor_prod_id, 'product_sku' => $sku));
+							$mrp = $prod_result['product_mrp'];
+							$price = $prod_result['product_sale_price'];
 
-						$query_prod_attr = $this->db->get('product_attribute_value');
+							$total_mrp = $total_mrp * $cart_detail['qty'];
+							$total_price = $total_price * $cart_detail['qty'];
 
-
-						if ($query_prod_attr->num_rows() > 0) {
-							$prod_attr_result = $query_prod_attr->result_object();
-
-							$tot_mrp1 = $prod_attr_result[0]->mrp;
-							$tot_price1 = $prod_attr_result[0]->price;
-
-							$product_detail['mrp'] = $tot_mrp1;
-							$product_detail['price'] = $tot_price1;
-
-							$tot_mrp12 = ($prod_attr_result[0]->mrp * $qty);
-							$tot_price12 = ($prod_attr_result[0]->price * $qty);
-
-							$product_detail['mrp1'] = $tot_mrp12;
-							$product_detail['price1'] = $tot_price12;
-
-							$discount_price = $discount_price1 = 0;
-							if ($tot_price1 > 0) {
-								$discount_price = ($tot_mrp1 - $tot_price1);
-								$discount_price1 = ($tot_mrp12 - $tot_price12);
+							$discount_price = 0;
+							if ($total_price < $total_mrp) {
+								$discount_price = ($total_mrp - $total_price);
 							}
-							$product_detail['totaloff'] = $discount_price;
-							$product_detail['totaloff1'] = $discount_price1;
-							$product_detail['configure_attr'] = $this->cart_model->get_product_configure_attr(json_decode($prod_attr_result[0]->prod_attr_value), $prod_id, $vendor_id);
+							$totaloff = $discount_price * $cart_detail['qty'];
+							$prod_type = "simple";
+						} else {
+							$this->db->select("prod_attr_value, price, mrp, stock");
+							$this->db->where(array('product_id' => $cart_detail['prod_id'], 'vendor_prod_id' => $prod_result['vendor_prod_id'], 'product_sku' => $cart_detail['attr_sku']));
+							$query_prod_attr = $this->db->get('product_attribute_value');
 
-							$prod_type = "configure";
+							if ($query_prod_attr->num_rows() > 0) {
+								$prod_attr_result = $query_prod_attr->row_array();
+
+								$mrp = $prod_attr_result['mrp'];
+								$price = $prod_attr_result['price'];
+
+
+								$total_mrp = $prod_attr_result['mrp'] * $cart_detail['qty'];
+								$total_price = $prod_attr_result['price'] * $cart_detail['qty'];
+
+
+								$discount_price = 0;
+								if ($total_price < $total_mrp) {
+									$discount_price = ($total_mrp - $total_price);
+								}
+								$totaloff = $discount_price * $cart_detail['qty'];
+								$configure_attr = $this->cart_model->get_product_configure_attr(json_decode($prod_attr_result['prod_attr_value']), $cart_detail['attr_sku'], $cart_detail['vendor_id']);
+
+								$prod_type = "configure";
+							}
 						}
-					}
-
-					$invoice_number = $this->generate_invoice_number($product_detail['vendor_id']);
-
-					if ($rent_price != '') {
-						$product_detail['mrp'] = ($product_detail['security_deposit'] + $rent_price);
-						$product_detail['mrp1'] = ($product_detail['security_deposit'] + $rent_price) * $qty;
-						$product_detail['price1'] = ($product_detail['security_deposit'] + $rent_price) * $qty;
-						$product_detail['price'] = ($product_detail['security_deposit'] + $rent_price);
-						$product_detail['totaloff'] = '';
 					}
 
 					//calculate shipping fee
-					$shipping_fee1 = 0;
+					$shipping = 0;
 					$delivery_date = '';
 
 					// if ($pincode != 0 && $pincode != '') {
@@ -551,12 +531,12 @@ class Checkout_model extends CI_Model
 					//calculate shipping fee
 
 					//calculate return date
-					$policy_validity = $prod_result['policy_validity'];
-					$policy_type_refund = $prod_result['policy_type_refund'];
+					// $policy_validity = $prod_result['policy_validity'];
+					// $policy_type_refund = $prod_result['policy_type_refund'];
 
 					$return_last_date = '';
-					if ($policy_validity > 0 && $policy_type_refund > 0) {
-						$return_last_date =  date('Y-m-d', strtotime('+' . $policy_validity . ' days'));
+					if ($prod_result['policy_validity'] > 0 && $prod_result['policy_type_refund'] > 0) {
+						$return_last_date =  date('Y-m-d', strtotime('+' . $prod_result['policy_validity'] . ' days'));
 					}
 
 					//calculate return date
@@ -568,12 +548,12 @@ class Checkout_model extends CI_Model
 						$query_coupon_vendor = $this->db->get('coupancode_vendor');
 
 						if ($query_coupon_vendor->num_rows() > 0 && $coupon_code == $ger_vendor_coupon_name) {
-							$coupon_result = $query_coupon_vendor->result_object()[0];
-							$product_detail['coupon_type'] = $coupon_result->coupon_type;
-							if ($product_detail['coupon_type'] == 1) {
-								$coupon_discount =  ($product_detail['price'] / 100) * $coupon_result->value;
-							} else if ($product_detail['coupon_type'] == 2) {
-								$coupon_discount =  $product_detail['price'] - $coupon_result->value;
+							$coupon_result = $query_coupon_vendor->row_array();
+
+							if ($coupon_result['coupon_type'] == 1) {
+								$coupon_discount =  ($total_price / 100) * $coupon_result['value'];
+							} else if ($coupon_result['coupon_type'] == 2) {
+								$coupon_discount =  $total_price - $coupon_result['value'];
 							}
 						} else {
 							$coupon_discount = 0;
@@ -587,31 +567,23 @@ class Checkout_model extends CI_Model
 					$query_comm = $this->db->get('seller_commission');
 					if ($query_comm->num_rows() > 0) {
 						$comm_result = $query_comm->row_array();
-
 						$admin_profit = number_format($comm_result['commission']);
 					}
 
 					$sgst = 0;
 					$cgst = 0;
 					$igst = 0;
-					$taxable_amount = round(($product_detail['price'] * $product_detail['qty'] * 100) / ($product_detail['coupon_tax'] + 100), 2);
-					$tax_value = ($product_detail['price'] * $product_detail['qty']) - $taxable_amount;
-
+					$taxable_amount = round(($total_price * $cart_detail['qty'] * 100) / ($tax_details['percent'] + 100), 2);
+					$tax_value = ($total_price * $cart_detail['qty']) - $taxable_amount;
 					$igst = $tax_value;
-
 					/*$admin_profit = $prod_result['product_sale_price'] - $prod_result['seller_price'];*/
-
-					$tax_class = ($prod_result['product_sale_price'] / 100) * $product_detail['coupon_tax'];
-
+					$tax_class = ($prod_result['product_sale_price'] / 100) * $tax_details['percent'];
 					$payable_value = $prod_result['product_sale_price'] - $tax_class;
 
 					$tds = round(($payable_value / 100) * 1, 2);
 					$tcs = round(($payable_value / 100) * 1, 2);
-
 					$gross_amount = round($prod_result['seller_price'] - ($tds +  $tcs), 2);
-
 					$gst_input = round(($admin_profit / 100) * 18, 2);
-
 					$net_amount = round($gross_amount - $gst_input, 2);
 
 
@@ -619,17 +591,17 @@ class Checkout_model extends CI_Model
 					$order_prod = array();
 
 					$order_prod['order_id'] = $order_id;
-					$order_prod['prod_id'] = $product_detail['prodid'];
-					$order_prod['prod_sku'] = $product_detail['sku'];
-					$order_prod['vendor_id'] = $product_detail['vendor_id'];
-					$order_prod['prod_name'] = $product_detail['name'];
-					$order_prod['prod_name_ar'] = $product_detail['name_ar'];
-					$order_prod['prod_img'] = $product_detail['imgurl'];
-					$order_prod['prod_attr'] = json_encode($product_detail['configure_attr']);
-					$order_prod['qty'] = $product_detail['qty'];
-					$order_prod['prod_price'] = $product_detail['price'];
-					$order_prod['shipping'] = $product_detail['shipping'];
-					$order_prod['discount'] = $product_detail['totaloff'];
+					$order_prod['prod_id'] = $cart_detail['prod_id'];
+					$order_prod['prod_sku'] = $cart_detail['attr_sku'];
+					$order_prod['vendor_id'] = $cart_detail['vendor_id'];
+					$order_prod['prod_name'] = $prod_result['prod_name'];
+					$order_prod['prod_name_ar'] = $prod_result['prod_name_ar'];
+					$order_prod['prod_img'] = $prod_result['imgurl'];
+					$order_prod['prod_attr'] = json_encode($configure_attr);
+					$order_prod['qty'] = $cart_detail['qty'];
+					$order_prod['prod_price'] = $price;
+					$order_prod['shipping'] = $shipping;
+					$order_prod['discount'] = $totaloff;
 					$order_prod['create_date'] = date('Y-m-d H:i:s');
 					$order_prod['status'] = 'Placed';
 					$order_prod['status_date'] = date('Y-m-d');
@@ -638,7 +610,7 @@ class Checkout_model extends CI_Model
 					$order_prod['return_last_date'] = $return_last_date;
 					$order_prod['coupon_code'] = $coupon_code;
 					$order_prod['coupon_value'] = $coupon_discount;
-					$order_prod['seller_price'] = $product_detail['seller_price'];
+					$order_prod['seller_price'] = $prod_result['seller_price'];
 					$order_prod['admin_profit'] = $admin_profit;
 					$order_prod['tds'] = $tds;
 					$order_prod['tcs'] = $tcs;
@@ -649,16 +621,17 @@ class Checkout_model extends CI_Model
 					$order_prod['cgst'] = $cgst;
 					$order_prod['sgst'] = $sgst;
 					$order_prod['igst'] = $igst;
-					$order_prod['product_hsn_code'] = $product_detail['product_hsn_code'];
-					$order_prod['product_unique_code'] = $product_detail['product_unique_code'];
-					$order_prod['rent_from_date'] = $rent_from_date;
-					$order_prod['rent_to_date'] = $rent_to_date;
-					$order_prod['type'] = $cart_type;
+					$order_prod['product_hsn_code'] = $prod_result['product_hsn_code'];
+					$order_prod['product_unique_code'] = $prod_result['product_unique_code'];
+					$order_prod['rent_from_date'] = $cart_detail['rent_from_date'];
+					$order_prod['rent_to_date'] = $cart_detail['rent_to_date'];
+					$order_prod['type'] = $cart_detail['cart_type'];
+					$order_prod['security_deposit'] = $cart_detail['cart_type'] === "Rent" ? $prod_result['security_deposit'] : null;
 
 					$query = $this->db->insert('order_product', $order_prod);
 
 					if ($query) {
-						$this->update_vendor_stock($product_detail['prodid'], $product_detail['vendor_id'], $sku, $prod_type, $qty);
+						$this->update_vendor_stock($cart_detail['prod_id'], $cart_detail['vendor_id'], $cart_detail['attr_sku'], $prod_type, $$cart_detail['qty']);
 						//$this->update_vendor_payment($product_detail['prodid'],$product_detail['vendor_id'],$qty,$product_detail['price'],$shipping);
 						if ($cart_detail['affiliated_by']) {
 							$wallet_data = $this->db->get_where('wallet_summery', array('user_id' => $cart_detail['affiliated_by']))->row_array();
@@ -687,10 +660,10 @@ class Checkout_model extends CI_Model
 				}
 
 
-				$total_price += $product_detail['price1'];
+				$order_total_price += $total_price;
 				$total_item += $product_detail['qty'];
-				$total_discount += $product_detail['totaloff1'];
-				$seller_phone = $product_detail['seller_phone'];
+				$total_discount += $totaloff;
+				$seller_phone = $prod_result['seller_phone'];
 			}
 
 
@@ -704,13 +677,13 @@ class Checkout_model extends CI_Model
 				$value = $coupon_result['value'];
 
 				if ($coupon_type == 1) {
-					$coupon_discount =  ($total_price / 100) * $value;
+					$coupon_discount =  ($order_total_price / 100) * $value;
 				} else if ($coupon_type == 2) {
 					$coupon_discount =  $value;
 				}
 			}
 
-			$order['total_price'] = $total_price;
+			$order['total_price'] = $order_total_price;
 			$order['discount'] = $total_discount;
 			$order['total_qty'] = $total_item;
 			/*$order['coupon_value'] = $coupon_discount;*/
