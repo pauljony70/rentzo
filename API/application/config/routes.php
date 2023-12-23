@@ -90,6 +90,8 @@ $route['app/turkish-brands'] = 'BuyFromTurkey/getTurkishBrands';
 $route['app/submit-shopping-request'] = 'BuyFromTurkey/submitShoppingRequest';
 
 //Popular product
+$route['app/get_home_events'] = 'HomeController/get_home_events';
+$route['app/events'] = 'HomeController/events';
 $route['app/getPopularProduct'] = 'HomeController/getPopularProduct';
 $route['app/search'] = 'HomeController/search';
 $route['app/search_sponsor'] = 'HomeController/search_sponsor';
@@ -152,6 +154,7 @@ $route['app/getUserAddress'] = 'UserAddress/getUserAddress';
 $route['app/validateCoupon'] = 'Checkout/validateCoupon';
 $route['app/checkout'] = 'Checkout/checkout';
 $route['app/placeOrder'] = 'Checkout/placeOrder';
+$route['app/send-order-notification'] = 'Checkout/sendOrderNotifications';
 $route['app/send_email'] = 'Checkout/send_email';
 
 //brand

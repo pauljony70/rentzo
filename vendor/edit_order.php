@@ -505,7 +505,7 @@ $stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $count
 																</select>
 															</div>
 														</div>
-														<div class="form-group row align-items-center">
+														<div class="form-group row align-items-center" id="curier_name_div" style="display:none;">
 															<label class="col-4 control-label m-0"> Courier By*</label>
 															<div class="col-8">
 																<select class="form-control" id="curier_name" name="curier_name">
@@ -569,7 +569,7 @@ $stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $count
 													$response_rate = json_decode($response_rate);
 													/*print_r($response_rate);*/
 													?>
-													<div class="form-group row align-items-center">
+													<div class="form-group row align-items-center" id="curier_company_div" style="display:none;">
 														<label for="focusedinput" class="col-4 control-label m-0">Courier Name</label>
 														<div class="col-8">
 															<select class="form-control" id="curier_company" name="curier_company">
@@ -943,12 +943,12 @@ $stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $count
 	$('#new_orderstatus').change(function() {
 		if ($(this).val() == 'Accepted') {
 			$('#new_pickupdate').show();
-			$('#curier_name').show();
-			$('#curier_company').show();
+			$('#curier_name_div').show();
+			$('#curier_company_div').show();
 		} else {
 			$('#new_pickupdate').hide();
-			$('#curier_name').hide();
-			$('#curier_company').hide();
+			$('#curier_name_div').hide();
+			$('#curier_company_div').hide();
 		}
 
 

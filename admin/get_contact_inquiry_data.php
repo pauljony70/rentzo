@@ -48,12 +48,12 @@ else if($code == $_SESSION['_token']){
 			$search_string_qry = " AND (user_name like '%".$search_string."%' OR user_email like '%".$search_string."%' OR  subject like '%".$search_string."%' )  ";
 		}
 		
-		$stmt = $conn->prepare("SELECT contact_id,user_name,user_email,subject,content FROM faq_form
+		$stmt = $conn->prepare("SELECT contact_id,user_name,user_email,subject,content,ticket_id FROM faq_form
                 WHERE   1=1 ".$search_string_qry." ORDER BY contact_id DESC LIMIT ?, ?");
                $stmt ->bind_param("ii", $start, $limit);
             
     	   $stmt->execute();	 
-     	   $data = $stmt->bind_result( $col1, $col2, $col3, $col4, $col5);
+     	   $data = $stmt->bind_result( $col1, $col2, $col3, $col4, $col5, $col6);
            $return = array();
     	   $i =0;
        
@@ -67,7 +67,8 @@ else if($code == $_SESSION['_token']){
         						 'name' => $col2,
         						 'email' => $col3,
         						 'subject' => $col4,
-        						 'content' => $col5 );        /// status  = 0 -pending  1 accepted , 2 reject, 
+        						 'content' => $col5,
+        						 'ticket_id' => $col6 );        /// status  = 0 -pending  1 accepted , 2 reject, 
               		  			 
               		   $i = $i+1;  			  
                 //echo " array created".json_encode($return);

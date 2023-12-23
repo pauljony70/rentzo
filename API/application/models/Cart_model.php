@@ -252,13 +252,14 @@ class Cart_model extends CI_Model {
 		if($shipping_city){
 			$delivery_array = $this->delivery_model->get_delivery_city_details_request($shipping_city);			
 		}	
-		$this->db->select("prod_id, attr_sku, vendor_id, qty,qoute_id");
+		$this->db->select("prod_id, attr_sku, vendor_id, qty,qoute_id,rent_price,rent_from_date,rent_to_date,cart_type");
 		
 		if($user_id ){
 			$this->db->where(array('user_id'=>$user_id));
 		}else {
 			$this->db->where(array('qoute_id'=>$qouteid));
 		}
+
 		$query = $this->db->get('cartdetails');
 		
 		$product_detail_array = array();
@@ -273,6 +274,22 @@ class Cart_model extends CI_Model {
 				$vendor_id = $cart_detail->vendor_id;
 				$qty = $cart_detail->qty;
 				$qoute_id = $cart_detail->qoute_id;
+				$rent_price = $cart_detail->rent_price;
+				$rent_from_date = $cart_detail->rent_from_date;
+				$rent_to_date = $cart_detail->rent_to_date;
+				$cart_type = $cart_detail->cart_type;
+				if($cart_type !== 'Rent')
+				{
+					$cart_type = 'Purchase';
+				}
+				$total_days = '';
+				if($rent_from_date != '' && $rent_to_date != '')
+				{
+					$earlier = new DateTime($rent_from_date);
+					$later = new DateTime($rent_to_date);
+					
+					$total_days = $later->diff($earlier)->format("%a")+1;
+				}
 				
 				//check product details
 				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy	,sellerlogin.companyname as seller, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id");
@@ -314,6 +331,11 @@ class Cart_model extends CI_Model {
 					$product_detail['totaloff'] = price_format(0);
 					$product_detail['offpercent'] = 0;
 					$product_detail['shipping_fee'] = 0;
+					$product_detail['rent_price'] = $rent_price ?? '';
+					$product_detail['rent_from_date'] = $rent_from_date ?? '';
+					$product_detail['rent_to_date'] = $rent_to_date ?? '';
+					$product_detail['total_days'] = $total_days;
+					$product_detail['cart_type'] = $cart_type;
 					if($devicetype == 1){
 						$img_decode = json_decode($prod_result[0]->featured_img);
 						$img ='';

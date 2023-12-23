@@ -19,7 +19,7 @@ $product_id = $_REQUEST['product_id'];
 <?php 
 
 $col1 = $col2 = $col3 = $col4 = $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = $col12 = $col13 = $col14 = $col15 = $col16 = $col17 = $col18 = $col19 = $col20  = '';
-$stmt = $conn->prepare("SELECT o.order_id,o.user_id,op.status, op.prod_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,o.create_date, op.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress, o.country, o.region, o.governorate, o.addresstype, o.email, op.coupon_value, op.coupon_code, o.lat, o.lng,op.security_deposit FROM orders o, order_product op WHERE op.order_id = o.order_id and op.prod_id = '" . $product_id . "' and o.order_id = '" . $ordersno . "' ");
+$stmt = $conn->prepare("SELECT o.order_id,o.user_id,op.status, op.prod_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,o.create_date, op.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress, o.country, o.city, o.state, o.addresstype, o.email, op.coupon_value, op.coupon_code, o.lat, o.lng,op.security_deposit FROM orders o, order_product op WHERE op.order_id = o.order_id and op.prod_id = '" . $product_id . "' and o.order_id = '" . $ordersno . "' ");
 
 
 $stmt->execute();
@@ -44,8 +44,8 @@ while ($stmt->fetch()) {
 	$area =  $col14;
 	$fulladdress =  $col15;
 	$country =  $col16;
-	$region =  $col17;
-	$governorate =  $col18;
+	$city =  $col17;
+	$state =  $col18;
 	$addresstype =  $col19;
 	$email =  $col20;
 	$coupon_value =  $col21;
@@ -113,6 +113,15 @@ if ($col2) {
 } else {
 	$user_type = 'Guest';
 }
+
+$stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $country . "' ");
+
+	$stmt_country->execute();
+	$data1 = $stmt_country->bind_result($country_name);
+	$country_name  = '';
+	while ($stmt_country->fetch()) {
+		$country_name = $country_name;
+	}
 
 if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 
@@ -188,7 +197,7 @@ if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 													</td>
 													<td>
 														<?= $fullname . '<br>' . $mobile . ', ' . $email. '<br>' ;
-														echo $fulladdress . ',<br>' . $city . ', ' . $state . ', ' . $region . ', ' . $country . '(' . $addresstype . ')';
+														echo $fulladdress . ',<br>' . $city . ', ' . $state . ', ' . $country_name . '(' . $addresstype . ')';
 														?>
 														<br>
 														<!--<a href="https://www.google.com/maps/search/?api=1&query=<?= $lat ?>,<?= $lng ?>" target="_blank" class="text-dark"><strong>View in map <i class="fa fa-external-link" aria-hidden="true"></i></strong></a>-->
@@ -299,7 +308,7 @@ if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 										</div>
 									</div>
 									
-									<?php if ($order_status !== '' || $order_status !== NULL || $order_status == 'Return Completed' || $order_status == 'Return Request' || $order_status == 'Cancelled') : ?> 
+									<?php if ($order_status == 'Return Completed' || $order_status == 'Return Request' || $order_status == 'Cancelled') : ?> 
 												<div class="col-md-6 form-three widget-shadow mt-2 dontprint">
 													<strong>Return Request :</strong><br>
 													<form class="form-horizontal" method="post" id="myform">
@@ -499,6 +508,41 @@ if (isset($_POST['security_deposit']) && $ordersno && $product_id) {
 										</form>
 									</div>
 								</div>
+								<div class="col-12 dontprint mt-2">
+											<div class="form-three widget-shadow">
+												<strong>Track Status</strong> <br>
+												<table class="table table-hover" style="border: 0.5px solid #ccc;">
+													<thead class="thead-light">
+														<tr>
+															<th>Status</th>
+															<th>Date</th>
+															<th>Message</th>
+
+														</tr>
+													</thead>
+													<tbody>
+														<?php
+														$status_track = $conn->prepare("SELECT `status`, `message`, `created_at` FROM `order_tracking_status` WHERE order_id = '" . $ordersno . "' AND product_id = '" . $product_id . "' ORDER BY id asc ");
+
+														$status_track->execute();
+														$datap = $status_track->bind_result($trackst, $trackmag, $tracktime);
+
+														while ($status_track->fetch()) {
+
+														?>
+															<tr>
+																<td><?= $trackst; ?> </td>
+																<td><?= $tracktime; ?> </td>
+																<td><?= $trackmag; ?> </td>
+															</tr>
+
+														<?php } ?>
+													</tbody>
+												</table>
+											</div>
+
+
+										</div>
 								<!-- print area close-->
 								<script>
 									function myPrint(divName) {

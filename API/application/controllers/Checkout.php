@@ -411,4 +411,22 @@ class Checkout extends REST_Controller
 			echo $validation; //These are parameters are missing.
 		}
 	}
+
+	public function sendOrderNotifications_post()
+	{
+		$order_id = $this->post('order_id');
+		// $message_admin = 'Hello Admin, new order placed by customer. Please login into admin dashboard to see details. Order Id is ' . $order_id . ' – Regards, Marurang. MRURNG';
+		// $admin_phone = get_settings('system_phone');
+		// $this->sms_model->send_sms_new($message_admin, '968', $admin_phone);
+
+		if ($order_id) {
+			$this->email_model->send_order_email($order_id, PLACE_ORDER_TEMP);
+			$this->email_model->send_order_email_admin_seller($order_id);
+		}
+		$this->response([
+			$this->config->item('rest_status_field_name') => 1,
+			$this->config->item('rest_message_field_name') => 'Email sent successfully'
+
+		], self::HTTP_OK);
+	}
 }

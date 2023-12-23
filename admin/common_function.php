@@ -1161,6 +1161,44 @@ class Common_Function
 		$admin_email = $this->get_system_settings($conn, 'system_email');
 		$this->smtp_email($conn, $admin_email, 'Seller Registration', $messageadmin);
 	}
+	
+	
+	function send_ticket_replay_email($conn,$ticket_id,$title,$desc,$email)
+	{
+
+		$link = BASEURL . "ticket/" . $ticket_id;
+		$system_name = $this->get_system_settings($conn, 'system_name');
+		
+		$messageadmin  = "<html><body>";
+
+		$messageadmin .= "<table width='500px;' align='center' border='1' cellpadding='0' cellspacing='0' style='font-family: sans-serif;background: rgba(220, 220, 220, 0.17);font-size: 14px;'>";
+
+		$messageadmin .= "<tbody>
+						<tr>
+							<td colspan='2'>User Inquiry Replay From ".$system_name."</td>
+							
+						</tr>
+						<tr>
+							<td style='padding: 10px;font-weight: 600;'>Title</td>
+							<td style='padding: 10px;'>" . $title . " </td>
+						</tr>
+						<tr>
+							<td style='padding: 10px;font-weight: 600;'>Description</td>
+							<td style='padding: 10px;'>" . $desc . "</td>
+						</tr>
+						<tr>
+							<td style='padding: 10px;font-weight: 600;' colspan='2'>Please <a href='" . $link . "'>click here</a> to Your Replays.</td>
+						</tr>
+       
+						
+					</tbody>";
+
+		$messageadmin .= "</table>";
+
+		$messageadmin .= "</body></html>";
+
+		$this->smtp_email($conn, $email, 'User Inquiry Replay From'.$system_name, $messageadmin);
+	}
 
 
 	function default_send_email($conn, $to_email, $name, $subject, $body)
@@ -1294,7 +1332,7 @@ class Common_Function
 		$new_price = 0;
 		$currency = $this->get_system_settings($conn, 'system_currency_symbol');
 		if ($price > 0) {
-			$new_price = number_format($price, 2) . ' ' . $currency;
+			$new_price = $currency.' ' .number_format($price, 2) ;
 		}
 		return $new_price;
 	}
@@ -1531,7 +1569,7 @@ class Common_Function
 
 		$col1 = $col2 = $col3 = $col4 = $col5 = $col6 = $col7 = $col8 = $col9 = $col10 = $col11 = $col12 = $col13 = $col14 = $col15 = $col16 = $col17 = $col18 = $col19 = $col20  = '';
 		$stmt = $conn->prepare("SELECT o.order_id,o.user_id,o.status, o.total_price, o.payment_orderid,o.payment_id,o.payment_mode,o.qoute_id,DATE(o.create_date),
-							o.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress,o.governorate,o.region, o.country, o.addresstype,o.email FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
+							o.discount,o.total_qty, o.fullname, o.mobile, o.area, o.fulladdress,o.city,o.state, o.country, o.addresstype,o.email FROM orders o WHERE o.order_id = '" . $ordersno . "' ");
 
 
 		$stmt->execute();
@@ -1554,15 +1592,25 @@ class Common_Function
 			$mobile =  $col13;
 			$area =  $col14;
 			$fulladdress =  $col15;
-			$governorate =  $col16;
-			$region =  $col17;
+			$city =  $col16;
+			$state =  $col17;
 			$country =  $col18;
 			$addresstype =  $col19;
 			$email =  $col20;
 		}
 
-		$address = $fulladdress . ', ' . $area . ', ' . $governorate . ', ' . $region . ', ' . $country;
+		$stmt_country = $conn->prepare("SELECT name FROM  country WHERE id = '" . $country . "' ");
 
+		$stmt_country->execute();
+		$data1 = $stmt_country->bind_result($country_name);
+		$country_name  = '';
+		while ($stmt_country->fetch()) {
+			$country_name = $country_name;
+		}
+
+		$address = $fulladdress . ', ' . $city . ', ' . $state . ', ' . $country_name;
+		
+		
 
 
 		$stmtp = $conn->prepare("SELECT op.prod_id,op.prod_sku,op.prod_name,op.prod_img,op.prod_attr,op.qty,op.prod_price,op.shipping,op.discount,op.status, sl.companyname, op.invoice_number,op.vendor_id,vp.product_tax_class,op.product_hsn_code,op.product_unique_code,op.taxable_amount,op.cgst,op.sgst,op.igst FROM `order_product` op
@@ -1630,7 +1678,7 @@ class Common_Function
 		$imagePath = BASEURL . 'assets_web/images/logo-appbar.png'; // Replace with the actual path to your image
 
 		// Get the dimensions of the image
-		list($imageWidth, $imageHeight) = getimagesize($imagePath);
+		/*list($imageWidth, $imageHeight) = getimagesize($imagePath);
 
 		// Calculate the image dimensions and position to center it at the top
 		$imageMaxWidth = $pdf->getPageWidth() - 185; // Adjust the margin as needed
@@ -1646,7 +1694,7 @@ class Common_Function
 		$imageY = 10; // Adjust as needed to position it at the top
 
 		// Add the image to the PDF
-		$pdf->Image($imagePath, $imageX, $imageY, $imageWidth, $imageHeight, $imageType = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);
+		$pdf->Image($imagePath, $imageX, $imageY, $imageWidth, $imageHeight, $imageType = '', $link = '', $align = '', $resize = false, $dpi = 300, $palign = '', $ismask = false, $imgmask = false, $border = 0, $fitbox = false, $hidden = false, $fitonpage = false);*/
 
 		$html2 = '
 		<html>
@@ -1709,7 +1757,7 @@ class Common_Function
 							<td style = "text-align:right;border:1px solid #cccccc;width:35px;">Qty</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:48px;">Gross Amount</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:48px;">Taxable Amount</td>
-							<td style = "text-align:right;border:1px solid #cccccc;width:38px;">VAT</td>
+							<td style = "text-align:right;border:1px solid #cccccc;width:38px;">GST</td>
 							<td style = "text-align:right;border:1px solid #cccccc;width:66px;">Subtotal (' . $currency . ')</td>
 						</tr>
 						<tr>

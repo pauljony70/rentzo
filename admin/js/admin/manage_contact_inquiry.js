@@ -40,7 +40,7 @@ function getSellerData(pagenov, rownov) {
                         btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
                     }
 
-                    $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td></tr> ');
+                    $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td><td><a href="ticket_replay.php?id=' +this.ticket_id+ '" type="submit" class="btn btn-info waves-effect waves-light btn-sm pull-left" name="view">Add Replay</a></td></tr> ');
 
                     count = count + 1;	
                 });
@@ -94,7 +94,7 @@ function appuser_page(pagenov) {
                         btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
                     }
 
-                     $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td></tr> ');
+                     $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td><td><a href="ticket_replay.php?id=' +this.ticket_id+ '" type="submit" class="btn btn-info waves-effect waves-light btn-sm pull-left" name="view">Add Replay</a></td></tr> ');
 
                     count = count + 1;
                 });
@@ -150,7 +150,7 @@ function perpage_filter() {
                         btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
                     }
 
-                    $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td></tr> ');
+                    $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td><td><a href="ticket_replay.php?id=' +this.ticket_id+ '" type="submit" class="btn btn-info waves-effect waves-light btn-sm pull-left" name="view">Add Replay</a></td></tr> ');
 
                     count = count + 1;
                 });
@@ -238,7 +238,7 @@ $(document).ready(function () {
                                 btnactive = '<span class = "Deactive">' + "Deactive" + '</span>';
                             }
 
-                            $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td></tr> ');
+                            $("#tbodyPostid").append('<tr> <td class="nr">' + count + '</td><td>' + this.name + '</td>  <td class="stk" > ' + this.email + '</td><td>' + this.subject + '</td><td> ' + this.content + '</td><td><a href="ticket_replay.php?id=' +this.ticket_id+ '" type="submit" class="btn btn-info waves-effect waves-light btn-sm pull-left" name="view">Add Replay</a></td></tr> ');
 
                             count = count + 1;
                         });

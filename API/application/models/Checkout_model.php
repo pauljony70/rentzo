@@ -25,7 +25,7 @@ class Checkout_model extends CI_Model
 		}
 
 
-		$this->db->select("prod_id, attr_sku, vendor_id, qty");
+		$this->db->select("prod_id, attr_sku, vendor_id, qty, rent_price, rent_from_date, rent_to_date, cart_type");
 
 		if ($user_id) {
 			$this->db->where(array('user_id' => $user_id));
@@ -46,6 +46,22 @@ class Checkout_model extends CI_Model
 				$sku = $cart_detail->attr_sku;
 				$vendor_id = $cart_detail->vendor_id;
 				$qty = $cart_detail->qty;
+				$rent_price = $cart_detail->rent_price;
+				$rent_from_date = $cart_detail->rent_from_date;
+				$rent_to_date = $cart_detail->rent_to_date;
+				$cart_type = $cart_detail->cart_type;
+				if($cart_type !== 'Rent')
+				{
+					$cart_type = 'Purchase';
+				}
+				$total_days = '';
+				if($rent_from_date != '' && $rent_to_date != '')
+				{
+					$earlier = new DateTime($rent_from_date);
+					$later = new DateTime($rent_to_date);
+					
+					$total_days = $later->diff($earlier)->format("%a")+1;
+				}
 
 				//check product details
 				$this->db->select("product_sku, prod_name, prod_name_ar,featured_img,web_url,is_heavy,sellerlogin.companyname as seller, vp.product_mrp, vp.product_sale_price, vp.product_stock, vp.product_purchase_limit, vp.id as vendor_prod_id,vp.coupon_code,vp.seller_price,vp.product_tax_class");
@@ -73,7 +89,11 @@ class Checkout_model extends CI_Model
 					$product_detail['shipping_fee'] = '';
 					$product_detail['coupon_code_vendor'] = $prod_result[0]->coupon_code;
 					$product_detail['seller_price'] = $prod_result[0]->seller_price;
-
+					$product_detail['rent_price'] = $rent_price ?? '';
+					$product_detail['rent_from_date'] = $rent_from_date ?? '';
+					$product_detail['rent_to_date'] = $rent_to_date ?? '';
+					$product_detail['total_days'] = $total_days;
+					$product_detail['cart_type'] = $cart_type;
 
 					$ger_vendor_coupon_name = '';
 					if ($prod_result[0]->coupon_code != '') {

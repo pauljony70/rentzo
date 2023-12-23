@@ -279,11 +279,11 @@ class Email_model extends CI_Model
 				$header .= "Content-type: text/html\r\n";
 				//$retval = mail($toemail,$subject,$email_body,$header);
 
-				if ($retval == true) {
-					//echo "Message sent successfully...";
-				} else {
-					//echo "Message could not be sent...";
-				}
+				// if ($retval == true) {
+				// 	//echo "Message sent successfully...";
+				// } else {
+				// 	//echo "Message could not be sent...";
+				// }
 			}
 		}
 	}

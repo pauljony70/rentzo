@@ -14,7 +14,8 @@ class Order_model extends CI_Model
 
 	function get_order_list_details($user_id)
 	{
-		$this->db->select("o.order_id, o.status, o.total_price, o.payment_mode, o.create_date, o.discount,o.total_qty");
+		$this->db->select("o.order_id,o.status, o.total_price,o.payment_mode,o.create_date,
+							o.discount,o.total_qty");
 
 
 		$this->db->where(array('o.user_id' => $user_id));

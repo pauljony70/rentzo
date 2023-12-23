@@ -73,6 +73,7 @@ if (!isset($_SESSION['admin'])) {
 												<th>Email</th>
 												<th>Subject</th>
 												<th>Content</th> 
+												<th>Action</th> 
 											</tr>
 										</thead>
 										<tbody id="tbodyPostid">

@@ -200,6 +200,53 @@ class HomeController extends REST_Controller
 		}
 	}
 
+	public function get_home_events_post()
+	{
+
+		$requiredparameters = array('language');
+
+		$language_code = removeSpecialCharacters($this->post('language'));
+		$validation = $this->parameterValidation($requiredparameters, $this->post());
+
+		if ($validation == 'valid') {
+
+			$event_array = $this->home_model->get_home_events_request($language_code);
+			if (count($event_array) > 0) {
+
+				$this->responses(1, 'All Events', $event_array);
+			} else {
+
+				$this->responses(0, get_phrase('no_record_found', $language_code), $event_array);
+			}
+		} else {
+			echo $validation;
+		}
+	}
+	
+	public function events_post()
+	{
+
+		$requiredparameters = array('language','event_id');
+
+		$language_code = removeSpecialCharacters($this->post('language'));
+		$event_id = removeSpecialCharacters($this->post('event_id'));
+		$validation = $this->parameterValidation($requiredparameters, $this->post());
+
+		if ($validation == 'valid') {
+
+			$event_array = $this->home_model->get_events_category($language_code,$event_id);
+			if (count($event_array) > 0) {
+
+				$this->responses(1, 'Events Category', $event_array);
+			} else {
+
+				$this->responses(0, get_phrase('no_record_found', $language_code), $event_array);
+			}
+		} else {
+			echo $validation;
+		}
+	}
+	
 	public function home_top_category_post()
 	{
 

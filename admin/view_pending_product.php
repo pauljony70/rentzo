@@ -21,7 +21,7 @@ $prod_unique_id = trim($_GET['id']);
 
 $stmt15 = $conn->prepare("SELECT status, prod_name,prod_type,prod_desc,prod_fulldetail,prod_img_url,featured_img, attr_set_id,brand_id,web_url,
    		product_sku,product_visibility,product_manuf_country,product_hsn_code,product_video_url,return_policy_id ,meta_title,meta_key,meta_value ,is_heavy,
-		prod_name_ar,prod_desc_ar ,prod_fulldetail_ar,usage_info,type,day1_price,day3_price,day5_price,day7_price,city
+		prod_name_ar,prod_desc_ar ,prod_fulldetail_ar,usage_info,type,day1_price,day3_price,day5_price,day7_price,city,is_buy
    		FROM product_details pd LEFT JOIN product_meta pm ON pd.product_unique_id = pm.prod_id WHERE pd.product_unique_id='" . $prod_unique_id . "'	");
 
 $stmt15->execute();
@@ -49,7 +49,7 @@ $data = $stmt15->bind_result(
 	$prod_name_ar,
 	$prod_desc_ar,
 	$prod_fulldetail_ar,
-	$usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city
+	$usage_info,$type,$day1_price,$day3_price,$day5_price,$day7_price,$city,$is_buy
 );
 
 while ($stmt15->fetch()) {
@@ -315,7 +315,7 @@ include("header.php");
 											</div>
 										</div>-->
 										
-										 <div class="form-group row align-items-center">
+										 <div class="form-group row align-items-center" style="display:none">
 								<label for="focusedinput" class="col-sm-2 control-label m-0">Type</label>
 								<div class="col-sm-8">
 									<select class="form-control" id="type" name="type">
@@ -325,6 +325,14 @@ include("header.php");
 									</select>
 								</div>
 							</div>
+							<div class="form-group row align-items-center">
+                                 <label class="col-sm-2 control-label m-0">Is this product available for buy</label>
+                                 <div class="col-sm-8">
+                                    <input type="checkbox" disabled id="is_buy" value='1' <?php if ($is_buy == 1) {
+                                                                                       echo "checked";
+                                                                                    } ?> name="is_buy">
+                                 </div>
+                              </div>
 							<div class="form-group row align-items-center">
 								<label for="focusedinput" class="col-sm-2 control-label m-0">1/Day Price (<?= $currency ?>)</label>
 								<div class="col-sm-8">
@@ -627,9 +635,15 @@ include("header.php");
 										</div>
 										<div class="form-group row align-items-center">
 											<label for="focusedinput" class="col-sm-2 control-label m-0">Upload Video</label>
+											<?php 
+											if($product_video_url != '') {
+												echo '<a target="_blank" href="'.BASEURL.'media/'.$product_video_url.'">View Video</a>';
+											} else {
+											?>
 											<div class="col-sm-8">
 												<input type="text" class="form-control" id="prod_youtubeid" value="<?php echo $product_video_url; ?>" name="prod_youtubeid">
 											</div>
+											<?php } ?>
 										</div>
 
 										<div class="form-group row align-items-center">

@@ -15,8 +15,7 @@ $error='';  // Variable To Store Error Message
 if(!isset($_SESSION['admin'])){
   header("Location: index.php");
  // echo " dashboard redirect to index";
-}else
-if($code==$_SESSION['_token']){
+}else if($code==$_SESSION['_token']){
     try{
     
         $status = 0;
