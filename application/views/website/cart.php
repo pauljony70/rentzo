@@ -46,7 +46,7 @@
 													<div class="text"><?= $cart_product['cart_type']; ?></div>
 												</div>
 												<a href="<?= base_url . $cart_product['web_url'] . '?pid=' . $cart_product['prodid'] . '&sku=' . str_replace('#', '%23', $cart_product['sku']) . '&sid=' . $cart_product['vendor_id']; ?>" target="_blank" rel="noopener noreferrer">
-													<img class="w-100 prod-img ps-3" src="<?= weburl . 'media/' . $cart_product['imgurl']; ?>" alt="">
+													<img class="w-100 prod-img ps-3" src="<?= MEDIA_URL . $cart_product['imgurl']; ?>" alt="">
 												</a>
 											</div>
 											<div class="col-9">

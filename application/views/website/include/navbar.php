@@ -259,7 +259,7 @@
                                             <div class="row g-2 justify-content-center mt-3 h-100">
                                                 <div class="col-12 h-100 text-center">
                                                     <a href="#">
-                                                        <img class="nav-img h-100 w-100" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
+                                                        <img class="nav-img h-100 w-100" src="<?= MEDIA_URL . $maincat['imgurl'] ?>" class="btn-transition" alt="google-store">
                                                     </a>
                                                 </div>
                                                 <br>
@@ -278,7 +278,7 @@
                                             <div class="row g-2 justify-content-center mt-3 h-100">
                                                 <div class="col-12 h-100 text-center">
                                                     <a href="#">
-                                                        <img class="nav-img h-100 w-100" src="<?= base_url('media/' . $maincat['imgurl']) ?>" class="btn-transition" alt="google-store">
+                                                        <img class="nav-img h-100 w-100" src="<?= MEDIA_URL . $maincat['imgurl'] ?>" class="btn-transition" alt="google-store">
                                                     </a>
                                                 </div>
                                                 <br>
@@ -384,5 +384,6 @@
 
 <input type="hidden" class="txt_csrfname" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 <input type="hidden" class="site_url" value="<?php echo site_url(); ?>">
+<input type="hidden" class="media_url" value="<?= MEDIA_URL ?>">
 <input type="hidden" id="user_id" value="<?= $this->session->userdata('user_id'); ?>">
 <input type="hidden" name="website_name" value="<?php echo $website_name; ?>" id="website_name">

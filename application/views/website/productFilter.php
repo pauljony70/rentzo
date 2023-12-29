@@ -263,6 +263,14 @@
 	<script src="<?= base_url('assets_web/libs/nouislider/dist/nouislider.min.js') ?>"></script>
 	<script src="<?= base_url('assets_web/js/app/product-filter.js') ?>"></script>
 
+	<script>
+		if (document.querySelector('#address_data')) {
+			if (document.querySelector('#address_data').textContent === 'Location') {
+				var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
+				pincodeModal.show();
+			}
+		}
+	</script>
 </body>
 
 </html>

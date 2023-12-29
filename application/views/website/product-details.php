@@ -26,7 +26,7 @@
 	<?php } else { ?>
 		<meta property="og:description" content="<?= strip_tags($productdetails['short_desc']); ?>" />
 	<?php } ?>
-	<meta name="og_image" property="og:image" content="<?= weburl . 'media/' . $main_url_img; ?>" />
+	<meta name="og_image" property="og:image" content="<?= MEDIA_URL . $main_url_img; ?>" />
 
 	<!-- Plugin Css -->
 	<!-- <link rel="stylesheet" type="text/css" href="https://punjablive1.com/dist/style/toastify.min.css"> -->
@@ -101,19 +101,19 @@
 								<div class="swiper-wrapper">
 									<?php if (!empty($productdetails['gallary_img_url'])) {
 										foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
-											<a class="swiper-slide aaaaa" data-fancybox="group" href="<?= base_url('media/' . $gallary['url']) ?>">
-												<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+											<a class="swiper-slide aaaaa" data-fancybox="group" href="<?= MEDIA_URL . $gallary['url'] ?>">
+												<img src="<?= MEDIA_URL . $gallary['url'] ?>" />
 											</a>
 										<?php }
 									} else { ?>
-										<a class="swiper-slide" data-fancybox="group" href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
-											<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+										<a class="swiper-slide" data-fancybox="group" href="<?= MEDIA_URL . $productdetails['imgurl'] ?>">
+											<img src="<?= MEDIA_URL . $productdetails['imgurl'] ?>" />
 										</a>
 									<?php } ?>
 									<?php if ($productdetails['youtube_url'] != '') { ?>
-										<a class="swiper-slide my-auto" data-fancybox="group" href="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>">
+										<a class="swiper-slide my-auto" data-fancybox="group" href="<?= MEDIA_URL . $productdetails['youtube_url']; ?>">
 											<video style="height:inherit;width:inherit;" id="product-video">
-												<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+												<source src="<?= MEDIA_URL . $productdetails['youtube_url']; ?>" type="video/mp4">
 											</video>
 											<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b; color: #333"></i></div>
 										</a>
@@ -125,18 +125,18 @@
 									<?php if (!empty($productdetails['gallary_img_url'])) {
 										foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
 											<div class="swiper-slide my-auto">
-												<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+												<img src="<?= MEDIA_URL . $gallary['url'] ?>" />
 											</div>
 										<?php }
 									} else { ?>
 										<div class="swiper-slide my-auto">
-											<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+											<img src="<?= MEDIA_URL . $productdetails['imgurl'] ?>" />
 										</div>
 									<?php } ?>
 									<?php if ($productdetails['youtube_url'] != '') { ?>
 										<div class="swiper-slide my-auto">
 											<video style="height:inherit;width:inherit;">
-												<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+												<source src="<?= MEDIA_URL . $productdetails['youtube_url']; ?>" type="video/mp4">
 											</video>
 											<a style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.0rem; padding: 8px 12px; border-radius:50%; background-color: #ffffff8b"></i></a>
 										</div>
@@ -262,7 +262,7 @@
 												<a target="_blank" href="http://twitter.com/share?url=<?= $actual_link ?>&text=I ♥ this product on Rentzo! <?= $productdetails['name']; ?>&via=Rentzo&hashtags=buyonRentzo" class="brand-icon twitter">
 													<img src="<?= base_url('assets_web/images/brands/twitter.svg') ?>" alt="Twitter" srcset="">
 												</a>
-												<a target="_blank" href="https://www.pinterest.com/pin/create/button/?url=<?= $actual_link ?>&media=<?= urlencode(weburl . 'media/' . $main_url_img) ?>&description=<?= urlencode($productdetails['name'] . ' - ' . strip_tags($productdetails['short_desc'])) ?>" class="brand-icon pinterest">
+												<a target="_blank" href="https://www.pinterest.com/pin/create/button/?url=<?= $actual_link ?>&media=<?= urlencode(MEDIA_URL . $main_url_img) ?>&description=<?= urlencode($productdetails['name'] . ' - ' . strip_tags($productdetails['short_desc'])) ?>" class="brand-icon pinterest">
 													<img src="<?= base_url('assets_web/images/brands/pinterest.svg') ?>" alt="Pinterest" srcset="">
 												</a>
 											</div>
@@ -299,19 +299,19 @@
 										<div class="swiper-wrapper">
 											<?php if (!empty($productdetails['gallary_img_url'])) {
 												foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
-													<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= base_url('media/' . $gallary['url']) ?>">
-														<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+													<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= MEDIA_URL . $gallary['url'] ?>">
+														<img src="<?= MEDIA_URL . $gallary['url'] ?>" />
 													</a>
 												<?php }
 											} else { ?>
-												<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= base_url('media/' . $productdetails['imgurl']) ?>">
-													<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+												<a class="swiper-slide spotlight zoom-img" data-fancybox="mobile-group" href="<?= MEDIA_URL . $productdetails['imgurl'] ?>">
+													<img src="<?= MEDIA_URL . $productdetails['imgurl'] ?>" />
 												</a>
 											<?php } ?>
 											<?php if ($productdetails['youtube_url'] != '') { ?>
-												<a href="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" data-fancybox="mobile-group" class="swiper-slide">
+												<a href="<?= MEDIA_URL . $productdetails['youtube_url']; ?>" data-fancybox="mobile-group" class="swiper-slide">
 													<video style="height:inherit;width:inherit;" id="product-video">
-														<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+														<source src="<?= MEDIA_URL . $productdetails['youtube_url']; ?>" type="video/mp4">
 													</video>
 													<div id="custom-play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.5rem; padding: 12px 16px; border-radius:50%; background-color: #ffffff8b; color: #333"></i></div>
 												</a>
@@ -326,18 +326,18 @@
 											<?php if (!empty($productdetails['gallary_img_url'])) {
 												foreach ($productdetails['gallary_img_url'] as $gallary) { ?>
 													<div class="swiper-slide">
-														<img src="<?= base_url('media/' . $gallary['url']) ?>" />
+														<img src="<?= MEDIA_URL . $gallary['url'] ?>" />
 													</div>
 												<?php }
 											} else { ?>
 												<div class="swiper-slide">
-													<img src="<?= base_url('media/' . $productdetails['imgurl']) ?>" />
+													<img src="<?= MEDIA_URL . $productdetails['imgurl'] ?>" />
 												</div>
 											<?php } ?>
 											<?php if ($productdetails['youtube_url'] != '') { ?>
 												<div class="swiper-slide">
 													<video style="height:inherit;width:inherit;">
-														<source src="<?= weburl . 'media/' . $productdetails['youtube_url']; ?>" type="video/mp4">
+														<source src="<?= MEDIA_URL . $productdetails['youtube_url']; ?>" type="video/mp4">
 													</video>
 													<a style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"><i class="fa-solid fa-play" style="font-size: 1.0rem; padding: 8px 12px; border-radius:50%; background-color: #ffffff8b"></i></a>
 												</div>
@@ -530,7 +530,7 @@
 												<div class="card-body">
 													<div class="row">
 														<div class="col-3">
-															<img class="w-100 object-fit-cover" src="<?= base_url('media/' . $productdetails['imgurl']) ?>" alt="<?= $productdetails['name'] ?>">
+															<img class="w-100 object-fit-cover" src="<?= MEDIA_URL . $productdetails['imgurl'] ?>" alt="<?= $productdetails['name'] ?>">
 														</div>
 														<div class="col-9">
 															<div class="d-flex flex-column">
@@ -573,9 +573,9 @@
 							-->
 							<div class="badges mb-4">
 								<div class="d-flex flex-wrap">
-									<?php if($productdetails['seller_badge'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge']) ?>" alt="Badge 1"><?php } ?>
-									<?php if($productdetails['seller_badge1'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge1']) ?>" alt="Badge 2"><?php } ?>
-									<?php if($productdetails['seller_badge2'] != '') { ?><img src="<?= base_url('media/' . $productdetails['seller_badge2']) ?>" alt="Badge 3"><?php } ?>
+									<?php if($productdetails['seller_badge'] != '') { ?><img src="<?= MEDIA_URL . $productdetails['seller_badge'] ?>" alt="Badge 1"><?php } ?>
+									<?php if($productdetails['seller_badge1'] != '') { ?><img src="<?= MEDIA_URL . $productdetails['seller_badge1'] ?>" alt="Badge 2"><?php } ?>
+									<?php if($productdetails['seller_badge2'] != '') { ?><img src="<?= MEDIA_URL . $productdetails['seller_badge2'] ?>" alt="Badge 3"><?php } ?>
 									
 								</div>
 							</div>
@@ -922,10 +922,10 @@
 							'sid' => $recently_viewed_product_detail['vendor_id']
 						);
 					?>
-						<div class="swiper-slide">
+						<div class="swiper-slide position-realative">
 							<a href="<?= base_url($recently_viewed_product_detail['web_url']) . '?' . http_build_query($params) ?>" class="d-flex flex-column card product-card rounded-4">
 								<div class="product-card-img zoom-img rounded-4">
-									<img src="<?= base_url('media/' . $recently_viewed_product_detail['imgurl']) ?>" class="card-img-top rounded-4" alt="<?= $recently_viewed_product_detail['name'] ?>">
+									<img src="<?= MEDIA_URL . $recently_viewed_product_detail['imgurl'] ?>" class="card-img-top rounded-4" alt="<?= $recently_viewed_product_detail['name'] ?>">
 								</div>
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto"><?= $recently_viewed_product_detail['name'] ?></h5>
@@ -960,6 +960,14 @@
 	<!-- Custom JS -->
 	<script src="<?= base_url(); ?>assets_web/js/app/product_details.js"></script>
 
+	<script>
+		if (document.querySelector('#address_data')) {
+			if (document.querySelector('#address_data').textContent === 'Location') {
+				var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
+				pincodeModal.show();
+			}
+		}
+	</script>
 </body>
 
 </html>

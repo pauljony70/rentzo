@@ -53,7 +53,7 @@
 							<?php foreach ($cart_items['cart_full'] as $key => $cart) : ?>
 								<div class="row ps-4">
 									<div class="col-4">
-										<img src="<?= base_url('media/' . $cart['imgurl']) ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
+										<img src="<?= MEDIA_URL . $cart['imgurl'] ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
 									</div>
 									<div class="col-8">
 										<div class="product-name pe-4 mt-5 mb-2 line-clamp-1"><?= $cart['name'] ?></div>
@@ -335,7 +335,7 @@
 											<div class="text"><?= $cart['cart_type']; ?></div>
 										</div>
 										<div class="col-4">
-											<img src="<?= base_url('media/' . $cart['imgurl']) ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
+											<img src="<?= MEDIA_URL . $cart['imgurl'] ?>" alt="<?= $cart['name'] ?>" srcset="" class="w-100">
 										</div>
 										<div class="col-8">
 											<div class="product-name pe-4 mt-5 mb-2 line-clamp-2"><?= $cart['name'] ?></div>

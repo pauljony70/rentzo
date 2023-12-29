@@ -552,7 +552,7 @@ function related_product() {
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
 								<div class="product-card-img zoom-img rounded-4">
-									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+									<img src="${media_url}${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
 								</div>
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
@@ -628,7 +628,7 @@ function upsell_product() {
 						`<div class="swiper-slide">
 							<a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
 								<div class="product-card-img zoom-img rounded-4">
-									<img src="${site_url}media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
+									<img src="${media_url}${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="">
 								</div>
 								<div class="card-body d-flex flex-column product-card-body">
 									<h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
@@ -1005,12 +1005,12 @@ function get_product_attributes(tag) {
 
 							swiper.appendSlide(
 								`<div class="swiper-slide my-auto attribute-image">
-									<img src="${site_url}media/${this.imgurl}" />
+									<img src="${media_url}${this.imgurl}" />
 								</div>`
 							);
 
 							swiper2.appendSlide(
-								'<a class="swiper-slide my-auto spotlight zoom-img attribute-image" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="' + site_url + 'media/' + this.imgurl + '"><img src="' + site_url + 'media/' + this.imgurl + '" /></a>'
+								'<a class="swiper-slide my-auto spotlight zoom-img attribute-image" data-page="false" data-animation="fade" data-control="zoom,fullscreen,close" data-theme="white" data-autohide=false href="' + media_url + this.imgurl + '"><img src="' + media_url + this.imgurl + '" /></a>'
 							);
 
 							lastIndex = swiper2.slides.length - 1;

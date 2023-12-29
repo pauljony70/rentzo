@@ -57,7 +57,7 @@
 							<div class="swiper-slide">
 								<a href="<?php echo base_url . $home_category->cat_name; ?>" class="d-flex align-items-center flex-column justify-content-center">
 									<div class="d-flex justify-content-center">
-										<img src="<?= base_url('media/' . json_decode($home_category->image)->{'470-720'}) ?>" alt="<?= $home_category->cat_name ?>">
+										<img src="<?= MEDIA_URL . json_decode($home_category->image)->{'470-720'} ?>" alt="<?= $home_category->cat_name ?>">
 									</div>
 									<div class="text-center my-3">
 										<?= $home_category->cat_name ?>
@@ -243,7 +243,7 @@
 						<span style="color: var(--bs-primary);"> Brands</span>
 					</div>
 					<div class="d-flex align-items-center">
-						<a href="<?= base_url . 'brands'; ?>"><span class="view-all">View All</span>
+						<a href="<?= base_url() . 'brands'; ?>"><span class="view-all">View All</span>
 							<i class="fa-solid fa-chevron-right ms-2"></i></a>
 					</div>
 				</div>
@@ -254,8 +254,8 @@
 							if ($key > 9) break;
 						?>
 							<div class="swiper-slide">
-								<a href="<?= base_url . 'shop/brand/' . $brand['brand_name'] ?>">
-									<img src="<?= weburl . 'media/' . json_decode($brand['brand_img'])->{'280-310'}; ?>" alt="<?= $brand['brand_name']; ?>" class="brand-img">
+								<a href="<?= base_url() . 'shop/brand/' . $brand['brand_name'] ?>">
+									<img src="<?= MEDIA_URL . json_decode($brand['brand_img'])->{'280-310'}; ?>" alt="<?= $brand['brand_name']; ?>" class="brand-img">
 								</a>
 							</div>
 						<?php endforeach; ?>
@@ -458,6 +458,15 @@
 	<script src="<?= base_url('assets_web/libs/swiper/swiper-bundle.min.js') ?>"></script>
 
 	<script src="<?= base_url(); ?>assets_web/js/app/index.js"></script>
+
+	<script>
+		if (document.querySelector('#address_data')) {
+			if (document.querySelector('#address_data').textContent === 'Location') {
+				var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
+				pincodeModal.show();
+			}
+		}
+	</script>
 </body>
 
 </html>

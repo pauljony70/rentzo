@@ -70,7 +70,7 @@ function get_category_product(catid, sortby, pageno, callback) {
                             `<div class="col-6 col-md-4 p-3 position-relative">
                                 ${out_of_stock}
                                 <a href="${site_url}${this.web_url}?pid=${this.id}&sku=${this.sku}&sid=${this.vendor_id}" class="d-flex flex-column card product-card rounded-4">
-                                    <img src="${site_url}/media/${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="${this.name}">
+                                    <img src="${media_url}${this.imgurl}" class="card-img-top product-card-img rounded-4" alt="${this.name}">
                                     <div class="card-body d-flex flex-column product-card-body">
                                         <h5 class="card-title product-title line-clamp-2 mb-auto">${this.name}</h5>
                                         <div class="d-flex stars py-1">
@@ -156,7 +156,7 @@ window.addEventListener('scroll', () => {
         scrollTop,
         clientHeight
     } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 450) {
+    if (scrollTop + clientHeight >= scrollHeight - 500) {
         if (pageNo < total_pages - 1) {
             pageNo++;
             sort_id = $("#sort_data_id").val();

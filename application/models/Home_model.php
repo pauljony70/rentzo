@@ -825,7 +825,7 @@ class Home_model extends CI_Model
 			$home_result = $query->result_object();
 			foreach ($home_result as $banners) {
 				$img_decode1 = json_decode($banners->event_image);
-				$banners->event_image = base_url('media/') . $img_decode1->{'430-590'};
+				$banners->event_image = MEDIA_URL . $img_decode1->{'430-590'};
 				$banner_result[] = $banners;
 			}
 		}
@@ -843,7 +843,7 @@ class Home_model extends CI_Model
 			$home_result = $query->result_object();
 			foreach ($home_result as $banners) {
 				$img_decode1 = json_decode($banners->event_image);
-				$banners->event_image = base_url('media/') . $img_decode1->{'430-590'};
+				$banners->event_image = MEDIA_URL . $img_decode1->{'430-590'};
 				$banner_result[] = $banners;
 			}
 		}
@@ -863,7 +863,7 @@ class Home_model extends CI_Model
 			$home_result = $query->result_object();
 			foreach ($home_result as $banners) {
 				$img_decode1 = json_decode($banners->image);
-				$banners->image = base_url('media/') . $img_decode1->{$dimension};
+				$banners->image = MEDIA_URL . $img_decode1->{$dimension};
 				$banner_result[] = $banners;
 			}
 		}
@@ -1201,7 +1201,7 @@ class Home_model extends CI_Model
 				$product_response['cat_slug'] = $productdetails->cat_slug;
 
 				$img_decode1 = json_decode($productdetails->cat_img);
-				$banners = base_url('media/') . $img_decode1->{'430-590'};
+				$banners = MEDIA_URL . $img_decode1->{'430-590'};
 
 
 

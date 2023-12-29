@@ -11,6 +11,7 @@
   var csrfName = $(".txt_csrfname").attr("name"); //
   var csrfHash = $(".txt_csrfname").val(); // CSRF hash
   var site_url = $(".site_url").val(); // CSRF hash
+  var media_url = $(".media_url").val(); // CSRF hash
   var user_id = $("#user_id").val(); // CSRF hash
   const default_language = 2;
 
@@ -18,13 +19,6 @@
 
   function redirect_to_link(link) {
     location.href = link;
-  }
-
-  if (document.querySelector('#address_data')) {
-    if (document.querySelector('#address_data').textContent === 'Location') {
-      var pincodeModal = new bootstrap.Modal(document.getElementById('pincodeModal'));
-      pincodeModal.show();
-    }
   }
 
   function get_address(form) {

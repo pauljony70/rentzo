@@ -10,18 +10,13 @@
 
 <body>
 
-	<?php
-	include("include/topbar.php")
-	?>
-	<?php
-	include("include/navbar.php")
-	?>
+	<?php include("include/navbar-brand.php") ?>
 
-	<main class="become-seller-page">
+	<main class="become-seller-page container">
 
 		<!--Start: Become a Seller Section -->
 		<section class="become-seller box-shadow-4 p-0 py-5 p-sm-5">
-			<div class="container px-1">
+			<div class="container">
 
 				<?php if (!empty($this->session->flashdata("seller_form_msg"))) : ?>
 					<div class="alert alert-success alert-dismissible fade show text-start" role="alert">
@@ -237,7 +232,7 @@
 								<div class="col-5">
 									<h6 class="text-end">Step 5 - 5</h6>
 								</div>
-								<img src="<?php echo base_url; ?>/assets_web/images/icons/thanks-icon.png" class="success-img" />
+								<img src="<?php echo base_url() ?>/assets_web/images/icons/thanks-icon.png" class="success-img" />
 								<h4>SUCCESS !</h4>
 								<h6>Thank you, your application is in process. Our team will contact you shortly.</h6>
 								<h6>Thanks.</h6>
@@ -258,7 +253,7 @@
 	<!-- Plugin JS -->
 	<script src="<?php echo base_url(); ?>assets_web/libs/dropify/dist/js/dropify.min.js"></script>
 
-	<script src="<?php echo base_url; ?>assets_web/js/app/become-seller.js"></script>
+	<script src="<?php echo base_url() ?>assets_web/js/app/become-seller.js"></script>
 </body>
 
 </html>

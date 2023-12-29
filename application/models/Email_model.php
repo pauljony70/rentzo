@@ -490,7 +490,7 @@ class Email_model extends CI_Model
 									href="' . base_url() . '"
 									style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#926B4A;font-size:12px"><img
 										class="adapt-img p_image"
-										src="' . base_url('media/') . $prod_img . '"
+										src="' . MEDIA_URL . $prod_img . '"
 										alt="' . $product_name . '"
 										style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic"
 										width="125" title="' . $product_name . '" height="125"></a></td>
@@ -611,7 +611,7 @@ class Email_model extends CI_Model
 													style="font-size: 0px;"><a
 														target="_blank"><img
 															class="adapt-img"
-															src="' . base_url('media/' . $order_data['product_img_1']) . '"
+															src="' . MEDIA_URL . $order_data['product_img_1'] . '"
 															alt
 															style="display: block;"
 															height="115"></a></td>

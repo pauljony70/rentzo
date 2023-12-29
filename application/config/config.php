@@ -23,12 +23,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/rentzo/';
-define('base_url','http://localhost/rentzo/');
-define('weburl','http://localhost/rentzo/');
 // $config['base_url'] = 'https://www.rentzo.co.in/';
 // define('base_url','https://www.rentzo.co.in/');
 // define('weburl','https://www.rentzo.co.in/');
+
+$config['base_url'] = 'http://localhost/rentzo/';
+define('base_url','http://localhost/rentzo/');
+define('weburl','http://localhost/rentzo/');
 
 
 $config['smtp_host'] = 'smtp.gmail.com';
